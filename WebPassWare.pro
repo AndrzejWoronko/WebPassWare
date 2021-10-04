@@ -6,11 +6,11 @@ TARGET = webpassware
 TEMPLATE = app
 
 SOURCES += \
-	 main.cpp \
+         src/main.cpp \
 
 HEADERS += \
-	 Global.h \
-
+         src/Common/Global.h \
+         src/Common/Singleton.h \
 
 
 FORMS += \
@@ -19,7 +19,7 @@ FORMS += \
 RESOURCES += \
 
 
-INCLUDEPATH += src/
+INCLUDEPATH += src/ src/Common/ src/Gui/
 
 DEPENDPATH  += $${INCLUDEPATH}
 
