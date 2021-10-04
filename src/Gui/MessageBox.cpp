@@ -58,18 +58,18 @@ void CMessageBox::translateButtons(QMessageBox &messageBox)
   Q_FOREACH(auto button, messageBox.buttons())
   {
     if (button->text() == QLatin1String("&Yes"))
-      button->setText(QObject::tr("&Tak"));
+      button->setText(QObject::tr("&Yes"));
     if (button->text() == QLatin1String("&No"))
-      button->setText(QObject::tr("&Nie"));
+      button->setText(QObject::tr("&No"));
     if (button->text() == QLatin1String("&Reset"))
-      button->setText(QObject::tr("&Resetuj"));
+      button->setText(QObject::tr("&Reset"));
     if (button->text() == QLatin1String("Yes to all"))
-      button->setText(QObject::tr("&Tak na wszystkie"));
+      button->setText(QObject::tr("&Yes to all"));
     if (button->text() == QLatin1String("Cancel"))
-      button->setText(QObject::tr("&Anuluj"));
+      button->setText(QObject::tr("&Cancel"));
     if (button->text() == QLatin1String("Save"))
-      button->setText(QObject::tr("&Zapisz"));
+      button->setText(QObject::tr("&Save"));
     if (button->text() == QLatin1String("OK"))
-      button->setText(QObject::tr("&Tak"));
+      button->setText(QObject::tr("&Ok"));
   }
 }

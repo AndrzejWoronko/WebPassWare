@@ -138,8 +138,7 @@ typedef struct
 
 Q_DECLARE_METATYPE(STDecimal)
 
-//#define ICONS_PATH ":/icons"
-#define ICONS_PATH ":/icons_office/50px"
+#define ICONS_PATH ":/icons/50px"
 #define STYLE_PATH ":/style"
 #define ICON(name) QString(name)
 #define BUTTON_ICON_MIN_SIZE_DX 22

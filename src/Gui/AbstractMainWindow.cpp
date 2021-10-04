@@ -25,9 +25,9 @@ void CAbstractMainWindow::initMainWidgets()
 
 void CAbstractMainWindow::initActions()
 {
-    CAction *actionExit = new CAction(tr("Wyjście"),ICON("Exit"), tr("Wyjście"), QString("Ctrl+X"), QString("ACTION_EXIT"), this);
+    CAction *actionExit = new CAction(tr("E&xit"), ICON("Exit"), tr("Exit"), QString("Ctrl+X"), QString("ACTION_EXIT"), this);
     m_actions.insert(actionExit->getActionName(), actionExit);
-    CAction *actionAbout = new CAction(tr("O &QT"), ICON("Qt"), tr("O QT"), QString("Ctrl+O"), QString("ACTION_ABOUT_QT"), this);
+    CAction *actionAbout = new CAction(tr("Ab&out QT"), ICON("Qt"), tr("About QT"), QString("Ctrl+O"), QString("ACTION_ABOUT_QT"), this);
     m_actions.insert(actionAbout->getActionName(), actionAbout);
 }
 

@@ -184,7 +184,7 @@ int CApplication::run()
 //        {
 //            return RET_ERROR;
 //        }
-//   return RET_OK;
+   return RET_OK;
 }
 
 void CApplication::logout()

@@ -20,10 +20,17 @@ SOURCES += \
     src/Common/Tools.cpp \
     src/Gui/AbstractMainWindow.cpp \
     src/Gui/Action.cpp \
+    src/Gui/Button.cpp \
+    src/Gui/ButtonBox.cpp \
+    src/Gui/DelayEditLine.cpp \
+    src/Gui/Frame.cpp \
     src/Gui/Layouts.cpp \
     src/Gui/MessageBox.cpp \
     src/Gui/Splitter.cpp \
     src/Gui/Style.cpp \
+    src/Gui/TabWidget.cpp \
+    src/Gui/TableView.cpp \
+    src/Gui/ToolButton.cpp \
     src/WebPassWareMainWindow.cpp \
     src/main.cpp \
 
@@ -44,17 +51,26 @@ HEADERS += \
     src/Common/Tools.h \
     src/Gui/AbstractMainWindow.h \
     src/Gui/Action.h \
+    src/Gui/Button.h \
+    src/Gui/ButtonBox.h \
+    src/Gui/DelayEditLine.h \
+    src/Gui/Frame.h \
     src/Gui/Layouts.h \
     src/Gui/MessageBox.h \
     src/Gui/Splitter.h \
     src/Gui/Style.h \
+    src/Gui/TabWidget.h \
+    src/Gui/TableView.h \
+    src/Gui/ToolButton.h \
     src/WebPassWareMainWindow.h
 
 
 FORMS += \
 
 
-RESOURCES += \
+RESOURCES += style.qrc \
+             icons.qrc
+
 
 
 INCLUDEPATH += src/ src/Common/ src/Gui/
