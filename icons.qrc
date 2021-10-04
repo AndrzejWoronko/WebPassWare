@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/50px/Select.png</file>
+        <file>icons/50px/Save.png</file>
+        <file>icons/50px/Restore.png</file>
+        <file>icons/50px/Refresh.png</file>
+        <file>icons/50px/Qt.png</file>
+        <file>icons/50px/Password.png</file>
+        <file>icons/50px/Ok.png</file>
+        <file>icons/50px/Export.png</file>
+        <file>icons/50px/Exit.png</file>
+        <file>icons/50px/Delete-row.png</file>
+        <file>icons/50px/Copy.png</file>
+        <file>icons/50px/Close.png</file>
+        <file>icons/50px/Cancel.png</file>
+        <file>icons/50px/Apply.png</file>
+        <file>icons/50px/Add-row.png</file>
+        <file>icons/50px/About.png</file>
+    </qresource>
+</RCC>

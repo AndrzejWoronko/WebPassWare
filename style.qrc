@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/style">
+        <file alias="blue">style/blue.qss</file>
+        <file alias="grey">style/grey.qss</file>
+        <file alias="material-blue">style/material-blue.qss</file>
+        <file alias="dark">style/dark.qss</file>
+        <file alias="darkorange">style/darkorange.qss</file>
+    </qresource>
+</RCC>
