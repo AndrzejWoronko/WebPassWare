@@ -100,17 +100,6 @@
               safe_delete(ptr);\
               list.clear();
 
-
-/*
-#define CLEAR_PTR_LIST(list)\
-    for(int i = 0; i < list.size(); i++) \
-        delete list.takeAt(i);
-
-#define CLEAR_PTR_HASH(list)\
-    for(int i = 0; i < list.size(); i++) \
-        delete list.takeAt(i);
-*/
-
 #define RET_OK       0
 #define RET_ERROR   -1
 

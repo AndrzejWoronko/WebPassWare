@@ -1,8 +1,22 @@
 #include <stdexcept>
-#include <unistd.h>
+#include <QApplication>
+#include <QSplashScreen>
 #include <QtGui>
+#include <QMessageBox>
+#include <QString>
+#include <QDir>
+#include <QThread>
+#include <unistd.h>
+#include "Logger.h"
+#include "Style.h"
+//#include "databasetablecheck.h"
 #include "Application.h"
+//#include "BackupAutoRemover.h"
+#include "WebPassWareMainWindow.h"
 #include "Global.h"
+
+//Obsługa wywałki programu w linux
+//#include "signal.c"
 
 int main(int argc, char **argv)
 {
@@ -31,7 +45,7 @@ int main(int argc, char **argv)
 //        QDir::setCurrent("./");
 
     CApplication *a = NULL;
-    CMainWindow *w = NULL;
+    CWebPassWareMainWindow *w = NULL;
 
     a = new CApplication(argc, argv);
 
@@ -47,6 +61,7 @@ int main(int argc, char **argv)
 #endif
     QDir::setCurrent(d.absolutePath());
     DEBUG_WITH_LINE << "Katalog roboczy ustawiony na: " << QDir::currentPath();
+
     DEBUG_WITH_LINE << "Katalog aplikacji: " << QCoreApplication::applicationDirPath();
     DEBUG_WITH_LINE << "Plik aplikacji: " << QCoreApplication::applicationFilePath();
     DEBUG_WITH_LINE << "Katalog blibliotek: " << QCoreApplication::libraryPaths();
@@ -66,8 +81,13 @@ int main(int argc, char **argv)
   QCoreApplication::addLibraryPath(QString(PROGRAM_DIR));
 #endif
  */
+ // sprawdzenie czy jest katalog instalacji jeżeli nie ma to ustawia na bieżący
 
 
+    //MainWindow1 w1;
+
+    // Splash screen jakby był 
+//    else
        {        
             a->processEvents();
             //DB.initConnection();
@@ -76,15 +96,15 @@ int main(int argc, char **argv)
 
             if (check_tables)
                {
-                 //Sprawdzenie/za�o�enie tabel
+                 //Sprawdzenie/założenie tabel
                  //DataBaseTableCheck::checkAllTables();
-                 //Init domy�lnych warto�ci
+                 //Init domyślnych wartości
                  //DataBaseTableCheck::initDefaultValues();
                 }
 
-            w = new CMainWindow();
+            w = new CWebPassWareMainWindow();
             w->centerAndResize();
-            w->restoreDialogState();
+            //w->restoreDialogState();
             w->show();
             //CBackupAutoRemover::getInstance().checkAndRemoveOldBackups();
        }
@@ -94,5 +114,6 @@ int main(int argc, char **argv)
     a->exec();
     if (w)
         delete w;
+
     return 0;
 }

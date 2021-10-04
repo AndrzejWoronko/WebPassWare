@@ -1,3 +1,16 @@
+bin/
+.moc/
+.obj/
+.qrc/
+.ui/
+
+*.user*
+
+Makefile
+/.qmake.stash
+
+bin/webpassware
+
 # Prerequisites
 *.d
 
