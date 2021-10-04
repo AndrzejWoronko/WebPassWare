@@ -17,6 +17,7 @@ void CWebPassWareMainWindow::setInterface(void)
     this->setWindowIconText(CApplication::toString());
     this->setDocumentMode(true);
     this->setWindowTitle(tr(APP_NAME));
+    this->setIconName(ICON(CApplication::iconName()));
 
     this->resize(850, 700);
     this->setMinimumSize(QSize(800, 600));
