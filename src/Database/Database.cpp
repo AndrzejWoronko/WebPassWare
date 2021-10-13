@@ -23,10 +23,19 @@ CDatabase::~CDatabase()
 }
 
 void CDatabase::initConnection()
-{    
-    QFileInfo f(SETT.getSettings()->fileName());
-    m_base_name = QString("%1/%2").arg(f.absolutePath()).arg(DB_NAME);
-    DEBUG_WITH_LINE << m_base_name;
+{
+    QString dir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QFileInfo f(dir);
+    if (!f.exists())
+       {
+            QDir d;
+            d.mkpath(dir);
+       }
+//    QFileInfo f(SETT.getSettings()->fileName());
+//    QString dir = f.absolutePath();
+
+    m_base_name =  QString("%1/%2").arg(dir, DB_NAME);
+    DEBUG_WITH_LINE << "DB file path is: " << m_base_name;
 
     m_db.setDatabaseName(m_base_name);
 
