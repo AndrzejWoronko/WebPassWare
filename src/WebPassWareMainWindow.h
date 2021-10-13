@@ -59,6 +59,7 @@ private:
 public slots:
 
     void refreshInfo();
+    void on_ACTION_ABOUT_triggered();
 
 };
 

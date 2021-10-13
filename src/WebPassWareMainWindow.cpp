@@ -1,5 +1,5 @@
 #include "WebPassWareMainWindow.h"
-
+#include "AboutDialog.h"
 #include "Application.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
@@ -66,8 +66,8 @@ void CWebPassWareMainWindow::setInterface(void)
 void CWebPassWareMainWindow::setActions(void)
 {
 
-    CAction *actionHelp = new CAction(tr("&About program"), ICON("About"), tr("About program"), QString("Ctrl+H"), QString("ACTION_HELP"), this);
-    m_actions.insert(actionHelp->getActionName(), actionHelp);
+    CAction *actionAbount = new CAction(tr("&About program"), ICON("About"), tr("About program"), QString("Ctrl+H"), QString("ACTION_ABOUT"), this);
+    m_actions.insert(actionAbount->getActionName(), actionAbount);
 }
 
 void CWebPassWareMainWindow::setMenu(void)
@@ -87,7 +87,7 @@ void CWebPassWareMainWindow::setMenu(void)
 
     helpMenu = new QMenu(m_menuBar);
     helpMenu->setTitle(tr("&Help"));
-    helpMenu->addAction(m_actions.value(QString("ACTION_HELP")));
+    helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT")));
     helpMenu->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
 
@@ -100,7 +100,7 @@ void CWebPassWareMainWindow::setToolBar(void)
     m_toolBar->addAction(m_actions.value(QString("ACTION_REFRESH_TABLE_LIST")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_EXIT")));
     m_toolBar->addSeparator();    
-    m_toolBar->addAction(m_actions.value(QString("ACTION_HELP")));
+    m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
     return;
@@ -159,3 +159,9 @@ void CWebPassWareMainWindow::refreshInfo()
     QTimer::singleShot(1000, this, SLOT(refreshInfo()));
 }
 
+void CWebPassWareMainWindow::on_ACTION_ABOUT_triggered()
+{
+    CAboutDialog dialog(this);
+    dialog.addFieldsAndComponents();
+    dialog.exec();
+}

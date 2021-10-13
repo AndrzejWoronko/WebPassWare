@@ -36,7 +36,6 @@ public slots:
 
     void closeTab(int index);
     void showTab(int index);
-
 };
 
 #endif // CTABWIDGET_H

@@ -132,7 +132,7 @@ void CTabWidget::insertTabWidgetController(int index, QWidget *w, QWidget *w_ctr
 
     m_widget_list.insert(w, w_ctrl); //Dodanie do listy widoków;
     this->setTabText(index, label);
-    emit this->currentChanged(index);
+    emit this->currentChanged(index);    
 }
 
 void CTabWidget::addAndSetTabWidgetController(QWidget *w, QWidget *w_ctrl, const QString &label, const QString &iconName)

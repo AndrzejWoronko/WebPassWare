@@ -7,13 +7,14 @@
 #include <QDir>
 #include <QThread>
 #include <unistd.h>
+#include "Global.h"
 #include "Logger.h"
 #include "Style.h"
 //#include "databasetablecheck.h"
 #include "Application.h"
 //#include "BackupAutoRemover.h"
 #include "WebPassWareMainWindow.h"
-#include "Global.h"
+#include "Database.h"
 
 //Obsługa wywałki programu w linux
 //#include "signal.c"
@@ -97,10 +98,14 @@ int main(int argc, char **argv)
             if (check_tables)
                {
                  //Sprawdzenie/założenie tabel
+                 if (DB.isConnected())
+                    {
+                       DB.checkTableInDatabase("secuence");
+                    }
                  //DataBaseTableCheck::checkAllTables();
                  //Init domyślnych wartości
                  //DataBaseTableCheck::initDefaultValues();
-                }
+               }
 
             w = new CWebPassWareMainWindow();
             w->centerAndResize();
