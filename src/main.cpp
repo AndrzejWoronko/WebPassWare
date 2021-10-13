@@ -16,7 +16,9 @@
 #include "WebPassWareMainWindow.h"
 #include "Database.h"
 
-// Projekt wzorcowy https://github.com/orgs/keepassxreboot/repositories
+// Projekty wzorcowe
+//https://github.com/orgs/keepassxreboot/repositories
+//https://github.com/Martchus/passwordmanager
 
 int main(int argc, char **argv)
 {
