@@ -16,8 +16,7 @@
 #include "WebPassWareMainWindow.h"
 #include "Database.h"
 
-//Obsługa wywałki programu w linux
-//#include "signal.c"
+// Projekt wzorcowy https://github.com/orgs/keepassxreboot/repositories
 
 int main(int argc, char **argv)
 {
