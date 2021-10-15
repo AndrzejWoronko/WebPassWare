@@ -69,7 +69,7 @@ public:
 
 private:
 
-    QMutex m_logMutex;
+    QMutex m_settingsMutex;
 };
 
 #endif // APPLICATIONSETTINGS_H

@@ -21,6 +21,8 @@ CSqlQuery::CSqlQuery(const QString &pSql, QSqlDatabase &db) : QSqlQuery(QString(
 
 bool CSqlQuery::exec()
 {
+    QMutexLocker lock(&m_queryMutex);
+
     setSqlCursor();
     m_returnValue = QSqlQuery::exec();
     logEchoQuery();
@@ -30,6 +32,8 @@ bool CSqlQuery::exec()
 
 bool CSqlQuery::exec(const QString &pSql)
 {
+    QMutexLocker lock(&m_queryMutex);
+
     QString query = pSql;
     setSqlCursor();
     m_returnValue = QSqlQuery::exec(query);
@@ -78,4 +82,3 @@ void CSqlQuery::restoreSqlCursor()
         qApp->restoreOverrideCursor();
     DEBUG_WITH_LINE << "Query time: (" << m_time.msecsTo(QDateTime::currentDateTime())/1000.0 << "sec)";
 }
-

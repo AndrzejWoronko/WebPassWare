@@ -14,13 +14,13 @@ CApplicationSettings::~CApplicationSettings()
 
 void CApplicationSettings::setValue(const QString &name, const QVariant &value)
 {
-    QMutexLocker lock(&m_logMutex);
+    QMutexLocker lock(&m_settingsMutex);
     m_settings->setValue(name, value);
 }
 
 void CApplicationSettings::setValueIf(const QString &name, const QVariant &value)
 {
-    QMutexLocker lock(&m_logMutex);
+    QMutexLocker lock(&m_settingsMutex);
     if (!m_settings->contains(name))
         m_settings->setValue(name, value);
 }

@@ -55,6 +55,8 @@ SOURCES += \
     src/Gui/Widgets/TabWidget.cpp \
     src/Gui/Widgets/TableView.cpp \
     src/Gui/Widgets/ToolButton.cpp \
+    src/Models/PassEntry.cpp \
+    src/Models/PassGroup.cpp \
     src/WebPassWareMainWindow.cpp \
     src/main.cpp \
 
@@ -110,6 +112,8 @@ HEADERS += \
     src/Gui/Widgets/TabWidget.h \
     src/Gui/Widgets/TableView.h \
     src/Gui/Widgets/ToolButton.h \
+    src/Models/PassEntry.h \
+    src/Models/PassGroup.h \
     src/WebPassWareMainWindow.h
 
 

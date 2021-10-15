@@ -26,6 +26,8 @@ private:
     void logEchoQuery();
     bool m_returnValue;
     QDateTime m_time;
+
+    QMutex m_queryMutex;
 };
 
 #endif // CSQLQUERY_H
