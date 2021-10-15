@@ -206,3 +206,28 @@ QString Tools::getTagValue(const QString& src, const QString& key)
         }
     return value;
 }
+
+QString Tools::snakeCase(const QString& name)
+{
+    QString newName = name;
+    if (newName.indexOf(QRegExp("^[A-Z]+$")) != -1)
+        return newName.toLower();
+
+    newName = newName.replace(QRegExp("([A-Z]+)([A-Z][a-z])"),"\\1_\\2");
+    newName = newName.replace(QRegExp("([a-z])([A-Z])"), "\\1_\\2");
+    return newName.toLower();
+}
+
+QString Tools::tableize(const QString& name)
+{
+    QString table = name;
+    table = snakeCase(table);
+    QStringList wordList;
+    QStringList tmpList = table.split(QChar('_'));
+    QString last = tmpList.last();
+    tmpList.removeLast();
+    wordList = tmpList;
+    wordList << last;
+    table = wordList.join(QChar('_'));
+    return table;
+}

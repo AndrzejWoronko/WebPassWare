@@ -25,6 +25,18 @@ public:
     static QString getMemoryUsageToString();
 
     static QString getTagValue(const QString& src, const QString& key);
+
+    /**
+     * Convert to snake case
+     */
+    static QString snakeCase(const QString& name);
+    /**
+     * Convert a string into a table name
+     *
+     * @return a version of the string useful as a database table name
+     */
+    static QString tableize(const QString& s);
+
 };
 
 #endif // TOOLS_H

@@ -10,6 +10,7 @@
 #include <QHash>
 #include <QDateTime>
 #include <QDate>
+#include <QList>
 
 #include "Tools.h"
 #include "Singleton.h"

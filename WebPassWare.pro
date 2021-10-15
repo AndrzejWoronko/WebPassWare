@@ -19,6 +19,8 @@ SOURCES += \
     src/Common/TableState.cpp \
     src/Common/Tools.cpp \
     src/Database/Database.cpp \
+    src/Database/OrmObject.cpp \
+    src/Database/SqlQuery.cpp \
     src/Gui/AbstractMainWindow.cpp \
     src/Gui/Action.cpp \
     src/Gui/Dialogs/AboutDialog.cpp \
@@ -72,6 +74,8 @@ HEADERS += \
     src/Common/TableState.h \
     src/Common/Tools.h \
     src/Database/Database.h \
+    src/Database/OrmObject.h \
+    src/Database/SqlQuery.h \
     src/Gui/AbstractMainWindow.h \
     src/Gui/Action.h \
     src/Gui/Dialogs/AboutDialog.h \
