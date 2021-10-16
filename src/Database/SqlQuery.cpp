@@ -3,13 +3,13 @@
 #include "SqlQuery.h"
 #include "Logger.h"
 
-CSqlQuery::CSqlQuery(QSqlDatabase &db) :  QSqlQuery(QString(), db),
+CSqlQuery::CSqlQuery(QSqlDatabase db) :  QSqlQuery(QString(), db),
     m_echo_error(true), m_log_error(true), m_echo_query(true), m_log_query(true)
 {
     m_returnValue = false;
 }
 
-CSqlQuery::CSqlQuery(const QString &pSql, QSqlDatabase &db) : QSqlQuery(QString(), db),
+CSqlQuery::CSqlQuery(const QString &pSql, QSqlDatabase db) : QSqlQuery(QString(), db),
     m_echo_error(true), m_log_error(true), m_echo_query(true), m_log_query(true)
 {
     QString query = pSql;

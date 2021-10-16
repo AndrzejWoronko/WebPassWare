@@ -15,6 +15,7 @@
 class CDatabase : public Singleton<CDatabase>
 {
     ADD_FIELD(QString, m_base_name, getBaseName, setBaseName)
+    ADD_FIELD(QString, m_base_name_full_path, getBaseNameFullPath, setBaseNameFullPath)
     ADD_FIELD(bool, m_echo_error, getEchoError, setEchoError)
     ADD_FIELD(bool, m_log_error, getLogError, setLogError)
     ADD_FIELD(bool, m_echo_query, getEchoQuery, setEchoQuery)
@@ -24,13 +25,14 @@ class CDatabase : public Singleton<CDatabase>
 
 public:
 
-    CDatabase();
+    CDatabase(const QString &database_name = QString(DB_NAME));
     ~CDatabase();
 
     void initConnection();
     bool isConnected();
     QSqlDatabase &getDb();
 
+    void setQueryLog(void);
     void reConnect();
 
     bool checkTableInDatabase(const QString &tableName);

@@ -142,6 +142,7 @@ public:
                 metaObject()->property(i).write(this, QVariant(0.00));
                 break;
             case QVariant::String:
+            case QVariant::Char:
                 metaObject()->property(i).write(this, QVariant(""));
                 break;
             case QVariant::Bool:
@@ -274,8 +275,8 @@ public:
 
     void setObjectValues(bool newDeleted = false, QDateTime newTimeStp = QDateTime::currentDateTime())
     {
-        this->set_deleted(newDeleted);
-        this->set_timestp(newTimeStp);
+        this->setdeleted(newDeleted);
+        this->settimestp(newTimeStp);
     }
 
     /*!
@@ -295,9 +296,9 @@ public:
             propertyName = m_propertiesForUpdate.value(i);
 
             if (propertyName == "timestp")
-                propertyValue = this->get_timestp();
+                propertyValue = this->gettimestp();
             else if (propertyName == "deleted")
-                propertyValue = this->get_deleted();
+                propertyValue = this->getdeleted();
             else
                 propertyValue = property(qPrintable(propertyName));
             info.insert(propertyName, propertyValue);
@@ -334,9 +335,9 @@ public:
             propertyName = m_propertiesForUpdate.value(i);
 
             if (propertyName == "timestp")
-                propertyValue = this->get_timestp();
+                propertyValue = this->gettimestp();
             else if (propertyName == "deleted")
-                propertyValue = this->get_deleted();
+                propertyValue = this->getdeleted();
             else
                 propertyValue = property(qPrintable(propertyName));
             info.insert(propertyName, propertyValue);
@@ -562,6 +563,86 @@ public:
         return !DB.find(m_tableName, "*", getIdCondition(id)).isEmpty();
     }
 
+    /*!
+       Immediately updates object field in table.
+
+       Returns true if property updated, otherwise return false.
+     */
+    bool updateProperty(const QString &fieldName, QVariant value)
+    {
+        if(m_id < 0)
+            return false;
+        QHash<QString, QVariant> info;
+        info.insert(fieldName, value);
+        setTableName();
+        if(DB.updateRecord(m_tableName, info, getIdCondition(m_id)))
+        {
+            setProperty(qPrintable(fieldName), value);
+            m_propertiesForUpdate.removeAt(m_propertiesForUpdate.indexOf(fieldName));
+            return true;
+        }
+        else
+            return false;
+    }
+    /*!
+       Removes table's record with object's id.
+
+       Returns true if success, otherwise return false.
+     */
+    bool remove()
+    {
+        setTableName();
+        if(DB.remove(m_tableName, getIdCondition(m_id)))
+        {
+            m_id = -1;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool setDeleted()
+    {
+        setTableName();
+        if(DB.setDeleted(m_tableName, getIdCondition(m_id)))
+        {
+            m_id = -1;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    /*!
+       Removes all records from table.
+
+       Returns true is success, otherwise return false.
+     */
+    bool removeAll() const
+    {
+        return DB.remove(m_tableName, "");
+    }
+
+    bool deleteAll() const
+    {
+        return DB.setDeleted(m_tableName, "");
+    }
+
+    /*!
+       Returns number of objects in table.
+     */
+    qint64 count() const
+    {
+        return DB.count(m_tableName, "*");
+    }
+    /*!
+       Returns number of not null fields with given \a fieldName column.
+     */
+    qint64 count(const QString &fieldName) const
+    {
+        return DB.count(m_tableName, fieldName);
+    }
+
     QHash <QString, QString> getIndexFields()
     {
         return m_indexFields;
@@ -615,8 +696,8 @@ protected:
         }
         result->setId(record.value(QString("id_%1").arg(tableName)).toLongLong());
         //BASIC REC INFO
-        result->set_deleted(record.value("deleted").toBool());
-        result->set_timestp(record.value("timestp").toDateTime());
+        result->setdeleted(record.value("deleted").toBool());
+        result->settimestp(record.value("timestp").toDateTime());
         result->clearUpdateList();
         return result;
     }

@@ -1,7 +1,7 @@
 #include "Database.h"
 #include "ApplicationSettings.h"
 
-CDatabase::CDatabase()
+CDatabase::CDatabase(const QString &database_name): m_base_name(database_name)
 {
     m_db = QSqlDatabase::addDatabase("QSQLITE", QLatin1String(DB_CONNECTION_NAME));
     initConnection();
@@ -35,12 +35,10 @@ void CDatabase::initConnection()
             d.mkpath(dir);
        }
 //    QFileInfo f(SETT.getSettings()->fileName());
-//    QString dir = f.absolutePath();
-
-    m_base_name =  QString("%1/%2").arg(dir, DB_NAME);
-    DEBUG_WITH_LINE << "DB file path is: " << m_base_name;
-
-    m_db.setDatabaseName(m_base_name);
+//    QString dir = f.absolutePath()
+    m_base_name_full_path =  QString("%1/%2").arg(dir, m_base_name);
+    DEBUG_WITH_LINE << "DB file path is: " << m_base_name_full_path;
+    m_db.setDatabaseName(m_base_name_full_path);
 
     m_conected = m_db.open();
     if (m_conected)
@@ -91,6 +89,17 @@ QSqlDatabase &CDatabase::getDb()
   return m_db;
 }
 
+void CDatabase::setQueryLog(void)
+{
+    if (m_query)
+    {
+        m_query->setEchoError(m_echo_error);
+        m_query->setLogError(m_log_error);
+        m_query->setEchoQuery(m_echo_query);
+        m_query->setLogQuery(m_log_query);
+    }
+}
+
 QString CDatabase::getFieldTypeNameSqlite(int t)
 {
     switch (t)
@@ -126,7 +135,7 @@ void CDatabase::fillTableTypes(QHash<QString, QString> &fieldSqlTypes)
     fieldSqlTypes.insert("qulonglong", "BIGINT UNSIGNED NOT NULL DEFAULT 0 ");
     fieldSqlTypes.insert("double", "DOUBLE NOT NULL DEFAULT 0 ");
     fieldSqlTypes.insert("QByteArray", "LONGBLOB");
-    fieldSqlTypes.insert("QChar", "CHAR(1) NOT NULL DEFAULT '0' ");
+    fieldSqlTypes.insert("QChar", "CHAR(1) NOT NULL DEFAULT '' ");
     fieldSqlTypes.insert("QDate", "DATE NOT NULL DEFAULT '0000-00-00' ");
     fieldSqlTypes.insert("QTime", "TIME NOT NULL DEFAULT '00:00:00' ");
     fieldSqlTypes.insert("QDateTime", "DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ");
@@ -149,6 +158,8 @@ bool CDatabase::createTable(const QString &tableName, const QList <PkNames> &inf
     Q_FOREACH(auto field, info)
         m_lastQuery += QString("%1 %2, ").arg(field.first, field.second);
 
+    m_lastQuery.chop(2);
+    m_lastQuery += QString(");");
     m_query->clear();
     if (m_query->exec(m_lastQuery))
        return true;

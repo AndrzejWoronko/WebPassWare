@@ -13,8 +13,8 @@ class CSqlQuery : public QSqlQuery
     ADD_FIELD(bool, m_log_query, getLogQuery, setLogQuery)
 
 public:
-    CSqlQuery(const QString &query, QSqlDatabase &db);
-    CSqlQuery(QSqlDatabase &db);
+    CSqlQuery(const QString &query, QSqlDatabase db);
+    CSqlQuery(QSqlDatabase db);
 
     bool exec();
     bool exec(const QString &query);
