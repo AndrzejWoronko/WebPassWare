@@ -10,6 +10,7 @@ Makefile
 /.qmake.stash
 
 bin/webpassware
+tests/ORM_test/test_orm
 
 # Prerequisites
 *.d
