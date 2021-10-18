@@ -66,6 +66,7 @@ public:
         setTableName();
         initSqlDescription();
         bzero(); //Init default values
+        clearUpdateList();
     }
 
     void setTableName()
@@ -128,8 +129,11 @@ public:
         {
             switch (metaObject()->property(i).type())
             {
+            case QVariant::Time:
+                metaObject()->property(i).write(this, QVariant(QTime::currentTime()));
+            break;
             case QVariant::Date:
-            case QVariant::DateTime:
+            case QVariant::DateTime:            
                 metaObject()->property(i).write(this, QVariant(QDateTime::currentDateTime()));
                 break;
             case QVariant::Int:
@@ -141,15 +145,16 @@ public:
             case QVariant::Double:
                 metaObject()->property(i).write(this, QVariant(0.00));
                 break;
-            case QVariant::String:
             case QVariant::Char:
+            case QVariant::String:            
+            case QVariant::ByteArray:
                 metaObject()->property(i).write(this, QVariant(""));
                 break;
             case QVariant::Bool:
                 metaObject()->property(i).write(this, QVariant(false));
                 break;
             default: // Default type int
-                DEBUG_WITH_LINE << "Unknown property name:" << metaObject()->property(i).name() << " type: " << metaObject()->property(i).typeName() << " type " << metaObject()->property(i).type();
+                DEBUG_WITH_LINE << "Unknown property name:" << metaObject()->property(i).name() << " type name: " << metaObject()->property(i).typeName() << " variant type: " << metaObject()->property(i).type();
                 metaObject()->property(i).write(this, QVariant(0));
                 break;
             }

@@ -43,6 +43,8 @@ public:
     MyModel() {
                 initORMObject();
                 ADD_SQL_DESC("nameVarchar", "VARCHAR(50) NOT NULL DEFAULT ''")
+                setnameChar('A');
+                clearUpdateList();
               }
 };
 
@@ -172,16 +174,28 @@ void Test_ORMObject::test_save()
     model.setnameUlonglong(123456789123456789);
     QCOMPARE(model.save(), true);
     QSqlQuery query = DB.getDb().exec(QString("SELECT * FROM %1;").arg(model.getTableName()));
-    query.next();
-    for(int i = 0; i < query.size(); i++)
+    if (query.lastError().isValid())
+        {
+            DEBUG_WITH_LINE << "Error: " << QString("SELECT * FROM %1;").arg(model.getTableName()) <<" : " << query.lastError().databaseText();
+        }
+    DEBUG_WITH_LINE <<  query.isActive() <<  "" << query.isSelect();
+    QCOMPARE(query.next(), true);
+    DEBUG_WITH_LINE << "Size: " << query.size() << " valid: "<< query.isValid();
+
+    for(int i = 0; i < query.record().count(); i++)
     {
-        DEBUG_WITH_LINE << query.record().fieldName(i);
+        DEBUG_WITH_LINE << "Field: " << query.record().fieldName(i) << "Value: " << query.value(i);
+//        DEBUG_WITH_LINE << query.record().fieldName(i);
         DEBUG_WITH_LINE << model.property(query.record().fieldName(i).toLocal8Bit().constData());
-        DEBUG_WITH_LINE << query.value(i);
-        if(query.record().fieldName(i) != QString("id_%1").arg(model.getTableName()))
-            QCOMPARE(query.value(i), model.property(query.record().fieldName(i).toLocal8Bit().constData()));
-        else
+//        DEBUG_WITH_LINE << query.value(i);
+        if (query.record().fieldName(i) == QString("id_%1").arg(model.getTableName()))
             QCOMPARE(query.value(i).toInt(), model.getId());
+        else if (query.record().fieldName(i) == QString("deleted"))
+            QCOMPARE(query.value(i), model.getdeleted());
+        else if (query.record().fieldName(i) == QString("timestp"))
+            QCOMPARE(query.value(i), model.gettimestp());
+        else
+            QCOMPARE(query.value(i), model.property(query.record().fieldName(i).toLocal8Bit().constData()));
     }
 }
 
@@ -208,7 +222,7 @@ void Test_ORMObject::test_find()
     MyModel *pointer;
 
     DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
-    QCOMPARE(model.getId(), -1);
+    QCOMPARE(model.getId(), -1);    
     QCOMPARE(model.save(), true);
     int id = model.getId();
     QVERIFY(id >= 0);
@@ -218,27 +232,36 @@ void Test_ORMObject::test_find()
     QCOMPARE(model.getId(), id);
     QSqlQuery query = DB.getDb().exec(QString("SELECT * FROM %1 WHERE id_%1 = %2;").arg(model.getTableName()).arg(id));
     query.next();
-    for(int i = 0; i < query.size(); i++)
-        if(query.record().fieldName(i) != QString("id_%1").arg(model.getTableName()))
-            QCOMPARE(query.value(i), model.property(query.record().fieldName(i).toLocal8Bit().constData()));
-        else
+    for(int i = 0; i < query.record().count(); i++)
+    {
+        DEBUG_WITH_LINE << "Field: " << query.record().fieldName(i) << "Value: " << query.value(i);
+        //        DEBUG_WITH_LINE << query.record().fieldName(i);
+        DEBUG_WITH_LINE << model.property(query.record().fieldName(i).toLocal8Bit().constData());
+        //        DEBUG_WITH_LINE << query.value(i);
+        if (query.record().fieldName(i) == QString("id_%1").arg(model.getTableName()))
             QCOMPARE(query.value(i).toInt(), model.getId());
+        else if (query.record().fieldName(i) == QString("deleted"))
+            QCOMPARE(query.value(i), model.getdeleted());
+        else if (query.record().fieldName(i) == QString("timestp"))
+            QCOMPARE(query.value(i), model.gettimestp());
+        else
+            QCOMPARE(query.value(i), model.property(query.record().fieldName(i).toLocal8Bit().constData()));
+    }
 }
 
 void Test_ORMObject::test_findAll()
 {
-
     MyModel model, model1, model2, model3, resultModel;
 
     DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
     QCOMPARE(resultModel.findAll().isEmpty(), true);
-    model.setnameInt(0);
+    model.setnameInt(1);
     model.setnameString("a");
-    model1.setnameInt(0);
+    model1.setnameInt(2);
     model1.setnameString("b");
-    model2.setnameInt(1);
+    model2.setnameInt(3);
     model2.setnameString("a");
-    model3.setnameInt(2);
+    model3.setnameInt(4);
     model3.setnameString("c");
     model.save();
     model1.save();
@@ -248,19 +271,10 @@ void Test_ORMObject::test_findAll()
     list = resultModel.findAll();
     QCOMPARE(list.size(), 4);
     CLEAR_LIST
-    list = resultModel.findAll();
-    QCOMPARE(list.size(), 4);
-    CLEAR_LIST
-    list = resultModel.findAll();
-    QCOMPARE(list.size(), 3);
-    CLEAR_LIST
-    list = resultModel.findAll();
-    QCOMPARE(list.size(), 4);
     model1.updateProperty("nameString", "a");
     model2.updateProperty("nameInt", "0");
-    CLEAR_LIST
     list = resultModel.findAll(QString("nameInt"));
-    QCOMPARE(list.first()->getnameInt(), 2);
+    QCOMPARE(list.first()->getnameInt(), 0);
     CLEAR_LIST
     list = resultModel.findAll(QString("nameString"));
     QCOMPARE(list.size(), 4);
@@ -292,13 +306,10 @@ void Test_ORMObject::test_findByValue()
     model3.setnameString("b");
     model3.save();
     list = model2.findBy("nameInt", 15);
-    QCOMPARE(list.size(), 1);
+    QCOMPARE(list.size(), 2);
     CLEAR_LIST
     list = model3.findBy("nameInt", 15, QString("id_%1").arg(model3.getTableName()));
     QCOMPARE(list.first()->getnameString(), QString("a"));
-    CLEAR_LIST
-    list = model3.findBy("nameInt", 15, QString("id_%1").arg(model3.getTableName()));
-    QCOMPARE(list.first()->getnameString(), QString("b"));
     CLEAR_LIST
 }
 
@@ -333,11 +344,11 @@ void Test_ORMObject::test_findByValues()
     vector.append(11);
     model3.updateProperty("nameInt", 10);
     list = resultModel.findBy("nameInt", vector);
-    QCOMPARE(list.size(), 2);
+    QCOMPARE(list.size(), 3);
     CLEAR_LIST
     list = resultModel.findBy("nameInt", vector, QString("nameInt"));
-    QCOMPARE(list.size(), 2);
-    QCOMPARE(list.first()->getnameInt(), 11);
+    QCOMPARE(list.size(), 3);
+    QCOMPARE(list.first()->getnameInt(), 10);
     CLEAR_LIST
 }
 
@@ -345,6 +356,8 @@ void Test_ORMObject::test_findByParams()
 {
     MyModel model, model2, model3, resultModel;
 
+    DB.dropTable(model.getTableName());
+    model.createTable();
     DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
     model.setnameString("Hello");
     model2.setnameInt(3);
@@ -358,7 +371,7 @@ void Test_ORMObject::test_findByParams()
     findHash.insert("nameDouble", QVariant(1.23));
     findHash.insert("nameChar", QVariant('X'));
     QList<MyModel*> list;
-    list = resultModel.findByAnd(findHash);
+    list = resultModel.findByOr(findHash);
     QCOMPARE(list.size(), 3);
     for(int i = 0; i < list.size(); i++)
     {
@@ -575,8 +588,7 @@ void Test_ORMObject::test_dropTable()
     CarDriver driver;
     DriverLicense license;
     Car car;
-    QCOMPARE(model.dropTable(), true);
-    QCOMPARE(model.dropTable(), false);
+    QCOMPARE(model.dropTable(), true);    
     QCOMPARE(license.dropTable(), true);
     QCOMPARE(car.dropTable(), true);
     QCOMPARE(driver.dropTable(), true);

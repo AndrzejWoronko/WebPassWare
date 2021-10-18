@@ -89,6 +89,11 @@ QSqlDatabase &CDatabase::getDb()
   return m_db;
 }
 
+CSqlQuery *CDatabase::getQuery()
+{
+    return m_query;
+}
+
 void CDatabase::setQueryLog(void)
 {
     if (m_query)
@@ -317,7 +322,7 @@ qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVari
 
         if(m_query->exec())
         {
-            m_query->lastInsertId().toLongLong();
+            id = m_query->lastInsertId().toLongLong();
             return id;
         }
         else
@@ -396,7 +401,7 @@ QList<QSqlRecord> CDatabase::find(const QString &tableName, const QString &field
     result.clear();
     m_lastQuery = QString("SELECT %1 FROM %2 %3;").arg(fieldName, tableName, params);
     if(m_query->exec(m_lastQuery))
-    {
+    {        
         while(m_query->next())
             result.append(m_query->record());
     }

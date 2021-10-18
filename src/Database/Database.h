@@ -31,6 +31,7 @@ public:
     void initConnection();
     bool isConnected();
     QSqlDatabase &getDb();
+    CSqlQuery *getQuery();
 
     void setQueryLog(void);
     void reConnect();
