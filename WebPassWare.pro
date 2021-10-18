@@ -19,6 +19,8 @@ SOURCES += \
     src/Common/TableState.cpp \
     src/Common/Tools.cpp \
     src/Database/Database.cpp \
+    src/Database/Exception.cpp \
+    src/Database/ExceptionSql.cpp \
     src/Database/OrmObject.cpp \
     src/Database/SqlQuery.cpp \
     src/Gui/AbstractMainWindow.cpp \
@@ -55,6 +57,7 @@ SOURCES += \
     src/Gui/Widgets/TabWidget.cpp \
     src/Gui/Widgets/TableView.cpp \
     src/Gui/Widgets/ToolButton.cpp \
+    src/Models/ModelTableCheck.cpp \
     src/Models/PassEntry.cpp \
     src/Models/PassGroup.cpp \
     src/WebPassWareMainWindow.cpp \
@@ -76,6 +79,8 @@ HEADERS += \
     src/Common/TableState.h \
     src/Common/Tools.h \
     src/Database/Database.h \
+    src/Database/Exception.h \
+    src/Database/ExceptionSql.h \
     src/Database/OrmObject.h \
     src/Database/SqlQuery.h \
     src/Gui/AbstractMainWindow.h \
@@ -112,6 +117,7 @@ HEADERS += \
     src/Gui/Widgets/TabWidget.h \
     src/Gui/Widgets/TableView.h \
     src/Gui/Widgets/ToolButton.h \
+    src/Models/ModelTableCheck.h \
     src/Models/PassEntry.h \
     src/Models/PassGroup.h \
     src/WebPassWareMainWindow.h

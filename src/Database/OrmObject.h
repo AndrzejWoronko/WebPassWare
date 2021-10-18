@@ -191,9 +191,35 @@ public:
     */
     bool createTable()
     {
+        bool ret = false;
         setTableName();
-        return DB.createTable(m_tableName, m_sqlDescriptions);
+        try
+        {
+            ret = DB.createTable(m_tableName, m_sqlDescriptions);
+        }
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
+        return ret;
     }
+
+    bool alterTableAddColumn(const QString &name)
+    {
+        bool ret = false;
+        setTableName();
+        PkNames field = getColumnFromModel(name);
+        try
+        {
+            ret =  DB.alterTableAddColumn(m_tableName, field);
+        }
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
+        return ret;
+    }
+
     /*!
        Creates indexes to table associated with model.
 
@@ -201,14 +227,32 @@ public:
                                        */
     bool createIndexes()
     {
+        bool ret = false;
         setTableName();
-        return DB.createTableIndexes(m_tableName, m_indexFields, false);
+        try
+        {
+           ret =  DB.createTableIndexes(m_tableName, m_indexFields, false);
+        }
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
+        return ret;
     }
 
     bool createUniqueIndexes()
     {
+        bool ret = false;
         setTableName();
-        return DB.createTableIndexes(m_tableName, m_uniqueIndexFields, true);
+        try
+        {
+            ret =  DB.createTableIndexes(m_tableName, m_uniqueIndexFields, true);
+        }
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
+        return ret;
     }
 
     bool dropTable() const
@@ -216,32 +260,73 @@ public:
         //setTableName();
         //return CDatabase::adapter->dropTable(m_tableName);
         bool ret = false;
-        ret = DB.dropTable(m_tableName);
+        try
+        {
+            ret =  DB.dropTable(m_tableName);
+        }
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
         return ret;
     }
 
     bool dropIndexes()
     {
+        bool ret = false;
         setTableName();
-        if (DB.dropTableIndexes(m_tableName, m_indexFields) == true)
-            return DB.dropTableIndexes(m_tableName, m_uniqueIndexFields);
-        else
-            return false;
+        try
+        {
+            ret = DB.dropTableIndexes(m_tableName, m_indexFields);
+            ret = DB.dropTableIndexes(m_tableName, m_uniqueIndexFields);
+        }
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
+        return ret;
     }
 
     bool beginTransaction()
     {
-        return DB.beginTransaction();
+        bool ret = false;
+        try
+        {
+            ret =  DB.beginTransaction();
+        }
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
+        return ret;
     }
 
     bool commitTransaction()
     {
-        return DB.commitTransaction();
+        bool ret = false;
+        try
+        {
+            ret =  DB.commitTransaction();
+        }
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
+        return ret;
     }
 
     bool rollbackTransaction()
     {
-        return DB.rollbackTransaction();
+        bool ret = false;
+        try
+        {
+            ret = DB.rollbackTransaction();
+        }
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
+        return ret;
     }
 
     /*!
@@ -580,14 +665,22 @@ public:
         QHash<QString, QVariant> info;
         info.insert(fieldName, value);
         setTableName();
-        if(DB.updateRecord(m_tableName, info, getIdCondition(m_id)))
+        bool ret = false;
+        try
         {
-            setProperty(qPrintable(fieldName), value);
-            m_propertiesForUpdate.removeAt(m_propertiesForUpdate.indexOf(fieldName));
-            return true;
+            if(DB.updateRecord(m_tableName, info, getIdCondition(m_id)))
+            {
+                setProperty(qPrintable(fieldName), value);
+                m_propertiesForUpdate.removeAt(m_propertiesForUpdate.indexOf(fieldName));
+                ret = true;
+            }
         }
-        else
-            return false;
+        catch (CExceptionSql *e)
+        {
+            DB.showErrorInfo(e);
+        }
+        return ret;
+
     }
     /*!
        Removes table's record with object's id.
@@ -646,6 +739,22 @@ public:
     qint64 count(const QString &fieldName) const
     {
         return DB.count(m_tableName, fieldName);
+    }
+
+    PkNames getColumnFromModel(const QString &name)
+    {
+        PkNames field;
+        field.first = QString("");
+        field.second = QString("");
+        Q_FOREACH (auto f, m_sqlDescriptions)
+        {
+            if (f.first == name)
+            {
+                field = f;
+                break;
+            }
+        }
+        return field;
     }
 
     QHash <QString, QString> getIndexFields()

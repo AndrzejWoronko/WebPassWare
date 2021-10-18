@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QSqlDatabase>
 #include "SqlQuery.h"
+#include "ExceptionSql.h"
 
 #define DB_CONNECTION_NAME "WebPassWareDbConnection"
 #define DB_NAME "WebPassWare.db"
@@ -32,6 +33,8 @@ public:
     bool isConnected();
     QSqlDatabase &getDb();
     CSqlQuery *getQuery();
+
+    static void showErrorInfo(CException *e);
 
     void setQueryLog(void);
     void reConnect();

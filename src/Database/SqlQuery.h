@@ -4,6 +4,7 @@
 #include "Global.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlError>
 
 class CSqlQuery : public QSqlQuery
 {

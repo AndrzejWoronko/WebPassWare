@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QSqlError>
 #include "SqlQuery.h"
 #include "Logger.h"
 
