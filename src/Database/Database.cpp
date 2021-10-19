@@ -333,8 +333,8 @@ qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVari
         }
         else
         {
-            throw new CExceptionSql(Q_FUNC_INFO, m_query);
             id = -1;
+            throw new CExceptionSql(Q_FUNC_INFO, m_query);
         }
     }
     return id;

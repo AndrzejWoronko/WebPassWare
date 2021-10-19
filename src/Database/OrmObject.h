@@ -199,7 +199,6 @@ public:
         }
         catch (CExceptionSql *e)
         {
-            DB.showErrorInfo(e);
         }
         return ret;
     }
@@ -215,7 +214,6 @@ public:
         }
         catch (CExceptionSql *e)
         {
-            DB.showErrorInfo(e);
         }
         return ret;
     }
@@ -235,7 +233,6 @@ public:
         }
         catch (CExceptionSql *e)
         {
-            DB.showErrorInfo(e);
         }
         return ret;
     }
@@ -250,7 +247,6 @@ public:
         }
         catch (CExceptionSql *e)
         {
-            DB.showErrorInfo(e);
         }
         return ret;
     }
@@ -266,7 +262,6 @@ public:
         }
         catch (CExceptionSql *e)
         {
-            DB.showErrorInfo(e);
         }
         return ret;
     }
@@ -282,7 +277,6 @@ public:
         }
         catch (CExceptionSql *e)
         {
-            DB.showErrorInfo(e);
         }
         return ret;
     }
@@ -296,7 +290,6 @@ public:
         }
         catch (CExceptionSql *e)
         {
-            DB.showErrorInfo(e);
         }
         return ret;
     }
@@ -310,7 +303,6 @@ public:
         }
         catch (CExceptionSql *e)
         {
-            DB.showErrorInfo(e);
         }
         return ret;
     }
@@ -324,7 +316,6 @@ public:
         }
         catch (CExceptionSql *e)
         {
-            DB.showErrorInfo(e);
         }
         return ret;
     }
@@ -376,6 +367,7 @@ public:
 
     bool save(qint64 newId = 0, const QString &tableName = QString())
     {
+        qint64 id = -1;
         QHash<QString, QVariant> info;
         QString propertyName;
         QVariant propertyValue;
@@ -393,11 +385,19 @@ public:
                 propertyValue = property(qPrintable(propertyName));
             info.insert(propertyName, propertyValue);
         }
+
         if (tableName.isEmpty())
             setTableName();
         else
             setTableName(tableName);
-        m_id = DB.addRecord(m_tableName, info, newId);
+        try
+        {
+            id = DB.addRecord(m_tableName, info, newId);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
+        m_id = id;
         if(m_id >= 0)
         {
             clearUpdateList();
@@ -436,13 +436,18 @@ public:
             setTableName();
         else
             setTableName(tableName);
-        if(DB.updateRecord(m_tableName, info, getIdCondition(m_id)))
+
+        bool ret = false;
+        try
         {
-            clearUpdateList();
-            return true;
+            ret = DB.updateRecord(m_tableName, info, getIdCondition(m_id));
         }
-        else
-            return false;
+        catch (CExceptionSql *e)
+        {
+        }
+        if (ret)
+            clearUpdateList();
+        return ret;
     }
 
     QString getIdCondition(qint64 id)
@@ -471,8 +476,14 @@ public:
     ModelName* find(qint64 id)
     {
         QList<QSqlRecord> list;
-
-        list = DB.find(m_tableName, "*", getIdCondition(id));
+        list.clear();
+        try
+        {
+            list = DB.find(m_tableName, "*", getIdCondition(id));
+        }
+        catch (CExceptionSql *e)
+        {
+        }
         if(list.isEmpty())
             return 0;
         else
@@ -482,8 +493,14 @@ public:
     void findThis(qint64 id)
     {
         QList<QSqlRecord> list;
-
-        list = DB.find(m_tableName, "*",  getIdCondition(id));
+        list.clear();
+        try
+        {
+            list = DB.find(m_tableName, "*",  getIdCondition(id));
+        }
+        catch (CExceptionSql *e)
+        {
+        }
         if(!list.isEmpty())
             translateRecToThisObj(list.first());
     }
@@ -496,10 +513,17 @@ public:
     {
         QList<QSqlRecord> list;
         QString orderString = " ORDER BY ";
-
         setTableName();
-        list = DB.find(m_tableName, "*", orderby.isEmpty() ? QString() : orderString + orderby);
+        list.clear();
+        try
+        {
+            list = DB.find(m_tableName, "*", orderby.isEmpty() ? QString() : orderString + orderby);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
         QList<ModelName*> returnList;
+        returnList.clear();
         for(int i = 0; i < list.size(); i++)
             returnList.append(translateRecToObj<ModelName>(list.value(i)));
         return returnList;
@@ -514,7 +538,15 @@ public:
         setTableName();
         QString pkName = QString("id_%1").arg(m_tableName);
 
-        QSqlRecord record = DB.first(m_tableName, pkName);
+        QSqlRecord record;
+        record.clear();
+        try
+        {
+            record = DB.first(m_tableName, pkName);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
         if(record.isNull(QString("id_%1").arg(m_tableName)))
             return 0;
         else
@@ -530,8 +562,14 @@ public:
         QString pkName = QString("id_%1").arg(m_tableName);
 
         QSqlRecord record;
-
-        record = DB.last(m_tableName, pkName);
+        record.clear();
+        try
+        {
+            record = DB.last(m_tableName, pkName);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
         if(record.isNull(QString("id_%1").arg(m_tableName)))
             return 0;
         else
@@ -555,9 +593,16 @@ public:
         QString orderString = orderby.isEmpty() ? "" : " ORDER BY " + orderby;
 
         whereString += QString(" %1 = '%2' ").arg(fieldName, value.toString());
-
-        list = DB.find(m_tableName, "*",  whereString + " " + orderString);
+        list.clear();
+        try
+        {
+            list = DB.find(m_tableName, "*",  whereString + " " + orderString);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
         QList<ModelName*> returnList;
+        returnList.clear();
         for(int i = 0; i < list.size(); i++)
             returnList.append(translateRecToObj<ModelName>(list.value(i)));
         return returnList;
@@ -572,6 +617,7 @@ public:
         QString whereString = " WHERE ";
         QString orderString = orderby.isEmpty() ? "" : " ORDER BY " + orderby;
 
+        returnList.clear();
         if(values.isEmpty())
             return returnList;
 
@@ -583,8 +629,14 @@ public:
         setTableName();
 
         QList<QSqlRecord> list;
-
-        list = DB.find(m_tableName, "*", whereString + " " + orderString);
+        list.clear();
+        try
+        {
+            list = DB.find(m_tableName, "*", whereString + " " + orderString);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
         for(int i = 0; i < list.size(); i++)
             returnList.append(translateRecToObj<ModelName>(list.value(i)));
         return returnList;
@@ -593,6 +645,8 @@ public:
     QList<ModelName*> findByOr(const QHash<QString, QVariant> &params)
     {
         QList<ModelName*> returnList;
+
+        returnList.clear();
         if(params.isEmpty())
             return returnList;
 
@@ -604,7 +658,14 @@ public:
         whereString.chop(4);
         setTableName();
         QList<QSqlRecord> list;
-        list = DB.find(m_tableName, "*", whereString);
+        list.clear();
+        try
+        {
+            list = DB.find(m_tableName, "*", whereString);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
         for(int i = 0; i < list.size(); i++)
             returnList.append(translateRecToObj<ModelName>(list.value(i)));
         return returnList;
@@ -617,6 +678,8 @@ public:
     QList<ModelName*> findByAnd(const QHash<QString, QVariant> &params)
     {
         QList<ModelName*> returnList;
+
+        returnList.clear();
         if(params.isEmpty())
             return returnList;
 
@@ -628,8 +691,14 @@ public:
         whereString.chop(4);
         setTableName();
         QList<QSqlRecord> list;
-
-        list = DB.find(m_tableName, "*", whereString);
+        list.clear();
+        try
+        {
+            list = DB.find(m_tableName, "*", whereString);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
         for(int i = 0; i < list.size(); i++)
             returnList.append(translateRecToObj<ModelName>(list.value(i)));
         return returnList;
@@ -640,8 +709,16 @@ public:
      */
     bool existsTable()
     {
+        bool ret = true;
         setTableName();
-        return !DB.find(m_tableName, "*", "").isEmpty();
+        try
+        {
+            ret = !DB.find(m_tableName, "*", "").isEmpty();
+        }
+        catch (CExceptionSql *e)
+        {
+        }
+        return ret;
     }
     /*!
        Returns true if object with given \a id exist, otherwise return false.
@@ -649,8 +726,16 @@ public:
 
     bool exists(qint64 id)
     {
-        setTableName();
-        return !DB.find(m_tableName, "*", getIdCondition(id)).isEmpty();
+        bool ret = false;
+        setTableName();        
+        try
+        {
+            ret = !DB.find(m_tableName, "*", getIdCondition(id)).isEmpty();
+        }
+        catch (CExceptionSql *e)
+        {
+        }
+        return ret;
     }
 
     /*!
@@ -676,8 +761,7 @@ public:
             }
         }
         catch (CExceptionSql *e)
-        {
-            DB.showErrorInfo(e);
+        {            
         }
         return ret;
 
@@ -689,26 +773,36 @@ public:
      */
     bool remove()
     {
+        bool ret = false;
         setTableName();
-        if(DB.remove(m_tableName, getIdCondition(m_id)))
+        try
         {
-            m_id = -1;
-            return true;
+           ret = DB.remove(m_tableName, getIdCondition(m_id));
         }
-        else
-            return false;
+        catch (CExceptionSql *e)
+        {
+        }
+        if (ret)
+            m_id = -1;
+
+        return ret;
     }
 
     bool setDeleted()
     {
+        bool ret = false;
         setTableName();
-        if(DB.setDeleted(m_tableName, getIdCondition(m_id)))
+        try
         {
-            m_id = -1;
-            return true;
+            ret = DB.setDeleted(m_tableName, getIdCondition(m_id));
         }
-        else
-            return false;
+        catch (CExceptionSql *e)
+        {
+        }
+        if (ret)
+            m_id = -1;
+
+        return ret;
     }
 
     /*!
@@ -718,12 +812,28 @@ public:
      */
     bool removeAll() const
     {
-        return DB.remove(m_tableName, "");
+        bool ret = false;
+        try
+        {
+          ret = DB.remove(m_tableName, "");
+        }
+        catch (CExceptionSql *e)
+        {
+        }
+        return ret;
     }
 
     bool deleteAll() const
     {
-        return DB.setDeleted(m_tableName, "");
+        bool ret = false;
+        try
+        {
+            ret = DB.setDeleted(m_tableName, "");
+        }
+        catch (CExceptionSql *e)
+        {
+        }
+        return ret;
     }
 
     /*!
@@ -731,14 +841,30 @@ public:
      */
     qint64 count() const
     {
-        return DB.count(m_tableName, "*");
+        qint64 ret = -1;
+        try
+        {
+            ret =  DB.count(m_tableName, "*");
+        }
+        catch (CExceptionSql *e)
+        {
+        }
+        return ret;
     }
     /*!
        Returns number of not null fields with given \a fieldName column.
      */
     qint64 count(const QString &fieldName) const
     {
-        return DB.count(m_tableName, fieldName);
+        qint64 ret = -1;
+        try
+        {
+            ret =  DB.count(m_tableName, fieldName);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
+        return ret;
     }
 
     PkNames getColumnFromModel(const QString &name)
@@ -769,7 +895,16 @@ public:
 
     QList<QSqlIndex> getTableIndexes()
     {
-        return DB.getTableIndexes(m_tableName);
+        QList<QSqlIndex> list;
+        list.clear();
+        try
+        {
+            list =  DB.getTableIndexes(m_tableName);
+        }
+        catch (CExceptionSql *e)
+        {
+        }
+        return list;
     }
 
     QHash <QString, QString> getTableIndexesNames()
