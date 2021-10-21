@@ -22,6 +22,8 @@ SOURCES += \
     src/Database/Exception.cpp \
     src/Database/ExceptionSql.cpp \
     src/Database/OrmObject.cpp \
+    src/Database/SqlField.cpp \
+    src/Database/SqlModel.cpp \
     src/Database/SqlQuery.cpp \
     src/Gui/AbstractMainWindow.cpp \
     src/Gui/Action.cpp \
@@ -82,6 +84,8 @@ HEADERS += \
     src/Database/Exception.h \
     src/Database/ExceptionSql.h \
     src/Database/OrmObject.h \
+    src/Database/SqlField.h \
+    src/Database/SqlModel.h \
     src/Database/SqlQuery.h \
     src/Gui/AbstractMainWindow.h \
     src/Gui/Action.h \
@@ -132,7 +136,7 @@ RESOURCES += style.qrc \
 
 
 INCLUDEPATH += src/ src/Common/ src/Gui/ src/Gui/Widgets/ src/Gui/Dialogs/ \
-               src/Gui/Forms/ src/Database/
+               src/Gui/Forms/ src/Database/ src/Models/
 
 
 DEPENDPATH  += $${INCLUDEPATH}

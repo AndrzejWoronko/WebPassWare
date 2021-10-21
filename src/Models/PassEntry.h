@@ -22,7 +22,9 @@ class PassEntry : public COrmObject<PassEntry>
 
         ADD_VARCHAR("m_user", 52)
         ADD_VARCHAR("m_pass", 52)
-        ADD_SQL_INDEX("m_name", "m_name")
+        ADD_SQL_INDEX("m_title", "m_title")
+        ADD_SQL_INDEX("m_user", "m_user")
+        ADD_SQL_INDEX("m_web_url", "m_web_url")
         ADD_SQL_INDEX("m_id_pass_group", "m_id_pass_group")
     }
 };

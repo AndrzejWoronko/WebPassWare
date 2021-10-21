@@ -261,7 +261,7 @@ bool CDatabase::dropTableIndexes(const QString &tableName, const QHash<QString, 
     Q_FOREACH(auto name, info.keys())
     {
         m_lastQuery = QString("");
-        m_lastQuery += QString(" DROP INDEX %1_%2_idx ON %3; ").arg(tableName, name, tableName);
+        m_lastQuery += QString(" DROP INDEX IF EXISTS %1_%2_idx; ").arg(tableName, name);
         ret = m_query->exec(m_lastQuery); // Przy usunięciu indeksów trzeba do końca zrobić pętle i nie może być wyrzucenie wyjątku
         if (!ret)
         {

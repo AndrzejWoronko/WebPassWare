@@ -15,6 +15,7 @@
 //#include "BackupAutoRemover.h"
 #include "WebPassWareMainWindow.h"
 #include "Database.h"
+#include "ModelTableCheck.h"
 
 // Projekty wzorcowe
 //https://github.com/orgs/keepassxreboot/repositories
@@ -101,7 +102,7 @@ int main(int argc, char **argv)
                  //Sprawdzenie/założenie tabel
                  if (DB.isConnected())
                     {
-                       DB.checkTableInDatabase("secuence");
+                      ModelTableCheck::checkAllTables();
                     }
                  //DataBaseTableCheck::checkAllTables();
                  //Init domyślnych wartości
