@@ -18,7 +18,7 @@
 #include "ToolButton.h"
 #include "Frame.h"
 #include "DelayEditLine.h"
-
+#include "SqlModel.h"
 
 class CWebPassWareMainWindow : public CAbstractMainWindow
 {
@@ -47,6 +47,12 @@ public:
 
 private:
 
+    CSqlModel *m_pass_group_model;
+    CSqlModel *m_pass_entry_model;
+
+    QSortFilterProxyModel *m_pass_group_proxy_model;
+    QSortFilterProxyModel *m_pass_entry_proxy_model;
+
     virtual void setInterface(void);
     virtual void setMenu(void);
     virtual void setActions(void);
@@ -59,8 +65,22 @@ private:
 public slots:
 
     void refreshInfo();
+    void showTreeTableListContextMenu(const QPoint &position);
+    void showDataTableContextMenu(const QPoint &position);
+
     void on_ACTION_ABOUT_triggered();
 
+    void on_ACTION_REFRESH_PASS_GROUP_triggered();
+    void on_ACTION_ADD_PASS_GROUP_triggered();
+    void on_ACTION_EDIT_PASS_GROUP_triggered();
+    void on_ACTION_DEL_PASS_GROUP_triggered();
+
+
+    void on_ACTION_REFRESH_PASS_ENTRY_triggered();
+    void on_ACTION_ADD_PASS_ENTRY_triggered();
+    void on_ACTION_EDIT_PASS_ENTRY_triggered();
+    void on_ACTION_DEL_PASS_ENTRY_triggered();
+    void on_ACTION_COPY_PASS_ENTRY_triggered();
 };
 
 #endif // CWEBPASSWAREMAINWINDOW_H

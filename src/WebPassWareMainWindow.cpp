@@ -1,6 +1,8 @@
 #include "WebPassWareMainWindow.h"
 #include "AboutDialog.h"
 #include "Application.h"
+#include "PassEntryService.h"
+#include "PassGroupService.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
 {
@@ -9,7 +11,10 @@ CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainW
 
 CWebPassWareMainWindow::~CWebPassWareMainWindow()
 {
-
+    safe_delete(m_pass_group_proxy_model)
+    safe_delete(m_pass_entry_proxy_model)
+    safe_delete(m_pass_group_model)
+    safe_delete(m_pass_entry_model)
 }
 
 void CWebPassWareMainWindow::setInterface(void)
@@ -68,6 +73,30 @@ void CWebPassWareMainWindow::setActions(void)
 
     CAction *actionAbount = new CAction(tr("&About program"), ICON("About"), tr("About program"), QString("Ctrl+H"), QString("ACTION_ABOUT"), this);
     m_actions.insert(actionAbount->getActionName(), actionAbount);
+
+    CAction *action_RefreshPassGroup = new CAction(tr("Refresh group"), ICON("Refresh"), tr("Refresh group"), QString(""), QString("ACTION_REFRESH_PASS_GROUP"), this);
+    m_actions.insert(action_RefreshPassGroup->getActionName(), action_RefreshPassGroup);
+
+    CAction *action_AddPassGroup = new CAction(tr("Add group"), ICON("Add-row"), tr("Add group"), QString("Insert"), QString("ACTION_ADD_PASS_GROUP"), this);
+    m_actions.insert(action_AddPassGroup->getActionName(), action_AddPassGroup);
+    CAction *action_EditPassGroup = new CAction(tr("Edit group"), ICON("Edit-row"), tr("Edit group"), QString("Enter"), QString("ACTION_EDIT_PASS_GROUP"), this);
+    m_actions.insert(action_EditPassGroup->getActionName(), action_EditPassGroup);
+    CAction *action_DelPassGroup = new CAction(tr("Delete group"), ICON("Delete-row"), tr("Delete group"), QString("Delete"), QString("ACTION_DEL_PASS_GROUP"), this);
+    m_actions.insert(action_DelPassGroup->getActionName(), action_DelPassGroup);
+
+
+    CAction *action_RefreshPassEntry = new CAction(tr("Refresh records"), ICON("Refresh"), tr("Refresh records"), QString(""), QString("ACTION_REFRESH_PASS_ENTRY"), this);
+    m_actions.insert(action_RefreshPassEntry->getActionName(), action_RefreshPassEntry);
+
+    CAction *action_AddPassEntry = new CAction(tr("Add record"), ICON("Add-row"), tr("Add record"), QString("Insert"), QString("ACTION_ADD_PASS_ENTRY"), this);
+    m_actions.insert(action_AddPassEntry->getActionName(), action_AddPassEntry);
+    CAction *action_EditPassEntry = new CAction(tr("Edit record"), ICON("Edit-row"), tr("Edit record"), QString("Enter"), QString("ACTION_EDIT_PASS_ENTRY"), this);
+    m_actions.insert(action_EditPassEntry->getActionName(), action_EditPassEntry);
+    CAction *action_DelPassEntry = new CAction(tr("Delete record"), ICON("Delete-row"), tr("Delete record"), QString("Delete"), QString("ACTION_DEL_PASS_ENTRY"), this);
+    m_actions.insert(action_DelPassEntry->getActionName(), action_DelPassEntry);
+
+    CAction *action_CopyPassEntry = new CAction(tr("Copy record"), ICON("Copy"), tr("Copy record"), QString(""), QString("ACTION_COPY_PASS_ENTRY"), this);
+    m_actions.insert(action_CopyPassEntry->getActionName(), action_CopyPassEntry);
 }
 
 void CWebPassWareMainWindow::setMenu(void)
@@ -78,7 +107,8 @@ void CWebPassWareMainWindow::setMenu(void)
 
     fileMenu = new QMenu(m_menuBar);
     fileMenu->setTitle(tr("&File"));
-    fileMenu->addAction(m_actions.value(QString("ACTION_REFRESH_TABLE_LIST")));
+    fileMenu->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_GROUP")));
+    fileMenu->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
     fileMenu->addSeparator();
     fileMenu->addAction(m_actions.value(QString("ACTION_EXIT")));
 
@@ -97,7 +127,8 @@ void CWebPassWareMainWindow::setMenu(void)
 
 void CWebPassWareMainWindow::setToolBar(void)
 {
-    m_toolBar->addAction(m_actions.value(QString("ACTION_REFRESH_TABLE_LIST")));
+    m_toolBar->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_GROUP")));
+    m_toolBar->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_EXIT")));
     m_toolBar->addSeparator();    
     m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT")));
@@ -108,12 +139,46 @@ void CWebPassWareMainWindow::setToolBar(void)
 
 void CWebPassWareMainWindow::setConnections(void)
 {
+//Modele proxy
+    m_pass_group_proxy_model = new QSortFilterProxyModel(this);
+    m_pass_group_proxy_model->setDynamicSortFilter(true);
+    m_pass_group_proxy_model->setFilterKeyColumn(-1);
+    m_pass_group_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    m_pass_entry_proxy_model = new QSortFilterProxyModel(this);
+    m_pass_entry_proxy_model->setDynamicSortFilter(true);
+    m_pass_entry_proxy_model->setFilterKeyColumn(-1);
+    m_pass_entry_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
-    //Odświerzenie info w status bar
+//Modele danych
+    m_pass_group_model = PassGroupService::getInstance().getSqlModel();
+    m_pass_entry_model = PassEntryService::getInstance().getSqlModel();
+
+    m_pass_group_proxy_model->setSourceModel(m_pass_group_model);
+    m_pass_entry_proxy_model->setSourceModel(m_pass_entry_model);
+
+//Podłącznie widoków do tabel
+    m_treeGroupList->setModel(m_pass_group_proxy_model);
+    m_dataTable->setModel(m_pass_entry_proxy_model);
+
+//Załadowanie danych do modelu
+    m_pass_group_model->refresh();
+    m_pass_entry_model->refresh();
+
+//Tabela lista tabel połaczenia
+    m_treeGroupList->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_treeGroupList, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showTreeTableListContextMenu(const QPoint &)));
+    //connect(m_treeTableList, SIGNAL(activated(const QModelIndex &)), this, SLOT(showTableData(const QModelIndex &)));
+    //connect(m_treeGroupList, SIGNAL(clicked(const QModelIndex &)), this, SLOT(showTableData(const QModelIndex &)));
+
+//Tabela danych połaczenia
+    m_dataTable->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_dataTable, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showDataTableContextMenu(const QPoint &)));
+
+//Odświerzenie info w status bar
     QTimer::singleShot(1000, this, SLOT(refreshInfo()));
 
-    //connect(m_filtr_table_list, SIGNAL(delayEditingFinished(const QString &)), m_table_list_proxy_model, SLOT(setFilterFixedString(const QString &)));
-    //connect(m_filtr_table_data, SIGNAL(delayEditingFinished(const QString &)), m_table_data_proxy_model, SLOT(setFilterFixedString(const QString &)));
+    connect(m_filtrGroupList, SIGNAL(delayEditingFinished(const QString &)), m_pass_group_proxy_model, SLOT(setFilterFixedString(const QString &)));
+    connect(m_filtrDataTable, SIGNAL(delayEditingFinished(const QString &)), m_pass_entry_proxy_model, SLOT(setFilterFixedString(const QString &)));
 }
 
 QWidget *CWebPassWareMainWindow::initTabData()
@@ -131,16 +196,18 @@ QWidget *CWebPassWareMainWindow::initTabData()
     auto hboxLayout = new CHBoxLayout();
 
     CToolButton *addRowButton = new CToolButton(CButtonPrivate(tr("Add record"), tr("Add record"), ICON("Add-row")), tab);
-    addRowButton->setDefaultAction(m_actions.value("ACTION_ADD_ROW"));
+    addRowButton->setDefaultAction(m_actions.value("ACTION_ADD_PASS_ENTRY"));
+    CToolButton *editRowButton = new CToolButton(CButtonPrivate(tr("Edit record"), tr("Edit record"), ICON("Edit-row")), tab);
+    editRowButton->setDefaultAction(m_actions.value("ACTION_EDIT_PASS_ENTRY"));
     CToolButton *delRowButton = new CToolButton(CButtonPrivate(tr("Delete record"), tr("Delete record"), ICON("Delete-row")), tab);
-    delRowButton->setDefaultAction(m_actions.value("ACTION_DEL_ROW"));
+    delRowButton->setDefaultAction(m_actions.value("ACTION_DEL_PASS_ENTRY"));
     CToolButton *copyDataButton = new CToolButton(CButtonPrivate(tr("Copy record"), tr("Copy record"), ICON("Copy")), tab);
-    copyDataButton->setDefaultAction(m_actions.value("ACTION_COPY_DATA"));
-
+    copyDataButton->setDefaultAction(m_actions.value("ACTION_COPY_PASS_ENTRY"));
     CToolButton *refreshDataButton = new CToolButton(CButtonPrivate(tr("Refresh records"), tr("Refresh records"), ICON("Refresh")), tab);
-    refreshDataButton->setDefaultAction(m_actions.value("ACTION_REFRESH_DATA"));
+    refreshDataButton->setDefaultAction(m_actions.value("ACTION_REFRESH_PASS_ENTRY"));
 
     hboxLayout->addWidget(addRowButton);
+    hboxLayout->addWidget(editRowButton);
     hboxLayout->addWidget(delRowButton);
     hboxLayout->addWidget(copyDataButton);
     QSpacerItem *spacerItem = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -150,7 +217,6 @@ QWidget *CWebPassWareMainWindow::initTabData()
 
     return tab;
 }
-
 
 void CWebPassWareMainWindow::refreshInfo()
 {
@@ -164,4 +230,78 @@ void CWebPassWareMainWindow::on_ACTION_ABOUT_triggered()
     CAboutDialog dialog(this);
     dialog.addFieldsAndComponents();
     dialog.exec();
+}
+
+
+void CWebPassWareMainWindow::showTreeTableListContextMenu(const QPoint &position)
+{
+    QMenu contextmenu(this);
+
+    contextmenu.addAction(m_actions.value(QString("ACTION_ADD_PASS_GROUP")));
+    contextmenu.addAction(m_actions.value(QString("ACTION_EDIT_PASS_GROUP")));
+    contextmenu.addAction(m_actions.value(QString("ACTION_DEL_PASS_GROUP")));
+    contextmenu.addSeparator();
+    contextmenu.addAction(m_actions.value(QString("ACTION_REFRESH_PASS_GROUP")));
+
+    contextmenu.exec(m_treeGroupList->mapToGlobal(position));
+}
+
+void CWebPassWareMainWindow::showDataTableContextMenu(const QPoint &position)
+{
+    QMenu contextmenu(this);
+
+    contextmenu.addAction(m_actions.value(QString("ACTION_ADD_PASS_ENTRY")));
+    contextmenu.addAction(m_actions.value(QString("ACTION_EDIT_PASS_ENTRY")));
+    contextmenu.addAction(m_actions.value(QString("ACTION_DEL_PASS_ENTRY")));
+    contextmenu.addAction(m_actions.value(QString("ACTION_COPY_PASS_ENTRY")));
+    contextmenu.addSeparator();
+    contextmenu.addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
+    contextmenu.exec(m_dataTable->mapToGlobal(position));
+}
+
+void CWebPassWareMainWindow::on_ACTION_REFRESH_PASS_GROUP_triggered()
+{
+    if (m_pass_group_model)
+        m_pass_group_model->refresh();
+}
+
+void CWebPassWareMainWindow::on_ACTION_ADD_PASS_GROUP_triggered()
+{
+    DEBUG_WITH_LINE << "ADD PASS GROUP";
+}
+
+void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered()
+{
+    DEBUG_WITH_LINE << "EDIT PASS GROUP";
+}
+
+void CWebPassWareMainWindow::on_ACTION_DEL_PASS_GROUP_triggered()
+{
+    DEBUG_WITH_LINE << "DEL PASS GROUP";
+}
+
+void CWebPassWareMainWindow::on_ACTION_REFRESH_PASS_ENTRY_triggered()
+{
+    if (m_pass_entry_model)
+        m_pass_entry_model->refresh();
+}
+
+void CWebPassWareMainWindow::on_ACTION_ADD_PASS_ENTRY_triggered()
+{
+    DEBUG_WITH_LINE << "ADD PASS ENTRY";
+}
+
+void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered()
+{
+    DEBUG_WITH_LINE << "EDIT PASS ENTRY";
+}
+
+void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
+{
+    DEBUG_WITH_LINE << "DEL PASS ENTRY";
+}
+
+void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_triggered()
+{
+    DEBUG_WITH_LINE << "COPY PASS ENTRY";
 }
