@@ -18,5 +18,7 @@
         <file>icons/50px/About.png</file>
         <file>icons/50px/WebPassWare.png</file>
         <file>icons/progicon.ico</file>
+        <file>icons/50px/Edit-row.png</file>
+        <file>icons/50px/Clipboard.png</file>
     </qresource>
 </RCC>
