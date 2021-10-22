@@ -22,6 +22,8 @@ SOURCES += \
     src/Database/Exception.cpp \
     src/Database/ExceptionSql.cpp \
     src/Database/OrmObject.cpp \
+    src/Database/OrmService.cpp \
+    src/Database/Service.cpp \
     src/Database/SqlField.cpp \
     src/Database/SqlModel.cpp \
     src/Database/SqlQuery.cpp \
@@ -61,7 +63,9 @@ SOURCES += \
     src/Gui/Widgets/ToolButton.cpp \
     src/Models/ModelTableCheck.cpp \
     src/Models/PassEntry.cpp \
+    src/Models/PassEntryService.cpp \
     src/Models/PassGroup.cpp \
+    src/Models/PassGroupService.cpp \
     src/WebPassWareMainWindow.cpp \
     src/main.cpp \
 
@@ -84,6 +88,8 @@ HEADERS += \
     src/Database/Exception.h \
     src/Database/ExceptionSql.h \
     src/Database/OrmObject.h \
+    src/Database/OrmService.h \
+    src/Database/Service.h \
     src/Database/SqlField.h \
     src/Database/SqlModel.h \
     src/Database/SqlQuery.h \
@@ -123,7 +129,9 @@ HEADERS += \
     src/Gui/Widgets/ToolButton.h \
     src/Models/ModelTableCheck.h \
     src/Models/PassEntry.h \
+    src/Models/PassEntryService.h \
     src/Models/PassGroup.h \
+    src/Models/PassGroupService.h \
     src/WebPassWareMainWindow.h
 
 

@@ -21,21 +21,24 @@ public:
 
         if (!DB.checkTableInDatabase(ormobj->getTableName()))
         {
-            try {
+            try
+            {
                 ormobj->createTable();
             }
             catch (CExceptionSql *e)
             {
                 DB.showErrorInfo(e);
             }
-            try {
+            try
+            {
                 ormobj->createIndexes();
             }
             catch (CExceptionSql *e)
             {
                 DB.showErrorInfo(e);
             }
-            try {
+            try
+            {
                 ormobj->createUniqueIndexes();
             }
             catch (CExceptionSql *e)
@@ -56,7 +59,8 @@ public:
 
             if (!cols.contains(propertyName))
             {
-                try {
+                try
+                {
                     ormobj->alterTableAddColumn(propertyName);
                 }
                 catch (CExceptionSql *e)
@@ -93,21 +97,24 @@ public:
 
         if (isChangeOccured) //Dodane zostały pola robimy jeszcze raz indeksy
         {
-            try {
+            try
+            {
                 ormobj->dropIndexes();
             }
             catch (CExceptionSql *e)
             {
                 DB.showErrorInfo(e);
             }
-            try {
+            try
+            {
                 ormobj->createIndexes();
             }
             catch (CExceptionSql *e)
             {
                 DB.showErrorInfo(e);
             }
-            try {
+            try
+            {
                 ormobj->createUniqueIndexes();
             }
             catch (CExceptionSql *e)

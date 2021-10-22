@@ -84,8 +84,7 @@ QVariant CSqlModel::headerData(int section, Qt::Orientation orientation, int rol
                 return m_fieldsDesc.value(column_name)->getDescription();
          }
     }
-    //return QAbstractItemModel::headerData(section, orientation, role);
-    return this->headerData(section, orientation, role);
+    return QSqlQueryModel::headerData(section, orientation, role);
 }
 
 void CSqlModel::refresh()
@@ -99,13 +98,8 @@ void CSqlModel::refresh()
                 query.setLogFromDB(DB.getEchoError(),DB.getLogError(),DB.getEchoError(), DB.getLogQuery());
                 query.setForwardOnly(false);
 
-                QString select_query = m_selectQuery;
-
-                if (m_selectQuery.contains("WHERE"))
-                    select_query += QString(" AND deleted=false ");
-                else
-                    select_query += QString(" WHERE deleted=false ");
-
+                QString select_query = m_selectQuery;                
+                select_query += QString(" WHERE deleted=false ");
                 query.prepare(select_query);
                 Q_FOREACH (auto variable, m_dataHash.keys())
                     {
