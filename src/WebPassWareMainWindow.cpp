@@ -100,6 +100,10 @@ void CWebPassWareMainWindow::setActions(void)
 
     CAction *action_CopyPassEntry = new CAction(tr("Copy record to clipboard"), ICON("Copy"), tr("Copy record to clipboard"), QString(""), QString("ACTION_COPY_PASS_ENTRY"), this);
     m_actions.insert(action_CopyPassEntry->getActionName(), action_CopyPassEntry);
+
+    CAction *action_RefreshAll = new CAction(tr("Refresh records"), ICON("Refresh"), tr("Refresh records"), QString(""), QString("ACTION_REFRESH_ALL"), this);
+    m_actions.insert(action_RefreshAll->getActionName(), action_RefreshAll);
+
 }
 
 void CWebPassWareMainWindow::setMenu(void)
@@ -110,8 +114,7 @@ void CWebPassWareMainWindow::setMenu(void)
 
     fileMenu = new QMenu(m_menuBar);
     fileMenu->setTitle(tr("&File"));
-    fileMenu->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_GROUP")));
-    fileMenu->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
+    fileMenu->addAction(m_actions.value(QString("ACTION_REFRESH_ALL")));
     fileMenu->addSeparator();
     fileMenu->addAction(m_actions.value(QString("ACTION_EXIT")));
 
@@ -129,9 +132,8 @@ void CWebPassWareMainWindow::setMenu(void)
 }
 
 void CWebPassWareMainWindow::setToolBar(void)
-{
-    m_toolBar->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_GROUP")));
-    m_toolBar->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
+{    
+    m_toolBar->addAction(m_actions.value(QString("ACTION_REFRESH_ALL")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_EXIT")));
     m_toolBar->addSeparator();    
     m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT")));
@@ -228,7 +230,6 @@ QWidget *CWebPassWareMainWindow::initTabData()
     return tab;
 }
 
-
 qint64 CWebPassWareMainWindow::getCurrentPassGroupId()
 {
     QModelIndex index = m_treeGroupList->currentIndex();
@@ -283,6 +284,11 @@ void CWebPassWareMainWindow::on_ACTION_ABOUT_triggered()
     dialog.exec();
 }
 
+void CWebPassWareMainWindow::on_ACTION_REFRESH_ALL_triggered()
+{
+    on_ACTION_REFRESH_PASS_GROUP_triggered();
+    on_ACTION_REFRESH_PASS_ENTRY_triggered();
+}
 
 void CWebPassWareMainWindow::showTreeTableListContextMenu(const QPoint &position)
 {

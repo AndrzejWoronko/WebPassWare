@@ -71,6 +71,7 @@ public slots:
     void showDataTableContextMenu(const QPoint &position);
 
     void on_ACTION_ABOUT_triggered();
+    void on_ACTION_REFRESH_ALL_triggered();
 
     void on_ACTION_REFRESH_PASS_GROUP_triggered();
     void on_ACTION_ADD_PASS_GROUP_triggered();
