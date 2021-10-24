@@ -27,6 +27,8 @@ SOURCES += \
     src/Database/SqlField.cpp \
     src/Database/SqlModel.cpp \
     src/Database/SqlQuery.cpp \
+    src/Gui/AbstractFormDialog.cpp \
+    src/Gui/AbstractFormDialogController.cpp \
     src/Gui/AbstractMainWindow.cpp \
     src/Gui/Action.cpp \
     src/Gui/Dialogs/AboutDialog.cpp \
@@ -47,6 +49,10 @@ SOURCES += \
     src/Gui/Forms/FormTextField.cpp \
     src/Gui/Forms/FormValidator.cpp \
     src/Gui/Forms/FormYesNoChoiceField.cpp \
+    src/Gui/ModelForms/PassEntryDialog.cpp \
+    src/Gui/ModelForms/PassEntryDialogController.cpp \
+    src/Gui/ModelForms/PassGroupDialog.cpp \
+    src/Gui/ModelForms/PassGroupDialogController.cpp \
     src/Gui/Widgets/Button.cpp \
     src/Gui/Widgets/ButtonBox.cpp \
     src/Gui/Widgets/CalendarWidget.cpp \
@@ -93,6 +99,8 @@ HEADERS += \
     src/Database/SqlField.h \
     src/Database/SqlModel.h \
     src/Database/SqlQuery.h \
+    src/Gui/AbstractFormDialog.h \
+    src/Gui/AbstractFormDialogController.h \
     src/Gui/AbstractMainWindow.h \
     src/Gui/Action.h \
     src/Gui/Dialogs/AboutDialog.h \
@@ -113,6 +121,10 @@ HEADERS += \
     src/Gui/Forms/FormTextField.h \
     src/Gui/Forms/FormValidator.h \
     src/Gui/Forms/FormYesNoChoiceField.h \
+    src/Gui/ModelForms/PassEntryDialog.h \
+    src/Gui/ModelForms/PassEntryDialogController.h \
+    src/Gui/ModelForms/PassGroupDialog.h \
+    src/Gui/ModelForms/PassGroupDialogController.h \
     src/Gui/Widgets/Button.h \
     src/Gui/Widgets/ButtonBox.h \
     src/Gui/Widgets/CalendarWidget.h \
@@ -142,9 +154,8 @@ RESOURCES += style.qrc \
              icons.qrc
 
 
-
 INCLUDEPATH += src/ src/Common/ src/Gui/ src/Gui/Widgets/ src/Gui/Dialogs/ \
-               src/Gui/Forms/ src/Database/ src/Models/
+               src/Gui/Forms/ src/Database/ src/Models/ src/Gui/ModelForms/
 
 
 DEPENDPATH  += $${INCLUDEPATH}

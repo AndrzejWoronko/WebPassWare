@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "PassEntryService.h"
 #include "PassGroupService.h"
+#include "PassEntryDialogController.h"
+#include "PassGroupDialogController.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
 {
@@ -95,7 +97,7 @@ void CWebPassWareMainWindow::setActions(void)
     CAction *action_DelPassEntry = new CAction(tr("Delete record"), ICON("Delete-row"), tr("Delete record"), QString("Delete"), QString("ACTION_DEL_PASS_ENTRY"), this);
     m_actions.insert(action_DelPassEntry->getActionName(), action_DelPassEntry);
 
-    CAction *action_CopyPassEntry = new CAction(tr("Copy record"), ICON("Copy"), tr("Copy record"), QString(""), QString("ACTION_COPY_PASS_ENTRY"), this);
+    CAction *action_CopyPassEntry = new CAction(tr("Copy record to clipboard"), ICON("Copy"), tr("Copy record to clipboard"), QString(""), QString("ACTION_COPY_PASS_ENTRY"), this);
     m_actions.insert(action_CopyPassEntry->getActionName(), action_CopyPassEntry);
 }
 
@@ -195,21 +197,27 @@ QWidget *CWebPassWareMainWindow::initTabData()
 
     auto hboxLayout = new CHBoxLayout();
 
+    CToolButton *copyDataButton = new CToolButton(CButtonPrivate(tr("To clipboard"), tr("Copy record to clipboard"), ICON("Copy")), tab);
+    copyDataButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    copyDataButton->setDefaultAction(m_actions.value("ACTION_COPY_PASS_ENTRY"));
+
     CToolButton *addRowButton = new CToolButton(CButtonPrivate(tr("Add record"), tr("Add record"), ICON("Add-row")), tab);
+    addRowButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     addRowButton->setDefaultAction(m_actions.value("ACTION_ADD_PASS_ENTRY"));
     CToolButton *editRowButton = new CToolButton(CButtonPrivate(tr("Edit record"), tr("Edit record"), ICON("Edit-row")), tab);
-    editRowButton->setDefaultAction(m_actions.value("ACTION_EDIT_PASS_ENTRY"));
+    editRowButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    editRowButton->setDefaultAction(m_actions.value("ACTION_EDIT_PASS_ENTRY"));    
     CToolButton *delRowButton = new CToolButton(CButtonPrivate(tr("Delete record"), tr("Delete record"), ICON("Delete-row")), tab);
+    delRowButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     delRowButton->setDefaultAction(m_actions.value("ACTION_DEL_PASS_ENTRY"));
-    CToolButton *copyDataButton = new CToolButton(CButtonPrivate(tr("Copy record"), tr("Copy record"), ICON("Copy")), tab);
-    copyDataButton->setDefaultAction(m_actions.value("ACTION_COPY_PASS_ENTRY"));
     CToolButton *refreshDataButton = new CToolButton(CButtonPrivate(tr("Refresh records"), tr("Refresh records"), ICON("Refresh")), tab);
+    refreshDataButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     refreshDataButton->setDefaultAction(m_actions.value("ACTION_REFRESH_PASS_ENTRY"));
 
+    hboxLayout->addWidget(copyDataButton);
     hboxLayout->addWidget(addRowButton);
     hboxLayout->addWidget(editRowButton);
-    hboxLayout->addWidget(delRowButton);
-    hboxLayout->addWidget(copyDataButton);
+    hboxLayout->addWidget(delRowButton);    
     QSpacerItem *spacerItem = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     hboxLayout->addItem(spacerItem);
     hboxLayout->addWidget(refreshDataButton);
@@ -268,11 +276,17 @@ void CWebPassWareMainWindow::on_ACTION_REFRESH_PASS_GROUP_triggered()
 void CWebPassWareMainWindow::on_ACTION_ADD_PASS_GROUP_triggered()
 {
     DEBUG_WITH_LINE << "ADD PASS GROUP";
+    auto dialog_ctrl = new PassGroupDialogController(m_treeGroupList);
+    dialog_ctrl->getDialog()->exec();
+    safe_delete(dialog_ctrl)
 }
 
 void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered()
 {
     DEBUG_WITH_LINE << "EDIT PASS GROUP";
+    auto dialog_ctrl = new PassGroupDialogController(m_treeGroupList);
+    dialog_ctrl->getDialog()->exec();
+    safe_delete(dialog_ctrl)
 }
 
 void CWebPassWareMainWindow::on_ACTION_DEL_PASS_GROUP_triggered()
@@ -289,11 +303,17 @@ void CWebPassWareMainWindow::on_ACTION_REFRESH_PASS_ENTRY_triggered()
 void CWebPassWareMainWindow::on_ACTION_ADD_PASS_ENTRY_triggered()
 {
     DEBUG_WITH_LINE << "ADD PASS ENTRY";
+    auto dialog_ctrl = new PassEntryDialogController(m_tabWidget);
+    dialog_ctrl->getDialog()->exec();
+    safe_delete(dialog_ctrl)
 }
 
 void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered()
 {
     DEBUG_WITH_LINE << "EDIT PASS ENTRY";
+    auto dialog_ctrl = new PassEntryDialogController(m_tabWidget);
+    dialog_ctrl->getDialog()->exec();
+    safe_delete(dialog_ctrl)
 }
 
 void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
