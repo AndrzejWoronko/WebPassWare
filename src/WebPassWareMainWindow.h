@@ -59,6 +59,8 @@ private:
     virtual void setToolBar(void);
     virtual void setConnections(void);
 
+    qint64 getCurrentPassGroupId();
+    qint64 getCurrentPassEntryId();
 
     QWidget *initTabData();
 

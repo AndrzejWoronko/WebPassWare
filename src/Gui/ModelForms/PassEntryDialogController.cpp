@@ -123,7 +123,7 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
         PassEntry *pe = PassEntryService::getInstance().getObject(id);
         if (pe) //Podtawienie wartości do formatki
         {
-            f = m_dialog->getFields().value("id");
+            f = m_dialog->getFields().value("m_id");
             if (f)
                 f->setValue(pe->getId());
             f = m_dialog->getFields().value("m_title");

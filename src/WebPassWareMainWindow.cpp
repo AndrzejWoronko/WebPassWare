@@ -9,6 +9,7 @@
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
 {
     setAdditionalWidgets();
+    m_dataTable->setFocus();
 }
 
 CWebPassWareMainWindow::~CWebPassWareMainWindow()
@@ -165,6 +166,7 @@ void CWebPassWareMainWindow::setConnections(void)
 //Załadowanie danych do modelu
     m_pass_group_model->refresh();
     m_pass_entry_model->refresh();
+    m_dataTable->resizeColumnsToContents();
 
 //Tabela lista tabel połaczenia
     m_treeGroupList->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -224,6 +226,47 @@ QWidget *CWebPassWareMainWindow::initTabData()
     vboxLayout->addLayout(hboxLayout);
 
     return tab;
+}
+
+
+qint64 CWebPassWareMainWindow::getCurrentPassGroupId()
+{
+    QModelIndex index = m_treeGroupList->currentIndex();
+    QModelIndex sourceIndex = m_pass_group_proxy_model->mapToSource(index);
+
+    if (sourceIndex.isValid())
+    {
+        QModelIndex idx;
+        if (m_pass_group_model)
+        {
+            int column = m_pass_group_model->columnIndex("id_pass_group");
+            idx = m_pass_group_proxy_model->index(sourceIndex.row(), column);
+        }
+        qint64 id = m_pass_group_proxy_model->data(idx).toLongLong();
+        return id;
+    }
+    else
+        return -1;
+}
+
+qint64 CWebPassWareMainWindow::getCurrentPassEntryId()
+{
+    QModelIndex index = m_dataTable->currentIndex();
+    QModelIndex sourceIndex = m_pass_entry_proxy_model->mapToSource(index);
+
+    if (sourceIndex.isValid())
+    {
+        QModelIndex idx;
+        if (m_pass_group_model)
+        {
+            int column = m_pass_entry_model->columnIndex("id_pass_entry");
+            idx = m_pass_entry_proxy_model->index(sourceIndex.row(), column);
+        }
+        qint64 id = m_pass_entry_proxy_model->data(idx).toLongLong();
+        return id;
+    }
+    else
+        return -1;
 }
 
 void CWebPassWareMainWindow::refreshInfo()
@@ -289,7 +332,9 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered()
 {
     DEBUG_WITH_LINE << "EDIT PASS GROUP";
     auto dialog_ctrl = new PassGroupDialogController(m_treeGroupList);
-    if (dialog_ctrl->exec(0, tr("Edycja grupy")))
+    qint64 id = getCurrentPassGroupId();
+
+    if ((id > 0) && dialog_ctrl->exec(id, tr("Edycja grupy")))
     {
         if (m_pass_group_model)
             m_pass_group_model->refresh();
@@ -305,7 +350,10 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_GROUP_triggered()
 void CWebPassWareMainWindow::on_ACTION_REFRESH_PASS_ENTRY_triggered()
 {
     if (m_pass_entry_model)
-        m_pass_entry_model->refresh();
+       {
+          m_pass_entry_model->refresh();
+          m_dataTable->resizeColumnsToContents();
+       }
 }
 
 void CWebPassWareMainWindow::on_ACTION_ADD_PASS_ENTRY_triggered()
@@ -315,7 +363,10 @@ void CWebPassWareMainWindow::on_ACTION_ADD_PASS_ENTRY_triggered()
     if (dialog_ctrl->exec(tr("Dodanie rekordu")))
        {
             if (m_pass_entry_model)
-                m_pass_entry_model->refresh();
+                {
+                   m_pass_entry_model->refresh();
+                   m_dataTable->resizeColumnsToContents();
+                }
        }
     safe_delete(dialog_ctrl)
 }
@@ -324,10 +375,15 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered()
 {
     DEBUG_WITH_LINE << "EDIT PASS ENTRY";
     auto dialog_ctrl = new PassEntryDialogController(m_tabWidget);
-    if (dialog_ctrl->exec(0, tr("Edycja rekordu")))
+    qint64 id = getCurrentPassEntryId();
+
+    if ((id > 0) && dialog_ctrl->exec(id, tr("Edycja rekordu")))
        {
             if (m_pass_entry_model)
-                m_pass_entry_model->refresh();
+               {
+                   m_pass_entry_model->refresh();
+                   m_dataTable->resizeColumnsToContents();
+               }
        }
     safe_delete(dialog_ctrl)
 }
