@@ -20,6 +20,9 @@ public:
     virtual void saveDialogState();
     virtual void setConnections();
 
+    virtual bool exec(const QString &title) = 0;
+    virtual bool exec(qint64 id, const QString &title) = 0;
+
     CAbstractFormDialog *getDialog();
 
     bool isChangesOccured();
