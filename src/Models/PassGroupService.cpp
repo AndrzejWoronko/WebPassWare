@@ -18,3 +18,14 @@ CSqlModel *PassGroupService::getSqlModel(void)
     sql_model = new CSqlModel(query, QString("pass_group"), list);
     return sql_model;
 }
+
+QStringList PassGroupService::getGroupNameList(void)
+{
+    QList<PassGroup*> list = this->getObjects(QString("id_pass_group"));
+    QStringList ret_list;
+    Q_FOREACH(auto pg, list)
+    {
+        ret_list.append(pg->getm_name());
+    }
+    return ret_list;
+}

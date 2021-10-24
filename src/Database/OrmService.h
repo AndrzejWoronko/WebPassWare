@@ -35,12 +35,12 @@ public:
         return m_insertedId;
     }
 
-    QList<ModelName*> getObjects()
+    QList<ModelName*> getObjects(const QString &orderby = QString())
     {
         QList<ModelName*> list;
         try
         {
-            list = m_object->findAll();
+            list = m_object->findAll(orderby);
 
         } catch(CExceptionSql *e)
         {

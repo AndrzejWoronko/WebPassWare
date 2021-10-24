@@ -1,5 +1,6 @@
 #include "PassEntryDialogController.h"
 #include "PassEntryService.h"
+#include "PassGroupService.h"
 
 PassEntryDialogController::PassEntryDialogController(QWidget *parent) :
     CAbstractFormDialogController(new PassEntryDialog(parent), parent)
@@ -12,6 +13,12 @@ PassEntryDialogController::PassEntryDialogController(QWidget *parent) :
         m_validator = new CFormValidator(m_dialog->getFields());
         m_validator->setValidateCallback(validateForm);
         m_validator->setValidateEmpty(isEmptyForm);
+        CFormAbstractField *f;
+        f = m_dialog->getFields().value("m_id_pass_group");
+        if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
+        {
+            dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setValueList(PassGroupService::getInstance().getGroupNameList());
+        }
     }
 }
 
@@ -100,8 +107,10 @@ bool PassEntryDialogController::exec(const QString &title)
             if (f)
                 pe.setm_desc(f->getValue().toString());
             f = m_dialog->getFields().value("m_id_pass_group");
-            if (f)
-                pe.setm_id_pass_group(f->getValue().toLongLong());
+            if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
+            {
+                pe.setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
+            }
 
             return PassEntryService::getInstance().addObject(&pe) != -1; //Zapis do bazy
         }
@@ -142,8 +151,12 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             if (f)
                 f->setValue(pe->getm_desc());
             f = m_dialog->getFields().value("m_id_pass_group");
-            if (f)
-                f->setValue(pe->getm_id_pass_group());
+            if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
+            {
+                dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setIndexValue(pe->getm_id_pass_group() - 1);
+//                if (f)
+//                    f->setValue(pe->getm_id_pass_group());
+            }
         }
 
         if (m_dialog->exec())
@@ -166,8 +179,10 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
                 if (f)
                     pe->setm_desc(f->getValue().toString());
                 f = m_dialog->getFields().value("m_id_pass_group");
-                if (f)
-                    pe->setm_id_pass_group(f->getValue().toLongLong());
+                if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
+                {
+                    pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
+                }
                 ret = PassEntryService::getInstance().editObject(pe);
             }
         }

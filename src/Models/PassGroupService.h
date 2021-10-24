@@ -12,6 +12,7 @@ public:
     PassGroupService();
 
     CSqlModel *getSqlModel(void);
+    QStringList getGroupNameList(void);
 };
 
 #endif // PASSGROUPSERVICE_H
