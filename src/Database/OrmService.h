@@ -119,16 +119,18 @@ public:
         return m_insertedId;
     }
 
-    void editObject(ModelName *o)
+    bool editObject(ModelName *o)
     {
+        bool ret = false;
         try
         {
-            o->update();
+            ret = o->update();
 
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
         }
+        return ret;
     }
 
     void removeObject(qint64 id)

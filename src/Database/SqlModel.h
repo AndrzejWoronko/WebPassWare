@@ -20,6 +20,7 @@ public:
 
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    virtual QVariant rawData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
     void refresh();
 

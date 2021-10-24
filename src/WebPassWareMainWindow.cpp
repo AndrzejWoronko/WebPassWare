@@ -277,7 +277,10 @@ void CWebPassWareMainWindow::on_ACTION_ADD_PASS_GROUP_triggered()
 {
     DEBUG_WITH_LINE << "ADD PASS GROUP";
     auto dialog_ctrl = new PassGroupDialogController(m_treeGroupList);
-    dialog_ctrl->exec("Dodanie grupy");
+    if (dialog_ctrl->exec("Dodanie grupy"))
+    {
+        m_pass_group_model->refresh();
+    }
     safe_delete(dialog_ctrl)
 }
 
@@ -285,7 +288,10 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered()
 {
     DEBUG_WITH_LINE << "EDIT PASS GROUP";
     auto dialog_ctrl = new PassGroupDialogController(m_treeGroupList);
-    dialog_ctrl->exec(0, tr("Edycja grupy"));
+    if (dialog_ctrl->exec(0, tr("Edycja grupy")))
+    {
+        m_pass_group_model->refresh();
+    }
     safe_delete(dialog_ctrl)
 }
 

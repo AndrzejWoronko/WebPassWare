@@ -19,10 +19,9 @@ void CSqlModel::initSqlModel()
 
 QVariant CSqlModel::data(const QModelIndex &index, int role) const
 {
-
     if (role == Qt::DisplayRole)
       {
-        QVariant var = this->data(index, role);
+        QVariant var = QSqlQueryModel::data(index, role);
 
         if (m_hideNulls && var.isNull())
           return QString("-");
@@ -48,11 +47,11 @@ QVariant CSqlModel::data(const QModelIndex &index, int role) const
           {
             if  (m_hideNulls)
                 {
-                    QVariant var = this->data(index,role);
+                    QVariant var = QSqlQueryModel::data(index, role);
                     if (var.isNull())
                         return Qt::AlignCenter;
                 }
-            QVariant type = this->data(index,role).type();
+            QVariant type = QSqlQueryModel::data(index, role).type();
             QString column_name = this->record().fieldName(index.column());
 
             if (m_fieldsDesc.size() > 0 && m_fieldsDesc.value(column_name))
@@ -87,6 +86,11 @@ QVariant CSqlModel::headerData(int section, Qt::Orientation orientation, int rol
     return QSqlQueryModel::headerData(section, orientation, role);
 }
 
+QVariant CSqlModel::rawData(const QModelIndex &index, int role) const
+{
+    return QSqlQueryModel::data(index,role);
+}
+
 void CSqlModel::refresh()
 {
       if (qApp)
@@ -108,8 +112,8 @@ void CSqlModel::refresh()
                     }
                 DEBUG_WITH_LINE << query.lastQuery();
 
-                //beginResetModel();  //Uwaga bardzo ważne. bez tego nie wywołuje się data i headerData
-                this->setQuery(query.lastQuery(), DB.getDb());
+//                beginResetModel();  //Uwaga bardzo ważne. bez tego nie wywołuje się data i headerData
+                QSqlQueryModel::setQuery(query.lastQuery(), DB.getDb());
                 if (this->lastError().isValid())
                     DEBUG_WITH_LINE <<  this->lastError();
                 else
@@ -117,7 +121,7 @@ void CSqlModel::refresh()
                     DEBUG_WITH_LINE << "Model OK";
                     emit querySuccess();
                 }
-                //endResetModel();
+//                endResetModel();
              }
           else if (this->lastError().isValid())
                    DEBUG_WITH_LINE <<  this->lastError();

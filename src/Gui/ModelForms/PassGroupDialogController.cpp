@@ -1,4 +1,5 @@
 #include "PassGroupDialogController.h"
+#include "PassGroupService.h"
 
 PassGroupDialogController::PassGroupDialogController(QWidget *parent) :
     CAbstractFormDialogController(new PassGroupDialog(parent), parent)
@@ -57,7 +58,12 @@ bool PassGroupDialogController::exec(const QString &title)
 
         if (m_dialog->exec())
         {
+            PassGroup pg;
+            f = m_dialog->getFields().value("m_name");
+            if (f)
+                pg.setm_name(f->getValue().toString());
 
+            return PassGroupService::getInstance().addObject(&pg) != -1;
         }
     }
     return false;
@@ -65,6 +71,7 @@ bool PassGroupDialogController::exec(const QString &title)
 
 bool PassGroupDialogController::exec(qint64 id, const QString &title)
 {
+    bool ret = false;
     if (m_dialog)
     {
         m_dialog->setWindowTitle(title);
@@ -73,10 +80,21 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
            {
              dynamic_cast<CFormNumberField*>(f)->setReadOnly();
            }
+        PassGroup *pg = PassGroupService::getInstance().getObject(id);
+        if (pg)
+           {
+                f = m_dialog->getFields().value("m_name");
+                if (f)
+                    f->setValue(pg->getm_name());
+           }
         if (m_dialog->exec())
-        {
-
-        }
+           {
+               f = m_dialog->getFields().value("m_name");
+               if (f)
+                   pg->setm_name(f->getValue().toString());
+               ret = PassGroupService::getInstance().editObject(pg);
+           }
+       safe_delete(pg)
     }
-    return false;
+    return ret;
 }
