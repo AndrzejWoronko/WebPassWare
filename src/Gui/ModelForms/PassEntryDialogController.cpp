@@ -1,4 +1,5 @@
 #include "PassEntryDialogController.h"
+#include "PassEntryService.h"
 
 PassEntryDialogController::PassEntryDialogController(QWidget *parent) :
     CAbstractFormDialogController(new PassEntryDialog(parent), parent)
@@ -81,7 +82,28 @@ bool PassEntryDialogController::exec(const QString &title)
 
         if (m_dialog->exec())
         {
+            PassEntry pe;
+            //Podstawienie wartości z formatki
+            f = m_dialog->getFields().value("m_title");
+            if (f)
+                pe.setm_title(f->getValue().toString());
+            f = m_dialog->getFields().value("m_user");
+            if (f)
+                pe.setm_user(f->getValue().toString());
+            f = m_dialog->getFields().value("m_pass");
+            if (f)
+                pe.setm_pass(f->getValue().toString());
+            f = m_dialog->getFields().value("m_web_url");
+            if (f)
+                pe.setm_web_url(f->getValue().toString());
+            f = m_dialog->getFields().value("m_desc");
+            if (f)
+                pe.setm_desc(f->getValue().toString());
+            f = m_dialog->getFields().value("m_id_pass_group");
+            if (f)
+                pe.setm_id_pass_group(f->getValue().toLongLong());
 
+            return PassEntryService::getInstance().addObject(&pe) != -1; //Zapis do bazy
         }
     }
     return false;
@@ -89,6 +111,7 @@ bool PassEntryDialogController::exec(const QString &title)
 
 bool PassEntryDialogController::exec(qint64 id, const QString &title)
 {
+    bool ret = false;
     if (m_dialog)
     {
         m_dialog->setWindowTitle(title);
@@ -97,10 +120,58 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
         {
             dynamic_cast<CFormNumberField*>(f)->setReadOnly();
         }
+        PassEntry *pe = PassEntryService::getInstance().getObject(id);
+        if (pe) //Podtawienie wartości do formatki
+        {
+            f = m_dialog->getFields().value("id");
+            if (f)
+                f->setValue(pe->getId());
+            f = m_dialog->getFields().value("m_title");
+            if (f)
+                f->setValue(pe->getm_title());
+            f = m_dialog->getFields().value("m_user");
+            if (f)
+                f->setValue(pe->getm_user());
+            f = m_dialog->getFields().value("m_pass");
+            if (f)
+                f->setValue(pe->getm_pass());
+            f = m_dialog->getFields().value("m_web_url");
+            if (f)
+                f->setValue(pe->getm_web_url());
+            f = m_dialog->getFields().value("m_desc");
+            if (f)
+                f->setValue(pe->getm_desc());
+            f = m_dialog->getFields().value("m_id_pass_group");
+            if (f)
+                f->setValue(pe->getm_id_pass_group());
+        }
+
         if (m_dialog->exec())
         {
-
+            if (pe)
+            {
+                f = m_dialog->getFields().value("m_title");
+                if (f)
+                    pe->setm_title(f->getValue().toString());
+                f = m_dialog->getFields().value("m_user");
+                if (f)
+                    pe->setm_user(f->getValue().toString());
+                f = m_dialog->getFields().value("m_pass");
+                if (f)
+                    pe->setm_pass(f->getValue().toString());
+                f = m_dialog->getFields().value("m_web_url");
+                if (f)
+                    pe->setm_web_url(f->getValue().toString());
+                f = m_dialog->getFields().value("m_desc");
+                if (f)
+                    pe->setm_desc(f->getValue().toString());
+                f = m_dialog->getFields().value("m_id_pass_group");
+                if (f)
+                    pe->setm_id_pass_group(f->getValue().toLongLong());
+                ret = PassEntryService::getInstance().editObject(pe);
+            }
         }
+        safe_delete(pe)
     }
-    return false;
+    return ret;
 }

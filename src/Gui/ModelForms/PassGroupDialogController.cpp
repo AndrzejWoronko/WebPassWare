@@ -83,16 +83,22 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
         PassGroup *pg = PassGroupService::getInstance().getObject(id);
         if (pg)
            {
+                f = m_dialog->getFields().value("id");
+                if (f)
+                    f->setValue(pg->getId());
                 f = m_dialog->getFields().value("m_name");
                 if (f)
                     f->setValue(pg->getm_name());
            }
         if (m_dialog->exec())
            {
-               f = m_dialog->getFields().value("m_name");
-               if (f)
-                   pg->setm_name(f->getValue().toString());
-               ret = PassGroupService::getInstance().editObject(pg);
+               if (pg)
+               {
+                   f = m_dialog->getFields().value("m_name");
+                   if (f)
+                       pg->setm_name(f->getValue().toString());
+                   ret = PassGroupService::getInstance().editObject(pg);
+               }
            }
        safe_delete(pg)
     }
