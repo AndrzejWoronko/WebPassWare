@@ -11,7 +11,8 @@ class CSqlModel : public QSqlQueryModel
     Q_OBJECT
 
     ADD_FIELD(QString, m_tableName, getTableName, setTableName)
-
+    ADD_FIELD(QString, m_where, getWhere, setWhere) //Dodatkowe where w query
+    ADD_FIELD(QString, m_selectQuery, getSelectQuery, setSelectQuery) //select query
     void initSqlModel();
 
 public:
@@ -36,8 +37,6 @@ private:
     int m_primaryKeyIdx;
     bool m_hasDeleteDateField;
     bool m_hideNulls;
-
-    QString m_selectQuery; //select query
 
     SqlFieldsDesc m_fieldsDesc; // opis pól
     QList<int> m_numericColumns;

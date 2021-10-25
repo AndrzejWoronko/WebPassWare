@@ -19,6 +19,11 @@ PassEntryDialogController::PassEntryDialogController(QWidget *parent) :
         {
             dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setValueList(PassGroupService::getInstance().getGroupNameList());
         }
+        auto dlg = dynamic_cast<PassEntryDialog*>(m_dialog);
+        if (dlg)
+        {
+            connect(dlg->getPassGenWidget(), SIGNAL(newPassword(const QString&)), this, SLOT(setGenPassword(const QString&)));
+        }
     }
 }
 
@@ -189,4 +194,11 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
         safe_delete(pe)
     }
     return ret;
+}
+
+void PassEntryDialogController::setGenPassword(const QString& password)
+{
+    CFormAbstractField *f = m_dialog->getFields().value("m_pass");
+    if (f)
+        f->setValue(password);
 }

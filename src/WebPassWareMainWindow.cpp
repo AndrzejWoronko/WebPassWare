@@ -5,6 +5,7 @@
 #include "PassGroupService.h"
 #include "PassEntryDialogController.h"
 #include "PassGroupDialogController.h"
+#include "PasswordGenerateDialog.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
 {
@@ -73,7 +74,6 @@ void CWebPassWareMainWindow::setInterface(void)
 
 void CWebPassWareMainWindow::setActions(void)
 {
-
     CAction *actionAbount = new CAction(tr("&About program"), ICON("About"), tr("About program"), QString("Ctrl+H"), QString("ACTION_ABOUT"), this);
     m_actions.insert(actionAbount->getActionName(), actionAbount);
 
@@ -104,11 +104,15 @@ void CWebPassWareMainWindow::setActions(void)
     CAction *action_RefreshAll = new CAction(tr("Refresh records"), ICON("Refresh"), tr("Refresh records"), QString(""), QString("ACTION_REFRESH_ALL"), this);
     m_actions.insert(action_RefreshAll->getActionName(), action_RefreshAll);
 
+    CAction *action_GenerationDialog = new CAction(tr("Generator"), ICON("Toolbox"), tr("Generator haseł"), QString(""), QString("ACTION_GENERATOR_DIALOG"), this);
+    m_actions.insert(action_GenerationDialog->getActionName(), action_GenerationDialog);
 }
 
 void CWebPassWareMainWindow::setMenu(void)
 {
     QMenu *fileMenu;
+    QMenu *groupMenu;
+    QMenu *entryMenu;
     QMenu *toolMenu;
     QMenu *helpMenu;
 
@@ -118,8 +122,21 @@ void CWebPassWareMainWindow::setMenu(void)
     fileMenu->addSeparator();
     fileMenu->addAction(m_actions.value(QString("ACTION_EXIT")));
 
+    groupMenu = new QMenu(m_menuBar);
+    groupMenu->setTitle(tr("&Groups"));
+    groupMenu->addAction(m_actions.value(QString("ACTION_ADD_PASS_GROUP")));
+    groupMenu->addSeparator();
+    groupMenu->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_GROUP")));
+
+    entryMenu = new QMenu(m_menuBar);
+    entryMenu->setTitle(tr("&Records"));
+    entryMenu->addAction(m_actions.value(QString("ACTION_ADD_PASS_ENTRY")));
+    entryMenu->addSeparator();
+    entryMenu->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
+
     toolMenu = new QMenu(m_menuBar);
     toolMenu->setTitle(tr("&Tools"));
+    toolMenu->addAction(m_actions.value(QString("ACTION_GENERATOR_DIALOG")));
 
     helpMenu = new QMenu(m_menuBar);
     helpMenu->setTitle(tr("&Help"));
@@ -127,7 +144,7 @@ void CWebPassWareMainWindow::setMenu(void)
     helpMenu->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
 
-    m_menus << fileMenu << toolMenu << helpMenu;
+    m_menus << fileMenu << groupMenu << entryMenu << toolMenu << helpMenu;
     return;
 }
 
@@ -135,7 +152,10 @@ void CWebPassWareMainWindow::setToolBar(void)
 {    
     m_toolBar->addAction(m_actions.value(QString("ACTION_REFRESH_ALL")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_EXIT")));
-    m_toolBar->addSeparator();    
+    m_toolBar->addSeparator();
+    m_toolBar->addAction(m_actions.value(QString("ACTION_ADD_PASS_GROUP")));
+    m_toolBar->addAction(m_actions.value(QString("ACTION_ADD_PASS_ENTRY")));
+    m_toolBar->addSeparator();
     m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
@@ -174,7 +194,7 @@ void CWebPassWareMainWindow::setConnections(void)
     m_treeGroupList->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_treeGroupList, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showTreeTableListContextMenu(const QPoint &)));
     //connect(m_treeTableList, SIGNAL(activated(const QModelIndex &)), this, SLOT(showTableData(const QModelIndex &)));
-    //connect(m_treeGroupList, SIGNAL(clicked(const QModelIndex &)), this, SLOT(showTableData(const QModelIndex &)));
+    connect(m_treeGroupList, SIGNAL(clicked(const QModelIndex &)), this, SLOT(filterTableData(const QModelIndex &)));
     connect(m_treeGroupList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_ACTION_EDIT_PASS_GROUP_triggered()));
     connect(m_treeGroupList, SIGNAL(keyInsert()), this, SLOT(on_ACTION_ADD_PASS_GROUP_triggered()));
     connect(m_treeGroupList, SIGNAL(keyEnter()), this, SLOT(on_ACTION_EDIT_PASS_GROUP_triggered()));
@@ -292,12 +312,6 @@ void CWebPassWareMainWindow::on_ACTION_ABOUT_triggered()
     dialog.exec();
 }
 
-void CWebPassWareMainWindow::on_ACTION_REFRESH_ALL_triggered()
-{
-    on_ACTION_REFRESH_PASS_GROUP_triggered();
-    on_ACTION_REFRESH_PASS_ENTRY_triggered();
-}
-
 void CWebPassWareMainWindow::showTreeTableListContextMenu(const QPoint &position)
 {
     QMenu contextmenu(this);
@@ -322,6 +336,31 @@ void CWebPassWareMainWindow::showDataTableContextMenu(const QPoint &position)
     contextmenu.addSeparator();
     contextmenu.addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
     contextmenu.exec(m_dataTable->mapToGlobal(position));
+}
+
+void CWebPassWareMainWindow::filterTableData(const QModelIndex & index)
+{
+    QModelIndex sourceIndex = m_pass_group_proxy_model->mapToSource(index);
+
+    if (sourceIndex.isValid())
+    {
+        QModelIndex idx;
+        if (m_pass_group_model)
+        {
+            int column = m_pass_group_model->columnIndex("id_pass_group");
+            idx = m_pass_group_proxy_model->index(sourceIndex.row(), column);
+        }
+        qint64 id = m_pass_group_proxy_model->data(idx).toLongLong();
+        m_pass_entry_model->setWhere(QString("m_id_pass_group=%1").arg(id));
+        DEBUG_WITH_LINE << "Clicked pass group id: " << id;
+        m_pass_entry_model->refresh();
+    }
+}
+
+void CWebPassWareMainWindow::on_ACTION_REFRESH_ALL_triggered()
+{
+    on_ACTION_REFRESH_PASS_GROUP_triggered();
+    on_ACTION_REFRESH_PASS_ENTRY_triggered();
 }
 
 void CWebPassWareMainWindow::on_ACTION_REFRESH_PASS_GROUP_triggered()
@@ -365,6 +404,7 @@ void CWebPassWareMainWindow::on_ACTION_REFRESH_PASS_ENTRY_triggered()
 {
     if (m_pass_entry_model)
        {
+          m_pass_entry_model->setWhere(QString());
           m_pass_entry_model->refresh();
           m_dataTable->resizeColumnsToContents();
        }
@@ -410,4 +450,12 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
 void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_triggered()
 {
     DEBUG_WITH_LINE << "COPY PASS ENTRY";
+}
+
+
+void CWebPassWareMainWindow::on_ACTION_GENERATOR_DIALOG_triggered()
+{
+    auto dialog = new CPasswordGenerateDialog(this);
+    dialog->exec();
+    safe_delete(dialog);
 }

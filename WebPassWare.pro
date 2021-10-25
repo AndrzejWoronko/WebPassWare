@@ -14,6 +14,7 @@ SOURCES += \
     src/Common/AbstractTableStateManager.cpp \
     src/Common/DialogState.cpp \
     src/Common/Logger.cpp \
+    src/Common/PasswordGenerator.cpp \
     src/Common/SplitterState.cpp \
     src/Common/TabMainWindowState.cpp \
     src/Common/TableState.cpp \
@@ -34,6 +35,7 @@ SOURCES += \
     src/Gui/Dialogs/AboutDialog.cpp \
     src/Gui/Dialogs/AbstractCloseDialog.cpp \
     src/Gui/Dialogs/Dialog.cpp \
+    src/Gui/Dialogs/PasswordGenerateDialog.cpp \
     src/Gui/Forms/Form.cpp \
     src/Gui/Forms/FormAbstractField.cpp \
     src/Gui/Forms/FormButtonField.cpp \
@@ -64,6 +66,7 @@ SOURCES += \
     src/Gui/Dialogs/MessageBox.cpp \
     src/Gui/Splitter.cpp \
     src/Gui/Style.cpp \
+    src/Gui/Widgets/PasswordGeneratorWidget.cpp \
     src/Gui/Widgets/TabWidget.cpp \
     src/Gui/Widgets/TableView.cpp \
     src/Gui/Widgets/ToolButton.cpp \
@@ -85,6 +88,7 @@ HEADERS += \
     src/Common/DialogState.h \
     src/Common/Global.h \
     src/Common/Logger.h \
+    src/Common/PasswordGenerator.h \
     src/Common/Singleton.h \
     src/Common/SplitterState.h \
     src/Common/TabMainWindowState.h \
@@ -106,6 +110,7 @@ HEADERS += \
     src/Gui/Dialogs/AboutDialog.h \
     src/Gui/Dialogs/AbstractCloseDialog.h \
     src/Gui/Dialogs/Dialog.h \
+    src/Gui/Dialogs/PasswordGenerateDialog.h \
     src/Gui/Forms/Form.h \
     src/Gui/Forms/FormAbstractField.h \
     src/Gui/Forms/FormButtonField.h \
@@ -136,6 +141,7 @@ HEADERS += \
     src/Gui/Dialogs/MessageBox.h \
     src/Gui/Splitter.h \
     src/Gui/Style.h \
+    src/Gui/Widgets/PasswordGeneratorWidget.h \
     src/Gui/Widgets/TabWidget.h \
     src/Gui/Widgets/TableView.h \
     src/Gui/Widgets/ToolButton.h \

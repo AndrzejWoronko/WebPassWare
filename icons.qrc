@@ -20,5 +20,7 @@
         <file>icons/progicon.ico</file>
         <file>icons/50px/Edit-row.png</file>
         <file>icons/50px/Clipboard.png</file>
+        <file>icons/50px/Password-reset.png</file>
+        <file>icons/50px/Toolbox.png</file>
     </qresource>
 </RCC>

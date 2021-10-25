@@ -18,5 +18,8 @@ void PassGroupDialog::addComponents()
 {
     CForm::setComponents(getFormLayout(), m_id, m_id->getLabel(), 0, 1, 1, 1, true);
     CForm::setComponents(getFormLayout(), m_name, m_name->getLabel(), 1, 1, 1, 2);
+    getFormLayout()->setColumnStretch(0, 1);
+    getFormLayout()->setColumnStretch(1, 1);
+    getFormLayout()->setColumnStretch(2, 2);
     setDialogWidget();
 }

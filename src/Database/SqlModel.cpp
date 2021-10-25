@@ -9,6 +9,7 @@ CSqlModel::CSqlModel(const QString &selectQuery, const QString &table_name, cons
     m_tableName = table_name;
     m_fieldsDesc = list;
     m_dataHash = data;
+    m_where.clear();
 }
 
 void CSqlModel::initSqlModel()
@@ -104,6 +105,10 @@ void CSqlModel::refresh()
 
                 QString select_query = m_selectQuery;                
                 select_query += QString(" WHERE deleted=false ");
+
+                if (!m_where.isEmpty())
+                    select_query += QString(" AND %1 " ).arg(m_where);
+
                 query.prepare(select_query);
                 Q_FOREACH (auto variable, m_dataHash.keys())
                     {

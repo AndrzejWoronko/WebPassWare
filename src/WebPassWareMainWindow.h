@@ -69,6 +69,7 @@ public slots:
     void refreshInfo();
     void showTreeTableListContextMenu(const QPoint &position);
     void showDataTableContextMenu(const QPoint &position);
+    void filterTableData(const QModelIndex &);
 
     void on_ACTION_ABOUT_triggered();
     void on_ACTION_REFRESH_ALL_triggered();
@@ -84,6 +85,8 @@ public slots:
     void on_ACTION_EDIT_PASS_ENTRY_triggered();
     void on_ACTION_DEL_PASS_ENTRY_triggered();
     void on_ACTION_COPY_PASS_ENTRY_triggered();
+
+    void on_ACTION_GENERATOR_DIALOG_triggered();
 };
 
 #endif // CWEBPASSWAREMAINWINDOW_H

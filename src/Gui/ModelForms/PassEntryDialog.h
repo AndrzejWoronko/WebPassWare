@@ -3,6 +3,7 @@
 
 #include "Global.h"
 #include "AbstractFormDialog.h"
+#include "PasswordGeneratorWidget.h"
 
 class PassEntryDialog : public CAbstractFormDialog
 {
@@ -15,9 +16,10 @@ class PassEntryDialog : public CAbstractFormDialog
     ADD_PTR_PROPERTY(CFormTextField, m_web_url, getWebUrl)
     ADD_PTR_PROPERTY(CFormTextField, m_desc, getDec)
     ADD_PTR_PROPERTY(CFormSimpleIndexChoiceField, m_id_pass_group, getIdPassGroup)
+    ADD_PTR_PROPERTY(CPasswordGeneratorWidget, m_pass_gen_widget, getPassGenWidget)
 
 public:
-    explicit PassEntryDialog(QWidget *parent = NULL);
+    explicit PassEntryDialog(QWidget *parent = NULL);    
 
     virtual void addFields();
     virtual void addComponents();

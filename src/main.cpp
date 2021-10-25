@@ -19,6 +19,7 @@
 
 // Projekty wzorcowe
 //https://github.com/orgs/keepassxreboot/repositories
+//https://github.com/orgs/keepassx
 //https://github.com/Martchus/passwordmanager
 
 int main(int argc, char **argv)

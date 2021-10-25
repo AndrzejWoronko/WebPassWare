@@ -19,6 +19,9 @@ public:
 
     virtual bool exec(const QString &title);
     virtual bool exec(qint64 id, const QString &title);
+
+private Q_SLOTS:
+    void setGenPassword(const QString& password);
 };
 
 #endif // PASSENTRYDIALOGCONTROLLER_H
