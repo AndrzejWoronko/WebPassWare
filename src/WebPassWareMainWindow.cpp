@@ -6,6 +6,7 @@
 #include "PassEntryDialogController.h"
 #include "PassGroupDialogController.h"
 #include "PasswordGenerateDialog.h"
+#include "MessageBox.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
 {
@@ -91,15 +92,18 @@ void CWebPassWareMainWindow::setActions(void)
     CAction *action_RefreshPassEntry = new CAction(tr("Refresh records"), ICON("Refresh"), tr("Refresh records"), QString(""), QString("ACTION_REFRESH_PASS_ENTRY"), this);
     m_actions.insert(action_RefreshPassEntry->getActionName(), action_RefreshPassEntry);
 
-    CAction *action_AddPassEntry = new CAction(tr("Add record"), ICON("Add-row"), tr("Add record"), QString(""), QString("ACTION_ADD_PASS_ENTRY"), this);
+    CAction *action_AddPassEntry = new CAction(tr("Add record"), ICON("Add-row"), tr("Add record"), QString("Insert"), QString("ACTION_ADD_PASS_ENTRY"), this);
     m_actions.insert(action_AddPassEntry->getActionName(), action_AddPassEntry);
-    CAction *action_EditPassEntry = new CAction(tr("Edit record"), ICON("Edit-row"), tr("Edit record"), QString(""), QString("ACTION_EDIT_PASS_ENTRY"), this);
+    CAction *action_EditPassEntry = new CAction(tr("Edit record"), ICON("Edit-row"), tr("Edit record"), QString("Enter"), QString("ACTION_EDIT_PASS_ENTRY"), this);
     m_actions.insert(action_EditPassEntry->getActionName(), action_EditPassEntry);
-    CAction *action_DelPassEntry = new CAction(tr("Delete record"), ICON("Delete-row"), tr("Delete record"), QString(""), QString("ACTION_DEL_PASS_ENTRY"), this);
+    CAction *action_DelPassEntry = new CAction(tr("Delete record"), ICON("Delete-row"), tr("Delete record"), QString("Delete"), QString("ACTION_DEL_PASS_ENTRY"), this);
     m_actions.insert(action_DelPassEntry->getActionName(), action_DelPassEntry);
 
-    CAction *action_CopyPassEntry = new CAction(tr("Copy record to clipboard"), ICON("Copy"), tr("Copy record to clipboard"), QString("Ctrl+C"), QString("ACTION_COPY_PASS_ENTRY"), this);
-    m_actions.insert(action_CopyPassEntry->getActionName(), action_CopyPassEntry);
+    CAction *action_CopyPassEntryUser = new CAction(tr("Copy user to clipboard"), ICON("User"), tr("Copy user to clipboard"), QString("Ctrl+X"), QString("ACTION_COPY_PASS_ENTRY_USER"), this);
+    m_actions.insert(action_CopyPassEntryUser->getActionName(), action_CopyPassEntryUser);
+
+    CAction *action_CopyPassEntryPassword = new CAction(tr("Copy password to clipboard"), ICON("Copy"), tr("Copy password to clipboard"), QString("Ctrl+C"), QString("ACTION_COPY_PASS_ENTRY_PASSWORD"), this);
+    m_actions.insert(action_CopyPassEntryPassword->getActionName(), action_CopyPassEntryPassword);
 
     CAction *action_RefreshAll = new CAction(tr("Refresh records"), ICON("Refresh"), tr("Refresh records"), QString(""), QString("ACTION_REFRESH_ALL"), this);
     m_actions.insert(action_RefreshAll->getActionName(), action_RefreshAll);
@@ -196,9 +200,6 @@ void CWebPassWareMainWindow::setConnections(void)
     //connect(m_treeTableList, SIGNAL(activated(const QModelIndex &)), this, SLOT(showTableData(const QModelIndex &)));
     connect(m_treeGroupList, SIGNAL(clicked(const QModelIndex &)), this, SLOT(filterTableData(const QModelIndex &)));
     connect(m_treeGroupList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_ACTION_EDIT_PASS_GROUP_triggered()));
-    connect(m_treeGroupList, SIGNAL(keyInsert()), this, SLOT(on_ACTION_ADD_PASS_GROUP_triggered()));
-    connect(m_treeGroupList, SIGNAL(keyEnter()), this, SLOT(on_ACTION_EDIT_PASS_GROUP_triggered()));
-    connect(m_treeGroupList, SIGNAL(keyDelete()), this, SLOT(on_ACTION_DEL_PASS_GROUP_triggered()));
 
 //Tabela danych połaczenia
     m_dataTable->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -229,10 +230,12 @@ QWidget *CWebPassWareMainWindow::initTabData()
 
     auto hboxLayout = new CHBoxLayout();
 
-    CToolButton *copyDataButton = new CToolButton(CButtonPrivate(tr("To clipboard"), tr("Copy record to clipboard"), ICON("Copy")), tab);
-    copyDataButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    copyDataButton->setDefaultAction(m_actions.value("ACTION_COPY_PASS_ENTRY"));
-
+    CToolButton *copyDataButtonUser = new CToolButton(CButtonPrivate(tr("User to clipboard"), tr("Copy user to clipboard"), ICON("User")), tab);
+    copyDataButtonUser->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    copyDataButtonUser->setDefaultAction(m_actions.value("ACTION_COPY_PASS_ENTRY_USER"));
+    CToolButton *copyDataButtonPass = new CToolButton(CButtonPrivate(tr("Password to clipboard"), tr("Copy password to clipboard"), ICON("Copy")), tab);
+    copyDataButtonPass->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    copyDataButtonPass->setDefaultAction(m_actions.value("ACTION_COPY_PASS_ENTRY_PASSWORD"));
     CToolButton *addRowButton = new CToolButton(CButtonPrivate(tr("Add record"), tr("Add record"), ICON("Add-row")), tab);
     addRowButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     addRowButton->setDefaultAction(m_actions.value("ACTION_ADD_PASS_ENTRY"));
@@ -246,7 +249,8 @@ QWidget *CWebPassWareMainWindow::initTabData()
     refreshDataButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     refreshDataButton->setDefaultAction(m_actions.value("ACTION_REFRESH_PASS_ENTRY"));
 
-    hboxLayout->addWidget(copyDataButton);
+    hboxLayout->addWidget(copyDataButtonUser);
+    hboxLayout->addWidget(copyDataButtonPass);
     hboxLayout->addWidget(addRowButton);
     hboxLayout->addWidget(editRowButton);
     hboxLayout->addWidget(delRowButton);    
@@ -300,7 +304,7 @@ qint64 CWebPassWareMainWindow::getCurrentPassEntryId()
 
 void CWebPassWareMainWindow::refreshInfo()
 {
-//    m_dbLabel->setText(tr("Baza: %1, host: %2, baza: %3").arg(DB.getMBaseType()).arg(DB.getMBaseHost()).arg(DB.getMBaseName()));
+//  m_dbLabel->setText(tr("Baza: %1, host: %2, baza: %3").arg(DB.getMBaseType()).arg(DB.getMBaseHost()).arg(DB.getMBaseName()));
     m_dateLabel->setText(tr("Date: <b>%1</b> %2").arg(QDate::currentDate().toString(DATE_FORMAT)).arg(QTime::currentTime().toString(TIME_FORMAT)));
     QTimer::singleShot(1000, this, SLOT(refreshInfo()));
 }
@@ -332,7 +336,8 @@ void CWebPassWareMainWindow::showDataTableContextMenu(const QPoint &position)
     contextmenu.addAction(m_actions.value(QString("ACTION_ADD_PASS_ENTRY")));
     contextmenu.addAction(m_actions.value(QString("ACTION_EDIT_PASS_ENTRY")));
     contextmenu.addAction(m_actions.value(QString("ACTION_DEL_PASS_ENTRY")));
-    contextmenu.addAction(m_actions.value(QString("ACTION_COPY_PASS_ENTRY")));
+    contextmenu.addAction(m_actions.value(QString("ACTION_COPY_PASS_ENTRY_PASSWORD")));
+    contextmenu.addAction(m_actions.value(QString("ACTION_COPY_PASS_ENTRY_USER")));
     contextmenu.addSeparator();
     contextmenu.addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
     contextmenu.exec(m_dataTable->mapToGlobal(position));
@@ -397,6 +402,19 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered()
 
 void CWebPassWareMainWindow::on_ACTION_DEL_PASS_GROUP_triggered()
 {
+    qint64 id =  getCurrentPassGroupId();
+    if (id > 0)
+    {
+        QString question = tr("Czy chcesz skasować grupę o id: %1 ?").arg(id);
+        if (CMessageBox::YesNoDialog(question, m_treeGroupList) == CMessageBox::Yes)
+        {
+            PassGroupService::getInstance().deleteObject(id);
+            if (m_pass_group_model)
+            {
+                m_pass_entry_model->refresh();
+            }
+        }
+    }
     DEBUG_WITH_LINE << "DEL PASS GROUP";
 }
 
@@ -444,14 +462,66 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered()
 
 void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
 {
+    qint64 id = getCurrentPassEntryId();
+    if (id > 0)
+       {
+            auto pe = PassEntryService::getInstance().getObject(id);
+            {
+                QString question = tr("Czy chcesz skasować wpis o id: %1 %2?").arg(id).arg(pe->getm_title());
+                if (CMessageBox::YesNoDialog(question, m_dataTable) == CMessageBox::Yes)
+                {
+                    PassEntryService::getInstance().deleteObject(id);
+                    if (m_pass_entry_model)
+                        {
+                            m_pass_entry_model->refresh();
+                            m_dataTable->resizeColumnsToContents();
+                        }
+                }
+            }
+            safe_delete(pe)
+       }
     DEBUG_WITH_LINE << "DEL PASS ENTRY";
 }
 
-void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_triggered()
+void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_PASSWORD_triggered()
 {
-    DEBUG_WITH_LINE << "COPY PASS ENTRY";
+    qint64 id = getCurrentPassEntryId();
+    if (id > 0)
+    {
+        auto pe = PassEntryService::getInstance().getObject(id);
+        if (pe)
+        {
+            QString text = pe->getm_pass();
+            QMimeData *mimeData = new QMimeData();
+            mimeData->setText(text);
+            mimeData->setData("text/csv", text.toUtf8());
+            QApplication::clipboard()->setMimeData(mimeData);
+            DEBUG_WITH_LINE << text;
+        }
+        safe_delete(pe)
+    }
+    DEBUG_WITH_LINE << "COPY PASS ENTRY PASSWORD";
 }
 
+void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_USER_triggered()
+{
+    qint64 id = getCurrentPassEntryId();
+    if (id > 0)
+    {
+        auto pe = PassEntryService::getInstance().getObject(id);
+        if (pe)
+        {
+            QString text = pe->getm_user();
+            QMimeData *mimeData = new QMimeData();
+            mimeData->setText(text);
+            mimeData->setData("text/csv", text.toUtf8());
+            QApplication::clipboard()->setMimeData(mimeData);
+            DEBUG_WITH_LINE << text;
+        }
+        safe_delete(pe)
+    }
+    DEBUG_WITH_LINE << "COPY PASS ENTRY USER";
+}
 
 void CWebPassWareMainWindow::on_ACTION_GENERATOR_DIALOG_triggered()
 {

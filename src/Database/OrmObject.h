@@ -108,7 +108,6 @@ public:
         QString typeName;
         QString propertyValue;
 
-        setTableName();
         DB.fillTableTypes(m_tableTypes);
 
         //Loop from 1 to skip objectName
@@ -190,9 +189,8 @@ public:
       Returns true if table created, otherwise return false.
     */
     bool createTable()
-    {
-        bool ret = false;
-        setTableName();
+    {        
+        bool ret = false;        
         try
         {
             ret = DB.createTable(m_tableName, m_sqlDescriptions);
@@ -204,9 +202,8 @@ public:
     }
 
     bool alterTableAddColumn(const QString &name)
-    {
-        bool ret = false;
-        setTableName();
+    {     
+        bool ret = false;        
         PkNames field = getColumnFromModel(name);
         try
         {
@@ -224,9 +221,8 @@ public:
     Returns true if table created, otherwise return false.
                                        */
     bool createIndexes()
-    {
-        bool ret = false;
-        setTableName();
+    {        
+        bool ret = false;        
         try
         {
            ret =  DB.createTableIndexes(m_tableName, m_indexFields, false);
@@ -238,9 +234,8 @@ public:
     }
 
     bool createUniqueIndexes()
-    {
-        bool ret = false;
-        setTableName();
+    {        
+        bool ret = false;        
         try
         {
             ret =  DB.createTableIndexes(m_tableName, m_uniqueIndexFields, true);
@@ -252,9 +247,8 @@ public:
     }
 
     bool dropTable() const
-    {
-        //setTableName();
-        //return CDatabase::adapter->dropTable(m_tableName);
+    {        
+        //return CDatabase::adapter->dropTable(m_tableName);        
         bool ret = false;
         try
         {
@@ -267,9 +261,8 @@ public:
     }
 
     bool dropIndexes()
-    {
-        bool ret = false;
-        setTableName();
+    {        
+        bool ret = false;       
         try
         {
             ret = DB.dropTableIndexes(m_tableName, m_indexFields);
@@ -451,15 +444,14 @@ public:
     }
 
     QString getIdCondition(qint64 id)
-    {
+    {        
         QString where = QString(" WHERE id_%1 = %2").arg(m_tableName).arg(id);
         return where;
     }
 
     virtual QString toString()
-    {
-        QString str;
-        setTableName();
+    {       
+        QString str;        
         str += m_tableName;
         str += '\n';
         str.append(QString("    id_%1 : ").arg(m_tableName) + QString::number(m_id) + '\n');
@@ -474,7 +466,7 @@ public:
        Returns pointer to found model or 0 if no object found.
     */
     ModelName* find(qint64 id)
-    {
+    {        
         QList<QSqlRecord> list;
         list.clear();
         try
@@ -491,7 +483,7 @@ public:
     }
 
     void findThis(qint64 id)
-    {
+    {        
         QList<QSqlRecord> list;
         list.clear();
         try
@@ -510,10 +502,9 @@ public:
        Returns list of found objects.
     */
     QList<ModelName*> findAll(const QString &orderby = QString())
-    {
+    {        
         QList<QSqlRecord> list;
-        QString orderString = " ORDER BY ";
-        setTableName();
+        QString orderString = " ORDER BY ";        
         list.clear();
         try
         {
@@ -534,10 +525,8 @@ public:
        Returns pointer to found model or 0 if no object found.
     */
     ModelName* first()
-    {
-        setTableName();
+    {       
         QString pkName = QString("id_%1").arg(m_tableName);
-
         QSqlRecord record;
         record.clear();
         try
@@ -557,10 +546,8 @@ public:
        Returns pointer to found model or 0 if no object found.
     */
     ModelName* last()
-    {
-        setTableName();
+    {        
         QString pkName = QString("id_%1").arg(m_tableName);
-
         QSqlRecord record;
         record.clear();
         try
@@ -586,8 +573,7 @@ public:
        Returns list of found objects.
     */
     QList<ModelName*> findBy(const QString &fieldName, const QVariant value, const QString &orderby = QString())
-    {
-        setTableName();
+    {        
         QList<QSqlRecord> list;
         QString whereString = " WHERE ";
         QString orderString = orderby.isEmpty() ? "" : " ORDER BY " + orderby;
@@ -612,7 +598,7 @@ public:
        Returns list of found objects.
     */
     QList<ModelName*> findBy(const QString &fieldName, const QVector<QVariant> &values, const QString &orderby = QString())
-    {
+    {        
         QList<ModelName*> returnList;
         QString whereString = " WHERE ";
         QString orderString = orderby.isEmpty() ? "" : " ORDER BY " + orderby;
@@ -625,8 +611,7 @@ public:
             whereString += QString("%1 = '%2' OR ")
                                .arg(fieldName)
                                .arg(value.toString());
-        whereString.chop(4);
-        setTableName();
+        whereString.chop(4);        
 
         QList<QSqlRecord> list;
         list.clear();
@@ -643,9 +628,8 @@ public:
     }
 
     QList<ModelName*> findByOr(const QHash<QString, QVariant> &params)
-    {
+    {        
         QList<ModelName*> returnList;
-
         returnList.clear();
         if(params.isEmpty())
             return returnList;
@@ -655,8 +639,7 @@ public:
             whereString += QString("%1 = '%2' OR ")
                                .arg(key)
                                .arg(params.value(key).toString());
-        whereString.chop(4);
-        setTableName();
+        whereString.chop(4);        
         QList<QSqlRecord> list;
         list.clear();
         try
@@ -676,9 +659,8 @@ public:
         Returns list of found objects.
      */
     QList<ModelName*> findByAnd(const QHash<QString, QVariant> &params)
-    {
+    {        
         QList<ModelName*> returnList;
-
         returnList.clear();
         if(params.isEmpty())
             return returnList;
@@ -688,8 +670,7 @@ public:
             whereString += QString("%1 = '%2' AND ")
                                .arg(key)
                                .arg(params.value(key).toString());
-        whereString.chop(4);
-        setTableName();
+        whereString.chop(4);        
         QList<QSqlRecord> list;
         list.clear();
         try
@@ -708,9 +689,8 @@ public:
        Returns true if table is empty, otherwise return false.
      */
     bool existsTable()
-    {
-        bool ret = true;
-        setTableName();
+    {        
+        bool ret = true;        
         try
         {
             ret = !DB.find(m_tableName, "*", "").isEmpty();
@@ -725,9 +705,8 @@ public:
      */
 
     bool exists(qint64 id)
-    {
-        bool ret = false;
-        setTableName();        
+    {        
+        bool ret = false;        
         try
         {
             ret = !DB.find(m_tableName, "*", getIdCondition(id)).isEmpty();
@@ -748,8 +727,7 @@ public:
         if(m_id < 0)
             return false;
         QHash<QString, QVariant> info;
-        info.insert(fieldName, value);
-        setTableName();
+        info.insert(fieldName, value);        
         bool ret = false;
         try
         {
@@ -772,9 +750,8 @@ public:
        Returns true if success, otherwise return false.
      */
     bool remove()
-    {
-        bool ret = false;
-        setTableName();
+    {        
+        bool ret = false;        
         try
         {
            ret = DB.remove(m_tableName, getIdCondition(m_id));
@@ -789,9 +766,8 @@ public:
     }
 
     bool setDeleted()
-    {
-        bool ret = false;
-        setTableName();
+    {        
+        bool ret = false;        
         try
         {
             ret = DB.setDeleted(m_tableName, getIdCondition(m_id));
@@ -811,7 +787,7 @@ public:
        Returns true is success, otherwise return false.
      */
     bool removeAll() const
-    {
+    {        
         bool ret = false;
         try
         {
@@ -824,7 +800,7 @@ public:
     }
 
     bool deleteAll() const
-    {
+    {        
         bool ret = false;
         try
         {
@@ -840,7 +816,7 @@ public:
        Returns number of objects in table.
      */
     qint64 count() const
-    {
+    {        
         qint64 ret = -1;
         try
         {
@@ -894,7 +870,7 @@ public:
     }
 
     QList<QSqlIndex> getTableIndexes()
-    {
+    {        
         QList<QSqlIndex> list;
         list.clear();
         try
@@ -908,7 +884,7 @@ public:
     }
 
     QHash <QString, QString> getTableIndexesNames()
-    {
+    {        
         QHash <QString, QString> result;
         QList<QSqlIndex> idx_list = DB.getTableIndexes(m_tableName);
         Q_FOREACH(auto idx, idx_list)
@@ -932,9 +908,10 @@ protected:
     T* translateRecToObj(const QSqlRecord &record) const
     {
         T *result = new T;
-        QString currentFieldName;
+        QString currentFieldName;        
         QString tableName = result->metaObject()->className();
         tableName = Tools::tableize(tableName);
+
         for(int i = 1; i < result->metaObject()->propertyCount(); i++)
         {
             currentFieldName = QString(result->metaObject()->property(i).name());
