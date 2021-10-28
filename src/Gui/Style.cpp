@@ -219,6 +219,7 @@ QString CStyle::getIconNameForAttribute(CStyle::IconAttributes attr)
     switch (attr)
     {
         case PLUS:
+        case ADD:
             return "Plus.png";
         case MINUS:
             return "Minus.png";
@@ -253,7 +254,7 @@ QString CStyle::getIconNameForAttribute(CStyle::IconAttributes attr)
 
 QString CStyle::getIconNameForAttribute(const QString &attr)
 {
-    if (attr.toUpper() == "PLUS")
+    if (attr.toUpper() == "PLUS" || attr.toUpper() == "ADD")
         return getIconNameForAttribute(CStyle::PLUS);
     else if (attr.toUpper() == "MINUS")
         return getIconNameForAttribute(CStyle::MINUS);

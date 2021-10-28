@@ -30,6 +30,7 @@ public:
     {
         NONE,
         PLUS,
+        ADD,
         MINUS,
         EDIT,
         DELETE,
