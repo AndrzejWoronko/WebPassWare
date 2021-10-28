@@ -7,6 +7,8 @@
 #include "PassGroupDialogController.h"
 #include "PasswordGenerateDialog.h"
 #include "MessageBox.h"
+#include "SettingsWidget.h"
+#include "SettingsDialog.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
 {
@@ -110,6 +112,9 @@ void CWebPassWareMainWindow::setActions(void)
 
     CAction *action_GenerationDialog = new CAction(tr("Generator"), ICON("Toolbox"), tr("Generator haseł"), QString(""), QString("ACTION_GENERATOR_DIALOG"), this);
     m_actions.insert(action_GenerationDialog->getActionName(), action_GenerationDialog);
+
+    CAction *actionSettingsDialog = new CAction(tr("Opcje programu"), ICON("Settings"), tr("Opcje programu"), QString(""), QString("ACTION_SETTINGS_DIALOG") ,this);
+    m_actions.insert(actionSettingsDialog->getActionName(), actionSettingsDialog);
 }
 
 void CWebPassWareMainWindow::setMenu(void)
@@ -117,6 +122,7 @@ void CWebPassWareMainWindow::setMenu(void)
     QMenu *fileMenu;
     QMenu *groupMenu;
     QMenu *entryMenu;
+    QMenu *settingsMenu;
     QMenu *toolMenu;
     QMenu *helpMenu;
 
@@ -138,6 +144,10 @@ void CWebPassWareMainWindow::setMenu(void)
     entryMenu->addSeparator();
     entryMenu->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
 
+    settingsMenu = new QMenu(m_menuBar);
+    settingsMenu->setTitle(tr("&Settings"));
+    settingsMenu->addAction(m_actions.value(QString("ACTION_SETTINGS_DIALOG")));
+
     toolMenu = new QMenu(m_menuBar);
     toolMenu->setTitle(tr("&Tools"));
     toolMenu->addAction(m_actions.value(QString("ACTION_GENERATOR_DIALOG")));
@@ -148,7 +158,7 @@ void CWebPassWareMainWindow::setMenu(void)
     helpMenu->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
 
-    m_menus << fileMenu << groupMenu << entryMenu << toolMenu << helpMenu;
+    m_menus << fileMenu << groupMenu << entryMenu << settingsMenu << toolMenu << helpMenu;
     return;
 }
 
@@ -529,3 +539,13 @@ void CWebPassWareMainWindow::on_ACTION_GENERATOR_DIALOG_triggered()
     dialog->exec();
     safe_delete(dialog);
 }
+
+void CWebPassWareMainWindow::on_ACTION_SETTINGS_DIALOG_triggered(void)
+{
+    auto sw = new SettingsWidget(this);
+    auto dialog = new SettingsDialog(sw, this);
+    dialog->exec();
+    dialog->close();
+    safe_delete(dialog)
+}
+

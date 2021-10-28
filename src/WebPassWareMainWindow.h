@@ -88,6 +88,8 @@ public slots:
     void on_ACTION_COPY_PASS_ENTRY_USER_triggered();
 
     void on_ACTION_GENERATOR_DIALOG_triggered();
+
+    void on_ACTION_SETTINGS_DIALOG_triggered();
 };
 
 #endif // CWEBPASSWAREMAINWINDOW_H

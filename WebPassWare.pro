@@ -36,6 +36,7 @@ SOURCES += \
     src/Gui/Dialogs/AbstractCloseDialog.cpp \
     src/Gui/Dialogs/Dialog.cpp \
     src/Gui/Dialogs/PasswordGenerateDialog.cpp \
+    src/Gui/Forms/AbstractFormWidget.cpp \
     src/Gui/Forms/Form.cpp \
     src/Gui/Forms/FormAbstractField.cpp \
     src/Gui/Forms/FormButtonField.cpp \
@@ -55,17 +56,29 @@ SOURCES += \
     src/Gui/ModelForms/PassEntryDialogController.cpp \
     src/Gui/ModelForms/PassGroupDialog.cpp \
     src/Gui/ModelForms/PassGroupDialogController.cpp \
+    src/Gui/Settings/AbstractSettingsItemController.cpp \
+    src/Gui/Settings/AbstractSettingsItemView.cpp \
+    src/Gui/Settings/SettingsDatabaseView.cpp \
+    src/Gui/Settings/SettingsDatabaseViewController.cpp \
+    src/Gui/Settings/SettingsDialog.cpp \
+    src/Gui/Settings/SettingsLookController.cpp \
+    src/Gui/Settings/SettingsLookView.cpp \
+    src/Gui/Settings/SettingsWidget.cpp \
     src/Gui/Widgets/Button.cpp \
     src/Gui/Widgets/ButtonBox.cpp \
     src/Gui/Widgets/CalendarWidget.cpp \
     src/Gui/Widgets/DateEdit.cpp \
     src/Gui/Widgets/DelayEditLine.cpp \
     src/Gui/Widgets/FixedLineEdit.cpp \
+    src/Gui/Widgets/FontEdit.cpp \
     src/Gui/Widgets/Frame.cpp \
     src/Gui/Layouts.cpp \
     src/Gui/Dialogs/MessageBox.cpp \
     src/Gui/Splitter.cpp \
     src/Gui/Style.cpp \
+    src/Gui/Widgets/Label.cpp \
+    src/Gui/Widgets/ListWidget.cpp \
+    src/Gui/Widgets/ListWidgetItem.cpp \
     src/Gui/Widgets/PasswordGeneratorWidget.cpp \
     src/Gui/Widgets/TabWidget.cpp \
     src/Gui/Widgets/TableView.cpp \
@@ -111,6 +124,7 @@ HEADERS += \
     src/Gui/Dialogs/AbstractCloseDialog.h \
     src/Gui/Dialogs/Dialog.h \
     src/Gui/Dialogs/PasswordGenerateDialog.h \
+    src/Gui/Forms/AbstractFormWidget.h \
     src/Gui/Forms/Form.h \
     src/Gui/Forms/FormAbstractField.h \
     src/Gui/Forms/FormButtonField.h \
@@ -130,17 +144,29 @@ HEADERS += \
     src/Gui/ModelForms/PassEntryDialogController.h \
     src/Gui/ModelForms/PassGroupDialog.h \
     src/Gui/ModelForms/PassGroupDialogController.h \
+    src/Gui/Settings/AbstractSettingsItemController.h \
+    src/Gui/Settings/AbstractSettingsItemView.h \
+    src/Gui/Settings/SettingsDatabaseView.h \
+    src/Gui/Settings/SettingsDatabaseViewController.h \
+    src/Gui/Settings/SettingsDialog.h \
+    src/Gui/Settings/SettingsLookController.h \
+    src/Gui/Settings/SettingsLookView.h \
+    src/Gui/Settings/SettingsWidget.h \
     src/Gui/Widgets/Button.h \
     src/Gui/Widgets/ButtonBox.h \
     src/Gui/Widgets/CalendarWidget.h \
     src/Gui/Widgets/DateEdit.h \
     src/Gui/Widgets/DelayEditLine.h \
     src/Gui/Widgets/FixedLineEdit.h \
+    src/Gui/Widgets/FontEdit.h \
     src/Gui/Widgets/Frame.h \
     src/Gui/Layouts.h \
     src/Gui/Dialogs/MessageBox.h \
     src/Gui/Splitter.h \
     src/Gui/Style.h \
+    src/Gui/Widgets/Label.h \
+    src/Gui/Widgets/ListWidget.h \
+    src/Gui/Widgets/ListWidgetItem.h \
     src/Gui/Widgets/PasswordGeneratorWidget.h \
     src/Gui/Widgets/TabWidget.h \
     src/Gui/Widgets/TableView.h \
@@ -161,8 +187,8 @@ RESOURCES += style.qrc \
 
 
 INCLUDEPATH += src/ src/Common/ src/Gui/ src/Gui/Widgets/ src/Gui/Dialogs/ \
-               src/Gui/Forms/ src/Database/ src/Models/ src/Gui/ModelForms/
-
+               src/Gui/Forms/ src/Database/ src/Models/ src/Gui/ModelForms/ \
+               src/Gui/Settings/
 
 DEPENDPATH  += $${INCLUDEPATH}
 
