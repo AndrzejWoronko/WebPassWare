@@ -12,6 +12,12 @@
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
 {
+    SETT.setDefaultGuiSettings();
+//Ustawienie fontu dla całej aplikacji
+    QFont f;
+    if (f.fromString(SETT.getValue(SETTINGS_GUI_FONT).toString()))
+        APPI->setFont(f);
+
     setAdditionalWidgets();
     m_dataTable->setFocus();
 }
