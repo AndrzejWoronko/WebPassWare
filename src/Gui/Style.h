@@ -12,8 +12,10 @@
 
 class CStyle : public Singleton<CStyle>
 {
+
 public:
-    enum StyleSheet {
+    enum StyleSheet
+    {
         STANDARD = 0,
         BLUE,
         GREY,
@@ -21,6 +23,28 @@ public:
         DARK,
         DARKORANGE
     };
+
+    Q_ENUMS(StyleSheet)
+
+    enum IconAttributes
+    {
+        NONE,
+        PLUS,
+        MINUS,
+        EDIT,
+        DELETE,
+        DENIED,
+        INFO,
+        WARNING,
+        QUESTION,
+        ERROR,
+        SORT_ASC,
+        SORT_DESC,
+        LIGHTENING,
+        DISK,        
+        SAVE
+    };
+    Q_ENUMS(IconAttributes)
 
 private:
 
@@ -47,6 +71,13 @@ public:
     static bool iconFromStyleExist(const QString &iconName);
     static QString iconFromStylePath(const QString &iconName);
     static QPixmap pixmapFromStyle(const QString &pixmapName);
+
+
+private:
+    static QString getIconNameForAttribute(CStyle::IconAttributes attr);
+    static QString getIconNameForAttribute(const QString &attr);
+    static QIcon mergeIconAttribute(const QIcon &icon, const QString &attr);
+    static QPixmap mergePixmapAttribute(const QPixmap &pixmap, const QString &attr);
 
 };
 

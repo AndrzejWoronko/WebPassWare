@@ -23,5 +23,23 @@
         <file>icons/50px/Password-reset.png</file>
         <file>icons/50px/Toolbox.png</file>
         <file>icons/50px/User.png</file>
+        <file>icons/50px/Warning.png</file>
+        <file>icons/50px/Questions.png</file>
+        <file>icons/50px/Plus.png</file>
+        <file>icons/50px/Minus.png</file>
+        <file>icons/50px/Info.png</file>
+        <file>icons/50px/Error.png</file>
+        <file>icons/50px/Edit.png</file>
+        <file>icons/50px/Denied.png</file>
+        <file>icons/50px/Delete.png</file>
+        <file>icons/50px/Key.png</file>
+        <file>icons/50px/Settings.png</file>
+        <file>icons/50px/Database-settings.png</file>
+        <file>icons/50px/Font.png</file>
+        <file>icons/50px/Lightning.png</file>
+        <file>icons/50px/Question.png</file>
+        <file>icons/50px/Sort_asc.png</file>
+        <file>icons/50px/Sort_desc.png</file>
+        <file>icons/50px/Warn.png</file>
     </qresource>
 </RCC>

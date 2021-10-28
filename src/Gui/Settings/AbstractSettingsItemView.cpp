@@ -13,7 +13,7 @@ CAbstractSettingsItemView::CAbstractSettingsItemView(const QString &title, QWidg
 
     //m_scrollArea->setWidget(m_widget);
 
-    m_title_label = new CLabel(title, QString(), this);
+    m_title_label = new CLabel(title, ICON("Settings|INFO"), this);
     m_title_label->setBold();
 
     m_button_box = new CButtonBoxApplyRestore(this);

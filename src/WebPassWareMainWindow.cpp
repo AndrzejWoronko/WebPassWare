@@ -94,11 +94,11 @@ void CWebPassWareMainWindow::setActions(void)
     CAction *action_RefreshPassEntry = new CAction(tr("Refresh records"), ICON("Refresh"), tr("Refresh records"), QString(""), QString("ACTION_REFRESH_PASS_ENTRY"), this);
     m_actions.insert(action_RefreshPassEntry->getActionName(), action_RefreshPassEntry);
 
-    CAction *action_AddPassEntry = new CAction(tr("Add record"), ICON("Add-row"), tr("Add record"), QString("Insert"), QString("ACTION_ADD_PASS_ENTRY"), this);
+    CAction *action_AddPassEntry = new CAction(tr("Add record"), ICON("Key|PLUS"), tr("Add record"), QString("Insert"), QString("ACTION_ADD_PASS_ENTRY"), this);
     m_actions.insert(action_AddPassEntry->getActionName(), action_AddPassEntry);
-    CAction *action_EditPassEntry = new CAction(tr("Edit record"), ICON("Edit-row"), tr("Edit record"), QString("Enter"), QString("ACTION_EDIT_PASS_ENTRY"), this);
+    CAction *action_EditPassEntry = new CAction(tr("Edit record"), ICON("Key|Edit"), tr("Edit record"), QString("Enter"), QString("ACTION_EDIT_PASS_ENTRY"), this);
     m_actions.insert(action_EditPassEntry->getActionName(), action_EditPassEntry);
-    CAction *action_DelPassEntry = new CAction(tr("Delete record"), ICON("Delete-row"), tr("Delete record"), QString("Delete"), QString("ACTION_DEL_PASS_ENTRY"), this);
+    CAction *action_DelPassEntry = new CAction(tr("Delete record"), ICON("Key|Delete"), tr("Delete record"), QString("Delete"), QString("ACTION_DEL_PASS_ENTRY"), this);
     m_actions.insert(action_DelPassEntry->getActionName(), action_DelPassEntry);
 
     CAction *action_CopyPassEntryUser = new CAction(tr("Copy user to clipboard"), ICON("User"), tr("Copy user to clipboard"), QString("Ctrl+X"), QString("ACTION_COPY_PASS_ENTRY_USER"), this);
