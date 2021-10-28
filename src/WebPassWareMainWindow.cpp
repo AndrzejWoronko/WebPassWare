@@ -100,7 +100,7 @@ void CWebPassWareMainWindow::setActions(void)
     CAction *action_RefreshPassEntry = new CAction(tr("Refresh records"), ICON("Refresh"), tr("Refresh records"), QString(""), QString("ACTION_REFRESH_PASS_ENTRY"), this);
     m_actions.insert(action_RefreshPassEntry->getActionName(), action_RefreshPassEntry);
 
-    CAction *action_AddPassEntry = new CAction(tr("Add record"), ICON("Key|PLUS"), tr("Add record"), QString("Insert"), QString("ACTION_ADD_PASS_ENTRY"), this);
+    CAction *action_AddPassEntry = new CAction(tr("Add record"), ICON("Key|Add"), tr("Add record"), QString("Insert"), QString("ACTION_ADD_PASS_ENTRY"), this);
     m_actions.insert(action_AddPassEntry->getActionName(), action_AddPassEntry);
     CAction *action_EditPassEntry = new CAction(tr("Edit record"), ICON("Key|Edit"), tr("Edit record"), QString("Enter"), QString("ACTION_EDIT_PASS_ENTRY"), this);
     m_actions.insert(action_EditPassEntry->getActionName(), action_EditPassEntry);

@@ -21,8 +21,10 @@ void SettingsDatabaseView::addFields()
     m_base_full_path = new CFormTextField(QString("m_base_full_path"), tr("Ścieżka do bazy danych"), DB.getBaseNameFullPath(), 100, true);
     addField(m_base_full_path);
     m_base_passwd1 = new CFormTextField(QString("m_base_passwd1"), tr("Hasło bazy danych"), "", 100);
+    m_base_passwd1->setPasswdEcho();
     addField(m_base_passwd1);
     m_base_passwd2 = new CFormTextField(QString("m_base_passwd2"), tr("Powtorz hasło bazy danych"), "", 100);
+    m_base_passwd2->setPasswdEcho();
     addField(m_base_passwd2);
 }
 
