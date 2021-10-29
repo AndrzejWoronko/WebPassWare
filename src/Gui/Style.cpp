@@ -225,7 +225,7 @@ QString CStyle::getIconNameForAttribute(CStyle::IconAttributes attr)
             return "Minus.png";
         case EDIT:
             return "Edit.png";
-        case DELETE:
+        case _DELETE:
             return "Delete.png";
         case DENIED:
             return "Denied.png";
@@ -235,7 +235,7 @@ QString CStyle::getIconNameForAttribute(CStyle::IconAttributes attr)
             return "Warn.png";
         case QUESTION:
             return "Question.png";
-        case ERROR:
+        case _ERROR:
             return "Error.png";
         case SORT_ASC:
             return "Sort_asc.png";
@@ -261,7 +261,7 @@ QString CStyle::getIconNameForAttribute(const QString &attr)
     else if (attr.toUpper() == "EDIT")
         return getIconNameForAttribute(CStyle::EDIT);
     else if (attr.toUpper() == "DELETE")
-        return getIconNameForAttribute(CStyle::DELETE);
+        return getIconNameForAttribute(CStyle::_DELETE);
     else if (attr.toUpper() == "DENIED")
         return getIconNameForAttribute(CStyle::DENIED);
     else if (attr.toUpper() == "INFO")
@@ -271,7 +271,7 @@ QString CStyle::getIconNameForAttribute(const QString &attr)
     else if (attr.toUpper() == "QUESTION")
         return getIconNameForAttribute(CStyle::QUESTION);
     else if (attr.toUpper() == "ERROR")
-        return getIconNameForAttribute(CStyle::ERROR);
+        return getIconNameForAttribute(CStyle::_ERROR);
     else if (attr.toUpper() == "SORT_ASC")
         return getIconNameForAttribute(CStyle::SORT_ASC);
     else if (attr.toUpper() == "SORT_DESC")

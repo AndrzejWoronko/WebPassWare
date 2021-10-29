@@ -202,6 +202,7 @@ macx {
 }
 
 win32 {
+    LIBS += -L$${DEST_LIBS} -lpsapi
     EXTRA_DIR ~= s,/,\\,g
     DEST_DIR ~= s,/,\\,g
 
