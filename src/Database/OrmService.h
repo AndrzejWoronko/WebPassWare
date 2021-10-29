@@ -22,7 +22,7 @@ public:
     virtual ~COrmService()
     {
         DEBUG_WITH_LINE << "OrmService destructor";
-        delete m_object;
+        safe_delete(m_object)
     }
 
     ModelName* getObject(void)

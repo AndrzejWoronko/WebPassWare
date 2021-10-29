@@ -13,9 +13,7 @@ typedef QHash<QString, QTranslator*> Translators;
 
 class CApplication : public QApplication
 {
-    Q_OBJECT
-
-    Q_ENUMS(EColorScheme)
+    Q_OBJECT    
 
     QPalette m_system_palette;
     bool m_nologin;
@@ -36,6 +34,8 @@ public:
       ColorPurple,
       ColorMaroon,
     };
+
+    Q_ENUMS(EColorScheme)
 
     CApplication(int & argc, char **argv);
     ~CApplication();

@@ -63,7 +63,7 @@ void CWebPassWareMainWindow::setInterface(void)
     sizePolicy1.setHeightForWidth(m_tabWidget->sizePolicy().hasHeightForWidth());
     m_tabWidget->setSizePolicy(sizePolicy1);
 
-    m_tabWidget->addTabWidget(initTabData(), tr("Records"), ICON("Password"));
+    m_tabWidget->addTabWidget(initTabData(), tr("Katalog haseł"), ICON("Password"));
     m_tabWidget->setTabEnabled(0, true);
     m_tabWidget->hideTabButton(0);
 
@@ -83,40 +83,40 @@ void CWebPassWareMainWindow::setInterface(void)
 
 void CWebPassWareMainWindow::setActions(void)
 {
-    CAction *actionAbount = new CAction(tr("&About program"), ICON("About"), tr("About program"), QString("Ctrl+H"), QString("ACTION_ABOUT"), this);
+    CAction *actionAbount = new CAction(tr("O programie ..."), ICON("About"), tr("Informacje o programie"), QString("Ctrl+H"), QString("ACTION_ABOUT"), this);
     m_actions.insert(actionAbount->getActionName(), actionAbount);
 
-    CAction *action_RefreshPassGroup = new CAction(tr("Refresh group"), ICON("Refresh"), tr("Refresh group"), QString(""), QString("ACTION_REFRESH_PASS_GROUP"), this);
+    CAction *action_RefreshPassGroup = new CAction(tr("Odświeżenie grup"), ICON("Refresh"), tr("Odświeżenie grup haseł"), QString(""), QString("ACTION_REFRESH_PASS_GROUP"), this);
     m_actions.insert(action_RefreshPassGroup->getActionName(), action_RefreshPassGroup);
 
-    CAction *action_AddPassGroup = new CAction(tr("Add group"), ICON("Add-row"), tr("Add group"), QString(""), QString("ACTION_ADD_PASS_GROUP"), this);
+    CAction *action_AddPassGroup = new CAction(tr("Dodanie grupy"), ICON("Add-row"), tr("Dodanie grupy"), QString(""), QString("ACTION_ADD_PASS_GROUP"), this);
     m_actions.insert(action_AddPassGroup->getActionName(), action_AddPassGroup);
-    CAction *action_EditPassGroup = new CAction(tr("Edit group"), ICON("Edit-row"), tr("Edit group"), QString(""), QString("ACTION_EDIT_PASS_GROUP"), this);
+    CAction *action_EditPassGroup = new CAction(tr("Edycja grupy"), ICON("Edit-row"), tr("Edycja grupy"), QString(""), QString("ACTION_EDIT_PASS_GROUP"), this);
     m_actions.insert(action_EditPassGroup->getActionName(), action_EditPassGroup);
-    CAction *action_DelPassGroup = new CAction(tr("Delete group"), ICON("Delete-row"), tr("Delete group"), QString(""), QString("ACTION_DEL_PASS_GROUP"), this);
+    CAction *action_DelPassGroup = new CAction(tr("Usunięcie grupy"), ICON("Delete-row"), tr("Usunięcie grupy"), QString(""), QString("ACTION_DEL_PASS_GROUP"), this);
     m_actions.insert(action_DelPassGroup->getActionName(), action_DelPassGroup);
 
 
-    CAction *action_RefreshPassEntry = new CAction(tr("Refresh records"), ICON("Refresh"), tr("Refresh records"), QString(""), QString("ACTION_REFRESH_PASS_ENTRY"), this);
+    CAction *action_RefreshPassEntry = new CAction(tr("Odświeżenie rekordów"), ICON("Refresh"), tr("Odświeżenie rekordów"), QString(""), QString("ACTION_REFRESH_PASS_ENTRY"), this);
     m_actions.insert(action_RefreshPassEntry->getActionName(), action_RefreshPassEntry);
 
-    CAction *action_AddPassEntry = new CAction(tr("Add record"), ICON("Key|Add"), tr("Add record"), QString("Insert"), QString("ACTION_ADD_PASS_ENTRY"), this);
+    CAction *action_AddPassEntry = new CAction(tr("Dodawanie wpisu"), ICON("Key|Add"), tr("Dodawanie wpisu"), QString("Insert"), QString("ACTION_ADD_PASS_ENTRY"), this);
     m_actions.insert(action_AddPassEntry->getActionName(), action_AddPassEntry);
-    CAction *action_EditPassEntry = new CAction(tr("Edit record"), ICON("Key|Edit"), tr("Edit record"), QString("Enter"), QString("ACTION_EDIT_PASS_ENTRY"), this);
+    CAction *action_EditPassEntry = new CAction(tr("Edycja wpisu"), ICON("Key|Edit"), tr("Edycja wpisu"), QString("Enter"), QString("ACTION_EDIT_PASS_ENTRY"), this);
     m_actions.insert(action_EditPassEntry->getActionName(), action_EditPassEntry);
-    CAction *action_DelPassEntry = new CAction(tr("Delete record"), ICON("Key|Delete"), tr("Delete record"), QString("Delete"), QString("ACTION_DEL_PASS_ENTRY"), this);
+    CAction *action_DelPassEntry = new CAction(tr("Kasowanie wpisu"), ICON("Key|Delete"), tr("Kasowanie wpisu"), QString("Delete"), QString("ACTION_DEL_PASS_ENTRY"), this);
     m_actions.insert(action_DelPassEntry->getActionName(), action_DelPassEntry);
 
-    CAction *action_CopyPassEntryUser = new CAction(tr("Copy user to clipboard"), ICON("User"), tr("Copy user to clipboard"), QString("Ctrl+X"), QString("ACTION_COPY_PASS_ENTRY_USER"), this);
+    CAction *action_CopyPassEntryUser = new CAction(tr("Kopiowanie użytkownika do schowka"), ICON("User"), tr("Kopiowanie użytkownika do schowka"), QString("Ctrl+X"), QString("ACTION_COPY_PASS_ENTRY_USER"), this);
     m_actions.insert(action_CopyPassEntryUser->getActionName(), action_CopyPassEntryUser);
 
-    CAction *action_CopyPassEntryPassword = new CAction(tr("Copy password to clipboard"), ICON("Copy"), tr("Copy password to clipboard"), QString("Ctrl+C"), QString("ACTION_COPY_PASS_ENTRY_PASSWORD"), this);
+    CAction *action_CopyPassEntryPassword = new CAction(tr("Kopiowanie hasła do schowka"), ICON("Copy"), tr("Kopiowanie hasła do schowka"), QString("Ctrl+C"), QString("ACTION_COPY_PASS_ENTRY_PASSWORD"), this);
     m_actions.insert(action_CopyPassEntryPassword->getActionName(), action_CopyPassEntryPassword);
 
-    CAction *action_RefreshAll = new CAction(tr("Refresh records"), ICON("Refresh"), tr("Refresh records"), QString(""), QString("ACTION_REFRESH_ALL"), this);
+    CAction *action_RefreshAll = new CAction(tr("Odświeżenie danych"), ICON("Refresh"), tr("Odświeżenie danych"), QString(""), QString("ACTION_REFRESH_ALL"), this);
     m_actions.insert(action_RefreshAll->getActionName(), action_RefreshAll);
 
-    CAction *action_GenerationDialog = new CAction(tr("Generator"), ICON("Toolbox"), tr("Generator haseł"), QString(""), QString("ACTION_GENERATOR_DIALOG"), this);
+    CAction *action_GenerationDialog = new CAction(tr("Generator haseł"), ICON("Toolbox"), tr("Generator haseł"), QString(""), QString("ACTION_GENERATOR_DIALOG"), this);
     m_actions.insert(action_GenerationDialog->getActionName(), action_GenerationDialog);
 
     CAction *actionSettingsDialog = new CAction(tr("Opcje programu"), ICON("Settings"), tr("Opcje programu"), QString(""), QString("ACTION_SETTINGS_DIALOG") ,this);
@@ -133,33 +133,33 @@ void CWebPassWareMainWindow::setMenu(void)
     QMenu *helpMenu;
 
     fileMenu = new QMenu(m_menuBar);
-    fileMenu->setTitle(tr("&File"));
+    fileMenu->setTitle(tr("&Plik"));
     fileMenu->addAction(m_actions.value(QString("ACTION_REFRESH_ALL")));
     fileMenu->addSeparator();
     fileMenu->addAction(m_actions.value(QString("ACTION_EXIT")));
 
     groupMenu = new QMenu(m_menuBar);
-    groupMenu->setTitle(tr("&Groups"));
+    groupMenu->setTitle(tr("&Grupy"));
     groupMenu->addAction(m_actions.value(QString("ACTION_ADD_PASS_GROUP")));
     groupMenu->addSeparator();
     groupMenu->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_GROUP")));
 
     entryMenu = new QMenu(m_menuBar);
-    entryMenu->setTitle(tr("&Records"));
+    entryMenu->setTitle(tr("&Wpisy"));
     entryMenu->addAction(m_actions.value(QString("ACTION_ADD_PASS_ENTRY")));
     entryMenu->addSeparator();
     entryMenu->addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
 
     settingsMenu = new QMenu(m_menuBar);
-    settingsMenu->setTitle(tr("&Settings"));
+    settingsMenu->setTitle(tr("&Ustawienia"));
     settingsMenu->addAction(m_actions.value(QString("ACTION_SETTINGS_DIALOG")));
 
     toolMenu = new QMenu(m_menuBar);
-    toolMenu->setTitle(tr("&Tools"));
+    toolMenu->setTitle(tr("&Narzędzia"));
     toolMenu->addAction(m_actions.value(QString("ACTION_GENERATOR_DIALOG")));
 
     helpMenu = new QMenu(m_menuBar);
-    helpMenu->setTitle(tr("&Help"));
+    helpMenu->setTitle(tr("&Pomoc"));
     helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT")));
     helpMenu->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
@@ -238,7 +238,7 @@ QWidget *CWebPassWareMainWindow::initTabData()
     auto vboxLayout = new CVBoxLayout(tab);
 
     m_filtrDataTable = new CDelayEditLine(tab);
-    m_filtrDataTable->setPlaceholderText(tr("Filter ..."));
+    m_filtrDataTable->setPlaceholderText(tr("Filtr ..."));
     vboxLayout->addWidget(m_filtrDataTable);
 
     m_dataTable = new CTableView(tab);
@@ -246,22 +246,22 @@ QWidget *CWebPassWareMainWindow::initTabData()
 
     auto hboxLayout = new CHBoxLayout();
 
-    CToolButton *copyDataButtonUser = new CToolButton(CButtonPrivate(tr("User to clipboard"), tr("Copy user to clipboard"), ICON("User")), tab);
+    CToolButton *copyDataButtonUser = new CToolButton(CButtonPrivate(tr("Użytkownik do schowka"), tr("Kopiowanie użytkownika do schowka"), ICON("User")), tab);
     copyDataButtonUser->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     copyDataButtonUser->setDefaultAction(m_actions.value("ACTION_COPY_PASS_ENTRY_USER"));
-    CToolButton *copyDataButtonPass = new CToolButton(CButtonPrivate(tr("Password to clipboard"), tr("Copy password to clipboard"), ICON("Copy")), tab);
+    CToolButton *copyDataButtonPass = new CToolButton(CButtonPrivate(tr("Hasło do schowka"), tr("Kopiowanie hasła do schowka"), ICON("Copy")), tab);
     copyDataButtonPass->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     copyDataButtonPass->setDefaultAction(m_actions.value("ACTION_COPY_PASS_ENTRY_PASSWORD"));
-    CToolButton *addRowButton = new CToolButton(CButtonPrivate(tr("Add record"), tr("Add record"), ICON("Add-row")), tab);
+    CToolButton *addRowButton = new CToolButton(CButtonPrivate(tr("Dodanie wpisu"), tr("Dodanie wpisu"), ICON("Add-row")), tab);
     addRowButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     addRowButton->setDefaultAction(m_actions.value("ACTION_ADD_PASS_ENTRY"));
-    CToolButton *editRowButton = new CToolButton(CButtonPrivate(tr("Edit record"), tr("Edit record"), ICON("Edit-row")), tab);
+    CToolButton *editRowButton = new CToolButton(CButtonPrivate(tr("Edycja wpisu"), tr("Edycja wpisu"), ICON("Edit-row")), tab);
     editRowButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     editRowButton->setDefaultAction(m_actions.value("ACTION_EDIT_PASS_ENTRY"));    
-    CToolButton *delRowButton = new CToolButton(CButtonPrivate(tr("Delete record"), tr("Delete record"), ICON("Delete-row")), tab);
+    CToolButton *delRowButton = new CToolButton(CButtonPrivate(tr("Kasowanie wpisu"), tr("Kasowanie wpisu"), ICON("Delete-row")), tab);
     delRowButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     delRowButton->setDefaultAction(m_actions.value("ACTION_DEL_PASS_ENTRY"));
-    CToolButton *refreshDataButton = new CToolButton(CButtonPrivate(tr("Refresh records"), tr("Refresh records"), ICON("Refresh")), tab);
+    CToolButton *refreshDataButton = new CToolButton(CButtonPrivate(tr("Odświeżenie rekordów"), tr("Odświeżenie rekordów"), ICON("Refresh")), tab);
     refreshDataButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     refreshDataButton->setDefaultAction(m_actions.value("ACTION_REFRESH_PASS_ENTRY"));
 

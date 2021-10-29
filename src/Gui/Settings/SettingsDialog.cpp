@@ -30,8 +30,8 @@ void SettingsDialog::addFieldsAndComponents()
 SettingsDialog::~SettingsDialog()
 {
     this->saveDialogState();
-    //    delete m_VLayoutDialog;
-    //    delete m_buttonBox;
+    //    safe_delete(m_VLayoutDialog)
+    //    safe_delete(m_buttonBox)
 }
 
 void SettingsDialog::restoreDialogState()

@@ -10,9 +10,7 @@
 #include "Global.h"
 #include "Logger.h"
 #include "Style.h"
-//#include "databasetablecheck.h"
 #include "Application.h"
-//#include "BackupAutoRemover.h"
 #include "WebPassWareMainWindow.h"
 #include "Database.h"
 #include "ModelTableCheck.h"
@@ -72,11 +70,9 @@ int main(int argc, char **argv)
 
     if (a->run() == RET_ERROR)
        {
-          //delete a;
-         return 0;
+         return RET_OK;
        }
      CStyle::getInstance().setApplicationStyle(a);
-
 /*
 #if QT_VERSION >= 0x040400
   // This is the correct place for this call but on versions less
@@ -87,41 +83,23 @@ int main(int argc, char **argv)
  */
  // sprawdzenie czy jest katalog instalacji jeżeli nie ma to ustawia na bieżący
 
-
-    //MainWindow1 w1;
-
-    // Splash screen jakby był 
-//    else
-       {        
-            a->processEvents();
-            //DB.initConnection();
-            //Sprawdzenie i otwarcie bazy danych
-            //DB.createDatabase(DB.getMBaseName());
-
-            if (check_tables)
-               {
-                 //Sprawdzenie/założenie tabel
-                 if (DB.isConnected())
-                    {
-                      ModelTableCheck::checkAllTables();
-                    }
-                 //DataBaseTableCheck::checkAllTables();
-                 //Init domyślnych wartości
-                 //DataBaseTableCheck::initDefaultValues();
-               }
-
-            w = new CWebPassWareMainWindow();
-            w->centerAndResize();
-            //w->restoreDialogState();
-            w->show();
-            //CBackupAutoRemover::getInstance().checkAndRemoveOldBackups();
+     a->processEvents();
+    if (check_tables)
+       {
+         //Sprawdzenie/założenie tabel
+         if (DB.isConnected())
+            {
+              ModelTableCheck::checkAllTables();
+            }
        }
-    //logs(QObject::tr("Uruchomienie programu"));
+    w = new CWebPassWareMainWindow();
+    //w->centerAndResize();
+    //w->restoreDialogState();
+    w->show();
+
     LOG_APP << QObject::tr("Uruchomienie programu");
     //w1.show();
     a->exec();
-    if (w)
-        delete w;
-
-    return 0;
+    safe_delete(w)
+    return RET_OK;
 }

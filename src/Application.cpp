@@ -3,7 +3,7 @@
 #include <QLibraryInfo>
 #include <QTranslator>
 #include <QToolTip>
-//#include "ExceptionSql.h"
+#include "ExceptionSql.h"
 //#include "ExceptionDialog.h"
 #include "Style.h"
 #include "MessageBox.h"
@@ -42,9 +42,6 @@ CApplication::CApplication(int & argc, char **argv) :
 
 CApplication::~CApplication()
 {
-    //delete mainWindow;
-    //delete logger;
-    //delete owner;
 }
 
 CApplication* CApplication::getInstance()
@@ -71,12 +68,12 @@ bool CApplication::notify(QObject * receiver, QEvent * event)
       CMessageBox::OkDialogCritical(QObject::tr("<p style='font-weight: bold; font-size: x-large; color: #f00'>Błąd krytyczny!</p><p>%1</p>").arg(e.what()));
       throw e;
     }
-//    catch(CExceptionSql *e)
-//    {
-//        DEBUG_WITH_LINE << "Nieprzechwycony wyjątek w metodzie: " << e->getSourceMethod() << "\nKomunikat: " << e->getMessage();
-//        QString msg = tr("Nieprzechwycony wyjątek w metodzie: ") + e->getSourceMethod() + QString("\n")+tr( "Komunikat: ") + e->getMessage();
-//        CMessageBox::OkDialogCritical(QObject::tr("<p style='font-weight: bold; font-size: x-large; color: #f00'>Błąd krytyczny!</p><p>%1</p>").arg(msg));
-//    }
+    catch(CExceptionSql *e)
+    {
+        DEBUG_WITH_LINE << "Nieprzechwycony wyjątek w metodzie: " << e->getSourceMethod() << "\nKomunikat: " << e->getMessage();
+        QString msg = tr("Nieprzechwycony wyjątek w metodzie: ") + e->getSourceMethod() + QString("\n")+tr( "Komunikat: ") + e->getMessage();
+        CMessageBox::OkDialogCritical(QObject::tr("<p style='font-weight: bold; font-size: x-large; color: #f00'>Błąd krytyczny!</p><p>%1</p>").arg(msg));
+    }
     catch (...)
     {
       //TODO własne dialogi
