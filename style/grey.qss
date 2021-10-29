@@ -89,6 +89,7 @@ QComboBox::drop-down:!enabled
 QComboBox::down-arrow 
 {
 	padding: 0 0 0 5;
+     	image: url(:/style-icons/arrow.png);
 }
 
 
@@ -364,6 +365,7 @@ QDateEdit::drop-down
 
 QDateEdit::down-arrow 
 {
+    	image: url(:/style-icons/arrow.png);
 	padding: 0 0 0 5;
 }
 
@@ -440,7 +442,23 @@ QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover
 	background: #b8bac6;
 }
 
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow
+{
+     	image: url(:/style-icons/up_arrowblack.png);
+}
+
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow
+{
+     	image: url(:/style-icons/down_arrowblack.png);
+}
+
 QRadioButton::indicator:checked 
+{
+	padding-left: 3px;
+	padding-bottom: 3px;
+}
+
+QCheckBox::indicator:checked 
 {
 	padding-left: 3px;
 	padding-bottom: 3px;

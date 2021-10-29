@@ -6,4 +6,11 @@
         <file alias="dark">style/dark.qss</file>
         <file alias="darkorange">style/darkorange.qss</file>
     </qresource>
+    <qresource prefix="/style-icons">
+        <file alias="arrow.png">style/icons/arrow.png</file>
+        <file alias="check.png">style/icons/check.png</file>
+        <file alias="radio.png">style/icons/radio.png</file>
+        <file alias="down_arrowblack.png">style/icons/down_arrowblack.png</file>
+        <file alias="up_arrowblack.png">style/icons/up_arrowblack.png</file>
+    </qresource>
 </RCC>
