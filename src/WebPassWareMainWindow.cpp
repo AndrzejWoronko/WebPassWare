@@ -48,7 +48,7 @@ void CWebPassWareMainWindow::setInterface(void)
     QWidget *table_widget  = new QWidget(m_splitter);
     m_VLayoutMain = new CVBoxLayout(table_widget);
     m_filtrGroupList = new CDelayEditLine(this);
-    m_filtrGroupList->setPlaceholderText(tr("Group filter ... "));
+    m_filtrGroupList->setPlaceholderText(tr("Filtr grup ... "));
     m_VLayoutMain->addWidget(m_filtrGroupList);
     //Table list
     m_treeGroupList = new QTreeView(table_widget);
