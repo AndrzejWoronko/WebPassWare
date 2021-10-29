@@ -298,5 +298,5 @@ QString CStyle::getIconNameForAttribute(const QString &attr)
 
 QStringList CStyle::availableStyles()
 {
-  return QStringList() << QObject::tr("System default") << QObject::tr("Blue") << QObject::tr("Gray") << QObject::tr("Material-Google") << QObject::tr("Dark") << QObject::tr("Dark Orange");
+  return QStringList() << QObject::tr("Systemowy") << QObject::tr("Niebieski") << QObject::tr("Szary") << QObject::tr("Google") << QObject::tr("Ciemny") << QObject::tr("Ciemny pomarańczowy");
 }
