@@ -25,6 +25,22 @@ CDatabase::~CDatabase()
     m_db.removeDatabase(QLatin1String(DB_CONNECTION_NAME));
 }
 
+QString CDatabase::getDatabaseHashPassword()
+{
+    return SETT.getSettings()->value(DATABASE_SETTING_PASSWORD).toString();
+}
+
+void CDatabase::setDatabasePassword(const QString &passwd)
+{
+    QString hash_passwd = QCryptographicHash::hash(passwd.toLatin1(), QCryptographicHash::Md5).toHex();
+    SETT.getSettings()->setValue(DATABASE_SETTING_PASSWORD, hash_passwd);
+}
+
+void CDatabase::setDatabaseHashPassword(const QString &passwd)
+{
+    SETT.getSettings()->setValue(DATABASE_SETTING_PASSWORD, passwd);
+}
+
 void CDatabase::initConnection()
 {
     QString dir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);

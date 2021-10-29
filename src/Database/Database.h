@@ -3,13 +3,15 @@
 
 #include "Global.h"
 #include <QtSql>
-#include <QSettings>
 #include <QSqlDatabase>
 #include "SqlQuery.h"
 #include "ExceptionSql.h"
 
 #define DB_CONNECTION_NAME "WebPassWareDbConnection"
 #define DB_NAME "WebPassWare.db"
+
+#define DATABASE_SETTING QString::fromUtf8("Database/")
+#define DATABASE_SETTING_PASSWORD DATABASE_SETTING + "Password"
 
 #define DB CDatabase::getInstance()
 
@@ -22,12 +24,14 @@ class CDatabase : public Singleton<CDatabase>
     ADD_FIELD(bool, m_echo_query, getEchoQuery, setEchoQuery)
     ADD_FIELD(bool, m_log_query, getLogQuery, setLogQuery)
 
-    QSettings settings;
-
 public:
 
     CDatabase(const QString &database_name = QString(DB_NAME));
     ~CDatabase();
+
+    QString getDatabaseHashPassword();
+    void setDatabaseHashPassword(const QString &hash_passwd);
+    void setDatabasePassword(const QString &passwd);
 
     void initConnection();
     bool isConnected();

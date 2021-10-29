@@ -4,11 +4,9 @@
 #include <QTranslator>
 #include <QToolTip>
 #include "ExceptionSql.h"
-//#include "ExceptionDialog.h"
+#include "LoginDialog.h"
 #include "Style.h"
 #include "MessageBox.h"
-
-
 
 CApplication* CApplication::m_instance = NULL;
 
@@ -172,16 +170,18 @@ void CApplication::setAppInformation()
 
 int CApplication::run()
 {
+    int ret = RET_OK;
+
     if (m_nologin)
-        return RET_OK;
+        return ret;
 
-//    CLoginDialogController login;
-
-//    if (login.exec() == QDialog::Rejected)
-//        {
-//            return RET_ERROR;
-//        }
-   return RET_OK;
+    auto login_dialog = new CLoginDialog(tr("Logowanie ..."), ICON("Lock"));
+    if (login_dialog && login_dialog->exec() == QDialog::Rejected)
+        {
+             ret = RET_ERROR;
+        }
+   safe_delete(login_dialog)
+   return ret;
 }
 
 void CApplication::logout()

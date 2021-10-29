@@ -1,6 +1,7 @@
 #include "SettingsDatabaseViewController.h"
 #include "Application.h"
 #include "MessageBox.h"
+#include "Database.h"
 
 SettingsDatabaseViewController::SettingsDatabaseViewController(QWidget *parent) : CAbstractSettingsItemController(parent)
 {
@@ -22,7 +23,15 @@ SettingsDatabaseViewController::SettingsDatabaseViewController(QWidget *parent) 
 
 void SettingsDatabaseViewController::getValuesFromSettings(void)
 {
-    //CFormAbstractField *f = NULL;
+    CFormAbstractField *f = NULL;
+    QString passwd = DB.getDatabaseHashPassword();
+
+    f = m_view->getFields().value("m_base_passwd1");
+    if (f)
+        f->setValue(passwd);
+    f = m_view->getFields().value("m_base_passwd2");
+    if (f)
+        f->setValue(passwd);
     this->disableButtons();
 }
 
@@ -41,12 +50,12 @@ void SettingsDatabaseViewController::setValuesToSettings(void)
     if (passwd1 == passwd2)
        {
            //Zapisz hasło do bazy
-
+           DB.setDatabasePassword(passwd1);
            this->disableButtons();
+           CMessageBox::OkDialogInformation(tr("Hasła do bazy danych zostało zmienione !!!"), m_view);
        }
     else
         CMessageBox::OkDialogWarning(tr("Hasła do bazy danych nie są jednakowe !!!"), m_view);
-
 }
 
 void SettingsDatabaseViewController::checkChanges()
