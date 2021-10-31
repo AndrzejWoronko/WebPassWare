@@ -88,9 +88,10 @@ bool PassEntryDialogController::exec(const QString &title)
     if (m_dialog)
     {
         m_dialog->setWindowTitle(title);
-        CFormAbstractField *f = m_dialog->getFields().value("m_id");
-        if (f)
-            f->getWidget()->setVisible(false);
+          CFormAbstractField *f = NULL;
+//        f = m_dialog->getFields().value("m_id");
+//        if (f)
+//            f->getWidget()->setVisible(false);
 
         if (m_dialog->exec())
         {
@@ -114,7 +115,7 @@ bool PassEntryDialogController::exec(const QString &title)
             f = m_dialog->getFields().value("m_id_pass_group");
             if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
             {
-                pe.setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
+                pe.setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
             }
 
             return PassEntryService::getInstance().addObject(&pe) != -1; //Zapis do bazy

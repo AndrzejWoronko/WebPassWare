@@ -52,9 +52,10 @@ bool PassGroupDialogController::exec(const QString &title)
     if (m_dialog)
     {
         m_dialog->setWindowTitle(title);
-        CFormAbstractField *f = m_dialog->getFields().value("m_id");
-        if (f)
-            f->getWidget()->setVisible(false);
+        CFormAbstractField *f = NULL;
+//        m_dialog->getFields().value("m_id");
+//        if (f)
+//            f->getWidget()->setVisible(false);
 
         if (m_dialog->exec())
         {

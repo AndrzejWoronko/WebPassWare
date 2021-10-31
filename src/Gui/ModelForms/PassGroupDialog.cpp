@@ -8,7 +8,7 @@ PassGroupDialog::PassGroupDialog(QWidget *parent) :
 
 void PassGroupDialog::addFields()
 {
-    m_id = new CFormNumberField(QString("m_id"), tr("Id"), 0);
+    m_id = new CFormNumberField(QString("m_id"), tr("Id"), 0, 0, 0, true);
     addField(m_id);
     m_name = new CFormTextField(QString("m_name"), tr("Nazwa grupy"), "", 52);
     addField(m_name);

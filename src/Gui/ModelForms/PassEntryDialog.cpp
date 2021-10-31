@@ -8,7 +8,7 @@ PassEntryDialog::PassEntryDialog(QWidget *parent) :
 
 void PassEntryDialog::addFields()
 {
-    m_id = new CFormNumberField(QString("m_id"), tr("Id"), 0);
+    m_id = new CFormNumberField(QString("m_id"), tr("Id"), 0, 0, 0, true);
     addField(m_id);
     m_title = new CFormTextField(QString("m_title"), tr("Tytuł"), "", 255);
     addField(m_title);
@@ -29,7 +29,7 @@ void PassEntryDialog::addComponents()
 {
     CForm::setComponents(getFormLayout(), m_id, m_id->getLabel(), 0, 1, 1, 1, true);
     CForm::setComponents(getFormLayout(), m_title, m_title->getLabel(), 1, 1, 1, 2);
-    CForm::setComponents(getFormLayout(), m_user, m_user->getLabel(), 2, 1, 1, 1);
+    CForm::setComponents(getFormLayout(), m_user, m_user->getLabel(), 2, 1, 1, 2);
     CForm::setComponents(getFormLayout(), m_pass, m_pass->getLabel(), 3, 1, 1, 2);
     CForm::setComponents(getFormLayout(), m_web_url, m_web_url->getLabel(), 4, 1, 1, 2);
     CForm::setComponents(getFormLayout(), m_desc, m_desc->getLabel(), 5, 1, 1, 4);

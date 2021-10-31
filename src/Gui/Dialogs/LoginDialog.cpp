@@ -29,6 +29,7 @@ CLoginDialog::CLoginDialog(const QString &title, const QString &iconName, QWidge
     connect(getButtonBox(), SIGNAL(rejected()), this, SLOT(reject()));
 
     this->restoreDialogState();
+    m_passwd->setFocus();
 }
 
 CLoginDialog::~CLoginDialog()

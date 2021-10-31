@@ -289,9 +289,9 @@ qint64 CWebPassWareMainWindow::getCurrentPassGroupId()
         if (m_pass_group_model)
         {
             int column = m_pass_group_model->columnIndex("id_pass_group");
-            idx = m_pass_group_proxy_model->index(sourceIndex.row(), column);
+            idx = m_pass_group_model->index(sourceIndex.row(), column);
         }
-        qint64 id = m_pass_group_proxy_model->data(idx).toLongLong();
+        qint64 id = m_pass_group_model->data(idx).toLongLong();
         return id;
     }
     else
@@ -309,10 +309,13 @@ qint64 CWebPassWareMainWindow::getCurrentPassEntryId()
         if (m_pass_group_model)
         {
             int column = m_pass_entry_model->columnIndex("id_pass_entry");
-            idx = m_pass_entry_proxy_model->index(sourceIndex.row(), column);
+            idx = m_pass_entry_model->index(sourceIndex.row(), column);
+
+            qint64 id = m_pass_entry_model->data(idx).toLongLong();
+            return id;
         }
-        qint64 id = m_pass_entry_proxy_model->data(idx).toLongLong();
-        return id;
+        else
+            return -1;
     }
     else
         return -1;
@@ -369,12 +372,12 @@ void CWebPassWareMainWindow::filterTableData(const QModelIndex & index)
         if (m_pass_group_model)
         {
             int column = m_pass_group_model->columnIndex("id_pass_group");
-            idx = m_pass_group_proxy_model->index(sourceIndex.row(), column);
+            idx = m_pass_group_model->index(sourceIndex.row(), column);
+            qint64 id = m_pass_group_model->data(idx).toLongLong();
+            m_pass_entry_model->setWhere(QString("m_id_pass_group=%1").arg(id));
+            DEBUG_WITH_LINE << "Clicked pass group id: " << id;
+            m_pass_entry_model->refresh();
         }
-        qint64 id = m_pass_group_proxy_model->data(idx).toLongLong();
-        m_pass_entry_model->setWhere(QString("m_id_pass_group=%1").arg(id));
-        DEBUG_WITH_LINE << "Clicked pass group id: " << id;
-        m_pass_entry_model->refresh();
     }
 }
 
