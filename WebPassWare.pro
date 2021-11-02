@@ -83,6 +83,7 @@ SOURCES += \
     src/Gui/Widgets/PasswordGeneratorWidget.cpp \
     src/Gui/Widgets/TabWidget.cpp \
     src/Gui/Widgets/TableView.cpp \
+    src/Gui/Widgets/TableViewItemsDelegates.cpp \
     src/Gui/Widgets/ToolButton.cpp \
     src/Models/ModelTableCheck.cpp \
     src/Models/PassEntry.cpp \
@@ -172,6 +173,7 @@ HEADERS += \
     src/Gui/Widgets/PasswordGeneratorWidget.h \
     src/Gui/Widgets/TabWidget.h \
     src/Gui/Widgets/TableView.h \
+    src/Gui/Widgets/TableViewItemsDelegates.h \
     src/Gui/Widgets/ToolButton.h \
     src/Models/ModelTableCheck.h \
     src/Models/PassEntry.h \
@@ -217,3 +219,4 @@ QMAKE_CXXFLAGS += -Wall -Wextra -std=gnu++11
 
 QMAKE_LFLAGS_RPATH += \
 
+DISTFILES += TODO README.md

@@ -298,7 +298,17 @@ bool CDatabase::alterTableAddColumn(const QString &tableName, const PkNames &inf
     return false;
 }
 
-qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVariant> &info, qint64 newId)
+bool CDatabase::resetAutoIncrement(const QString &tableName, qint64 value)
+{
+    m_lastQuery = QString("UPDATE SQLITE_SEQUENCE SET SEQ=%1 WHERE NAME='%2';").arg(value).arg(tableName);
+    if (m_query->exec(m_lastQuery))
+        return true;
+    else
+        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+    return false;
+}
+
+qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVariant> &info, qint64 newId, bool force_id)
 {
     QString key, fields, values;
     qint64 id = -1;
@@ -307,7 +317,7 @@ qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVari
         m_lastQuery = QString("INSERT INTO %1 DEFAULT VALUES;").arg(tableName);
     else
     {
-        if (newId > 0)
+        if (newId > 0 || force_id)
             {
               id = newId;
               fields = QString("id_%1").arg(tableName) + ", ";
@@ -333,7 +343,7 @@ qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVari
         m_lastQuery = m_lastQuery.arg(tableName, fields, values);
         m_query->prepare(m_lastQuery);
 
-        if (newId > 0)
+        if (newId > 0 || force_id)
         {
             key = QString("id_%1").arg(tableName);
             m_query->bindValue(":" + key, id);

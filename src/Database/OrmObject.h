@@ -358,7 +358,7 @@ public:
        Returns true if success, otherwise return false.
     */
 
-    bool save(qint64 newId = 0, const QString &tableName = QString())
+    bool save(qint64 newId = 0, const QString &tableName = QString(), bool force_id = false)
     {
         qint64 id = -1;
         QHash<QString, QVariant> info;
@@ -385,7 +385,7 @@ public:
             setTableName(tableName);
         try
         {
-            id = DB.addRecord(m_tableName, info, newId);
+            id = DB.addRecord(m_tableName, info, newId, force_id);
         }
         catch (CExceptionSql *e)
         {

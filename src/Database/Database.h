@@ -53,8 +53,9 @@ public:
     bool createTableIndexes(const QString &tableName, const QHash<QString, QString> &info, bool unique);
     bool dropTableIndexes(const QString &tableName, const QHash<QString, QString> &info);
     bool alterTableAddColumn(const QString &tableName, const PkNames &info);
+    bool resetAutoIncrement(const QString &tableName, qint64 value);
 
-    qint64 addRecord(const QString &tableName, const QHash<QString, QVariant> &info, qint64 newId);
+    qint64 addRecord(const QString &tableName, const QHash<QString, QVariant> &info, qint64 newId, bool force_id = false);
     bool updateRecord(const QString &tableName, const QHash<QString, QVariant> &info, const QString &params);
     bool replaceRecord(const QString &tableName, const QHash<QString, QVariant> &info);
     bool remove(const QString &tableName, const QString &params);

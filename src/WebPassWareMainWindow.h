@@ -41,11 +41,16 @@ class CWebPassWareMainWindow : public CAbstractMainWindow
     ADD_PTR_PROPERTY(CDelayEditLine, m_filtrGroupList, getFiltrGroupList)
     ADD_PTR_PROPERTY(CDelayEditLine, m_filtrDataTable, getFiltrDataTable)
 
+    ADD_PTR_PROPERTY(QMenu, m_headerContextMenu, getHeaderContextMenu)
+
 public:
     explicit CWebPassWareMainWindow(QWidget *parent = NULL);
     ~CWebPassWareMainWindow();
 
 private:
+
+    bool m_visible_passwords;
+    CAction *m_visible_passwords_action;
 
     CSqlModel *m_pass_group_model;
     CSqlModel *m_pass_entry_model;
@@ -57,12 +62,13 @@ private:
     virtual void setMenu(void);
     virtual void setActions(void);
     virtual void setToolBar(void);
-    virtual void setConnections(void);
+    virtual void setConnections(void);    
 
     qint64 getCurrentPassGroupId();
     qint64 getCurrentPassEntryId();
 
     QWidget *initTabData();
+    void initContextMenu();
 
 public slots:
 
@@ -70,6 +76,7 @@ public slots:
     void showTreeTableListContextMenu(const QPoint &position);
     void showDataTableContextMenu(const QPoint &position);
     void filterTableData(const QModelIndex &);
+    void onCustomHeaderContextMenuRequested(const QPoint& pos);
 
     void on_ACTION_ABOUT_triggered();
     void on_ACTION_REFRESH_ALL_triggered();

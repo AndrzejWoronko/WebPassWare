@@ -1,0 +1,4 @@
+- Hasła domyślnie nie widoczne, tylko po uruchomieniu funkcji pokaż hasła - OK
+- Dodanie przy starcie sprawdzenia tabel i wprowadznie grupy specjalnej "Wszystkie grupy" -OK
+- Export haseł do pliku CSV
+- Import haseł z pliku CSV

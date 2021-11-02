@@ -9,8 +9,12 @@
 #include "MessageBox.h"
 #include "SettingsWidget.h"
 #include "SettingsDialog.h"
+#include "TableViewItemsDelegates.h"
 
-CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
+CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent),
+    m_headerContextMenu(NULL), m_visible_passwords(false), m_visible_passwords_action(NULL),
+    m_pass_group_model(NULL), m_pass_entry_model(NULL),
+    m_pass_group_proxy_model(NULL), m_pass_entry_proxy_model(NULL)
 {
     SETT.setDefaultGuiSettings();
 //Ustawienie fontu dla całej aplikacji
@@ -20,10 +24,12 @@ CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainW
 
     setAdditionalWidgets();
     m_dataTable->setFocus();
+    initContextMenu(); // Menu podręczne dla nagłówka
 }
 
 CWebPassWareMainWindow::~CWebPassWareMainWindow()
 {
+    safe_delete(m_headerContextMenu)
     safe_delete(m_pass_group_proxy_model)
     safe_delete(m_pass_entry_proxy_model)
     safe_delete(m_pass_group_model)
@@ -210,6 +216,13 @@ void CWebPassWareMainWindow::setConnections(void)
     m_pass_entry_model->refresh();
     m_dataTable->resizeColumnsToContents();
 
+//Podłaczenie delegate dla password
+    if (m_pass_entry_model)
+       {
+          int column = m_pass_entry_model->columnIndex("m_pass");
+          m_dataTable->setItemDelegateForColumn(column, new PasswordFormatDelegate(m_dataTable));
+       }
+
 //Tabela lista tabel połaczenia
     m_treeGroupList->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_treeGroupList, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showTreeTableListContextMenu(const QPoint &)));
@@ -224,6 +237,8 @@ void CWebPassWareMainWindow::setConnections(void)
     connect(m_dataTable, SIGNAL(keyInsert()), this, SLOT(on_ACTION_ADD_PASS_ENTRY_triggered()));
     connect(m_dataTable, SIGNAL(keyEnter()), this, SLOT(on_ACTION_EDIT_PASS_ENTRY_triggered()));
     connect(m_dataTable, SIGNAL(keyDelete()), this, SLOT(on_ACTION_DEL_PASS_ENTRY_triggered()));
+//Menu dla header tabeli
+    connect(m_dataTable->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomHeaderContextMenuRequested(const QPoint &)));
 
 //Odświerzenie info w status bar
     QTimer::singleShot(1000, this, SLOT(refreshInfo()));
@@ -278,6 +293,45 @@ QWidget *CWebPassWareMainWindow::initTabData()
     return tab;
 }
 
+void CWebPassWareMainWindow::initContextMenu()
+{
+    if (m_dataTable)
+    {
+        m_dataTable->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+        m_headerContextMenu = new QMenu(m_dataTable->horizontalHeader());
+        m_visible_passwords_action = new CAction(tr("Widoczne hasła"), ICON(""), QString(""), QString("m_visible_passwords_action"), this);
+        m_visible_passwords_action->setCheckable(true);
+        m_headerContextMenu->addAction(m_visible_passwords_action);
+        m_visible_passwords_action->setChecked(m_visible_passwords);
+        connect(m_visible_passwords_action, &QAction::toggled, this, [=](bool checked){
+            // Lambda function start
+            m_visible_passwords = checked;
+            if (m_visible_passwords)
+                {
+                   if (m_pass_entry_model)
+                    {
+                        int column = m_pass_entry_model->columnIndex("m_pass");
+                        auto d = m_dataTable->itemDelegateForColumn(column);
+                        if (d)
+                            {
+                                m_dataTable->setItemDelegateForColumn(column, NULL);
+                                safe_delete(d)
+                            }
+                    }
+                }
+            else
+               {
+                   if (m_pass_entry_model)
+                     {
+                        int column = m_pass_entry_model->columnIndex("m_pass");
+                        m_dataTable->setItemDelegateForColumn(column, new PasswordFormatDelegate(m_dataTable));
+                     }
+               }
+             // Lambda function end
+        });
+    }
+}
+
 qint64 CWebPassWareMainWindow::getCurrentPassGroupId()
 {
     QModelIndex index = m_treeGroupList->currentIndex();
@@ -328,6 +382,14 @@ void CWebPassWareMainWindow::refreshInfo()
     QTimer::singleShot(1000, this, SLOT(refreshInfo()));
 }
 
+void CWebPassWareMainWindow::onCustomHeaderContextMenuRequested(const QPoint& pos)
+{
+    //headerContextMenuSection = horizontalHeader()->visualIndexAt(pos.x());
+    if (m_headerContextMenu)
+        m_headerContextMenu->popup(m_dataTable->horizontalHeader()->mapToGlobal(pos));
+}
+
+
 void CWebPassWareMainWindow::on_ACTION_ABOUT_triggered()
 {
     CAboutDialog dialog(this);
@@ -374,7 +436,10 @@ void CWebPassWareMainWindow::filterTableData(const QModelIndex & index)
             int column = m_pass_group_model->columnIndex("id_pass_group");
             idx = m_pass_group_model->index(sourceIndex.row(), column);
             qint64 id = m_pass_group_model->data(idx).toLongLong();
-            m_pass_entry_model->setWhere(QString("m_id_pass_group=%1").arg(id));
+            if (id > 0)
+                 m_pass_entry_model->setWhere(QString("m_id_pass_group=%1").arg(id));
+            else
+                 m_pass_entry_model->setWhere(QString());
             DEBUG_WITH_LINE << "Clicked pass group id: " << id;
             m_pass_entry_model->refresh();
         }

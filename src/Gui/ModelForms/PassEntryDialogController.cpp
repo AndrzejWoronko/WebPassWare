@@ -115,7 +115,10 @@ bool PassEntryDialogController::exec(const QString &title)
             f = m_dialog->getFields().value("m_id_pass_group");
             if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
             {
-                pe.setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
+                if (PassGroupService::getInstance().getObject(0))
+                    pe.setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
+                else
+                    pe.setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
             }
 
             return PassEntryService::getInstance().addObject(&pe) != -1; //Zapis do bazy
@@ -159,7 +162,10 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             f = m_dialog->getFields().value("m_id_pass_group");
             if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
             {
-                dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setIndexValue(pe->getm_id_pass_group() - 1);
+                if (PassGroupService::getInstance().getObject(0))
+                    dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setIndexValue(pe->getm_id_pass_group());
+                else
+                    dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setIndexValue(pe->getm_id_pass_group() - 1);
 //                if (f)
 //                    f->setValue(pe->getm_id_pass_group());
             }
@@ -187,7 +193,10 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
                 f = m_dialog->getFields().value("m_id_pass_group");
                 if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
                 {
-                    pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
+                    if (PassGroupService::getInstance().getObject(0))
+                        pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
+                    else
+                        pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
                 }
                 ret = PassEntryService::getInstance().editObject(pe);
             }
