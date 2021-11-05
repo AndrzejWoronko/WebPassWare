@@ -13,6 +13,8 @@ SOURCES += \
     src/Common/AbstractTabMainWindowStateManager.cpp \
     src/Common/AbstractTableStateManager.cpp \
     src/Common/DialogState.cpp \
+    src/Common/ExportCsv.cpp \
+    src/Common/ImportCsv.cpp \
     src/Common/Logger.cpp \
     src/Common/PasswordGenerator.cpp \
     src/Common/SplitterState.cpp \
@@ -101,7 +103,9 @@ HEADERS += \
     src/Common/AbstractTabMainWindowStateManager.h \
     src/Common/AbstractTableStateManager.h \
     src/Common/DialogState.h \
+    src/Common/ExportCsv.h \
     src/Common/Global.h \
+    src/Common/ImportCsv.h \
     src/Common/Logger.h \
     src/Common/PasswordGenerator.h \
     src/Common/Singleton.h \

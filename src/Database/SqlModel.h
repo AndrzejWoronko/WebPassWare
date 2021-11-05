@@ -32,6 +32,8 @@ public:
 
     static QString getSelectQueryStringFromFieldsDescList(SqlFieldsDesc fieldsDesc, const QString &from); // opis pól
 
+    QList< QVector<QVariant> > toVariantRowListData();
+    QVector<QVariant> toVariantRowHeader();
 private:
 
     int m_primaryKeyIdx;

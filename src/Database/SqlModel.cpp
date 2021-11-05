@@ -193,3 +193,37 @@ QString CSqlModel::getSelectQueryStringFromFieldsDescList(SqlFieldsDesc fieldsDe
     return query;
 }
 
+QList< QVector<QVariant> > CSqlModel::toVariantRowListData()
+{
+    QList< QVector<QVariant> > list;
+    QVector <QVariant> row;
+    QModelIndex idx;
+
+    list.clear();
+    for (int r = 0 ; r <  this->rowCount() ; r++)
+    {
+        row.clear();
+        for (int c = 0 ; c < this->columnCount() ; c++)
+        {
+            idx = this->index(r, c);
+            if (idx.isValid())
+            {
+                row.append(this->data(idx, Qt::DisplayRole));
+            }
+        }
+        list.append(row);
+    }
+    return list;
+}
+
+QVector<QVariant> CSqlModel::toVariantRowHeader()
+{
+    QVector <QVariant> row;
+
+    row.clear();
+    for (int c = 0 ; c < this->columnCount() ; c++)
+    {
+        row.append(this->headerData(c,  Qt::Horizontal, Qt::DisplayRole));
+    }
+    return row;
+}
