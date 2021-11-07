@@ -97,6 +97,8 @@ public slots:
     void on_ACTION_GENERATOR_DIALOG_triggered();
 
     void on_ACTION_SETTINGS_DIALOG_triggered();
+
+    void on_ACTION_DATA_EXPORT_DIALOG_triggered();
 };
 
 #endif // CWEBPASSWAREMAINWINDOW_H

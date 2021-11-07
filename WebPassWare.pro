@@ -36,7 +36,10 @@ SOURCES += \
     src/Gui/Action.cpp \
     src/Gui/Dialogs/AboutDialog.cpp \
     src/Gui/Dialogs/AbstractCloseDialog.cpp \
+    src/Gui/Dialogs/DataExportDialog.cpp \
+    src/Gui/Dialogs/DataExportDialogController.cpp \
     src/Gui/Dialogs/Dialog.cpp \
+    src/Gui/Dialogs/FileDialog.cpp \
     src/Gui/Dialogs/LoginDialog.cpp \
     src/Gui/Dialogs/PasswordGenerateDialog.cpp \
     src/Gui/Forms/AbstractFormWidget.cpp \
@@ -128,7 +131,10 @@ HEADERS += \
     src/Gui/Action.h \
     src/Gui/Dialogs/AboutDialog.h \
     src/Gui/Dialogs/AbstractCloseDialog.h \
+    src/Gui/Dialogs/DataExportDialog.h \
+    src/Gui/Dialogs/DataExportDialogController.h \
     src/Gui/Dialogs/Dialog.h \
+    src/Gui/Dialogs/FileDialog.h \
     src/Gui/Dialogs/LoginDialog.h \
     src/Gui/Dialogs/PasswordGenerateDialog.h \
     src/Gui/Forms/AbstractFormWidget.h \
