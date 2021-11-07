@@ -12,7 +12,7 @@ void ModelTableCheck::checkAllTables()
 {
     PassGroup pg;
     checkOneTable(&pg);
-    if (pg.count() == 0)
+    if (pg.count() == 0 || !pg.exists(0))
        {
           DB.resetAutoIncrement(pg.getTableName(), 0);
           pg.setId(0);

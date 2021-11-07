@@ -11,6 +11,7 @@
 #include "SettingsDialog.h"
 #include "TableViewItemsDelegates.h"
 #include "DataExportDialogController.h"
+#include "ModelTableCheck.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent),
     m_headerContextMenu(NULL), m_visible_passwords(false), m_visible_passwords_action(NULL),
@@ -131,6 +132,9 @@ void CWebPassWareMainWindow::setActions(void)
 
     CAction *actionExportDialog = new CAction(tr("Export danych"), ICON("Export"), tr("Export danych"), QString(""), QString("ACTION_DATA_EXPORT_DIALOG") ,this);
     m_actions.insert(actionExportDialog->getActionName(), actionExportDialog);
+
+    CAction *actionDataCheck = new CAction(tr("Sprawdzenie danych"), ICON("Checked"), tr("Export danych"), QString(""), QString("ACTION_DATA_CHECK") ,this);
+    m_actions.insert(actionDataCheck->getActionName(), actionDataCheck);
 }
 
 void CWebPassWareMainWindow::setMenu(void)
@@ -167,6 +171,7 @@ void CWebPassWareMainWindow::setMenu(void)
     toolMenu = new QMenu(m_menuBar);
     toolMenu->setTitle(tr("&Narzędzia"));
     toolMenu->addAction(m_actions.value(QString("ACTION_GENERATOR_DIALOG")));
+    toolMenu->addAction(m_actions.value(QString("ACTION_DATA_CHECK")));
     toolMenu->addAction(m_actions.value(QString("ACTION_DATA_EXPORT_DIALOG")));
 
     helpMenu = new QMenu(m_menuBar);
@@ -634,4 +639,10 @@ void CWebPassWareMainWindow::on_ACTION_DATA_EXPORT_DIALOG_triggered()
     dialog->getDialog()->exec();
     dialog->getDialog()->close();
     safe_delete(dialog)
+}
+
+void CWebPassWareMainWindow::on_ACTION_DATA_CHECK_triggered()
+{
+    if (CMessageBox::YesNoDialog(tr("Czy sprawdzić dane ?"), this) == QMessageBox::Yes)
+        ModelTableCheck::checkAllTables();
 }

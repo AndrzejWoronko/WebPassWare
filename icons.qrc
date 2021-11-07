@@ -41,5 +41,6 @@
         <file>icons/50px/Sort_asc.png</file>
         <file>icons/50px/Sort_desc.png</file>
         <file>icons/50px/Warn.png</file>
+        <file>icons/50px/Checked.png</file>
     </qresource>
 </RCC>
