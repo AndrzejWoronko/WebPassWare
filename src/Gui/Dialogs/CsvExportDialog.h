@@ -1,5 +1,5 @@
-#ifndef CDATAEXPORTDIALOG_H
-#define CDATAEXPORTDIALOG_H
+#ifndef CCSVXPORTDIALOG_H
+#define CCSVXPORTDIALOG_H
 
 #include "Global.h"
 #include "Dialog.h"
@@ -7,7 +7,8 @@
 #include "ButtonBox.h"
 #include "AbstractFormDialog.h"
 
-class CDataExportDialog : public CDialog
+
+class CCsvExportDialog : public CDialog
 {
     Q_OBJECT
 
@@ -24,8 +25,8 @@ class CDataExportDialog : public CDialog
 
 public:
 
-    CDataExportDialog(QWidget *parent = NULL);
-    ~CDataExportDialog() {};
+    CCsvExportDialog(QWidget *parent = NULL);
+    ~CCsvExportDialog() {};
 
 private:
 
@@ -47,4 +48,4 @@ private:
     CVBoxLayout *m_VLayoutDialog;  //Do dialogu
 };
 
-#endif // CDATAEXPORTDIALOG_H
+#endif // CCSVXPORTDIALOG_H

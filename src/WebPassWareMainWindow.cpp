@@ -10,7 +10,8 @@
 #include "SettingsWidget.h"
 #include "SettingsDialog.h"
 #include "TableViewItemsDelegates.h"
-#include "DataExportDialogController.h"
+#include "CsvExportDialogController.h"
+#include "CsvImportDialogController.h"
 #include "ModelTableCheck.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent),
@@ -130,8 +131,11 @@ void CWebPassWareMainWindow::setActions(void)
     CAction *actionSettingsDialog = new CAction(tr("Opcje programu"), ICON("Settings"), tr("Opcje programu"), QString(""), QString("ACTION_SETTINGS_DIALOG") ,this);
     m_actions.insert(actionSettingsDialog->getActionName(), actionSettingsDialog);    
 
-    CAction *actionExportDialog = new CAction(tr("Export danych"), ICON("Export"), tr("Export danych"), QString(""), QString("ACTION_DATA_EXPORT_DIALOG") ,this);
+    CAction *actionExportDialog = new CAction(tr("Export danych"), ICON("Export-csv"), tr("Export danych"), QString(""), QString("ACTION_DATA_EXPORT_DIALOG") ,this);
     m_actions.insert(actionExportDialog->getActionName(), actionExportDialog);
+
+    CAction *actionImportDialog = new CAction(tr("Import danych"), ICON("Import-csv"), tr("Import danych"), QString(""), QString("ACTION_DATA_IMPORT_DIALOG") ,this);
+    m_actions.insert(actionImportDialog->getActionName(), actionImportDialog);
 
     CAction *actionDataCheck = new CAction(tr("Sprawdzenie danych"), ICON("Checked"), tr("Export danych"), QString(""), QString("ACTION_DATA_CHECK") ,this);
     m_actions.insert(actionDataCheck->getActionName(), actionDataCheck);
@@ -173,6 +177,7 @@ void CWebPassWareMainWindow::setMenu(void)
     toolMenu->addAction(m_actions.value(QString("ACTION_GENERATOR_DIALOG")));
     toolMenu->addAction(m_actions.value(QString("ACTION_DATA_CHECK")));
     toolMenu->addAction(m_actions.value(QString("ACTION_DATA_EXPORT_DIALOG")));
+    toolMenu->addAction(m_actions.value(QString("ACTION_DATA_IMPORT_DIALOG")));
 
     helpMenu = new QMenu(m_menuBar);
     helpMenu->setTitle(tr("&Pomoc"));
@@ -635,7 +640,15 @@ void CWebPassWareMainWindow::on_ACTION_SETTINGS_DIALOG_triggered(void)
 
 void CWebPassWareMainWindow::on_ACTION_DATA_EXPORT_DIALOG_triggered()
 {
-    auto dialog = new CDataExportDialogController(m_pass_entry_model, this);
+    auto dialog = new CCsvExportDialogController(m_pass_entry_model, this);
+    dialog->getDialog()->exec();
+    dialog->getDialog()->close();
+    safe_delete(dialog)
+}
+
+void CWebPassWareMainWindow::on_ACTION_DATA_IMPORT_DIALOG_triggered()
+{
+    auto dialog = new CCsvImportDialogController(this);
     dialog->getDialog()->exec();
     dialog->getDialog()->close();
     safe_delete(dialog)

@@ -42,5 +42,9 @@
         <file>icons/50px/Sort_desc.png</file>
         <file>icons/50px/Warn.png</file>
         <file>icons/50px/Checked.png</file>
+        <file>icons/50px/Export-csv.png</file>
+        <file>icons/50px/Import-csv.png</file>
+        <file>icons/50px/Back.png</file>
+        <file>icons/50px/Forward.png</file>
     </qresource>
 </RCC>

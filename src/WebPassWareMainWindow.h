@@ -99,6 +99,7 @@ public slots:
     void on_ACTION_SETTINGS_DIALOG_triggered();
 
     void on_ACTION_DATA_EXPORT_DIALOG_triggered();
+    void on_ACTION_DATA_IMPORT_DIALOG_triggered();
     void on_ACTION_DATA_CHECK_triggered();
 };
 

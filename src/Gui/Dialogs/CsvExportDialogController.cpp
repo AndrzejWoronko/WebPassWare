@@ -1,12 +1,12 @@
-#include "DataExportDialogController.h"
+#include "CsvExportDialogController.h"
 #include "MessageBox.h"
 #include "ExportCsv.h"
 #include "Application.h"
 
-CDataExportDialogController::CDataExportDialogController(CSqlModel *model, QWidget *parent) :
+CCsvExportDialogController::CCsvExportDialogController(CSqlModel *model, QWidget *parent) :
     QWidget(parent), m_model(model)
 {
-    m_dialog = new CDataExportDialog();
+    m_dialog = new CCsvExportDialog();
     APPI->setAppInformation();
     m_settings = new QSettings();
     m_settings->beginGroup("ExportData");
@@ -18,7 +18,7 @@ CDataExportDialogController::CDataExportDialogController(CSqlModel *model, QWidg
     connect(m_dialog->getButtonChoiceFileCsv(), SIGNAL(clicked()), this, SLOT(onButtonChoiceFileCsv()));
 }
 
-CDataExportDialogController::~CDataExportDialogController()
+CCsvExportDialogController::~CCsvExportDialogController()
 {
     saveLastState();
     saveDialogState();
@@ -27,7 +27,7 @@ CDataExportDialogController::~CDataExportDialogController()
     safe_delete(m_dialog)
 }
 
-void CDataExportDialogController::saveLastState()
+void CCsvExportDialogController::saveLastState()
 {
     m_settings->setValue(m_dialog->getFileNameCsv()->getVariableName(), m_dialog->getFileNameCsv()->getValue().toString());
     m_settings->setValue(m_dialog->getFieldsSeparator()->getVariableName(), m_dialog->getFieldsSeparator()->getValue().toString());
@@ -35,7 +35,7 @@ void CDataExportDialogController::saveLastState()
     m_settings->setValue(m_dialog->getFileCodec()->getVariableName(), m_dialog->getFileCodec()->getValue().toString());
 }
 
-void CDataExportDialogController::restoreLastState()
+void CCsvExportDialogController::restoreLastState()
 {
     m_dialog->getFileNameCsv()->setValue(m_settings->value(m_dialog->getFileNameCsv()->getVariableName()));
     m_dialog->getFileNameCsv()->setStartValue(m_settings->value(m_dialog->getFileNameCsv()->getVariableName()));
@@ -48,13 +48,13 @@ void CDataExportDialogController::restoreLastState()
 }
 
 //Zapisanie i odtworzenie układu graficznego dialogu
-void CDataExportDialogController::restoreDialogState()
+void CCsvExportDialogController::restoreDialogState()
 {
     QByteArray state = m_dialogState->getState(QString("EXPORT_DIALOG"));
     m_dialog->restoreGeometry(state);
 }
 
-void CDataExportDialogController::saveDialogState()
+void CCsvExportDialogController::saveDialogState()
 {
     QByteArray state = m_dialog->saveGeometry();
     QByteArray oldState = m_dialogState->getState(QString("EXPORT_DIALOG"));
@@ -63,7 +63,7 @@ void CDataExportDialogController::saveDialogState()
         m_dialogState->saveState(QString("EXPORT_DIALOG"), state);
 }
 
-bool CDataExportDialogController::wrtite2Csv(const QString &fileName, const QChar &delimeter, const QString &codecName, const QChar &digitSign)
+bool CCsvExportDialogController::wrtite2Csv(const QString &fileName, const QChar &delimeter, const QString &codecName, const QChar &digitSign)
 {
     CExportCsv *eCsv = new CExportCsv(fileName, delimeter, codecName, digitSign);
 
@@ -86,7 +86,7 @@ bool CDataExportDialogController::wrtite2Csv(const QString &fileName, const QCha
     return true;
 }
 
-void CDataExportDialogController::onButtonChoiceFileCsv()
+void CCsvExportDialogController::onButtonChoiceFileCsv()
 {
     QString fileName("");
     QString fileType(tr("Plik CSV (*.csv)"));
@@ -100,7 +100,7 @@ void CDataExportDialogController::onButtonChoiceFileCsv()
         }
 }
 
-void CDataExportDialogController::onAccept()
+void CCsvExportDialogController::onAccept()
 {
     QString filename = m_dialog->getFileNameCsv()->getValue().toString();
 
@@ -125,7 +125,7 @@ void CDataExportDialogController::onAccept()
        }
 }
 
-void CDataExportDialogController::onReject()
+void CCsvExportDialogController::onReject()
 {
     m_dialog->reject();
 }

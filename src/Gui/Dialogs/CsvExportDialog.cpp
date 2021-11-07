@@ -1,6 +1,6 @@
-#include "DataExportDialog.h"
+#include "CsvExportDialog.h"
 
-CDataExportDialog::CDataExportDialog(QWidget *parent) : CDialog(parent)
+CCsvExportDialog::CCsvExportDialog(QWidget *parent) : CDialog(parent)
 {
 
     this->setWindowTitle(tr("Eksport danych"));
@@ -19,12 +19,12 @@ CDataExportDialog::CDataExportDialog(QWidget *parent) : CDialog(parent)
     m_VLayoutDialog->addWidget(m_buttonBox);
 }
 
-void CDataExportDialog::addField(CFormAbstractField *f)
+void CCsvExportDialog::addField(CFormAbstractField *f)
 {
    m_fields.insert(f->getVariableName(), f);
 }
 
-void CDataExportDialog::addFields()
+void CCsvExportDialog::addFields()
 {
     m_fileNameCsv = new CFormTextField(QString("m_fileNameCsv"), tr("Nazwa pliku"), "", 255);
     addField(m_fileNameCsv);
@@ -36,7 +36,7 @@ void CDataExportDialog::addFields()
     addField(m_fileCodec);
 }
 
-void CDataExportDialog::addComponents()
+void CCsvExportDialog::addComponents()
 {
     CForm::setComponents(m_formLayout_file_csv, m_fileNameCsv, m_fileNameCsv->getLabel(), 1, 1, 1, 2);
     //Przycisk wyboru pliku
@@ -48,17 +48,17 @@ void CDataExportDialog::addComponents()
 
 }
 
-void CDataExportDialog::addButtons()
+void CCsvExportDialog::addButtons()
 {
     m_buttonChioceFileCsv = new CButton(CButtonPrivate(tr("Wybierz plik ..."), tr("Wybierz plik do exportu"), ICON("File")));
 }
 
-QStringList CDataExportDialog::getDigitSigns(void)
+QStringList CCsvExportDialog::getDigitSigns(void)
 {
     return QStringList() << QString(",") << QString(".");
 }
 
-QStringList CDataExportDialog::getFileCodecs(void)
+QStringList CCsvExportDialog::getFileCodecs(void)
 {
   return QStringList() << QString("ISO-8859-2") << QString("Windows-1250") << QString("UTF-8") << QString("DOS/OS2-852");
 /*  QStringList l;
@@ -71,7 +71,7 @@ QStringList CDataExportDialog::getFileCodecs(void)
     return l;
 */
 }
-QStringList CDataExportDialog::getFieldsSeparators(void)
+QStringList CCsvExportDialog::getFieldsSeparators(void)
 {
     return QStringList() << QString("TAB") << QString("|") << QString(";") << QString(",");
 }

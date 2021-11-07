@@ -1,6 +1,6 @@
 - Hasła domyślnie nie widoczne, tylko po uruchomieniu funkcji pokaż hasła - OK
-- Dodanie przy starcie sprawdzenia tabel i wprowadznie grupy specjalnej "Wszystkie grupy" z id==0 -OK
-- Export haseł do pliku CSV
+- Dodanie przy starcie sprawdzenia tabel i wprowadznie grupy specjalnej "Wszystkie grupy" z id==0 - OK
+- Export haseł do pliku CSV - OK
 - Import haseł z pliku CSV
 - Skrypty do budowania relase
 - Skrypty do budowania instalatora

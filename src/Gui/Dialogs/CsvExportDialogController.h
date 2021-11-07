@@ -1,22 +1,22 @@
-#ifndef CDATAEXPORTDIALOGCONTROLLER_H
-#define CDATAEXPORTDIALOGCONTROLLER_H
+#ifndef CCsvExportDialogCONTROLLER_H
+#define CCsvExportDialogCONTROLLER_H
 
 #include "Global.h"
-#include "DataExportDialog.h"
+#include "CsvExportDialog.h"
 #include "FileDialog.h"
 #include "AbstractDialogStateManager.h"
 #include "SqlModel.h"
 
-class CDataExportDialogController : public QWidget, public CAbstractDialogStateManager
+class CCsvExportDialogController : public QWidget, public CAbstractDialogStateManager
 {
     Q_OBJECT
 
-    ADD_PTR(CDataExportDialog, m_dialog, getDialog)
+    ADD_PTR(CCsvExportDialog, m_dialog, getDialog)
     ADD_PTR(QSettings, m_settings, getDataExportSettings)
 
 public:
-    CDataExportDialogController(CSqlModel *model, QWidget *parent = NULL);
-    ~CDataExportDialogController();
+    CCsvExportDialogController(CSqlModel *model, QWidget *parent = NULL);
+    ~CCsvExportDialogController();
 
     virtual void restoreDialogState();
     virtual void saveDialogState();
@@ -38,4 +38,4 @@ public slots:
     void onReject();
 };
 
-#endif // CDATAEXPORTDIALOGCONTROLLER_H
+#endif // CCsvExportDialogCONTROLLER_H

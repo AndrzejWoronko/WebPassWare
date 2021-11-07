@@ -12,6 +12,7 @@ SOURCES += \
     src/Common/AbstractSplitterStateManager.cpp \
     src/Common/AbstractTabMainWindowStateManager.cpp \
     src/Common/AbstractTableStateManager.cpp \
+    src/Common/CsvModel.cpp \
     src/Common/DialogState.cpp \
     src/Common/ExportCsv.cpp \
     src/Common/ImportCsv.cpp \
@@ -36,8 +37,10 @@ SOURCES += \
     src/Gui/Action.cpp \
     src/Gui/Dialogs/AboutDialog.cpp \
     src/Gui/Dialogs/AbstractCloseDialog.cpp \
-    src/Gui/Dialogs/DataExportDialog.cpp \
-    src/Gui/Dialogs/DataExportDialogController.cpp \
+    src/Gui/Dialogs/CsvExportDialog.cpp \
+    src/Gui/Dialogs/CsvExportDialogController.cpp \
+    src/Gui/Dialogs/CsvImportDialog.cpp \
+    src/Gui/Dialogs/CsvImportDialogController.cpp \
     src/Gui/Dialogs/Dialog.cpp \
     src/Gui/Dialogs/FileDialog.cpp \
     src/Gui/Dialogs/LoginDialog.cpp \
@@ -105,6 +108,7 @@ HEADERS += \
     src/Common/AbstractSplitterStateManager.h \
     src/Common/AbstractTabMainWindowStateManager.h \
     src/Common/AbstractTableStateManager.h \
+    src/Common/CsvModel.h \
     src/Common/DialogState.h \
     src/Common/ExportCsv.h \
     src/Common/Global.h \
@@ -131,8 +135,10 @@ HEADERS += \
     src/Gui/Action.h \
     src/Gui/Dialogs/AboutDialog.h \
     src/Gui/Dialogs/AbstractCloseDialog.h \
-    src/Gui/Dialogs/DataExportDialog.h \
-    src/Gui/Dialogs/DataExportDialogController.h \
+    src/Gui/Dialogs/CsvExportDialog.h \
+    src/Gui/Dialogs/CsvExportDialogController.h \
+    src/Gui/Dialogs/CsvImportDialog.h \
+    src/Gui/Dialogs/CsvImportDialogController.h \
     src/Gui/Dialogs/Dialog.h \
     src/Gui/Dialogs/FileDialog.h \
     src/Gui/Dialogs/LoginDialog.h \
