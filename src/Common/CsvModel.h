@@ -26,7 +26,7 @@ class CCsvModel : public QAbstractTableModel
 
     void refresh();
 
-    QStringList getHeaders();
+    QStringList getHeaders();    
     QStringList getColumnForImport();
     int getTableSize();
 

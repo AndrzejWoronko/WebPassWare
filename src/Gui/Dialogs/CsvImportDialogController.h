@@ -8,7 +8,7 @@
 #include "CsvModel.h"
 #include "ImportCsv.h"
 
-class CCsvImportDialogController : public QObject, public CAbstractDialogStateManager
+class CCsvImportDialogController : public QWidget, public CAbstractDialogStateManager
 {
     Q_OBJECT
 
@@ -19,7 +19,7 @@ class CCsvImportDialogController : public QObject, public CAbstractDialogStateMa
     QSettings *m_settings;
 
 public:
-    CCsvImportDialogController(QObject *parent = NULL);
+    CCsvImportDialogController(QWidget *parent = NULL);
     ~CCsvImportDialogController();
 
     virtual void restoreDialogState();

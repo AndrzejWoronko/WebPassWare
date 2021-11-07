@@ -1,7 +1,9 @@
 #include "CsvImportDialogController.h"
 #include "Application.h"
+#include "PassEntryService.h"
+#include "MessageBox.h"
 
-CCsvImportDialogController::CCsvImportDialogController(QObject *parent) : QObject(parent)
+CCsvImportDialogController::CCsvImportDialogController(QWidget *parent) : QWidget(parent)
 {
     m_model = NULL;
     m_import = NULL;
@@ -92,7 +94,18 @@ void CCsvImportDialogController::onButtonChoiceFileCsv()
 
 void CCsvImportDialogController::onButtonNext()
 {
-    changePage(1);
+    if (m_model)
+    {
+        m_model->setIsTitle(m_dialog->getIsTitle()->getValue().toBool());
+        m_dialog->getTitleChoice()->setValueList(m_model->getColumnForImport());
+        m_dialog->getUserChoice()->setValueList(m_model->getColumnForImport());
+        m_dialog->getPassChoice()->setValueList(m_model->getColumnForImport());
+        m_dialog->getWebChoice()->setValueList(m_model->getColumnForImport());
+        m_dialog->getDescChoice()->setValueList(m_model->getColumnForImport());
+        changePage(1);
+    }
+    else
+        CMessageBox::OkDialogInformation(tr("Nie wybrano pliku do importu !!!"), this);
 }
 
 void CCsvImportDialogController::onButtonBack()
@@ -175,26 +188,29 @@ void CCsvImportDialogController::onAccept()
     QString filename = m_dialog->getFileNameCsv()->getValue().toString();
 
     if (filename.length() > 0)
+       {        
+        if (m_model)
+           {
+               for (int r = 0; r < m_model->rowCount(); r++)
+               {
+                  PassEntry pe;
+                  pe.setm_title(m_model->getValueForImport(r, m_dialog->getTitleChoice()->getValue().toString()).toString());
+                  pe.setm_user(m_model->getValueForImport(r, m_dialog->getUserChoice()->getValue().toString()).toString());
+                  pe.setm_pass(m_model->getValueForImport(r, m_dialog->getPassChoice()->getValue().toString()).toString());
+                  pe.setm_web_url(m_model->getValueForImport(r, m_dialog->getWebChoice()->getValue().toString()).toString());
+                  pe.setm_desc(m_model->getValueForImport(r, m_dialog->getDescChoice()->getValue().toString()).toString());
+                  PassEntryService::getInstance().addObject(&pe);
+                }
+               m_dialog->accept();
+           }
+        else
+           {
+                CMessageBox::OkDialogInformation(tr("Brak modelu danych do importu !!!"), this);
+           }
+       }
+    else
        {
-
-/*
-        if (!filename.contains(".csv") && !filename.contains(".CSV"))
-            filename.append(".csv");
-        m_dialog->getFileNameCsv()->setValue(filename);
-
-        QChar delimeter = m_dialog->getFieldsSeparator()->getValue().toString().at(0).toLatin1();
-        QString codecName = m_dialog->getFileCodec()->getValue().toString();
-        QChar digitSign = m_dialog->getDigitSign()->getValue().toString().at(0).toLatin1();
-        if (m_dialog->getFieldsSeparator()->getValue().toString() == QString("TAB"))
-            delimeter = QChar('\t');
-
-        if (wrtite2Csv(filename, delimeter, codecName, digitSign))
-            CMessageBox::OkDialogInformation(tr("Dane zostały pomyślnie zapisane."), m_dialog);
-         else
-            CMessageBox::OkDialogCritical(tr("Dane nie zostały pomyślnie zapisane !!!"), m_dialog);
-*/
-        m_dialog->accept();
-
+            CMessageBox::OkDialogInformation(tr("Nie wybrano pliku do importu !!!"), this);
        }
 }
 

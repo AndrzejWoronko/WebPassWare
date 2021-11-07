@@ -652,6 +652,7 @@ void CWebPassWareMainWindow::on_ACTION_DATA_IMPORT_DIALOG_triggered()
     dialog->getDialog()->exec();
     dialog->getDialog()->close();
     safe_delete(dialog)
+    m_pass_entry_model->refresh();
 }
 
 void CWebPassWareMainWindow::on_ACTION_DATA_CHECK_triggered()

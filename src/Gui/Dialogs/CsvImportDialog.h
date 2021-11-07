@@ -11,15 +11,20 @@
 class CCsvImportDialog : public CDialog
 {
     Q_OBJECT
-
+//First page
     ADD_PTR_PROPERTY(CFormTextField, m_fileNameCsv, getFileNameCsv)
     ADD_PTR_PROPERTY(CFormSimpleChoiceField, m_digitSign, getDigitSign)
     ADD_PTR_PROPERTY(CFormSimpleChoiceField, m_fileCodec, getFileCodec)
     ADD_PTR_PROPERTY(CFormSimpleChoiceField, m_fieldsSeparator, getFieldsSeparator)
     ADD_PTR_PROPERTY(CFormCheckField,  m_isTitle, getIsTitle)
     ADD_PTR_PROPERTY(CFormNumberField,  m_fromLine, getFromLine)
-
     ADD_PTR_PROPERTY(CTableView, m_tableView, getTableView)
+//Second page
+    ADD_PTR_PROPERTY(CFormSimpleChoiceField, m_titleChoice, getTitleChoice)
+    ADD_PTR_PROPERTY(CFormSimpleChoiceField, m_userChoice, getUserChoice)
+    ADD_PTR_PROPERTY(CFormSimpleChoiceField, m_passChoice, getPassChoice)
+    ADD_PTR_PROPERTY(CFormSimpleChoiceField, m_webChoice, getWebChoice)
+    ADD_PTR_PROPERTY(CFormSimpleChoiceField, m_descChoice, getDescChoice)
     ADD_PTR_PROPERTY(CTableView, m_tableViewPreview, getTableViewPreview)
 
 //Przyciski
