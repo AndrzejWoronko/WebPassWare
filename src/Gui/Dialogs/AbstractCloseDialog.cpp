@@ -7,9 +7,6 @@ CAbstractCloseDialog::CAbstractCloseDialog(const QString &dialogName, QWidget *p
       m_VLayoutDialog = new CVBoxLayout(this);
       m_widget = new QWidget();
       m_formLayout  = new CGridLayout(m_widget);
-//TODO Ustawić z konfiguracji minmalną wielkość dialogów
-      //this->setMinimumSize(640, 480);
-      this->setMinimumSize(320, 240);
       setDialogName(dialogName);
 }
 

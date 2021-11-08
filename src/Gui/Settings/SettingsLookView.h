@@ -19,6 +19,8 @@ class SettingsLookView : public CAbstractSettingsItemView
     ADD_PTR_PROPERTY(CFormCheckField, m_table_show_grid, getTableShowGrid)
     ADD_PTR_PROPERTY(CFormNumberField, m_layout_spacing, getLayoutSpacing) //Odstęp pomiędzy widgetami
     ADD_PTR_PROPERTY(CFormNumberField, m_layout_margins, getLayoutMargins) //Margines wokół widgetów
+    ADD_PTR_PROPERTY(CFormNumberField, m_login_dialog_min_height, getLoginDialogMinHeight)
+    ADD_PTR_PROPERTY(CFormNumberField, m_login_dialog_min_width, getLoginDialogMinWidth)
 
 public:
      SettingsLookView(QWidget *parent = NULL);

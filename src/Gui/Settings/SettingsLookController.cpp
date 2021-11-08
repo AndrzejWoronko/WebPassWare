@@ -27,6 +27,8 @@ SettingsLookController::SettingsLookController(QWidget *parent) : CAbstractSetti
         connect(v->getDialogsMinWidth(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
         connect(v->getLayoutMargins(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
         connect(v->getLayoutSpacing(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
+        connect(v->getLoginDialogMinHeight(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
+        connect(v->getLoginDialogMinWidth(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
     }
 
     //Przyciski
@@ -59,6 +61,12 @@ void SettingsLookController::getValuesFromSettings(void)
     f = m_view->getFields().value("m_layout_margins");
     if (f)
         f->setValue(SETT.getValue(SETTINGS_GUI_LAYOUT_MARGIN));
+    f = m_view->getFields().value("m_login_dialog_min_width");
+    if (f)
+        f->setValue(SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_WIDTH));
+    f = m_view->getFields().value("m_login_dialog_min_height");
+    if (f)
+        f->setValue(SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_HEIGHT));
 
     auto v = dynamic_cast<SettingsLookView*>(m_view);
     if (v)
@@ -98,6 +106,12 @@ void SettingsLookController::setValuesToSettings(void)
     f = m_view->getFields().value("m_layout_margins");
     if (f)
         SETT.setValue(SETTINGS_GUI_LAYOUT_MARGIN, f->getValue());
+    f = m_view->getFields().value("m_login_dialog_min_width");
+    if (f)
+        SETT.setValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_WIDTH, f->getValue());
+    f = m_view->getFields().value("m_login_dialog_min_height");
+    if (f)
+        SETT.setValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_HEIGHT, f->getValue());
 
     auto v = dynamic_cast<SettingsLookView*>(m_view);
     if (v)

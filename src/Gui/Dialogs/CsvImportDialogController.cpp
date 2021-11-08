@@ -27,15 +27,43 @@ CCsvImportDialogController::CCsvImportDialogController(QWidget *parent) : QWidge
     connect(m_dialog->getIsTitle(), SIGNAL(toggled(bool)), this, SLOT(onIsTitleChange(bool)));
 
     changePage(0);
+    restoreLastState();
     restoreDialogState();
 }
 
 CCsvImportDialogController::~CCsvImportDialogController()
 {
+    saveLastState();
     saveDialogState();
     m_settings->endGroup();
     safe_delete(m_settings)
     safe_delete(m_dialog)
+}
+
+void CCsvImportDialogController::saveLastState()
+{
+//  m_settings->setValue(m_dialog->getFileNameCsv()->getVariableName(), m_dialog->getFileNameCsv()->getValue().toString());
+    m_settings->setValue(m_dialog->getFieldsSeparator()->getVariableName(), m_dialog->getFieldsSeparator()->getValue().toString());
+    m_settings->setValue(m_dialog->getDigitSign()->getVariableName(), m_dialog->getDigitSign()->getValue().toString());
+    m_settings->setValue(m_dialog->getFileCodec()->getVariableName(), m_dialog->getFileCodec()->getValue().toString());
+    m_settings->setValue(m_dialog->getIsTitle()->getVariableName(), m_dialog->getIsTitle()->getValue().toBool());
+    m_settings->setValue(m_dialog->getFromLine()->getVariableName(), m_dialog->getFromLine()->getValue().toInt());
+}
+
+void CCsvImportDialogController::restoreLastState()
+{
+//  m_dialog->getFileNameCsv()->setValue(m_settings->value(m_dialog->getFileNameCsv()->getVariableName()));
+//  m_dialog->getFileNameCsv()->setStartValue(m_settings->value(m_dialog->getFileNameCsv()->getVariableName()));
+    m_dialog->getFieldsSeparator()->setValue(m_settings->value(m_dialog->getFieldsSeparator()->getVariableName()));
+    m_dialog->getFieldsSeparator()->setStartValue(m_settings->value(m_dialog->getFieldsSeparator()->getVariableName()));
+    m_dialog->getDigitSign()->setValue(m_settings->value(m_dialog->getDigitSign()->getVariableName()));
+    m_dialog->getDigitSign()->setStartValue(m_settings->value(m_dialog->getDigitSign()->getVariableName()));
+    m_dialog->getFileCodec()->setValue(m_settings->value(m_dialog->getFileCodec()->getVariableName()));
+    m_dialog->getFileCodec()->setStartValue(m_settings->value(m_dialog->getFileCodec()->getVariableName()));
+    m_dialog->getIsTitle()->setValue(m_settings->value(m_dialog->getIsTitle()->getVariableName()));
+    m_dialog->getIsTitle()->setStartValue(m_settings->value(m_dialog->getIsTitle()->getVariableName()));
+    m_dialog->getFromLine()->setValue(m_settings->value(m_dialog->getFromLine()->getVariableName()));
+    m_dialog->getFromLine()->setStartValue(m_settings->value(m_dialog->getFromLine()->getVariableName()));
 }
 
 //Zapisanie i odtworzenie układu graficznego dialogu
@@ -187,8 +215,34 @@ void CCsvImportDialogController::onAccept()
 {
     QString filename = m_dialog->getFileNameCsv()->getValue().toString();
 
+//Sprawdznie poprawności wybrania kolumn
+    if (m_dialog->getTitleChoice()->getValue().toString().contains("BRAK"))
+       {
+          CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Tytuł !!!"), this);
+          return;
+       }
+    if (m_dialog->getUserChoice()->getValue().toString().contains("BRAK"))
+       {
+          CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Użytkownik !!!"), this);
+          return;
+       }
+    if (m_dialog->getPassChoice()->getValue().toString().contains("BRAK"))
+       {
+          CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Hasło !!!"), this);
+          return;
+       }
+    if (m_dialog->getWebChoice()->getValue().toString().contains("BRAK"))
+       {
+           CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Strona WWW !!!"), this);
+           return;
+       }
+//    if (m_dialog->getDescChoice()->getValue().toString().contains("BRAK"))
+//       {
+//           CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Opis !!!"), this);
+//           return;
+//       }
     if (filename.length() > 0)
-       {        
+       {
         if (m_model)
            {
                for (int r = 0; r < m_model->rowCount(); r++)
@@ -199,7 +253,11 @@ void CCsvImportDialogController::onAccept()
                   pe.setm_pass(m_model->getValueForImport(r, m_dialog->getPassChoice()->getValue().toString()).toString());
                   pe.setm_web_url(m_model->getValueForImport(r, m_dialog->getWebChoice()->getValue().toString()).toString());
                   pe.setm_desc(m_model->getValueForImport(r, m_dialog->getDescChoice()->getValue().toString()).toString());
-                  PassEntryService::getInstance().addObject(&pe);
+
+                  if (PassEntryService::getInstance().addObject(&pe) < 0)
+                  {
+                      CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania rekordu !!!"), tr("Opis błędu"), PassEntryService::getInstance().getError()), this);
+                  }
                 }
                m_dialog->accept();
            }

@@ -4,7 +4,6 @@ CPasswordGenerateDialog::CPasswordGenerateDialog(QWidget *parent) : CAbstractClo
 {
     this->setWindowTitle(tr("Generator haseł"));
     this->addFieldsAndComponents();
-    this->setMinimumSize(500, 350);
 }
 
 CPasswordGenerateDialog::~CPasswordGenerateDialog()

@@ -15,8 +15,7 @@ CLoginDialog::CLoginDialog(const QString &title, const QString &iconName, QWidge
     this->setModal(true);
     this->setWindowTitle(title);
     this->centerWindow();
-    //TODO Ustawić z konfiguracji minmalną wielkość dialogu logowania
-    this->setMinimumSize(400, 230);
+    this->setMinimumSize(SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_WIDTH).toInt(), SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_HEIGHT).toInt());
 
     m_VLayoutDialog = new CVBoxLayout(this);
     m_headerLayout =  new CGridLayout();

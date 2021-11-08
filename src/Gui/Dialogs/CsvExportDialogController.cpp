@@ -9,7 +9,7 @@ CCsvExportDialogController::CCsvExportDialogController(CSqlModel *model, QWidget
     m_dialog = new CCsvExportDialog();
     APPI->setAppInformation();
     m_settings = new QSettings();
-    m_settings->beginGroup("ExportData");
+    m_settings->beginGroup("ExportCsvData");
     restoreLastState();
     restoreDialogState();
 
@@ -110,18 +110,26 @@ void CCsvExportDialogController::onAccept()
             filename.append(".csv");
         m_dialog->getFileNameCsv()->setValue(filename);
 
-        QChar delimeter = m_dialog->getFieldsSeparator()->getValue().toString().at(0).toLatin1();
+        QChar delimeter;
+        if (m_dialog->getFieldsSeparator()->getValue().toString().length() > 0)
+            delimeter = m_dialog->getFieldsSeparator()->getValue().toString().at(0).toLatin1();
+        QChar digitSign;
+        if (m_dialog->getDigitSign()->getValue().toString().length() >0)
+            digitSign = m_dialog->getDigitSign()->getValue().toString().at(0).toLatin1();
         QString codecName = m_dialog->getFileCodec()->getValue().toString();
-        QChar digitSign = m_dialog->getDigitSign()->getValue().toString().at(0).toLatin1();
-        if (m_dialog->getFieldsSeparator()->getValue().toString() == QString("TAB"))
-            delimeter = QChar('\t');
 
-        if (wrtite2Csv(filename, delimeter, codecName, digitSign))
-            CMessageBox::OkDialogInformation(tr("Dane zostały pomyślnie zapisane."), m_dialog);
-         else
-            CMessageBox::OkDialogCritical(tr("Dane nie zostały pomyślnie zapisane !!!"), m_dialog);
+        if (codecName.length() > 0  && !delimeter.isNull() && !digitSign.isNull())
+           {
+                if (m_dialog->getFieldsSeparator()->getValue().toString() == QString("TAB"))
+                    delimeter = QChar('\t');
 
-        m_dialog->accept();
+                if (wrtite2Csv(filename, delimeter, codecName, digitSign))
+                    CMessageBox::OkDialogInformation(tr("Dane zostały pomyślnie zapisane."), m_dialog);
+                 else
+                    CMessageBox::OkDialogCritical(tr("Dane nie zostały pomyślnie zapisane !!!"), m_dialog);
+
+                m_dialog->accept();
+           }
        }
 }
 

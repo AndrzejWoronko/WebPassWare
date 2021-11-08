@@ -15,8 +15,7 @@ class CCsvImportDialogController : public QWidget, public CAbstractDialogStateMa
     ADD_PTR_PRO(CCsvImportDialog, m_dialog, getDialog)
     ADD_PTR_PRO(CCsvModel, m_model, getModel)
     ADD_PTR_PRO(CImportCsv, m_import, getImport)
-
-    QSettings *m_settings;
+    ADD_PTR(QSettings, m_settings, getDataImportSettings)
 
 public:
     CCsvImportDialogController(QWidget *parent = NULL);
@@ -26,6 +25,10 @@ public:
     virtual void saveDialogState();
 
     void refreshModel();
+
+private:
+    void saveLastState();
+    void restoreLastState();
 
 public slots:
 

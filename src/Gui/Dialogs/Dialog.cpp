@@ -1,12 +1,14 @@
 #include "Dialog.h"
+#include "ApplicationSettings.h"
 
 CDialog::CDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
-
+    this->setMinimumSize(SETT.getValue(SETTINGS_GUI_DIALOG_MIN_WIDTH).toInt(), SETT.getValue(SETTINGS_GUI_DIALOG_MIN_HEIGHT).toInt());
 }
 
 CDialog::CDialog(int dx, int dy,QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
+    this->setMinimumSize(SETT.getValue(SETTINGS_GUI_DIALOG_MIN_WIDTH).toInt(), SETT.getValue(SETTINGS_GUI_DIALOG_MIN_HEIGHT).toInt());
     resize(dx, dy);
 }
 

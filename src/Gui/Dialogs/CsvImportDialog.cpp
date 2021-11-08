@@ -3,8 +3,7 @@
 CCsvImportDialog::CCsvImportDialog(QWidget *parent) : CDialog(parent)
 {
     this->setWindowTitle(tr("Import danych z CSV"));
-    this->centerWindow();
-    this->setMinimumSize(600, 400);
+    this->centerWindow();    
     addFields();
     m_VLayoutDialog = new CVBoxLayout(this);
     m_stackedWidget = new QStackedWidget(this);

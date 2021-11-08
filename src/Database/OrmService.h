@@ -38,6 +38,7 @@ public:
     QList<ModelName*> getObjects(const QString &orderby = QString())
     {
         QList<ModelName*> list;
+        this->clearError();
         try
         {
             list = m_object->findAll(orderby);
@@ -45,6 +46,7 @@ public:
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
+            this->setError(e->getMessage());
         }
         return list;
     }
@@ -52,6 +54,7 @@ public:
     QList<ModelName*> getObjectsBy(const QString &fieldName, const QVariant value)
     {
         QList<ModelName*> list;
+        this->clearError();
         try
         {
             list = m_object->findBy(fieldName, value);
@@ -59,6 +62,7 @@ public:
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
+            this->setError(e->getMessage());
         }
         return list;
     }
@@ -66,6 +70,7 @@ public:
     QList<ModelName*> getObjectsBy(const QHash<QString, QVariant> &params)
     {
         QList<ModelName*> list;
+        this->clearError();
         try
         {
             list = m_object->findByAnd(params);
@@ -73,6 +78,7 @@ public:
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
+            this->setError(e->getMessage());
         }
         return list;
     }
@@ -80,6 +86,7 @@ public:
     ModelName *getFirstObject()
     {
         ModelName* o = NULL;
+        this->clearError();
         try
         {
             o = m_object->first();
@@ -87,6 +94,7 @@ public:
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
+            this->setError(e->getMessage());
         }
         return o;
     }
@@ -94,6 +102,7 @@ public:
     ModelName* getObject(qint64 id)
     {
         ModelName *o = NULL;
+        this->clearError();
         try
         {
             o = m_object->find(id);
@@ -101,12 +110,14 @@ public:
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
+            this->setError(e->getMessage());
         }
         return o;
     }
 
     qint64 addObject(ModelName *o, qint64 newId = 0)
     {
+        this->clearError();
         try
         {
             o->save(newId);
@@ -115,6 +126,7 @@ public:
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
+            this->setError(e->getMessage());
         }
         return m_insertedId;
     }
@@ -122,6 +134,7 @@ public:
     bool editObject(ModelName *o)
     {
         bool ret = false;
+        this->clearError();
         try
         {
             ret = o->update();
@@ -129,36 +142,45 @@ public:
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
+            this->setError(e->getMessage());
         }
         return ret;
     }
 
-    void removeObject(qint64 id)
+    bool removeObject(qint64 id)
     {
+        bool ret = false;
+        this->clearError();
         try
         {
             ModelName *o = m_object->find(id);
             if (o)
-                o->remove();
+                ret = o->remove();
 
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
+            this->setError(e->getMessage());
         }
+        return ret;
     }
 
-    void deleteObject(qint64 id)
+    bool deleteObject(qint64 id)
     {
+        bool ret = false;
+        this->clearError();
         try
         {
             ModelName *o = m_object->find(id);
             if (o)
-                o->setDeleted();
+                ret = o->setDeleted();
 
         } catch(CExceptionSql *e)
         {
             this->showErrorInfo(e);
+            this->setError(e->getMessage());
         }
+        return ret;
     }
 };
 

@@ -2,7 +2,6 @@
 
 CCsvExportDialog::CCsvExportDialog(QWidget *parent) : CDialog(parent)
 {
-
     this->setWindowTitle(tr("Eksport danych"));
     this->centerWindow();
     addFields();

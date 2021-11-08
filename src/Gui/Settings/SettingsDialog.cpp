@@ -5,8 +5,6 @@ SettingsDialog::SettingsDialog(QWidget *w, QWidget *parent) : CDialog(parent), C
     this->setWindowTitle(tr("Ustawienia"));
     m_widget = w;
     addFieldsAndComponents();
-    //TODO Ustawić z konfiguracji minmalną wielkość dialogów
-    this->setMinimumSize(640, 480);
 }
 
 void SettingsDialog::addFieldsAndComponents()

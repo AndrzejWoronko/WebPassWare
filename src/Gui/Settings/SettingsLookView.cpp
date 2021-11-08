@@ -31,6 +31,11 @@ void SettingsLookView::addFields()
     addField(m_layout_spacing);
     m_layout_margins = new CFormNumberField(QString("m_layout_margins"), tr("Margines wokół elementów graficznych"), 0);
     addField(m_layout_margins);
+    m_login_dialog_min_height = new CFormNumberField(QString("m_login_dialog_min_height"), tr("Minimalna wysokość dialogu logowania (w pikselach)"), 0);
+    addField(m_login_dialog_min_height);
+    m_login_dialog_min_width = new CFormNumberField(QString("m_login_dialog_min_width"), tr("Minimalna szerokość dialogu logowania (w pikselach)"), 0);
+    addField(m_login_dialog_min_width);
+
 }
 
 void SettingsLookView::addComponents()
@@ -40,11 +45,13 @@ void SettingsLookView::addComponents()
     CForm::setComponents(getFormLayout(), m_color_schema, m_color_schema->getLabel(), 2, 1, 1, 2);
     CForm::setComponents(getFormLayout(), m_style_theme, m_style_theme->getLabel(), 3, 1, 1, 2);
     CForm::setComponents(getFormLayout(), m_dialogs_min_height, m_dialogs_min_height->getLabel(), 4, 1, 1, 1);
-    CForm::setComponents(getFormLayout(), m_dialogs_min_width, m_dialogs_min_width->getLabel(), 5, 1, 1, 1);
+    CForm::setComponents(getFormLayout(), m_dialogs_min_width, m_dialogs_min_width->getLabel(), 5, 1, 1, 1);        
     CForm::setComponents(getFormLayout(), m_table_row_height, m_table_row_height->getLabel(), 6, 1, 1, 1);
     CForm::setComponents(getFormLayout(), m_table_alter_row_color, m_table_alter_row_color->getLabel(), 7, 1, 1, 1);
     CForm::setComponents(getFormLayout(), m_table_show_grid, m_table_show_grid->getLabel(), 8, 1, 1, 1);
     CForm::setComponents(getFormLayout(), m_layout_spacing, m_layout_spacing->getLabel(), 9, 1, 1, 1);
     CForm::setComponents(getFormLayout(), m_layout_margins, m_layout_margins->getLabel(), 10, 1, 1, 1);
+    CForm::setComponents(getFormLayout(), m_login_dialog_min_height, m_login_dialog_min_height->getLabel(), 11, 1, 1, 1);
+    CForm::setComponents(getFormLayout(), m_login_dialog_min_width, m_login_dialog_min_width->getLabel(), 12, 1, 1, 1);
     setWidgetWidget();
 }

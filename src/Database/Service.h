@@ -6,11 +6,14 @@
 
 class CService
 {
+    ADD_FIELD(QString, m_error, getError, setError)
+
 public:
     CService();
+    void clearError();
 
 protected:
-    static void showErrorInfo(CException *e);
+    void showErrorInfo(CException *e);
 };
 
 #endif // CSERVICE_H

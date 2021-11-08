@@ -197,6 +197,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -211,6 +212,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -229,6 +231,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -242,6 +245,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -256,6 +260,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -270,6 +275,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -283,6 +289,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -296,6 +303,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -309,6 +317,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -389,6 +398,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         m_id = id;
         if(m_id >= 0)
@@ -437,6 +447,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         if (ret)
             clearUpdateList();
@@ -475,6 +486,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         if(list.isEmpty())
             return 0;
@@ -492,6 +504,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         if(!list.isEmpty())
             translateRecToThisObj(list.first());
@@ -512,6 +525,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         QList<ModelName*> returnList;
         returnList.clear();
@@ -535,6 +549,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         if(record.isNull(QString("id_%1").arg(m_tableName)))
             return 0;
@@ -556,6 +571,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         if(record.isNull(QString("id_%1").arg(m_tableName)))
             return 0;
@@ -586,6 +602,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         QList<ModelName*> returnList;
         returnList.clear();
@@ -621,6 +638,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         for(int i = 0; i < list.size(); i++)
             returnList.append(translateRecToObj<ModelName>(list.value(i)));
@@ -648,6 +666,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         for(int i = 0; i < list.size(); i++)
             returnList.append(translateRecToObj<ModelName>(list.value(i)));
@@ -679,6 +698,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         for(int i = 0; i < list.size(); i++)
             returnList.append(translateRecToObj<ModelName>(list.value(i)));
@@ -697,6 +717,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -713,6 +734,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -739,7 +761,8 @@ public:
             }
         }
         catch (CExceptionSql *e)
-        {            
+        {
+            throw e;
         }
         return ret;
 
@@ -758,6 +781,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         if (ret)
             m_id = -1;
@@ -774,6 +798,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         if (ret)
             m_id = -1;
@@ -795,6 +820,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -808,6 +834,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -824,6 +851,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -839,6 +867,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return ret;
     }
@@ -879,6 +908,7 @@ public:
         }
         catch (CExceptionSql *e)
         {
+            throw e;
         }
         return list;
     }
