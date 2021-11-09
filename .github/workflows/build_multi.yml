@@ -135,4 +135,4 @@ jobs:
              shell: bash
              working-directory: ${{ github.workspace }}
              run: |
-                  ls -l ${{ github.workspace }}
+                  ls -l
