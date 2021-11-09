@@ -1,0 +1,138 @@
+name: 'CI Multiplatform Build'
+
+env:
+    QT_VERSION: '5.15.2'    
+    
+on:
+    workflow_dispatch:
+                
+jobs:
+  ubuntu64:
+          name: 'Linux/Ubuntu 64-bit'
+          runs-on: [ubuntu-latest]
+          steps:
+        
+            - name: 'Cache Qt'
+              id: cache-qt
+              uses: actions/cache@v1
+              with:
+                path: ${{ github.workspace }}/../Qt
+                key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}-Linux-Cache
+
+            - name: 'Install Qt'
+              uses: jurplel/install-qt-action@v2
+              with:
+                cached: ${{ steps.cache-qt.outputs.cache-hit }}
+                version: ${{ env.QT_VERSION }}
+                host: 'linux'                
+                dir: '${{ github.workspace }}/..'            
+                modules: 'qtwebengine'
+
+            - name: 'Clone repo'
+              uses: actions/checkout@v2
+              with:
+                ref: ${{ env.GITHUB_REF }}
+
+            - name: 'Compile WebPassWare'
+              working-directory: ${{ github.workspace }}
+              run: |
+                qmake WebPassWare.pro
+                make -j 2
+                
+            - name: 'Run tests'
+              shell: bash
+              working-directory: ${{ github.workspace }}
+              run: |
+                  ls -l ${{ github.workspace }}
+
+  macos64:
+          name: 'macOS 64-bit'
+          runs-on: [macos-latest]
+          steps:
+                          
+            - name: 'Cache Qt'
+              id: cache-qt
+              uses: actions/cache@v1
+              with:
+                path: ${{ github.workspace }}/../Qt
+                key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}-Mac-Cache
+                
+            - name: Install Qt
+              uses: jurplel/install-qt-action@v2
+              with:
+                cached: ${{ steps.cache-qt.outputs.cache-hit }}
+                version: ${{ env.QT_VERSION }}
+                host: 'mac'
+                dir: '${{ github.workspace }}/..'
+                modules: 'qtwebengine'
+
+            - name: 'Clone repo'
+              uses: actions/checkout@v2
+              with:
+                ref: ${{ env.GITHUB_REF }}
+                
+            - name: 'Compile WebPassWare'
+              working-directory: ${{ github.workspace }}
+              run: |
+                qmake WebPassWare.pro
+                make -j 2
+                
+            - name: 'Run tests'
+              shell: bash
+              working-directory: ${{ github.workspace }}
+              run: |
+                  ls -l ${{ github.workspace }}
+
+  win64:
+  
+          name: 'Windows 64-bit'
+          runs-on: [windows-latest]                  
+          env:
+            QT_ARCH: 'win64_mingw81'
+            MINGW_DIR: ../Qt/Tools/mingw810_64
+            QT_BIN_DIR: ../Qt/5.15.2/mingw81_64/bin
+            MINGW_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/qt.tools.win64_mingw810/8.1.0-1-202004170606x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
+            
+          steps:
+          
+           - name: 'Cache Qt'
+             id: cache-qt
+             uses: actions/cache@v1
+             with:
+                path: ${{ github.workspace }}\..\Qt
+                key: ${{ runner.os }}-${{ env.QT_VERSION }}-Qt-Cache
+                
+           - name: 'Install Qt'
+             uses: jurplel/install-qt-action@v2
+             with:
+               cached: ${{ steps.cache-qt.outputs.cache-hit }}
+               version: ${{ env.QT_VERSION }}
+               host: 'windows'
+               arch: ${{ env.QT_ARCH }}
+               dir: 'D:/'
+               setup-python: 'false'
+        
+           - name: 'Install mingw'
+             if: steps.cache-qt.outputs.cache-hit != 'true'
+             shell: bash
+             run: |
+                 curl -L ${{ env.MINGW_URL }} --output ../mingw.7z
+                 7z x -o"../Qt" ../mingw.7z
+                 echo "${{ env.MINGW_DIR }}/bin" >> $GITHUB_PATH
+            
+           - name: 'Checkout'
+             uses: actions/checkout@v2
+             with:
+                ref: ${{ env.GITHUB_REF }}
+
+           - name: 'Compile WebPassWare'
+             working-directory: ${{ github.workspace }}
+             run: |
+                qmake.exe WebPassWare.pro
+                mingw32-make.exe -j 2
+                
+           - name: 'Run tests'
+             shell: bash
+             working-directory: ${{ github.workspace }}
+             run: |
+                  ls -l ${{ github.workspace }}
