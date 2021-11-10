@@ -4,10 +4,11 @@ env:
 name: Debug session
 
 on:
-
-    repository_dispatch:
-        types: [lin_release]
-        branches : master
+    workflow_dispatch:
+  
+#    repository_dispatch:
+#        types: [lin_release]
+#        branches : master
 
 jobs:
     build:
