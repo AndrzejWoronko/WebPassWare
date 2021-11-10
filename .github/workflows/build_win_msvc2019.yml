@@ -45,11 +45,6 @@ jobs:
              uses: actions/checkout@v2
              with:
                 ref: ${{ env.GITHUB_REF }}
-
-#           - name: 'Set MSVC environment'
-#             working-directory: ${{ github.workspace }}
-#             run: |
-#                "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
            
            - uses: actions/checkout@v2
            - name: 'Setup tmate session'
@@ -66,3 +61,8 @@ jobs:
              run: |
                   ls -l
                   ls -l bin
+
+           - name: 'Set MSVC environment'
+             working-directory: ${{ github.workspace }}
+             run: |
+                "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
