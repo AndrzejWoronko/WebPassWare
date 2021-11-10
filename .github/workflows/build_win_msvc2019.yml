@@ -32,7 +32,9 @@ jobs:
                arch: ${{ env.QT_ARCH }}
                dir: 'D:/'
                setup-python: 'false'
-                    
+           - name: 'Add msbuild to PATH'
+             uses: microsoft/setup-msbuild@v1.0.2                    
+             
            - name: 'Clone repo'
              uses: actions/checkout@v2
              with:
@@ -45,8 +47,7 @@ jobs:
            - name: 'Compile WebPassWare'
              working-directory: ${{ github.workspace }}
              run: |
-                qmake.exe WebPassWare.pro
-                #mingw32-make.exe -j 2
+                qmake.exe WebPassWare.pro                
                 
            - name: 'Run tests'
              shell: bash
