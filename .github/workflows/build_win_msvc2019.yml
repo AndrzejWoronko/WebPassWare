@@ -11,8 +11,13 @@ jobs:
     build:
           name: 'Windows 64-bit'
           runs-on: [windows-latest]
+          
+          config:     
+            
+            
           env:
             QT_ARCH: 'win64_msvc2019_64'
+
             
           steps:
           
@@ -41,6 +46,11 @@ jobs:
              with:
                 ref: ${{ env.GITHUB_REF }}
 
+           - name: 'Set MSVC environment'
+             working-directory: ${{ github.workspace }}
+             run: |
+                "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+           
            - uses: actions/checkout@v2
            - name: 'Setup tmate session'
              uses: mxschmitt/action-tmate@v3
