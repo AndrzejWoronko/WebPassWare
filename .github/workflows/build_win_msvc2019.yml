@@ -32,6 +32,7 @@ jobs:
                arch: ${{ env.QT_ARCH }}
                dir: 'D:/'
                setup-python: 'false'
+               
            - name: 'Add msbuild to PATH'
              uses: microsoft/setup-msbuild@v1.0.2                    
              
