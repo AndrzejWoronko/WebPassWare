@@ -1,28 +1,27 @@
 env:
-    QT_VERSION: '5.15.2'
-    PORTABLE_DIR: ${{ github.workspace }}/output/portable/MultiFirma
+    QT_VERSION: '5.15.2'    
 
-name: Linux release build
+name: Debug session
 
 on:
+
     repository_dispatch:
         types: [lin_release]
         branches : master
-        
 
 jobs:
     build:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Cache Qt
+            - name: 'Cache Qt'
               id: cache-qt
               uses: actions/cache@v1
               with:
                 path: ${{ github.workspace }}/../Qt
                 key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}-Linux-Cache
                 
-            - name: Install Qt
+            - name: 'Install Qt'
               uses: jurplel/install-qt-action@v2
               with:
                 cached: ${{ steps.cache-qt.outputs.cache-hit }}
@@ -30,10 +29,11 @@ jobs:
                 host: 'linux'
                 dir: '${{ github.workspace }}/..'
                 
-            - name: Clone repo
+            - name: 'Clone repo'
               uses: actions/checkout@v2
               with:
                 ref: ${{ github.event.client_payload.branch }}
                 
-            - name: Setup tmate session
+            - uses: actions/checkout@v2
+            - name: 'Setup tmate session'
               uses: mxschmitt/action-tmate@v3
