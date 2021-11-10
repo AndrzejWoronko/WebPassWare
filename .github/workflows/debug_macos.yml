@@ -28,6 +28,7 @@ jobs:
                 host: 'mac'
                 dir: '${{ github.workspace }}/..'
                 modules: 'qtwebengine'
+                tools: 'tools_ifw,4.1.1,qt.tools.ifw.41'
                 
             - name: 'Clone repo'
               uses: actions/checkout@v2
