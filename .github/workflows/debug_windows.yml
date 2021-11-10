@@ -34,10 +34,10 @@ jobs:
                 dir: 'D:/'
                 setup-python: 'false'
                 
-           - name: 'Install mingw'
-             if: steps.cache-qt.outputs.cache-hit != 'true'
-             shell: bash
-             run: |
+            - name: 'Install mingw'
+              if: steps.cache-qt.outputs.cache-hit != 'true'
+              shell: bash
+              run: |
                  curl -L ${{ env.MINGW_URL }} --output ../mingw.7z
                  7z x -o"../Qt" ../mingw.7z
                  echo "${{ env.MINGW_DIR }}/bin" >> $GITHUB_PATH
