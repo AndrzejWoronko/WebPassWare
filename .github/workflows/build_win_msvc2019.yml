@@ -1,0 +1,56 @@
+name: 'Build win64_msvc2019_64'
+
+env:
+    QT_VERSION: '5.15.2'
+    
+on:
+    workflow_dispatch:
+                
+jobs:
+
+    build:
+          name: 'Windows 64-bit'
+          runs-on: [windows-latest]
+          env:
+            QT_ARCH: 'win64_msvc2019_64'
+            
+          steps:
+          
+           - name: 'Cache Qt'
+             id: cache-qt
+             uses: actions/cache@v1
+             with:
+                path: ${{ github.workspace }}\..\Qt
+                key: ${{ runner.os }}-${{ env.QT_VERSION }}-Qt-Cache
+                
+           - name: 'Install Qt'
+             uses: jurplel/install-qt-action@v2
+             with:
+               cached: ${{ steps.cache-qt.outputs.cache-hit }}
+               version: ${{ env.QT_VERSION }}
+               host: 'windows'
+               arch: ${{ env.QT_ARCH }}
+               dir: 'D:/'
+               setup-python: 'false'
+                    
+           - name: 'Clone repo'
+             uses: actions/checkout@v2
+             with:
+                ref: ${{ env.GITHUB_REF }}
+
+           - uses: actions/checkout@v2
+           - name: 'Setup tmate session'
+             uses: mxschmitt/action-tmate@v3
+              
+           - name: 'Compile WebPassWare'
+             working-directory: ${{ github.workspace }}
+             run: |
+                qmake.exe WebPassWare.pro
+                #mingw32-make.exe -j 2
+                
+           - name: 'Run tests'
+             shell: bash
+             working-directory: ${{ github.workspace }}
+             run: |
+                  ls -l
+                  ls -l bin
