@@ -1,0 +1,36 @@
+env:
+    QT_VERSION: '5.15.2'
+
+name: Debug linux session
+
+on:
+    workflow_dispatch:
+  
+jobs:
+    build:
+        runs-on: [ubuntu-latest]
+
+        steps:
+            - name: 'Cache Qt'
+              id: cache-qt
+              uses: actions/cache@v1
+              with:
+                path: ${{ github.workspace }}/../Qt
+                key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}-Linux-Cache
+                
+            - name: 'Install Qt'
+              uses: jurplel/install-qt-action@v2
+              with:
+                cached: ${{ steps.cache-qt.outputs.cache-hit }}
+                version: ${{ env.QT_VERSION }}
+                host: 'linux'
+                dir: '${{ github.workspace }}/..'
+                
+            - name: 'Clone repo'
+              uses: actions/checkout@v2
+              with:
+                ref: ${{ env.GITHUB_REF }}
+                
+            - uses: actions/checkout@v2
+            - name: 'Setup tmate session'
+              uses: mxschmitt/action-tmate@v3

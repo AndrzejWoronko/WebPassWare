@@ -1,18 +1,16 @@
 env:
-    QT_VERSION: '5.15.2'    
+    QT_VERSION: '5.15.2'
 
-name: Debug session
+name: Debug macos session
 
 on:
     workflow_dispatch:
   
-#    repository_dispatch:
-#        types: [lin_release]
-#        branches : master
-
 jobs:
-    build:
-        runs-on: ubuntu-latest
+
+    debug_macos:
+    
+        runs-on: [macos-latest]
 
         steps:
             - name: 'Cache Qt'
@@ -20,20 +18,21 @@ jobs:
               uses: actions/cache@v1
               with:
                 path: ${{ github.workspace }}/../Qt
-                key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}-Linux-Cache
+                key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}-Mac-Cache
                 
             - name: 'Install Qt'
               uses: jurplel/install-qt-action@v2
               with:
                 cached: ${{ steps.cache-qt.outputs.cache-hit }}
                 version: ${{ env.QT_VERSION }}
-                host: 'linux'
+                host: 'mac'
                 dir: '${{ github.workspace }}/..'
+                modules: 'qtwebengine'
                 
             - name: 'Clone repo'
               uses: actions/checkout@v2
               with:
-                ref: ${{ github.event.client_payload.branch }}
+                ref: ${{ env.GITHUB_REF }}
                 
             - uses: actions/checkout@v2
             - name: 'Setup tmate session'

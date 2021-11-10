@@ -1,7 +1,7 @@
 name: 'CI Multiplatform Build'
 
 env:
-    QT_VERSION: '5.15.2'    
+    QT_VERSION: '5.15.2'
     
 on:
     workflow_dispatch:
@@ -24,8 +24,8 @@ jobs:
               with:
                 cached: ${{ steps.cache-qt.outputs.cache-hit }}
                 version: ${{ env.QT_VERSION }}
-                host: 'linux'                
-                dir: '${{ github.workspace }}/..'            
+                host: 'linux'
+                dir: '${{ github.workspace }}/..'
                 modules: 'qtwebengine'
 
             - name: 'Clone repo'
@@ -122,7 +122,7 @@ jobs:
                  7z x -o"../Qt" ../mingw.7z
                  echo "${{ env.MINGW_DIR }}/bin" >> $GITHUB_PATH
             
-           - name: 'Checkout'
+           - name: 'Clone repo'
              uses: actions/checkout@v2
              with:
                 ref: ${{ env.GITHUB_REF }}
