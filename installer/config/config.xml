@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>WebPassWare</Name>
+    <Version>%WEBPASSWARE_VERSION%</Version>	
+    <Title>WebPassWare Installator</Title>	
+    <Publisher>AWSoftware development team</Publisher>
+    <ProductUrl>https://andrzejworonko.github.io/AWSoftware/WebPassWare/</ProductUrl>
+    <InstallerWindowIcon>webpassware.ico</InstallerWindowIcon>
+    <InstallerApplicationIcon>webpassware.ico</InstallerApplicationIcon>	
+    <Logo>logo.png</Logo>
+    <Background>bg.png</Background>	
+    <RunProgram>@TargetDir@/%FINAL_EXECUTABLE%</RunProgram>
+    <RunProgramDescription>Run WebPassWare</RunProgramDescription>
+    <StartMenuDir>WebPassWare</StartMenuDir>
+
+    <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
+    <WizardStyle>%WIZARD_STYLE%</WizardStyle>
+    <TargetDir>%TARGET_DIR%</TargetDir>
+	<ControlScript>controller.qs</ControlScript>
+    <RemoteRepositories>
+        <Repository>
+            <Url>https://andrzejworonko.github.io/AWSoftware/WebPassWare/%UPDATE_ARCH%/</Url>
+        </Repository>
+    </RemoteRepositories>
+    <SupportsModify>true</SupportsModify>
+</Installer>

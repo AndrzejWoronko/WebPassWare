@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>WebPassWare</DisplayName>
+    <Description>WebPassWare do przechowywania hase³ do serwisów www / poczty itp.</Description>
+    <Version>%WEBPASSWARE_VERSION%</Version>
+    <ReleaseDate>%DATE%</ReleaseDate>
+    <Name>pl.com.awsoftware.webpassware</Name>
+    <Dependencies>io.qt</Dependencies>
+    <Licenses>
+    </Licenses>
+	<Default>true</Default>
+    <ForcedInstallation>true</ForcedInstallation>
+    <Script>installscript.qs</Script>
+    <UserInterfaces>
+        <UserInterface>create_links.ui</UserInterface>
+    </UserInterfaces>
+</Package>
