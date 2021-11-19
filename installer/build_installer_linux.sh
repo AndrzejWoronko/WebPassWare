@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+#set -x
 
 function replace_str()
 {
@@ -11,8 +11,8 @@ filename=$3
 sed -i "s/${old_parm}/${new_parm}/" ${filename}
 }
 
-WEBPASSWARE_VERSION="0.0.1"
-FINAL_EXECUTABLE="webpassware"
+WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`
+FINAL_EXECUTABLE="bin\/webpassware"
 WIZARD_STYLE="Modern"
 TARGET_DIR="\/opt\/WebPassWare\/"
 UPDATE_ARCH="linux"
@@ -31,9 +31,9 @@ BIN_CREATOR_DIR="/opt/Qt/Tools/QtInstallerFramework/4.1/bin"
 
 PWD=`pwd`
 
-INSTALL_DIR=$PWD
+INSTALL_DIR=$PWD/installer/
 
-OUTPUT=`pwd`/../output
+OUTPUT=`pwd`/output/
 
 cd $OUTPUT
 
@@ -60,7 +60,7 @@ fi
 
 SOURCE_DIR="$OUTPUT/portable/WebPassWare"
 
-echo "$INSTALL_DIR"
+echo "Install dir: $INSTALL_DIR"
 
 #Copy config
 cp -a $INSTALL_DIR/config/*.png webpassware-installer/config/
@@ -78,7 +78,7 @@ cp -a $INSTALL_DIR/config/create_links.ui webpassware-installer/packages/pl.com.
 #Copy data
 cd $OUTPUT/webpassware-installer/packages/
 
-echo "$SOURCE_DIR"
+echo "Source dir: $SOURCE_DIR"
 
 # Copy Qt dirs
 for QDIR in $REQURED_QT_DIRS; do
@@ -117,8 +117,12 @@ replace_str "%DATE%" $DATE packages/io.qt/meta/package.xml
 replace_str "%WEBPASSWARE_VERSION%" $WEBPASSWARE_VERSION packages/pl.com.awsoftware.webpassware/meta/package.xml
 replace_str "%DATE%" $DATE packages/pl.com.awsoftware.webpassware/meta/package.xml
 
-#Create binary instalator
+
+echo "Create binary instalator"
 $BIN_CREATOR_DIR/binarycreator -f -c config/config.xml -p packages InstallWebPassWare-${WEBPASSWARE_VERSION}.bin
 
-#Create repo
-$BIN_CREATOR_DIR/repogen -p packages REPO
+echo "Create repo"
+
+rm -rf ../REPO
+#$BIN_CREATOR_DIR/repogen --update  -p packages ../REPO
+$BIN_CREATOR_DIR/repogen -p packages ../REPO

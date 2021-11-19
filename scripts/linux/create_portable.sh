@@ -1,9 +1,11 @@
 #!/bin/bash
 
-set -x
+#set -x
 
 QMAKE="/opt/Qt/5.15.2/gcc_64/bin/qmake"
 
+VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`
+ 
 which chrpath >/dev/null
 if [ "$?" -ne 0 ]; then
   echo "chrpath program missing! Maybe run sudo apt-get install chrpath first."
@@ -17,7 +19,7 @@ if [ "$?" -ne 0 ]; then
   exit 1
 fi
 
-OUTPUT=`pwd`/../../output
+OUTPUT=`pwd`/output
 
 cd $OUTPUT
 
@@ -47,6 +49,8 @@ cd portable
 portable=`pwd`
 
 # Copy all output from compilation here
+echo "Prepare files to package ..."
+
 mkdir -p WebPassWare
 
 mkdir -p WebPassWare/lib/
@@ -145,12 +149,10 @@ chrpath -r \$ORIGIN/../lib:\$ORIGIN/../lib/Qt/lib webpassware 2>&1 >/dev/null
 
 cd $portable
 
-VERSION="0.0.1"
-
 # Complete
 echo "Building complete package: WebPassWare-$VERSION.tar.xz"
-tar cf WebPassWare-$VERSION.tar WebPassWare
-xz -z  WebPassWare-$VERSION.tar
+tar czf WebPassWare-$VERSION.tgz WebPassWare
+#xz -z  WebPassWare-$VERSION.tar
   
 echo "Done."
 

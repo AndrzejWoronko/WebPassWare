@@ -13,6 +13,7 @@ Makefile
 
 bin/webpassware
 tests/ORM_test/test_orm
+CURRENT_VERSION.TXT
 
 # Prerequisites
 *.d
