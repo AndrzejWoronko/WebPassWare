@@ -150,7 +150,7 @@ chrpath -r \$ORIGIN/../lib:\$ORIGIN/../lib/Qt/lib webpassware 2>&1 >/dev/null
 cd $portable
 
 # Complete
-echo "Building complete package: WebPassWare-$VERSION.tar.xz"
+echo "Building complete package: WebPassWare-$VERSION.tgz"
 tar czf WebPassWare-$VERSION.tgz WebPassWare
 #xz -z  WebPassWare-$VERSION.tar
   
