@@ -31,27 +31,25 @@ BIN_CREATOR_DIR="/opt/Qt/Tools/QtInstallerFramework/4.1/bin"
 
 PWD=`pwd`
 
-INSTALL_DIR=$PWD/installer/
-
-OUTPUT=`pwd`/output/
+CONFIG_DIR=$PWD/installer/
+OUTPUT=$PWD/output
+INSTALL_DIR=$OUTPUT/webpassware-installer
 
 cd $OUTPUT
 
 #Delete installer dir
-rm -rf webpassware-installer/
+rm -rf $INSTALL_DIR/
 
-mkdir -p webpassware-installer/
-mkdir -p webpassware-installer/config/
-mkdir -p webpassware-installer/packages/
-mkdir -p webpassware-installer/packages/io.qt/
-mkdir -p webpassware-installer/packages/io.qt/data/
-mkdir -p webpassware-installer/packages/io.qt/data/lib/
-mkdir -p webpassware-installer/packages/io.qt/meta/
-mkdir -p webpassware-installer/packages/pl.com.awsoftware.webpassware/
-mkdir -p webpassware-installer/packages/pl.com.awsoftware.webpassware/data/
-mkdir -p webpassware-installer/packages/pl.com.awsoftware.webpassware/meta/
-
-mkdir -p webpassware-installer/REPO/
+mkdir -p $INSTALL_DIR/
+mkdir -p $INSTALL_DIR/config/
+mkdir -p $INSTALL_DIR/packages/
+mkdir -p $INSTALL_DIR/packages/io.qt/
+mkdir -p $INSTALL_DIR/packages/io.qt/data/
+mkdir -p $INSTALL_DIR/packages/io.qt/data/lib/
+mkdir -p $INSTALL_DIR/packages/io.qt/meta/
+mkdir -p $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/
+mkdir -p $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/data/
+mkdir -p $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/meta/
 
 if [ ! -d $OUTPUT/portable/WebPassWare ] ; then
    echo "Required portable relase doesn't exist:  $OUTPUT/portable/WebPassWare"
@@ -60,23 +58,23 @@ fi
 
 SOURCE_DIR="$OUTPUT/portable/WebPassWare"
 
-echo "Install dir: $INSTALL_DIR"
+echo "Install dir: $CONFIG_DIR"
 
 #Copy config
-cp -a $INSTALL_DIR/config/*.png webpassware-installer/config/
-cp -a $INSTALL_DIR/config/*.ico webpassware-installer/config/
-cp -a $INSTALL_DIR/config/config.xml webpassware-installer/config/
-cp -a $INSTALL_DIR/config/controller.qs webpassware-installer/config/
+cp -a $CONFIG_DIR/config/*.png $INSTALL_DIR/config/
+cp -a $CONFIG_DIR/config/*.ico $INSTALL_DIR/config/
+cp -a $CONFIG_DIR/config/config.xml $INSTALL_DIR/config/
+cp -a $CONFIG_DIR/config/controller.qs $INSTALL_DIR/config/
 
 #Copy QT package config 
-cp -a $INSTALL_DIR/config/qt_package.xml webpassware-installer/packages/io.qt/meta/package.xml
+cp -a $CONFIG_DIR/config/qt_package.xml $INSTALL_DIR/packages/io.qt/meta/package.xml
 #Copy webpassware package config
-cp -a $INSTALL_DIR/config/webpassware_package.xml webpassware-installer/packages/pl.com.awsoftware.webpassware/meta/package.xml
-cp -a $INSTALL_DIR/config/installscript.qs webpassware-installer/packages/pl.com.awsoftware.webpassware/meta/
-cp -a $INSTALL_DIR/config/create_links.ui webpassware-installer/packages/pl.com.awsoftware.webpassware/meta/
+cp -a $CONFIG_DIR/config/webpassware_package.xml $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/meta/package.xml
+cp -a $CONFIG_DIR/config/installscript.qs $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/meta/
+cp -a $CONFIG_DIR/config/create_links.ui $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/meta/
 
 #Copy data
-cd $OUTPUT/webpassware-installer/packages/
+cd $INSTALL_DIR/packages/
 
 echo "Source dir: $SOURCE_DIR"
 
@@ -95,9 +93,14 @@ for MDIR in $REQURED_WEBPASSWARE_DIRS; do
     exit 1
   fi
   cp -R $SOURCE_DIR/$MDIR pl.com.awsoftware.webpassware/data/
+
 done
 
-cd $OUTPUT/webpassware-installer/
+#copy icons
+cp -a $CONFIG_DIR/config/webpassware.png pl.com.awsoftware.webpassware/data/
+cp -a $CONFIG_DIR/config/webpassware.ico pl.com.awsoftware.webpassware/data/
+
+cd $INSTALL_DIR/
 
 #replace  in config/config.xml
 
