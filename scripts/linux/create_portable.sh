@@ -84,7 +84,7 @@ for module in $required_modules; do
 done
 
 for lib in `ls *.so`; do
-  chrpath -r \$ORIGIN/ $lib 2>&1 >/dev/null
+  chrpath -k -r \$ORIGIN/ $lib 2>&1 >/dev/null
 done
 
 # Copy Qt dirs
@@ -122,7 +122,7 @@ for plugin in $required_plugins; do
   # Update rpath in Qt plugins
   cd ${parts[0]}
   for lib in `ls *.so`; do
-    chrpath -r \$ORIGIN/../../lib $lib 2>&1 >/dev/null
+    chrpath -k -r \$ORIGIN/../../lib $lib 2>&1 >/dev/null
   done
   cd ..
 done
@@ -138,14 +138,14 @@ for plugin in $optional_plugins; do
   # Update rpath in Qt plugins
   cd ${parts[0]}
   for lib in `ls *.so`; do
-    chrpath -r \$ORIGIN/../../lib $lib 2>&1 >/dev/null
+    chrpath -k -r \$ORIGIN/../../lib $lib 2>&1 >/dev/null
   done
   cd ..
 done
 
 cd $portable/WebPassWare/bin/
 
-chrpath -r \$ORIGIN/../lib/Qt/lib webpassware 2>&1 >/dev/null
+chrpath -k -r \$ORIGIN/../lib/Qt/lib webpassware 2>&1 >/dev/null
 
 cd $portable
 
