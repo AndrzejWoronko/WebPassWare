@@ -42,7 +42,7 @@ Component.prototype.createOperations = function()
 		if (installer.value("os") === "win") {
 			component.addOperation("CreateShortcut", 
 			                       executable,
-			                       linkPrefix + "/@StartMenuDir@/WebPassWare.lnk",
+			                       linkPrefix + "/@StartMenuDir@/Webpassware.lnk",
 				                   "workingDirectory=@TargetDir@",
 				                   "iconPath=@TargetDir@/webpassware.ico",
 				                   "iconId=0",

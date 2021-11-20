@@ -120,12 +120,13 @@ replace_str "%DATE%" $DATE packages/io.qt/meta/package.xml
 replace_str "%WEBPASSWARE_VERSION%" $WEBPASSWARE_VERSION packages/pl.com.awsoftware.webpassware/meta/package.xml
 replace_str "%DATE%" $DATE packages/pl.com.awsoftware.webpassware/meta/package.xml
 
-
+#Create binary instalator
 echo "Create binary instalator"
 $BIN_CREATOR_DIR/binarycreator -f -c config/config.xml -p packages InstallWebPassWare-${WEBPASSWARE_VERSION}.bin
 
+#Create repo
 echo "Create repo"
-
 rm -rf ../REPO
 #$BIN_CREATOR_DIR/repogen --update  -p packages ../REPO
 $BIN_CREATOR_DIR/repogen -p packages ../REPO
+
