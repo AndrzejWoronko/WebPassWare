@@ -46,5 +46,6 @@
         <file>icons/50px/Import-csv.png</file>
         <file>icons/50px/Back.png</file>
         <file>icons/50px/Forward.png</file>
+        <file>icons/50px/Available-updates.png</file>
     </qresource>
 </RCC>

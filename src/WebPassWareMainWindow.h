@@ -101,6 +101,8 @@ public slots:
     void on_ACTION_DATA_EXPORT_DIALOG_triggered();
     void on_ACTION_DATA_IMPORT_DIALOG_triggered();
     void on_ACTION_DATA_CHECK_triggered();
+
+    void on_ACTION_CHECK_UPDATES_triggered(void);
 };
 
 #endif // CWEBPASSWAREMAINWINDOW_H

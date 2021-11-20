@@ -17,6 +17,7 @@ SOURCES += \
     src/Common/ExportCsv.cpp \
     src/Common/ImportCsv.cpp \
     src/Common/Logger.cpp \
+    src/Common/MaintenanceTool.cpp \
     src/Common/PasswordGenerator.cpp \
     src/Common/SplitterState.cpp \
     src/Common/TabMainWindowState.cpp \
@@ -114,6 +115,7 @@ HEADERS += \
     src/Common/Global.h \
     src/Common/ImportCsv.h \
     src/Common/Logger.h \
+    src/Common/MaintenanceTool.h \
     src/Common/PasswordGenerator.h \
     src/Common/Singleton.h \
     src/Common/SplitterState.h \

@@ -13,6 +13,7 @@
 #include "CsvExportDialogController.h"
 #include "CsvImportDialogController.h"
 #include "ModelTableCheck.h"
+#include "MaintenanceTool.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent),
     m_headerContextMenu(NULL), m_visible_passwords(false), m_visible_passwords_action(NULL),
@@ -139,6 +140,9 @@ void CWebPassWareMainWindow::setActions(void)
 
     CAction *actionDataCheck = new CAction(tr("Sprawdzenie danych"), ICON("Checked"), tr("Export danych"), QString(""), QString("ACTION_DATA_CHECK") ,this);
     m_actions.insert(actionDataCheck->getActionName(), actionDataCheck);
+
+    CAction *actionCheckUpdates = new CAction(tr("Sprawdź aktualizacje"), ICON("Available-updates"), tr("Sprawdź aktualizacje"), QString(""), QString("ACTION_CHECK_UPDATES"), this);
+    m_actions.insert(actionCheckUpdates->getActionName(), actionCheckUpdates);
 }
 
 void CWebPassWareMainWindow::setMenu(void)
@@ -184,6 +188,7 @@ void CWebPassWareMainWindow::setMenu(void)
     helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT")));
     helpMenu->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
+    helpMenu->addAction(m_actions.value(QString("ACTION_CHECK_UPDATES")));
 
     m_menus << fileMenu << groupMenu << entryMenu << settingsMenu << toolMenu << helpMenu;
     return;
@@ -200,6 +205,8 @@ void CWebPassWareMainWindow::setToolBar(void)
     m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
+    m_toolBar->addSeparator();
+    m_toolBar->addAction(m_actions.value(QString("ACTION_CHECK_UPDATES")));
     return;
 }
 
@@ -659,4 +666,21 @@ void CWebPassWareMainWindow::on_ACTION_DATA_CHECK_triggered()
 {
     if (CMessageBox::YesNoDialog(tr("Czy sprawdzić dane ?"), this) == QMessageBox::Yes)
         ModelTableCheck::checkAllTables();
+}
+
+void CWebPassWareMainWindow::on_ACTION_CHECK_UPDATES_triggered(void)
+{
+    CMaintenanceTool updater;
+
+    updater.checkUpdate();
+
+    if (updater.hasUpdate())
+    {
+        if (CMessageBox::YesNoDialog(tr("Dostępne są aktualizacje !!!\n Czy chcesz uruchomić aktualizację ?")) == QMessageBox::Yes)
+            updater.startUpdate();
+    }
+    else
+    {
+       CMessageBox::OkDialogInformation(tr("Brak aktualizacji."));
+    }
 }
