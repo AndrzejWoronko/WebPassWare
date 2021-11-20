@@ -1,7 +1,7 @@
 #include "MaintenanceTool.h"
 #include "ApplicationSettings.h"
 #include "Application.h"
-#include "MessageBox.h"
+//#include "MessageBox.h"
 
 CMaintenanceTool::CMaintenanceTool(QObject *parent) : QObject(parent), m_state(CMaintenanceTool::NotRunning), m_hasUpdate(false)
 {
@@ -226,4 +226,3 @@ void CMaintenanceTool::processError(QProcess::ProcessError error)
     DEBUG_WITH_LINE << error;
     setState(CMaintenanceTool::NotRunning);
 }
-
