@@ -145,7 +145,7 @@ done
 
 cd $portable/WebPassWare/bin/
 
-chrpath -r \$ORIGIN/../lib:\$ORIGIN/../lib/Qt/lib webpassware 2>&1 >/dev/null
+chrpath -r \$ORIGIN/../lib/Qt/lib webpassware 2>&1 >/dev/null
 
 cd $portable
 
