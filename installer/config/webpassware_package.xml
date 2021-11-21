@@ -1,7 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package>
     <DisplayName>WebPassWare</DisplayName>
-    <Description>WebPassWare do przechowywania hase≥ do serwisÛw www / poczty itp.</Description>
+    <Description>WebPassWare do przechowywania hase≈Ç do serwis√≥w www / poczty itp.</Description>
     <Version>%WEBPASSWARE_VERSION%</Version>
     <ReleaseDate>%DATE%</ReleaseDate>
     <Name>pl.com.awsoftware.webpassware</Name>
