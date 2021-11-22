@@ -1,0 +1,128 @@
+name: 'CI Windows-64 Relealse'
+
+env:
+    QT_VERSION: '5.15.2'
+    
+on:
+    workflow_dispatch:
+                
+jobs:
+
+  win64:
+  
+          name: 'Windows 64-bit'
+          runs-on: [windows-latest]                  
+          env:
+            QT_ARCH: 'win64_mingw81'
+            MINGW_DIR: ../Qt/Tools/mingw810_64
+            QT_BIN_DIR: ../Qt/5.15.2/mingw81_64/bin
+            PORTABLE_DIR: output/portable/WebPassWare
+            MINGW_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/qt.tools.win64_mingw810/8.1.0-1-202004170606x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
+            IF41_DIR: ../Qt/Tools/QtInstallerFramework/4.1/bin/
+            
+          steps:
+          
+           - name: 'Cache Qt'
+             id: cache-qt
+             uses: actions/cache@v1
+             with:
+                path: ${{ github.workspace }}\..\Qt
+                key: ${{ runner.os }}-${{ env.QT_VERSION }}-Qt-Cache
+                
+           - name: 'Install Qt'
+             uses: jurplel/install-qt-action@v2
+             with:
+               cached: ${{ steps.cache-qt.outputs.cache-hit }}
+               version: ${{ env.QT_VERSION }}
+               host: 'windows'
+               arch: ${{ env.QT_ARCH }}
+               dir: 'D:/'
+               setup-python: 'false'
+        
+           - name: 'Install mingw'
+             if: steps.cache-qt.outputs.cache-hit != 'true'
+             shell: bash
+             run: |
+                 curl -L ${{ env.MINGW_URL }} --output ../mingw.7z
+                 7z x -o"../Qt" ../mingw.7z
+                 echo "${{ env.MINGW_DIR }}/bin" >> $GITHUB_PATH
+            
+           - name: 'Clone repo'
+             uses: actions/checkout@v2
+             with:
+                ref: ${{ env.GITHUB_REF }}
+
+           - name: 'Prepare output dir'
+             shell: bash
+             working-directory: ${{ github.workspace }}
+             run: mkdir output output/build
+                                                          
+           - name: 'Compile WebPassWare'
+             working-directory: ${{ github.workspace }}/output/build
+             run: |
+                qmake.exe ..\..\WebPassWare.pro
+                mingw32-make.exe -j 2
+                
+           - name: 'Prepare portable dir'
+             shell: bash
+             working-directory: output
+             run: |
+                mkdir portable
+                cp -R WebPassWare portable
+                
+           - name: 'Clean-up portable dir'
+             shell: bash
+             run: |
+                cd ${{ env.PORTABLE_DIR }}
+                rm -f *.a
+                echo "ABSOLUTE_PORTABLE_DIR=`pwd`" >> $GITHUB_ENV
+       
+           - name: 'Prepare portable distro (Qt)'
+             shell: bash
+             working-directory: ${{ env.Qt5_Dir }}
+             run: |
+                for f in Qt5Core Qt5Gui Qt5Network Qt5PrintSupport Qt5Qml Qt5Svg Qt5Widgets Qt5Xml libgcc_s_seh-1 libstdc++-6 libwinpthread-1; do cp bin/$f.dll "$ABSOLUTE_PORTABLE_DIR"; done
+                cp bin/qt.conf "$ABSOLUTE_PORTABLE_DIR"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/iconengines"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/platforms"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/styles"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/imageformats"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/sqldrivers"
+                cp plugins/iconengines/qsvgicon.dll "$ABSOLUTE_PORTABLE_DIR/iconengines"
+                cp plugins/platforms/qwindows.dll "$ABSOLUTE_PORTABLE_DIR/platforms"
+                cp plugins/styles/qwindowsvistastyle.dll "$ABSOLUTE_PORTABLE_DIR/styles"
+                for f in qgif qicns qico qjpeg qsvg qtga qtiff qwbmp; do cp plugins/imageformats/$f.dll "$ABSOLUTE_PORTABLE_DIR/imageformats"; done
+                cp plugins/sqldrivers/libqsqlite.dll "$ABSOLUTE_PORTABLE_DIR/sqldrivers"
+                
+           - name: 'Prepare portable distro (Resources)'
+             shell: bash
+             run: |
+                cp icons/progicon.ico "$ABSOLUTE_PORTABLE_DIR"/
+
+           - name: 'Determine WebPassWare version'
+             shell: bash
+             working-directory: ${{ github.workspace }}
+             run: |
+                echo "WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`"  >> $GITHUB_ENV
+                
+           - name: 'Run tests'
+             shell: bash
+             working-directory: ${{ github.workspace }}
+             run: |
+                ls -l
+                ls -l bin
+
+                            
+           - name: 'Assemble portable package'
+             shell: bash
+             run: |
+                  cd $ABSOLUTE_PORTABLE_DIR/..
+                  7z a -r webpassware-$WEBPASSWARE_VERSION.zip WebPassWare
+
+            - name: 'Upload package artifact'
+              uses: actions/upload-artifact@v1
+              with:
+                name: webpassware-${{ env.$WEBPASSWARE_VERSION }}.zip
+                path: output/portable/webpassware-${{ env.$WEBPASSWARE_VERSION }}.zip
+          
+          
