@@ -116,12 +116,12 @@ jobs:
              shell: bash
              run: |
                   cd $ABSOLUTE_PORTABLE_DIR/..
-                  7z a -r webpassware-$WEBPASSWARE_VERSION.zip WebPassWare
+                  7z a -r webpassware-${{ env.WEBPASSWARE_VERSION }}.zip WebPassWare
 
            - name: 'Upload package artifact'
              uses: actions/upload-artifact@v1
              with:
-                name: webpassware-${{ env.$WEBPASSWARE_VERSION }}.zip
-                path: output/portable/webpassware-${{ env.$WEBPASSWARE_VERSION }}.zip
+                name: webpassware-${{ env.WEBPASSWARE_VERSION }}.zip
+                path: output/portable/webpassware-${{ env.WEBPASSWARE_VERSION }}.zip
           
           
