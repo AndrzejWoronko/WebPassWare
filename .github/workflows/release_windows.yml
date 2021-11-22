@@ -80,7 +80,7 @@ jobs:
              shell: bash
              working-directory: ${{ env.Qt5_Dir }}
              run: |
-                for f in Qt5Core Qt5Gui Qt5Network Qt5PrintSupport Qt5Qml Qt5Svg Qt5Sql Qt5Widgets Qt5Xml libgcc_s_seh-1 libstdc++-6 libwinpthread-1; do cp bin/$f.dll "$ABSOLUTE_PORTABLE_DIR"; done
+                for f in Qt5Core Qt5Gui Qt5Network Qt5Sql Qt5Widgets libgcc_s_seh-1 libstdc++-6 libwinpthread-1; do cp bin/$f.dll "$ABSOLUTE_PORTABLE_DIR"; done
                 cp bin/qt.conf "$ABSOLUTE_PORTABLE_DIR"
                 mkdir -p "$ABSOLUTE_PORTABLE_DIR/iconengines"
                 mkdir -p "$ABSOLUTE_PORTABLE_DIR/platforms"
@@ -91,8 +91,8 @@ jobs:
                 cp plugins/platforms/qwindows.dll "$ABSOLUTE_PORTABLE_DIR/platforms"
                 cp plugins/styles/qwindowsvistastyle.dll "$ABSOLUTE_PORTABLE_DIR/styles"
                 for f in qgif qicns qico qjpeg qsvg qtga qtiff qwbmp; do cp plugins/imageformats/$f.dll "$ABSOLUTE_PORTABLE_DIR/imageformats"; done
-                cp plugins/sqldrivers/libqsqlite.dll "$ABSOLUTE_PORTABLE_DIR/sqldrivers"
-                
+                for f in qsqlite qsqlmysql qsqlodbc qsqlpsql ; do cp plugins/sqldrivers/$f.dll "$ABSOLUTE_PORTABLE_DIR/sqldrivers"; done
+
            - name: 'Prepare portable distro (Resources)'
              shell: bash
              run: |
