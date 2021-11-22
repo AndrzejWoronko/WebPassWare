@@ -5,8 +5,8 @@
     <Title>WebPassWare Installator</Title>	
     <Publisher>AWSoftware development team</Publisher>
     <ProductUrl>https://andrzejworonko.github.io/AWSoftware/WebPassWare/</ProductUrl>
-    <InstallerWindowIcon>webpassware.ico</InstallerWindowIcon>
-    <InstallerApplicationIcon>webpassware.ico</InstallerApplicationIcon>	
+    <InstallerWindowIcon>webpassware.png</InstallerWindowIcon>
+    <InstallerApplicationIcon>webpassware.png</InstallerApplicationIcon>
     <Logo>logo.png</Logo>
     <Background>bg.png</Background>	
     <RunProgram>@TargetDir@/%FINAL_EXECUTABLE%</RunProgram>
@@ -15,6 +15,7 @@
 
     <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
     <WizardStyle>%WIZARD_STYLE%</WizardStyle>
+    <StyleSheet>style.qss</StyleSheet>
     <TargetDir>%TARGET_DIR%</TargetDir>
 	<ControlScript>controller.qs</ControlScript>
     <RemoteRepositories>

@@ -65,6 +65,7 @@ cp -a $CONFIG_DIR/config/*.png $INSTALL_DIR/config/
 cp -a $CONFIG_DIR/config/*.ico $INSTALL_DIR/config/
 cp -a $CONFIG_DIR/config/config.xml $INSTALL_DIR/config/
 cp -a $CONFIG_DIR/config/controller.qs $INSTALL_DIR/config/
+cp -a $CONFIG_DIR/config/style.qss $INSTALL_DIR/config/
 
 #Copy QT package config 
 cp -a $CONFIG_DIR/config/qt_package.xml $INSTALL_DIR/packages/io.qt/meta/package.xml
