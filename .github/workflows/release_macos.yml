@@ -1,4 +1,4 @@
-name: 'CI Multiplatform Relealse'
+name: 'CI MacOS Relealse'
 
 env:
     QT_VERSION: '5.15.2'
