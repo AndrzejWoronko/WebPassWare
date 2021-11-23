@@ -61,6 +61,10 @@ mkdir -p WebPassWare/lib/Qt/qml
 
 cp -R $OUTPUT/build/bin/ WebPassWare/
 
+#ikony
+cp -a ../../icons/progicon.ico WebPassWare/
+cp -a ../../icons/50px/WebPassWare.png WebPassWare/
+ 
 # Make lib directory to move all *.so files (webpassware files and Qt files and dependencies)
 
 cd WebPassWare

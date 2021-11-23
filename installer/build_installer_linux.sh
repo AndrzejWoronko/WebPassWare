@@ -27,7 +27,7 @@ REQURED_WEBPASSWARE_DIRS="bin"
 
 OS="linux"
 
-BIN_CREATOR_DIR="/opt/Qt/Tools/QtInstallerFramework/4.1/bin"
+BIN_CREATOR_DIR="/opt/Qt/Tools/QtInstallerFramework/4.2/bin"
 
 PWD=`pwd`
 
