@@ -17,7 +17,7 @@ jobs:
             QT_BIN_DIR: ../Qt/5.15.2/mingw81_64/bin
             PORTABLE_DIR: output/portable/WebPassWare
             MINGW_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/qt.tools.win64_mingw810/8.1.0-1-202004170606x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
-            IF41_DIR: ../Qt/Tools/QtInstallerFramework/4.1/bin/
+            IF41_DIR: ../Qt/Tools/QtInstallerFramework/4.2/bin/
             
           steps:
           
@@ -39,7 +39,7 @@ jobs:
                arch: ${{ env.QT_ARCH }}
                dir: 'D:/'
                setup-python: 'false'                        
-               tools: 'tools_ifw,4.1.1,qt.tools.ifw.41'
+               tools: 'tools_ifw,4.2.0,qt.tools.ifw.42'
         
            - name: 'Install mingw'
              if: steps.cache-qt.outputs.cache-hit != 'true'
