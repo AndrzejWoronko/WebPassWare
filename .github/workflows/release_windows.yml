@@ -92,7 +92,7 @@ jobs:
                 cp plugins/platforms/qwindows.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/platforms"
                 cp plugins/styles/qwindowsvistastyle.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/styles"
                 for f in qgif qicns qico qjpeg qsvg qtga qtiff qwbmp; do cp plugins/imageformats/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/imageformats"; done
-                for f in qsqlite qsqlmysql qsqlodbc qsqlpsql ; do cp plugins/sqldrivers/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/sqldrivers"; done
+                for f in qsqlite qsqlodbc qsqlpsql ; do cp plugins/sqldrivers/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/sqldrivers"; done
 
            - name: 'Prepare portable distro (Resources)'             
              shell: bash
