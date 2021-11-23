@@ -54,7 +54,8 @@ jobs:
            - name: 'Prepare output dir'
              shell: bash
              working-directory: ${{ github.workspace }}
-             run: mkdir output output/build
+             run: |
+                mkdir -p output/build
                                                           
            - name: 'Compile WebPassWare'
              working-directory: ${{ github.workspace }}/output/build
@@ -65,9 +66,9 @@ jobs:
            - name: 'Prepare portable dir'
              shell: bash
              working-directory: output
-             run: |
-                mkdir portable
-                cp -R WebPassWare portable
+             run: |                             
+                mkdir -p portable/WebPassWare
+                cp -R build/bin/ portable/WebPassWare/
                 
            - name: 'Clean-up portable dir'
              shell: bash
@@ -80,23 +81,25 @@ jobs:
              shell: bash
              working-directory: ${{ env.Qt5_Dir }}
              run: |
-                for f in Qt5Core Qt5Gui Qt5Network Qt5Sql Qt5Widgets libgcc_s_seh-1 libstdc++-6 libwinpthread-1; do cp bin/$f.dll "$ABSOLUTE_PORTABLE_DIR"; done
-                cp bin/qt.conf "$ABSOLUTE_PORTABLE_DIR"
-                mkdir -p "$ABSOLUTE_PORTABLE_DIR/iconengines"
-                mkdir -p "$ABSOLUTE_PORTABLE_DIR/platforms"
-                mkdir -p "$ABSOLUTE_PORTABLE_DIR/styles"
-                mkdir -p "$ABSOLUTE_PORTABLE_DIR/imageformats"
-                mkdir -p "$ABSOLUTE_PORTABLE_DIR/sqldrivers"
-                cp plugins/iconengines/qsvgicon.dll "$ABSOLUTE_PORTABLE_DIR/iconengines"
-                cp plugins/platforms/qwindows.dll "$ABSOLUTE_PORTABLE_DIR/platforms"
-                cp plugins/styles/qwindowsvistastyle.dll "$ABSOLUTE_PORTABLE_DIR/styles"
-                for f in qgif qicns qico qjpeg qsvg qtga qtiff qwbmp; do cp plugins/imageformats/$f.dll "$ABSOLUTE_PORTABLE_DIR/imageformats"; done
-                for f in qsqlite qsqlmysql qsqlodbc qsqlpsql ; do cp plugins/sqldrivers/$f.dll "$ABSOLUTE_PORTABLE_DIR/sqldrivers"; done
+                for f in Qt5Core Qt5Gui Qt5Network Qt5Sql Qt5Widgets libgcc_s_seh-1 libstdc++-6 libwinpthread-1; do cp bin/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/"; done
+                cp bin/qt.conf "$ABSOLUTE_PORTABLE_DIR/bin/"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/iconengines"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/platforms"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/styles"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/imageformats"
+                mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/sqldrivers"
+                cp plugins/iconengines/qsvgicon.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/iconengines"
+                cp plugins/platforms/qwindows.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/platforms"
+                cp plugins/styles/qwindowsvistastyle.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/styles"
+                for f in qgif qicns qico qjpeg qsvg qtga qtiff qwbmp; do cp plugins/imageformats/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/imageformats"; done
+                for f in qsqlite qsqlmysql qsqlodbc qsqlpsql ; do cp plugins/sqldrivers/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/sqldrivers"; done
 
-           - name: 'Prepare portable distro (Resources)'
+           - name: 'Prepare portable distro (Resources)'             
              shell: bash
+             working-directory: ${{ github.workspace }}
              run: |
                 cp icons/progicon.ico "$ABSOLUTE_PORTABLE_DIR"/
+                cp icons/50px/WebPassWare.png "$ABSOLUTE_PORTABLE_DIR"/l 
 
            - name: 'Determine WebPassWare version'
              shell: bash
@@ -110,7 +113,6 @@ jobs:
              run: |
                 ls -l
                 ls -l bin
-
                             
            - name: 'Assemble portable package'
              shell: bash
