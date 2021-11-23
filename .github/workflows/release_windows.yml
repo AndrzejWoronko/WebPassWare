@@ -17,7 +17,7 @@ jobs:
             QT_BIN_DIR: ../Qt/5.15.2/mingw81_64/bin
             PORTABLE_DIR: output/portable/WebPassWare
             MINGW_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/qt.tools.win64_mingw810/8.1.0-1-202004170606x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
-            IFW43_DIR: ../Qt/Tools/QtInstallerFramework/4.2/bin/
+            IFW42_DIR: ../Qt/Tools/QtInstallerFramework/4.2/bin/
             
           steps:
           
@@ -109,19 +109,12 @@ jobs:
              working-directory: ${{ github.workspace }}
              run: |
                 echo "WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`"  >> $GITHUB_ENV
-                
-           - name: 'Run tests'
-             shell: bash
-             working-directory: ${{ github.workspace }}
-             run: |
-                ls -al                
-                            
+                                            
            - name: 'Assemble portable package'
              shell: bash
              run: |
                   cd $ABSOLUTE_PORTABLE_DIR/../
-                  7z a -r webpassware-$WEBPASSWARE_VERSION.zip WebPassWare
-                  mv  webpassware-$WEBPASSWARE_VERSION webpassware-$WEBPASSWARE_VERSION.zip
+                  7z a -r webpassware-${WEBPASSWARE_VERSION}.zip WebPassWare
                   ls -al
 
            - name: 'Upload package artifact'
@@ -129,5 +122,3 @@ jobs:
              with:
                 name: webpassware-${{ env.WEBPASSWARE_VERSION }}.zip
                 path: output/portable/webpassware-${{ env.WEBPASSWARE_VERSION }}.zip
-          
-          
