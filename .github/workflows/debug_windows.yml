@@ -15,7 +15,8 @@ jobs:
             MINGW_DIR: ../Qt/Tools/mingw810_64
             QT_BIN_DIR: ../Qt/5.15.2/mingw81_64/bin
             MINGW_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/qt.tools.win64_mingw810/8.1.0-1-202004170606x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
-
+            IF_TOOL_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_ifw/qt.tools.ifw.42/4.2.0-0-202111080926ifw-win-x86.7z
+            
         steps:
             - name: 'Cache Qt'
               id: cache-qt
@@ -45,7 +46,14 @@ jobs:
                  curl -L ${{ env.MINGW_URL }} --output ../mingw.7z
                  7z x -o"../Qt" ../mingw.7z
                  echo "${{ env.MINGW_DIR }}/bin" >> $GITHUB_PATH
-              
+                 
+            - name: 'Install ifw_tool'
+              if: steps.cache-qt.outputs.cache-hit != 'true'
+              shell: bash
+              run: |
+                 curl -L ${{ env.IF_TOOL_URL }} --output ../ifw_tool.7z
+                 7z x -o"../Qt" ../ifw_tool.7z
+                               
             - name: 'Clone repo'
               uses: actions/checkout@v2
               with:
