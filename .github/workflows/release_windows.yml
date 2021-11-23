@@ -125,7 +125,7 @@ jobs:
              shell: bash
              working-directory: ${{ github.workspace }}
              run: |
-                echo "WEBPASSWARE_VERSION_2=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2`" >> $GITHUB_ENV
+                echo "export WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2`" >> $GITHUB_ENV
             
            - name: 'Assemble install package'
              shell: bash
