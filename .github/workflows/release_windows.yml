@@ -22,9 +22,10 @@ jobs:
             INSTALL_DIR: output/webpassware-installer
             FINAL_EXECUTABLE: 'bin\/webpassware'
             WIZARD_STYLE: 'Modern'
-            TARGET_DIR: '\/WebPassWare\/'
+            TARGET_DIR: 'C:\/WebPassWare\/'
             UPDATE_ARCH: 'windows'
             CONFIG_DIR: 'installer/'
+            WEBPASSWARE_VERSION: '0.0.2'
             
           steps:
           
@@ -101,7 +102,6 @@ jobs:
              working-directory: ${{ env.Qt5_Dir }}
              run: |
                 for f in Qt5Core Qt5Gui Qt5Network Qt5Sql Qt5Widgets libgcc_s_seh-1 libstdc++-6 libwinpthread-1; do cp bin/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/"; done
-                cp bin/qt.conf "$ABSOLUTE_PORTABLE_DIR/bin/"
                 mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/iconengines"
                 mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/platforms"
                 mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/styles"
@@ -124,7 +124,7 @@ jobs:
              shell: bash
              working-directory: ${{ github.workspace }}
              run: |
-                echo "WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`" >> $GITHUB_ENV
+                echo "export WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2`" >> $GITHUB_ENV
             
            - name: 'Assemble install package'
              shell: bash
@@ -159,7 +159,7 @@ jobs:
              shell: bash
              working-directory: ${{ env.INSTALL_DIR }}
              run: |
-                DATE=`date +%Y-%m-%d`            
+                DATE=`date +%Y-%m-%d`
                 sed -i "s/%FINAL_EXECUTABLE%/$FINAL_EXECUTABLE/" config/config.xml
                 sed -i "s/%WIZARD_STYLE%/$WIZARD_STYLE/" config/config.xml
                 sed -i "s/%TARGET_DIR%/$TARGET_DIR/" config/config.xml
@@ -173,21 +173,21 @@ jobs:
              shell: bash
              working-directory: ${{ env.INSTALL_DIR }}
              run: |
-                  ../../${{ env.IFW_TOOL_DIR }}/bin/binarycreator.exe -f -c config/config.xml -p packages InstallWebPassWare-${WEBPASSWARE_VERSION}.exe
+                  ../../${{ env.IFW_TOOL_DIR }}/bin/binarycreator.exe -f -c config/config.xml -p packages "InstallWebPassWare-${WEBPASSWARE_VERSION}.exe"
                   ls -al        
             
            - name: 'Assemble portable package'
              shell: bash
              run: |
                   cd $ABSOLUTE_PORTABLE_DIR/..
-                  7z a -r webpassware-${WEBPASSWARE_VERSION}.zip WebPassWare
+                  7z a -r webpassware-0.0.2.zip WebPassWare
                   ls -al
 
            - name: 'Upload package artifact'
              uses: actions/upload-artifact@v1
              with:
-                name: webpassware-${{ env.WEBPASSWARE_VERSION }}
-                path: output/portable/webpassware-${{ env.WEBPASSWARE_VERSION }}
+                name: webpassware-${{ env.WEBPASSWARE_VERSION }}.zip
+                path: output/portable/webpassware-${{ env.WEBPASSWARE_VERSION }}.zip
                 
            - name: 'Upload install artifact'
              uses: actions/upload-artifact@v1
