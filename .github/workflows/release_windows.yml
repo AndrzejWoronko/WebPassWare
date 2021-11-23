@@ -173,7 +173,7 @@ jobs:
              shell: bash
              working-directory: ${{ env.INSTALL_DIR }}
              run: |
-                  binarycreator.exe -f -c config/config.xml -p packages InstallWebPassWare-${WEBPASSWARE_VERSION}.exe
+                  ../../${{ env.IFW_TOOL_DIR }}/bin/binarycreator.exe -f -c config/config.xml -p packages InstallWebPassWare-${WEBPASSWARE_VERSION}.exe
                   ls -al        
             
            - name: 'Assemble portable package'
