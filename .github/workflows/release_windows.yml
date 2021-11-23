@@ -102,7 +102,6 @@ jobs:
              working-directory: ${{ env.Qt5_Dir }}
              run: |
                 for f in Qt5Core Qt5Gui Qt5Network Qt5Sql Qt5Widgets libgcc_s_seh-1 libstdc++-6 libwinpthread-1; do cp bin/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/"; done
-                cp bin/qt.conf "$ABSOLUTE_PORTABLE_DIR/bin/"
                 mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/iconengines"
                 mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/platforms"
                 mkdir -p "$ABSOLUTE_PORTABLE_DIR/bin/plugins/styles"
