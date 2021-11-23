@@ -153,10 +153,7 @@ jobs:
                 mv ${{ env.INSTALL_DIR }}/packages/io.qt/data/bin/webpassware.exe ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/bin/
                 cp -a ${{ env.CONFIG_DIR }}/config/webpassware.png ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/
                 cp -a ${{ env.CONFIG_DIR }}/config/webpassware.ico ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/
-           
-           - name: 'Setup tmate session'
-             uses: mxschmitt/action-tmate@v3
-           
+                      
            - name: 'Config install package'
              shell: bash
              working-directory: ${{ env.INSTALL_DIR }}
