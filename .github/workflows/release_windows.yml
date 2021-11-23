@@ -63,6 +63,7 @@ jobs:
                  curl -L ${{ env.IFW_TOOL_URL }} --output ../ifw_tool.7z
                  7z x -o"../Qt" ../ifw_tool.7z
                  echo "${{ env.IFW_TOOL_DIR }}/bin" >> $GITHUB_PATH
+                 ls -al ${{ env.IFW_TOOL_DIR }}/bin
 
            - name: 'Clone repo'
              uses: actions/checkout@v2
