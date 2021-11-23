@@ -22,7 +22,7 @@ jobs:
             INSTALL_DIR: output/webpassware-installer
             FINAL_EXECUTABLE: 'bin\/webpassware'
             WIZARD_STYLE: 'Modern'
-            TARGET_DIR: '\/WebPassWare\/'
+            TARGET_DIR: 'C:\/WebPassWare\/'
             UPDATE_ARCH: 'windows'
             CONFIG_DIR: 'installer/'
             WEBPASSWARE_VERSION: '0.0.2'
