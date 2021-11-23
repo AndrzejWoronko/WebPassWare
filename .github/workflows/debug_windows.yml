@@ -36,7 +36,7 @@ jobs:
                 arch: ${{ env.QT_ARCH }}
                 dir: 'D:/'
                 setup-python: 'true'
-                tools: 'tools_ifw,4.2,qt.tools.ifw.42'
+                tools: 'tools_ifw,4.2.0,qt.tools.ifw.42'
                 install-deps: 'true'
                 set-env: 'true'
 
