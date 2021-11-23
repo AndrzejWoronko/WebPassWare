@@ -162,14 +162,14 @@ jobs:
              working-directory: ${{ env.INSTALL_DIR }}
              run: |
                 DATE=`date +%Y-%m-%d`            
-                sed -i 's/%FINAL_EXECUTABLE%/$FINAL_EXECUTABLE' config/config.xml
-                sed -i 's/%WIZARD_STYLE%/$WIZARD_STYLE' config/config.xml
-                sed -i 's/%TARGET_DIR%/$TARGET_DIR' config/config.xml
-                sed -i 's/%UPDATE_ARCH%/$UPDATE_ARCH' config/config.xml                
-                sed -i 's/%QT_VERSION%/$QT_VERSION' packages/io.qt/meta/package.xml
-                sed -i 's/%DATE%/$DATE' packages/io.qt/meta/package.xml
-                sed -i 's/%WEBPASSWARE_VERSION%/$WEBPASSWARE_VERSION' packages/pl.com.awsoftware.webpassware/meta/package.xml
-                sed -i 's/%DATE%/$DATE' packages/pl.com.awsoftware.webpassware/meta/package.xml
+                sed -i "s/%FINAL_EXECUTABLE%/$FINAL_EXECUTABLE/" config/config.xml
+                sed -i "s/%WIZARD_STYLE%/$WIZARD_STYLE/" config/config.xml
+                sed -i "s/%TARGET_DIR%/$TARGET_DIR/" config/config.xml
+                sed -i "s/%UPDATE_ARCH%/$UPDATE_ARCH/" config/config.xml                
+                sed -i "s/%QT_VERSION%/$QT_VERSION/" packages/io.qt/meta/package.xml
+                sed -i "s/%DATE%/$DATE/" packages/io.qt/meta/package.xml
+                sed -i "s/%WEBPASSWARE_VERSION%/$WEBPASSWARE_VERSION/" packages/pl.com.awsoftware.webpassware/meta/package.xml
+                sed -i "s/%DATE%/$DATE/" packages/pl.com.awsoftware.webpassware/meta/package.xml
 
            - name: 'Assemble install package'             
              shell: bash
