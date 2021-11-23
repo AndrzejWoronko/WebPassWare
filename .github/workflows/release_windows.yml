@@ -114,7 +114,7 @@ jobs:
              shell: bash
              run: |
                   cd $ABSOLUTE_PORTABLE_DIR/..
-                  7z a -r webpassware-${WEBPASSWARE_VERSION} WebPassWare
+                  7z a -r webpassware-${WEBPASSWARE_VERSION}.zip WebPassWare
                   ls -al
 
            - name: 'Upload package artifact'
