@@ -151,8 +151,8 @@ jobs:
              run: |
                 cp -R "$ABSOLUTE_PORTABLE_DIR"/bin/ ${{ env.INSTALL_DIR }}/packages/io.qt/data/
                 mv ${{ env.INSTALL_DIR }}/packages/io.qt/data/bin/webpassware.exe ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/bin/
-                cp -a ${{ env.CONFIG_DIR }}/config/webpassware.png ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/bin/
-                cp -a ${{ env.CONFIG_DIR }}/config/webpassware.ico ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/bin/
+                cp -a ${{ env.CONFIG_DIR }}/config/webpassware.png ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/
+                cp -a ${{ env.CONFIG_DIR }}/config/webpassware.ico ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/
 
            - name: 'Config install package'
              shell: bash
