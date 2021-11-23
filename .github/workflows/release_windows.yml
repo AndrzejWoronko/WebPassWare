@@ -10,14 +10,15 @@ jobs:
 
   win64: 
           name: 'Windows 64-bit'
-          runs-on: [windows-latest]                  
+          runs-on: windows-2019
           env:
             QT_ARCH: 'win64_mingw81'
             MINGW_DIR: ../Qt/Tools/mingw810_64
             QT_BIN_DIR: ../Qt/5.15.2/mingw81_64/bin
             PORTABLE_DIR: output/portable/WebPassWare
             MINGW_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/qt.tools.win64_mingw810/8.1.0-1-202004170606x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
-            IFW42_DIR: ../Qt/Tools/QtInstallerFramework/4.2/bin/
+            IFw_TOOL_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_ifw/qt.tools.ifw.42/4.2.0-0-202111080926ifw-win-x86.7z
+            IFW_TOOL_DIR: ../Qt/Tools/QtInstallerFramework/4.2/
             
           steps:
           
@@ -38,7 +39,7 @@ jobs:
                install-deps: 'true'
                arch: ${{ env.QT_ARCH }}
                dir: 'D:/'
-               setup-python: 'false'                        
+               setup-python: 'false'
                tools: 'tools_ifw,4.2.0,qt.tools.ifw.42'
         
            - name: 'Install mingw'
@@ -48,7 +49,15 @@ jobs:
                  curl -L ${{ env.MINGW_URL }} --output ../mingw.7z
                  7z x -o"../Qt" ../mingw.7z
                  echo "${{ env.MINGW_DIR }}/bin" >> $GITHUB_PATH
-            
+                 
+           - name: 'Install ifw_tool'
+             if: steps.cache-qt.outputs.cache-hit != 'true'
+             shell: bash
+             run: |
+                 curl -L ${{ env.IFW_TOOL_URL }} --output ../ifw_tool.7z
+                 7z x -o"../Qt" ../ifw_tool.7z
+                 echo "${{ env.IFW_TOOL_DIR }}/bin" >> $GITHUB_PATH
+
            - name: 'Clone repo'
              uses: actions/checkout@v2
              with:
