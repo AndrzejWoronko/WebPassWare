@@ -111,8 +111,7 @@ jobs:
              shell: bash
              working-directory: ${{ github.workspace }}
              run: |
-                ls -l
-                ls -l bin
+                ls -al                
                             
            - name: 'Assemble portable package'
              shell: bash
