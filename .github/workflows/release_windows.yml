@@ -174,7 +174,7 @@ jobs:
              shell: bash
              working-directory: ${{ env.INSTALL_DIR }}
              run: |
-                  ../../${{ env.IFW_TOOL_DIR }}/bin/binarycreator.exe -f -c config/config.xml -p packages "InstallWebPassWare-0.0.2.exe"
+                  ../../${{ env.IFW_TOOL_DIR }}/bin/binarycreator.exe -f -c config/config.xml -p packages "InstallWebPassWare-${WEBPASSWARE_VERSION}.exe"
                   ls -al        
             
            - name: 'Assemble portable package'
@@ -187,8 +187,8 @@ jobs:
            - name: 'Upload package artifact'
              uses: actions/upload-artifact@v1
              with:
-                name: webpassware-${{ env.WEBPASSWARE_VERSION }}
-                path: output/portable/webpassware-${{ env.WEBPASSWARE_VERSION }}
+                name: webpassware-${{ env.WEBPASSWARE_VERSION }}.zip
+                path: output/portable/webpassware-${{ env.WEBPASSWARE_VERSION }}.zip
                 
            - name: 'Upload install artifact'
              uses: actions/upload-artifact@v1
