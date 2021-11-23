@@ -159,7 +159,7 @@ jobs:
              shell: bash
              working-directory: ${{ env.INSTALL_DIR }}
              run: |
-                DATE=`date +%Y-%m-%d`            
+                DATE=`date +%Y-%m-%d`
                 sed -i "s/%FINAL_EXECUTABLE%/$FINAL_EXECUTABLE/" config/config.xml
                 sed -i "s/%WIZARD_STYLE%/$WIZARD_STYLE/" config/config.xml
                 sed -i "s/%TARGET_DIR%/$TARGET_DIR/" config/config.xml
@@ -173,14 +173,14 @@ jobs:
              shell: bash
              working-directory: ${{ env.INSTALL_DIR }}
              run: |
-                  ../../${{ env.IFW_TOOL_DIR }}/bin/binarycreator.exe -f -c config/config.xml -p packages InstallWebPassWare-${WEBPASSWARE_VERSION}.exe
+                  ../../${{ env.IFW_TOOL_DIR }}/bin/binarycreator.exe -f -c config/config.xml -p packages "InstallWebPassWare-0.0.2.exe"
                   ls -al        
             
            - name: 'Assemble portable package'
              shell: bash
              run: |
                   cd $ABSOLUTE_PORTABLE_DIR/..
-                  7z a -r webpassware-${WEBPASSWARE_VERSION}.zip WebPassWare
+                  7z a -r webpassware-0.0.2.zip WebPassWare
                   ls -al
 
            - name: 'Upload package artifact'
