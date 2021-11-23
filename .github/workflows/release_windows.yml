@@ -18,7 +18,13 @@ jobs:
             PORTABLE_DIR: output/portable/WebPassWare
             MINGW_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/qt.tools.win64_mingw810/8.1.0-1-202004170606x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
             IFw_TOOL_URL: https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_ifw/qt.tools.ifw.42/4.2.0-0-202111080926ifw-win-x86.7z
-            IFW_TOOL_DIR: ../Qt/Tools/QtInstallerFramework/4.2/
+            IFW_TOOL_DIR: ../Qt/Tools/QtInstallerFramework/4.2/            
+            INSTALL_DIR: output/webpassware-installer
+            FINAL_EXECUTABLE: 'bin\/webpassware'
+            WIZARD_STYLE: 'Modern'
+            TARGET_DIR: '\/WebPassWare\/'
+            UPDATE_ARCH: 'windows'
+            CONFIG_DIR: 'installer/'
             
           steps:
           
@@ -77,7 +83,7 @@ jobs:
                 
            - name: 'Prepare portable dir'
              shell: bash
-             working-directory: output
+             working-directory: ${{ github.workspace }}/output
              run: |                             
                 mkdir -p portable/WebPassWare
                 cp -R build/bin/ portable/WebPassWare/
@@ -106,19 +112,46 @@ jobs:
                 for f in qgif qicns qico qjpeg qsvg qtga qtiff qwbmp; do cp plugins/imageformats/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/imageformats"; done
                 for f in qsqlite qsqlodbc qsqlpsql ; do cp plugins/sqldrivers/$f.dll "$ABSOLUTE_PORTABLE_DIR/bin/plugins/sqldrivers"; done
 
-           - name: 'Prepare portable distro (Resources)'             
+           - name: 'Prepare portable distro (Resources)'
              shell: bash
              working-directory: ${{ github.workspace }}
              run: |
                 cp icons/progicon.ico "$ABSOLUTE_PORTABLE_DIR"/
-                cp icons/50px/WebPassWare.png "$ABSOLUTE_PORTABLE_DIR"/l 
+                cp icons/50px/WebPassWare.png "$ABSOLUTE_PORTABLE_DIR"/
 
            - name: 'Determine WebPassWare version'
              shell: bash
              working-directory: ${{ github.workspace }}
              run: |
                 echo "WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`" >> $GITHUB_ENV
-                                            
+
+            
+           - name: 'Assemble install package'
+             shell: bash
+             working-directory: ${{ github.workspace }}
+             run: |
+                  mkdir -p ${{ env.INSTALL_DIR }}/config/
+                  mkdir -p ${{ env.INSTALL_DIR }}/packages/io.qt/data/
+                  mkdir -p ${{ env.INSTALL_DIR }}/packages/io.qt/meta/
+                  mkdir -p ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/
+                  mkdir -p ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/meta/
+                  
+                  cp -a ${{ env.CONFIG_DIR }}/config/*.png ${{ env.INSTALL_DIR }}/config/
+                  cp -a ${{ env.CONFIG_DIR }}/config/*.ico ${{ env.INSTALL_DIR }}/config/
+                  cp -a ${{ env.CONFIG_DIR }}/config/config.xml ${{ env.INSTALL_DIR }}/config/
+                  cp -a ${{ env.CONFIG_DIR }}/config/controller.qs ${{ env.INSTALL_DIR }}/config/
+                  cp -a ${{ env.CONFIG_DIR }}/config/style.qss ${{ env.INSTALL_DIR }}/config/
+                  cp -a ${{ env.CONFIG_DIR }}/config/qt_package.xml ${{ env.INSTALL_DIR }}/packages/io.qt/meta/package.xml
+                  cp -a ${{ env.CONFIG_DIR }}/config/webpassware_package.xml ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/meta/package.xml
+                  cp -a ${{ env.CONFIG_DIR }}/config/installscript.qs ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/meta/
+                  cp -a ${{ env.CONFIG_DIR }}/config/create_links.ui ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/meta/
+
+           - name: 'Copy data to install package'
+             shell: bash
+             working-directory: ${{ github.workspace }}
+             run: |
+             
+
            - name: 'Assemble portable package'
              shell: bash
              run: |
