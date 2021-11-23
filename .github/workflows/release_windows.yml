@@ -25,7 +25,6 @@ jobs:
             TARGET_DIR: 'C:\/WebPassWare\/'
             UPDATE_ARCH: 'windows'
             CONFIG_DIR: 'installer/'
-            WEBPASSWARE_VERSION: '0.0.2'
             
           steps:
           
@@ -124,7 +123,7 @@ jobs:
              shell: bash
              working-directory: ${{ github.workspace }}
              run: |
-                echo "export WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2`" >> $GITHUB_ENV
+                echo "WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2`" >> $GITHUB_ENV
             
            - name: 'Assemble install package'
              shell: bash
@@ -180,7 +179,7 @@ jobs:
              shell: bash
              run: |
                   cd $ABSOLUTE_PORTABLE_DIR/..
-                  7z a -r webpassware-0.0.2.zip WebPassWare
+                  7z a -r webpassware-${WEBPASSWARE_VERSION}.zip WebPassWare
                   ls -al
 
            - name: 'Upload package artifact'
