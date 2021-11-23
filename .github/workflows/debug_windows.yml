@@ -30,11 +30,12 @@ jobs:
                 cached: ${{ steps.cache-qt.outputs.cache-hit }}
                 version: ${{ env.QT_VERSION }}
                 host: 'windows'
+                target: 'desktop'
                 arch: ${{ env.QT_ARCH }}
                 dir: 'D:/'
                 setup-python: 'false'
-                tools: 'tools_ifw,4.1.1,qt.tools.ifw.41'
-                
+                tools: 'tools_ifw,4.2,qt.tools.ifw.42'
+
             - name: 'Install mingw'
               if: steps.cache-qt.outputs.cache-hit != 'true'
               shell: bash
