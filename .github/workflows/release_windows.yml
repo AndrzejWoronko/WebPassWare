@@ -130,10 +130,10 @@ jobs:
              working-directory: ${{ github.workspace }}
              run: |
                   mkdir -p ${{ env.INSTALL_DIR }}/config/
-                  mkdir -p ${{ env.INSTALL_DIR }}/packages/io.qt/data/
-                  mkdir -p ${{ env.INSTALL_DIR }}/packages/io.qt/meta/bin/
-                  mkdir -p ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/
-                  mkdir -p ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/meta/bin/
+                  mkdir -p ${{ env.INSTALL_DIR }}/packages/io.qt/data/bin/
+                  mkdir -p ${{ env.INSTALL_DIR }}/packages/io.qt/meta/
+                  mkdir -p ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/data/bin/
+                  mkdir -p ${{ env.INSTALL_DIR }}/packages/pl.com.awsoftware.webpassware/meta/
                   
                   cp -a ${{ env.CONFIG_DIR }}/config/*.png ${{ env.INSTALL_DIR }}/config/
                   cp -a ${{ env.CONFIG_DIR }}/config/*.ico ${{ env.INSTALL_DIR }}/config/
