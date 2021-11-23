@@ -119,8 +119,9 @@ jobs:
            - name: 'Assemble portable package'
              shell: bash
              run: |
-                  cd $ABSOLUTE_PORTABLE_DIR/../     
-                  7z a -r webpassware-${WEBPASSWARE_VERSION}.zip WebPassWare
+                  cd $ABSOLUTE_PORTABLE_DIR/../
+                  7z a -r webpassware-$WEBPASSWARE_VERSION.zip WebPassWare
+                  mv  webpassware-$WEBPASSWARE_VERSION webpassware-$WEBPASSWARE_VERSION.zip
                   ls -al
 
            - name: 'Upload package artifact'
