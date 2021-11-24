@@ -2,17 +2,14 @@
 
 #set -x
 
-QMAKE="/c/Qt/5.15.2/mingw81_64/bin/qmake.exe"
+QMAKE_DIR="/c/Qt/5.15.2/mingw81_64/bin/"
+MAKE_DIR="/c/Qt/Tools/mingw810_64/bin/"
 QT_LIB_PATH="/c/Qt/5.15.2/mingw81_64/"
-VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2`
- 
 
-qt_paths_bin="${QMAKE/qmake/qtpaths}"
-$qt_paths_bin -v >/dev/null 2>&1
-if [ "$?" -ne 0 ]; then
-  echo "qtpaths program missing!"
-  exit 1
-fi
+echo "Settings PATH"
+export PATH=${PATH}:${QMAKE_DIR}:${MAKE_DIR}
+
+VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2`
 
 OUTPUT=`pwd`/output
 
@@ -20,7 +17,6 @@ cd $OUTPUT
 
 required_modules="Qt5Core Qt5Gui Qt5Widgets Qt5Network Qt5Sql libgcc_s_seh-1 libstdc++-6 libwinpthread-1"
   
-
 required_plugins="iconengines/qsvgicon platforms/qwindows styles/qwindowsvistastyle \
                   sqldrivers/qsqlite sqldrivers/qsqlodbc sqldrivers/qsqlpsql \
 				  imageformats/qgif imageformats/qicns imageformats/qico imageformats/qjpeg imageformats/qsvg imageformats/qtga imageformats/qtiff imageformats/qwbmp"

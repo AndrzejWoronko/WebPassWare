@@ -2,9 +2,11 @@
 
 #set -x
 
-QMAKE="/c/Qt/5.15.2/mingw81_64/bin/qmake.exe"
-MAKE="/c/Qt/Tools/mingw810_64/bin/mingw32-make.exe"
-PATH=${PATH}:"/c/Qt/Tools/mingw810_64/bin/"
+QMAKE_DIR="/c/Qt/5.15.2/mingw81_64/bin/"
+MAKE_DIR="/c/Qt/Tools/mingw810_64/bin/"
+
+echo "Settings PATH"
+export PATH=${PATH}:${QMAKE_DIR}:${MAKE_DIR}
 
 cdir=`pwd`
 cpu_cores=`nproc`
@@ -12,8 +14,9 @@ cpu_cores=`nproc`
 mkdir -p output/build/bin/
 
 cd output/build/
-export PATH=${PATH}
-$QMAKE ../../WebPassWare.pro
-$MAKE -j $cpu_cores
+
+qmake.exe ../../WebPassWare.pro
+
+mingw32-make.exe -j $cpu_cores
 
 cd $cdir

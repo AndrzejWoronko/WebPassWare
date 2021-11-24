@@ -12,22 +12,16 @@ sed -i "s/${old_parm}/${new_parm}/" ${filename}
 }
 
 WEBPASSWARE_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`
-FINAL_EXECUTABLE="bin\/webpassware"
+FINAL_EXECUTABLE="bin\/webpassware.exe"
 WIZARD_STYLE="Modern"
-TARGET_DIR="\/opt\/WebPassWare\/"
-UPDATE_ARCH="linux"
-
+TARGET_DIR="C:\/WebPassWare\/"
+UPDATE_ARCH="windows"
 QT_VERSION="5.15.2"
 DATE=`date +%Y-%m-%d`
+IFW_PATH=/c/Qt/Tools/QtInstallerFramework/4.2/bin
 
-
-REQURED_QT_DIRS="lib/Qt"
-
-REQURED_WEBPASSWARE_DIRS="bin"
-
-OS="linux"
-
-BIN_CREATOR_DIR="/opt/Qt/Tools/QtInstallerFramework/4.2/bin"
+echo "Settings PATH"
+export PATH=${PATH}:${IFW_PATH}
 
 PWD=`pwd`
 
@@ -42,13 +36,9 @@ rm -rf $INSTALL_DIR/
 
 mkdir -p $INSTALL_DIR/
 mkdir -p $INSTALL_DIR/config/
-mkdir -p $INSTALL_DIR/packages/
-mkdir -p $INSTALL_DIR/packages/io.qt/
-mkdir -p $INSTALL_DIR/packages/io.qt/data/
-mkdir -p $INSTALL_DIR/packages/io.qt/data/lib/
+mkdir -p $INSTALL_DIR/packages/io.qt/data/bin/
 mkdir -p $INSTALL_DIR/packages/io.qt/meta/
-mkdir -p $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/
-mkdir -p $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/data/
+mkdir -p $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/data/bin/
 mkdir -p $INSTALL_DIR/packages/pl.com.awsoftware.webpassware/meta/
 
 if [ ! -d $OUTPUT/portable/WebPassWare ] ; then
@@ -79,25 +69,15 @@ cd $INSTALL_DIR/packages/
 
 echo "Source dir: $SOURCE_DIR"
 
-# Copy Qt dirs
-for QDIR in $REQURED_QT_DIRS; do
-  if [ ! -d $SOURCE_DIR/$QDIR ]; then
-    echo "Required Qt dir doesn't exist: $SOURCE_DIR/$QDIR"
-    exit 1
-  fi
-  cp -R $SOURCE_DIR/$QDIR io.qt/data/lib/Qt/
-done
+echo "Copu Qt libs and plugins"
 
-for MDIR in $REQURED_WEBPASSWARE_DIRS; do
-  if [ ! -d $SOURCE_DIR/$MDIR ]; then
-    echo "Required webpassware dir doesn't exist: $SOURCE_DIR/$MDIR"
-    exit 1
-  fi
-  cp -R $SOURCE_DIR/$MDIR pl.com.awsoftware.webpassware/data/
+cp -R $SOURCE_DIR/bin/ io.qt/data/
 
-done
+echo "Moving binary"
+mv io.qt/data/bin/*.exe pl.com.awsoftware.webpassware/data/bin/
 
-#copy icons
+echo "Copy icons"
+
 cp -a $CONFIG_DIR/config/webpassware.png pl.com.awsoftware.webpassware/data/
 cp -a $CONFIG_DIR/config/webpassware.ico pl.com.awsoftware.webpassware/data/
 
@@ -123,11 +103,10 @@ replace_str "%DATE%" $DATE packages/pl.com.awsoftware.webpassware/meta/package.x
 
 #Create binary instalator
 echo "Create binary instalator"
-$BIN_CREATOR_DIR/binarycreator -f -c config/config.xml -p packages InstallWebPassWare-${WEBPASSWARE_VERSION}.bin
+binarycreator.exe -f -c config/config.xml -p packages InstallWebPassWare-${WEBPASSWARE_VERSION}.bin
 
 #Create repo
 echo "Create repo"
 rm -rf ../REPO
-#$BIN_CREATOR_DIR/repogen --update  -p packages ../REPO
-$BIN_CREATOR_DIR/repogen -p packages ../REPO
-
+#repogen.exe --update  -p packages ../REPO
+repogen.exe -p packages ../REPO
