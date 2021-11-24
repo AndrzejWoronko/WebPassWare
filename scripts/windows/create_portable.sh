@@ -44,8 +44,6 @@ cp -a ../../icons/50px/WebPassWare.png WebPassWare/
  
 # Make lib directory to move all *.so files (webpassware files and Qt files and dependencies)
 
-cd WebPassWare
-
 # Copy Qt
 cd $portable/WebPassWare/bin/
 for module in $required_modules; do

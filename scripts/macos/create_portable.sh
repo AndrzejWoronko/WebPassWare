@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#set -x
+set -x
 
-QMAKE="~/Qt/5.15.0/clang_64/bin/qmake"
+QMAKE="~/Qt/5.15.2/clang_64/bin/qmake"
 
 VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`
  
