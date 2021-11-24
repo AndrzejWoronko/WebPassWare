@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+#set -x
 
 QMAKE="/c/Qt/5.15.2/mingw81_64/bin/qmake.exe"
 QT_LIB_PATH="/c/Qt/5.15.2/mingw81_64/"
