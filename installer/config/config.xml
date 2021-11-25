@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>WebPassWare</Name>
-    <Version>%WEBPASSWARE_VERSION%</Version>	
+    <Version>%PROGRAM_VERSION%</Version>	
     <Title>WebPassWare Installator</Title>	
     <Publisher>AWSoftware development team</Publisher>
     <ProductUrl>https://andrzejworonko.github.io/AWSoftware/WebPassWare/</ProductUrl>

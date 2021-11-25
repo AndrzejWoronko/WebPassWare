@@ -2,14 +2,18 @@
 
 #set -x
 
-QMAKE_DIR="/c/Qt/5.15.2/mingw81_64/bin/"
+echo "Settings variables"
+QT_VERSION="5.15.2"
+PROGRAM_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`
+QMAKE_DIR="/c/Qt/${QT_VERSION}/mingw81_64/bin/"
 MAKE_DIR="/c/Qt/Tools/mingw810_64/bin/"
-QT_LIB_PATH="/c/Qt/5.15.2/mingw81_64/"
+QT_LIB_PATH="/c/Qt/${QT_VERSION}/mingw81_64/"
+PROGRAM_NAME=webpassware
+PORTABLE_DIR=WebPassWare
 
 echo "Settings PATH"
 export PATH=${PATH}:${QMAKE_DIR}:${MAKE_DIR}
 
-VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2`
 
 OUTPUT=`pwd`/output
 
@@ -30,46 +34,47 @@ portable=`pwd`
 # Copy all output from compilation here
 echo "Prepare files to package ..."
 
-mkdir -p WebPassWare/bin/plugins
 
-cp -R $OUTPUT/build/bin/ WebPassWare/
+mkdir -p {PORTABLE_DIR}/bin/plugins
+
+cp -R ${OUTPUT}/build/bin/ ${PORTABLE_DIR}/
 
 #ikony
-cp -a ../../icons/progicon.ico WebPassWare/
-cp -a ../../icons/50px/WebPassWare.png WebPassWare/
- 
+cp -a ../../installer/config/${PROGRAM_NAME}.ico ${PORTABLE_DIR}/
+cp -a ../../installer/config/${PROGRAM_NAME}.png ${PORTABLE_DIR}/
+
 # Make lib directory to move all *.so files (webpassware files and Qt files and dependencies)
 
 # Copy Qt
-cd $portable/WebPassWare/bin/
-for module in $required_modules; do
-  if [ ! -f $QT_LIB_PATH/bin/$module.dll ]; then
-    echo "Required Qt module doesn't exist: $QT_LIB_PATH/bin/$module.dll"
+cd ${portable}/${PORTABLE_DIR}/bin/
+for module in ${required_modules}; do
+  if [ ! -f ${QT_LIB_PATH}/bin/${module}.dll ]; then
+    echo "Required Qt module doesn't exist: ${QT_LIB_PATH}/bin/${module}.dll"
     exit 1
   fi
-  cp -P $QT_LIB_PATH/bin/$module.dll .
+  cp -P ${QT_LIB_PATH}/bin/${module}.dll .
 done
 
 # Now copy Qt plugins
-cd $portable/WebPassWare/bin/plugins/
+cd ${portable}/${PORTABLE_DIR}/bin/plugins/
 
-for plugin in $required_plugins; do
-  if [ ! -f $QT_LIB_PATH/plugins/$plugin.dll ]; then
-    echo "Required Qt plugin doesn't exist: $QT_LIB_PATH/plugins/$plugin.dll"
+for plugin in ${required_plugins}; do
+  if [ ! -f ${QT_LIB_PATH}/plugins/${plugin}.dll ]; then
+    echo "Required Qt plugin doesn't exist: ${QT_LIB_PATH}/plugins/${plugin}.dll"
     exit 1
   fi
   parts=(${plugin/\// })
   mkdir ${parts[0]} 2>/dev/null
-  cp -P $QT_LIB_PATH/plugins/$plugin.dll ${parts[0]}
+  cp -P ${QT_LIB_PATH}/plugins/${plugin}.dll ${parts[0]}
 done
 
-cd $portable
+cd ${portable}
 
 # Complete
-echo "Building complete package: WebPassWare-$VERSION.tgz"
-tar.exe czf WebPassWare-$VERSION.tgz WebPassWare
-#xz -z  WebPassWare-$VERSION.tar
+echo "Building complete package: ${PORTABLE_DIR}-${PROGRAM_VERSION}.tgz"
+tar.exe czf ${PORTABLE_DIR}-${PROGRAM_VERSION}.tgz ${PORTABLE_DIR}
+#xz.exe -z  ${PORTABLE_DIR}-${PROGRAM_VERSION}.tar
   
 echo "Done."
 
-echo "Portable distribution created at: $portable/WebPassWare"
+echo "Portable distribution created at: ${portable}/${PORTABLE_DIR}"

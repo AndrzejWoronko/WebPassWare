@@ -2,13 +2,17 @@
 
 #set -x
 
-QMAKE_DIR="/c/Qt/5.15.2/mingw81_64/bin/"
+echo "Settings variables"
+QT_VERSION="5.15.2"
+PROGRAM_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`
+QMAKE_DIR="/c/Qt/${QT_VERSION}/mingw81_64/bin/"
 MAKE_DIR="/c/Qt/Tools/mingw810_64/bin/"
+QT_LIB_PATH="/c/Qt/${QT_VERSION}/mingw81_64/"
+PROGRAM_NAME=webpassware
+PORTABLE_DIR=WebPassWare
 
 echo "Settings PATH"
 export PATH=${PATH}:${QMAKE_DIR}:${MAKE_DIR}
-
-VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2`
  
 OUTPUT=`pwd`/output
 
@@ -23,25 +27,25 @@ portable=`pwd`
 # Copy all output from compilation here
 echo "Prepare files to package ..."
 
-mkdir -p WebPassWare/bin/
+mkdir -p {PORTABLE_DIR}/bin/
 
-cp -R $OUTPUT/build/bin/ WebPassWare/
+cp -R ${OUTPUT}/build/bin/ ${PORTABLE_DIR}/
 
 #ikony
-cp -a ../../icons/progicon.ico WebPassWare/
-cp -a ../../icons/50px/WebPassWare.png WebPassWare/
+cp -a ../../installer/config/${PROGRAM_NAME}.ico ${PORTABLE_DIR}/
+cp -a ../../installer/config/${PROGRAM_NAME}.png ${PORTABLE_DIR}/
 
-cd WebPassWare/bin/
+cd ${PORTABLE_DIR}/bin/
 
-windeployqt.exe --plugindir plugins webpassware.exe
+windeployqt.exe --plugindir plugins ${PROGRAM_NAME}.exe
 
-cd $portable
+cd ${portable}
 
 # Complete
-echo "Building complete package: WebPassWare-$VERSION.tgz"
-tar.exe czf WebPassWare-$VERSION.tgz WebPassWare
-#xz -z  WebPassWare-$VERSION.tar
+echo "Building complete package: ${PORTABLE_DIR}-${PROGRAM_VERSION}.tgz"
+tar.exe czf ${PORTABLE_DIR}-${PROGRAM_VERSION}.tgz ${PORTABLE_DIR}
+#xz.exe -z  ${PORTABLE_DIR}-${PROGRAM_VERSION}.tar
   
 echo "Done."
 
-echo "Portable distribution created at: $portable/WebPassWare"
+echo "Portable distribution created at: $portable/${PORTABLE_DIR}.tgz"

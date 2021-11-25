@@ -2,7 +2,7 @@
 <Package>
     <DisplayName>WebPassWare</DisplayName>
     <Description>WebPassWare do przechowywania haseł do serwisów www / poczty itp.</Description>
-    <Version>%WEBPASSWARE_VERSION%</Version>
+    <Version>%PROGRAM_VERSION%</Version>
     <ReleaseDate>%DATE%</ReleaseDate>
     <Name>pl.com.awsoftware.webpassware</Name>
     <Dependencies>io.qt</Dependencies>

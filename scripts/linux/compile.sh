@@ -1,21 +1,21 @@
 #!/bin/bash
 
-set -e
+#set -x
+QT_VERSION="5.15.2"
+QMAKE_DIR="/opt/Qt/${QT_VERSION}/gcc_64/bin/"
+QMAKE="/opt/Qt/${QT_VERSION}/gcc_64/bin/qmake"
+PRO_NAME="WebPassWare"
 
-QMAKE="/opt/Qt/5.15.2/gcc_64/bin/qmake"
+echo "Settings PATH"
+export PATH=${PATH}:${QMAKE_DIR}
 
 cdir=`pwd`
 cpu_cores=`nproc`
-absolute_path=`realpath $0`
-this_dir=`dirname $absolute_path`
-this_dir=`dirname $this_dir`
-parent_dir=`dirname $this_dir`
 
-cd $parent_dir
 mkdir -p output/build/bin/
 
 cd output/build/
-$QMAKE ../../WebPassWare.pro
+$QMAKE ../../${PRO_NAME}.pro
 make -j $cpu_cores
 
 cd $cdir
