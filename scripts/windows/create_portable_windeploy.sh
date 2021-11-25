@@ -27,7 +27,7 @@ portable=`pwd`
 # Copy all output from compilation here
 echo "Prepare files to package ..."
 
-mkdir -p {PORTABLE_DIR}/bin/
+mkdir -p ${PORTABLE_DIR}/bin/
 
 cp -R ${OUTPUT}/build/bin/ ${PORTABLE_DIR}/
 

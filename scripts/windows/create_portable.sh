@@ -35,7 +35,7 @@ portable=`pwd`
 echo "Prepare files to package ..."
 
 
-mkdir -p {PORTABLE_DIR}/bin/plugins
+mkdir -p ${PORTABLE_DIR}/bin/plugins
 
 cp -R ${OUTPUT}/build/bin/ ${PORTABLE_DIR}/
 
