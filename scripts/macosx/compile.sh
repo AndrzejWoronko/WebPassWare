@@ -2,18 +2,14 @@
 
 #set -x
 
-QMAKE_DIR="/Qt/${QT_VERSION}/clang_64/bin/"
-QMAKE="/Qt/${QT_VERSION}/clang_64/bin/qmake"
+QMAKE_DIR=~/Qt/${QT_VERSION}/clang_64/bin/
+QMAKE=~/Qt/${QT_VERSION}/clang_64/bin/qmake
 PRO_NAME="WebPassWare"
 
 cdir=`pwd`
-cd ~/
-HOME=`pwd`
-
-cd ${cdir}
 
 echo "Settings PATH"
-export PATH=${PATH}:${HOME}/${QMAKE_DIR}
+export PATH=${PATH}:${QMAKE_DIR}
 
 cpu_cores=`sysctl -n hw.logicalcpu`
 

@@ -5,19 +5,15 @@ set -x
 echo "Settings variables"
 QT_VERSION="5.15.2"
 PROGRAM_VERSION=`grep WEBPASSWARE_VERSION CURRENT_VERSION.TXT | cut -d '=' -f 2-2`
-QMAKE_DIR="/Qt/${QT_VERSION}/clang_64/bin/"
-QMAKE="/Qt/${QT_VERSION}/clang_64/bin/qmake"
+QMAKE_DIR=~/Qt/${QT_VERSION}/clang_64/bin/
+QMAKE=~/Qt/${QT_VERSION}/clang_64/bin/qmake
 PROGRAM_NAME=webpassware
 PORTABLE_DIR=WebPassWare
 
 cdir=`pwd`
-cd ~/
-HOME=`pwd`
-
-cd ${cdir}
 
 echo "Settings PATH"
-export PATH=${PATH}:${HOME}/${QMAKE_DIR}
+export PATH=${PATH}:${QMAKE_DIR}
 
 OUTPUT=`pwd`/output
 
