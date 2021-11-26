@@ -47,8 +47,8 @@ cd ${portable}
 
 # Complete
 echo "Building complete package: ${PORTABLE_DIR}-${PROGRAM_VERSION}.tgz"
-tar.exe czf ${PORTABLE_DIR}-${PROGRAM_VERSION}.tgz ${PORTABLE_DIR}
-#xz.exe -z  ${PORTABLE_DIR}-${PROGRAM_VERSION}.tar
+tar czf ${PORTABLE_DIR}-${PROGRAM_VERSION}.tgz ${PORTABLE_DIR}
+#xz -z  ${PORTABLE_DIR}-${PROGRAM_VERSION}.tar
   
 echo "Done."
 
