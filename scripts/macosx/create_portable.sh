@@ -48,4 +48,4 @@ tar czf ${PORTABLE_DIR}-${PROGRAM_VERSION}.tgz ${PORTABLE_DIR}
   
 echo "Done."
 
-echo "Portable distribution created at: $portable/${PORTABLE_DIR}.tgz"
+echo "Portable distribution created at: $portable/${PORTABLE_DIR}-${PROGRAM_VERSION}.tgz"
