@@ -1,7 +1,9 @@
 #!/bin/bash
 
-#set -x
+set -x
 
+echo "Settings variables"
+QT_VERSION="5.15.2"
 QMAKE_DIR=~/Qt/${QT_VERSION}/clang_64/bin/
 QMAKE=~/Qt/${QT_VERSION}/clang_64/bin/qmake
 PRO_NAME="WebPassWare"
