@@ -34,7 +34,7 @@ echo "Prepare files to package ..."
 
 mkdir -p ${PORTABLE_DIR}/bin/
 
-cp -R ${OUTPUT}/build/bin/ ${PORTABLE_DIR}/
+cp -R ${OUTPUT}/build/bin ${PORTABLE_DIR}/
 
 cp -a ../../installer/config/${PROGRAM_NAME}.ico ${PORTABLE_DIR}/
 cp -a ../../installer/config/${PROGRAM_NAME}.png ${PORTABLE_DIR}/
