@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>CFBundleIconFile</key>
+	<string>%ICON_NAME%.icns</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleGetInfoString</key>
+	<string>AWSoftware, %YEAR%</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleShortVersionString</key>
+	<string>%PROGRAM_VERSION%</string>
+	<key>CFBundleExecutable</key>
+	<string>%PROGRAM_NAME%</string>
+	<key>CFBundleIdentifier</key>
+	<string>pl.com.awsoftware.%PROGRAM_FULL_NAME%</string>
+	<key>CFBundleName</key>
+	<string>%PROGRAM_FULL_NAME%</string>
+	<key>CFBundleDisplayName</key>
+	<string>%PROGRAM_FULL_NAME%</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.business</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>	
+    </dict>
+</plist>
