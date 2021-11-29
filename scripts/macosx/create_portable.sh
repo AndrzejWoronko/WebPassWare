@@ -6,7 +6,7 @@ function replace_str()
 old_parm=$1
 new_parm=$2
 filename=$3
-sed -i "s/${old_parm}/${new_parm}/g" ${filename}
+sed -i 'bak' "s/${old_parm}/${new_parm}/g" ${filename}
 }
 
 set -x
@@ -54,10 +54,13 @@ cp -a ../../../installer/config/${PROGRAM_NAME}.icns ${PROGRAM_NAME}.app/Content
 cp -a ../../../installer/config/Info.plist ${PROGRAM_NAME}.app/Contents/
 
 #replace in Info.plist
+ls -al ${PROGRAM_NAME}.app/Contents/Info.plist
+
 replace_str "%PROGRAM_VERSION%" ${PROGRAM_VERSION} ${PROGRAM_NAME}.app/Contents/Info.plist
 replace_str "%ICON_NAME%" ${PROGRAM_NAME} ${PROGRAM_NAME}.app/Contents/Info.plist
 replace_str "%YEAR%" ${YEAR} ${PROGRAM_NAME}.app/Contents/Info.plist
 replace_str "%PROGRAM_FULL_NAME%" ${PORTABLE_DIR} ${PROGRAM_NAME}.app/Contents/Info.plist
+replace_str "%PROGRAM_NAME%" ${PROGRAM_NAME} ${PROGRAM_NAME}.app/Contents/Info.plist
 
 cd ${portable}
 
