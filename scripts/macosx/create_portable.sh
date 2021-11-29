@@ -6,7 +6,7 @@ function replace_str()
 old_parm=$1
 new_parm=$2
 filename=$3
-sed -i "s/${old_parm}/${new_parm}g/" ${filename}
+sed -i "s/${old_parm}/${new_parm}/g" ${filename}
 }
 
 set -x
