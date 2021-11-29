@@ -50,8 +50,8 @@ cd ${PORTABLE_DIR}/
 macdeployqt ${PROGRAM_NAME}.app
 
 #Change Info.plist
-cp -a ../../installer/config/${PROGRAM_NAME}.icns ${PROGRAM_NAME}.app/Contents/Resources/
-cp -a ../../installer/config/Info.plist ${PROGRAM_NAME}.app/Contents/
+cp -a ../../../installer/config/${PROGRAM_NAME}.icns ${PROGRAM_NAME}.app/Contents/Resources/
+cp -a ../../../installer/config/Info.plist ${PROGRAM_NAME}.app/Contents/
 
 #replace in Info.plist
 replace_str "%PROGRAM_VERSION%" ${PROGRAM_VERSION} ${PROGRAM_NAME}.app/Contents/Info.plist
