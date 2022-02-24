@@ -9,8 +9,9 @@ Additionally, it has an intrnet update.
 # Screenshots
 
 ## DB pass
+![image](https://github.com/AndrzejWoronko/WebPassWare/blob/master/screenshots/Db_pass.png)
 
 ## Mainwindow
 
 ## Entry add/edit
-
+![image](https://github.com/AndrzejWoronko/WebPassWare/blob/master/screenshots/Entry_edit.png)
