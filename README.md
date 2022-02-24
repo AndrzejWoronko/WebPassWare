@@ -12,6 +12,7 @@ Additionally, it has an intrnet update.
 ![image](https://github.com/AndrzejWoronko/WebPassWare/blob/master/screenshots/Db_pass.png)
 
 ## Mainwindow
+![image](https://github.com/AndrzejWoronko/WebPassWare/blob/master/screenshots/Mainwindow.png)
 
 ## Entry add/edit
 ![image](https://github.com/AndrzejWoronko/WebPassWare/blob/master/screenshots/Entry_edit.png)
