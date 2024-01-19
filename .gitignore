@@ -8,7 +8,16 @@ output/
 
 *.user*
 
+#Makefile files
+
 Makefile
+Makefile.Debug
+Makefile.Release
+
+object_script.webpassware.Debug
+object_script.webpassware.Release
+
+
 /.qmake.stash
 
 bin/webpassware
@@ -47,3 +56,4 @@ CURRENT_VERSION.TXT
 *.exe
 *.out
 *.app
+

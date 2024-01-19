@@ -2,10 +2,10 @@
 
 CAbstractSplitterStateManager::CAbstractSplitterStateManager()
 {
-    m_splitterState = new CSplitterState();
+    m_splitterState = std::make_unique<CSplitterState>();
 }
 
 CAbstractSplitterStateManager::~CAbstractSplitterStateManager()
 {
-    safe_delete(m_splitterState)
+    //safe_delete(m_splitterState)
 }

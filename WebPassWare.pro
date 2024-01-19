@@ -12,6 +12,13 @@ SOURCES += \
     src/Common/AbstractSplitterStateManager.cpp \
     src/Common/AbstractTabMainWindowStateManager.cpp \
     src/Common/AbstractTableStateManager.cpp \
+    src/Common/AutoType.cpp \
+    src/Common/AutoTypeAction.cpp \
+    src/Common/AutoTypePlatform.cpp \
+    src/Common/AutoTypePlatformLinux.cpp \
+    src/Common/AutoTypePlatformMacos.cpp \
+    src/Common/AutoTypePlatformTest.cpp \
+    src/Common/AutoTypePlatformWindows.cpp \
     src/Common/CsvModel.cpp \
     src/Common/DialogState.cpp \
     src/Common/ExportCsv.cpp \
@@ -109,6 +116,13 @@ HEADERS += \
     src/Common/AbstractSplitterStateManager.h \
     src/Common/AbstractTabMainWindowStateManager.h \
     src/Common/AbstractTableStateManager.h \
+    src/Common/AutoType.h \
+    src/Common/AutoTypeAction.h \
+    src/Common/AutoTypePlatform.h \
+    src/Common/AutoTypePlatformLinux.h \
+    src/Common/AutoTypePlatformMacos.h \
+    src/Common/AutoTypePlatformTest.h \
+    src/Common/AutoTypePlatformWindows.h \
     src/Common/CsvModel.h \
     src/Common/DialogState.h \
     src/Common/ExportCsv.h \
@@ -233,7 +247,7 @@ unix {
     DESTDIR = $$DEST_DIR
 }
 
-QMAKE_CXXFLAGS += -Wall -Wextra -std=gnu++11
+QMAKE_CXXFLAGS += -Wall -Wextra -std=c++14
 
 QMAKE_LFLAGS_RPATH += \
 

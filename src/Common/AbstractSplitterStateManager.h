@@ -7,7 +7,7 @@ class CAbstractSplitterStateManager
 {
 
 protected:
-    CSplitterState *m_splitterState;
+    std::unique_ptr<CSplitterState> m_splitterState;
 
 public:
     CAbstractSplitterStateManager();

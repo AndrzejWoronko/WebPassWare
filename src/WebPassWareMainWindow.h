@@ -103,6 +103,9 @@ public slots:
     void on_ACTION_DATA_CHECK_triggered();
 
     void on_ACTION_CHECK_UPDATES_triggered(void);
+
+
+    void on_ACTION_CLIPBOARD_triggered(void);
 };
 
 #endif // CWEBPASSWAREMAINWINDOW_H

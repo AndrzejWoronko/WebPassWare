@@ -1,12 +1,16 @@
 #include "Tools.h"
 #include <QMap>
 
+#include <QCoreApplication>
+#include <QElapsedTimer>
+
 #ifdef Q_OS_LINUX
 #include <QFile>
 #include <QRegularExpression>
+#include <time.h> // for nanosleep()
 #else
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include "windows.h"
 #include "psapi.h"
 #else
@@ -15,8 +19,12 @@
 #include <mach/mach.h>
 #endif // Q_OS_MAC
 
-#endif // Q_OS_WIN32
+#endif // Q_OS_WIN
 #endif // Q_OS_LINUX
+
+#ifdef Q_OS_UNIX
+#include <time.h> // for nanosleep()
+#endif
 
 
 Tools::Tools()
@@ -230,4 +238,49 @@ QString Tools::tableize(const QString& name)
     wordList << last;
     table = wordList.join(QChar('_'));
     return table;
+}
+
+void Tools::sleep(int ms)
+{
+    Q_ASSERT(ms >= 0);
+
+    if (ms == 0) {
+        return;
+    }
+
+#ifdef Q_OS_WIN
+    Sleep(uint(ms));
+#else
+    timespec ts;
+    ts.tv_sec = ms / 1000;
+    ts.tv_nsec = (ms % 1000) * 1000 * 1000;
+    nanosleep(&ts, nullptr);
+#endif
+}
+
+void Tools::wait(int ms)
+{
+    Q_ASSERT(ms >= 0);
+
+    if (ms == 0) {
+        return;
+    }
+
+    QElapsedTimer timer;
+    timer.start();
+
+    if (ms <= 50) {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, ms);
+        Tools::sleep(qMax(ms - static_cast<int>(timer.elapsed()), 0));
+    }
+    else {
+        int timeLeft;
+        do {
+            timeLeft = ms - timer.elapsed();
+            if (timeLeft > 0) {
+                QCoreApplication::processEvents(QEventLoop::AllEvents, timeLeft);
+                Tools::sleep(10);
+            }
+        } while (!timer.hasExpired(ms));
+    }
 }

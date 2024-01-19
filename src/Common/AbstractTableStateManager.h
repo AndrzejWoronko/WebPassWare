@@ -6,7 +6,7 @@
 class CAbstractTableStateManager
 {
 protected:
-    CTableState *m_tableState;
+    std::unique_ptr<CTableState> m_tableState;
 
     virtual void restoreTableState() = 0;
     virtual void saveTableState() = 0;

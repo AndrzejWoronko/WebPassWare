@@ -12,8 +12,12 @@
 #include <QDate>
 #include <QList>
 
+#include <bits/stdc++.h>
+#include <memory.h>
+
 #include "Tools.h"
 #include "Singleton.h"
+
 
 /**
  * @brief Deletes object and sets the pointer to null.
@@ -95,6 +99,20 @@
                   type* getName(void){return name;} \
              protected: \
                   type* name = nullptr;
+
+
+#define ADD_UNIQUE_SMART_PTR(type, name, getName) \
+            public: \
+                std::unique_ptr<type>& getName(void){return name;} \
+            private: \
+                std::unique_ptr<type> name;
+
+#define ADD_SHARED_SMART_PTR(type, name, getName) \
+            public: \
+                std::shared_ptr<type>& getName(void){return name;} \
+            private: \
+                std::shared_ptr<type> name;
+
 
 #define CLEAR_PTR_LIST(list) \
     Q_FOREACH(auto ptr, list) \

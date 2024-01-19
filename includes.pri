@@ -7,7 +7,7 @@ CODECFORSRC = UTF-8
 CODECFORTR = UTF-8
 
 QT += core gui sql svg
-CONFIG += qt mmx sse stl exceptions warn_on c++11 silent
+CONFIG += qt mmx sse stl exceptions warn_on c++14 silent
 
 BUILD_DIR = .
 DEST_INCLUDE_DIR = ./

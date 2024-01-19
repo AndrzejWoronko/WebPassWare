@@ -37,6 +37,9 @@ public:
      */
     static QString tableize(const QString& s);
 
+    static void sleep(int ms);
+
+    static void wait(int ms);
 };
 
 #endif // TOOLS_H

@@ -6,7 +6,7 @@
 class CAbstractTabMainWindowStateManager
 {
 protected:
-    CTabMainWindowState *m_tabMainWindowState;
+    std::unique_ptr<CTabMainWindowState> m_tabMainWindowState;
 
     virtual void restoreTabMainWindowState() = 0;
     virtual void saveTabMainWindowState() = 0;

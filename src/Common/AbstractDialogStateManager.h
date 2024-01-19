@@ -7,7 +7,7 @@ class CAbstractDialogStateManager
 {
 
 protected:
-    CDialogState *m_dialogState;
+    std::unique_ptr<CDialogState> m_dialogState;
 
 public:
     CAbstractDialogStateManager();

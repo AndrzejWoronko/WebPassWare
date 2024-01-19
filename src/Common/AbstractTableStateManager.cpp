@@ -2,10 +2,10 @@
 
 CAbstractTableStateManager::CAbstractTableStateManager()
 {
-    m_tableState = new CTableState();
+    m_tableState = std::make_unique<CTableState>();
 }
 
 CAbstractTableStateManager::~CAbstractTableStateManager()
 {
-    safe_delete(m_tableState)
+    //safe_delete(m_tableState)
 }

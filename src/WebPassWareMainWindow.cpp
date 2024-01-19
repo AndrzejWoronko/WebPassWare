@@ -267,6 +267,12 @@ void CWebPassWareMainWindow::setConnections(void)
 
     connect(m_filtrGroupList, SIGNAL(delayEditingFinished(const QString &)), m_pass_group_proxy_model, SLOT(setFilterFixedString(const QString &)));
     connect(m_filtrDataTable, SIGNAL(delayEditingFinished(const QString &)), m_pass_entry_proxy_model, SLOT(setFilterFixedString(const QString &)));
+/*
+    Turn off clipboard_ptr
+    auto clipboard_ptr = QApplication::clipboard();
+    if (clipboard_ptr)
+       connect(clipboard_ptr, SIGNAL(dataChanged()), this, SLOT(on_ACTION_CLIPBOARD_triggered()));
+*/
 }
 
 QWidget *CWebPassWareMainWindow::initTabData()
@@ -683,4 +689,40 @@ void CWebPassWareMainWindow::on_ACTION_CHECK_UPDATES_triggered(void)
     {
        CMessageBox::OkDialogInformation(tr("Brak aktualizacji."));
     }
+}
+
+void CWebPassWareMainWindow::on_ACTION_CLIPBOARD_triggered(void)
+{
+    QClipboard *clipboard_ptr = QApplication::clipboard();
+    if (!clipboard_ptr)
+       return;
+
+    QString clip_text = clipboard_ptr->text();
+
+    DEBUG_WITH_LINE << "TEXT FROM CLIPBOARD" << clip_text;
+    this->activateWindow();
+    this->showMaximized();
+    this->setFocus();
+
+    DEBUG_WITH_LINE << "ADD PASS GROUP";
+    auto dialog_ctrl = new PassGroupDialogController(m_treeGroupList);
+    auto f = dialog_ctrl->getDialog()->getFields().value("m_name");
+    f->setValue(clip_text);
+    if (dialog_ctrl->exec("Dodanie grupy"))
+    {
+       if (m_pass_group_model)
+            m_pass_group_model->refresh();
+    }
+    safe_delete(dialog_ctrl)
+    this->showMinimized();
+    //clipboard_ptr->clear();
+    /*
+    QMimeData *mimeData = new QMimeData();
+    mimeData->setText(text);
+         mimeData->setData("text/csv", text.toUtf8());
+            QApplication::clipboard()->setMimeData(mimeData);
+            DEBUG_WITH_LINE << text;
+
+    DEBUG_WITH_LINE << "COPY PASS ENTRY PASSWORD";
+*/
 }
