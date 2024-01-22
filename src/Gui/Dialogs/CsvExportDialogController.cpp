@@ -50,17 +50,17 @@ void CCsvExportDialogController::restoreLastState()
 //Zapisanie i odtworzenie układu graficznego dialogu
 void CCsvExportDialogController::restoreDialogState()
 {
-    QByteArray state = m_dialogState->getState(QString("EXPORT_DIALOG"));
+    QByteArray state = getDialogState()->getState(QString("EXPORT_DIALOG"));
     m_dialog->restoreGeometry(state);
 }
 
 void CCsvExportDialogController::saveDialogState()
 {
     QByteArray state = m_dialog->saveGeometry();
-    QByteArray oldState = m_dialogState->getState(QString("EXPORT_DIALOG"));
+    QByteArray oldState = getDialogState()->getState(QString("EXPORT_DIALOG"));
 
     if(state != oldState)
-        m_dialogState->saveState(QString("EXPORT_DIALOG"), state);
+        getDialogState()->saveState(QString("EXPORT_DIALOG"), state);
 }
 
 bool CCsvExportDialogController::wrtite2Csv(const QString &fileName, const QChar &delimeter, const QString &codecName, const QChar &digitSign)

@@ -69,17 +69,17 @@ void CCsvImportDialogController::restoreLastState()
 //Zapisanie i odtworzenie układu graficznego dialogu
 void CCsvImportDialogController::restoreDialogState()
 {
-    QByteArray state = m_dialogState->getState(QString("IMPORT_CSV_DIALOG"));
+    QByteArray state = getDialogState()->getState(QString("IMPORT_CSV_DIALOG"));
     m_dialog->restoreGeometry(state);
 }
 
 void CCsvImportDialogController::saveDialogState()
 {
     QByteArray state = m_dialog->saveGeometry();
-    QByteArray oldState = m_dialogState->getState(QString("IMPORT_CSV_DIALOG"));
+    QByteArray oldState = getDialogState()->getState(QString("IMPORT_CSV_DIALOG"));
 
     if(state != oldState)
-        m_dialogState->saveState(QString("IMPORT_CSV_DIALOG"), state);
+        getDialogState()->saveState(QString("IMPORT_CSV_DIALOG"), state);
 }
 
 void CCsvImportDialogController::onButtonChoiceFileCsv()

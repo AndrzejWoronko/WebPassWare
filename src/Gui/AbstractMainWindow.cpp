@@ -111,8 +111,8 @@ void CAbstractMainWindow::closeEvent(QCloseEvent *event)
 
 void CAbstractMainWindow::restoreDialogState()
 {
-    QByteArray state_g = m_dialogState->getState(QString("%1Geometry").arg(m_main_window_name));
-    QByteArray state_s = m_dialogState->getState(QString("%1State").arg(m_main_window_name));
+    QByteArray state_g = getDialogState()->getState(QString("%1Geometry").arg(m_main_window_name));
+    QByteArray state_s = getDialogState()->getState(QString("%1State").arg(m_main_window_name));
 
     if (state_g.isEmpty())
         this->centerAndResize();
@@ -126,14 +126,14 @@ void CAbstractMainWindow::restoreDialogState()
 void CAbstractMainWindow::saveDialogState()
 {
     QByteArray state = this->saveGeometry();
-    QByteArray oldState = m_dialogState->getState(QString("%1Geometry").arg(m_main_window_name));
+    QByteArray oldState = getDialogState()->getState(QString("%1Geometry").arg(m_main_window_name));
 
     if(state != oldState)
-        m_dialogState->saveState(QString("%1Geometry").arg(m_main_window_name), state);
+        getDialogState()->saveState(QString("%1Geometry").arg(m_main_window_name), state);
     state = this->saveState();
-    oldState = m_dialogState->getState(QString("%1State").arg(m_main_window_name));
+    oldState = getDialogState()->getState(QString("%1State").arg(m_main_window_name));
     if(state != oldState)
-        m_dialogState->saveState(QString("%1State").arg(m_main_window_name), state);
+        getDialogState()->saveState(QString("%1State").arg(m_main_window_name), state);
 }
 
 void CAbstractMainWindow::on_ACTION_ABOUT_QT_triggered()

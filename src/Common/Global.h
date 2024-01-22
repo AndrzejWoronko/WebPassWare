@@ -115,6 +115,12 @@
             private: \
                 std::shared_ptr<type> name;
 
+#define ADD_QSMART_PTR(type, name, getName) \
+            public: \
+                QScopedPointer<type>& getName(void){return name;} \
+            private: \
+                QScopedPointer<type> name;
+
 
 #define CLEAR_PTR_LIST(list) \
     Q_FOREACH(auto ptr, list) \

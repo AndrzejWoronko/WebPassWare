@@ -7,8 +7,7 @@
 
 class CTableState
 {
-    //ADD_PTR(QSettings, m_settings, getSettings)
-    ADD_SHARED_SMART_PTR(QSettings, m_settings, getSettings)
+    ADD_QSMART_PTR(QSettings, m_settings, getSettings)
 
 public:
     CTableState();

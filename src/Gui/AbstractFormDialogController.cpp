@@ -11,17 +11,17 @@ CAbstractFormDialogController::CAbstractFormDialogController(CAbstractFormDialog
 
 void CAbstractFormDialogController::restoreDialogState()
 {
-    QByteArray state = m_dialogState->getState(m_dialog->getDialogName());
+    QByteArray state = getDialogState()->getState(m_dialog->getDialogName());
     m_dialog->restoreGeometry(state);
 }
 
 void CAbstractFormDialogController::saveDialogState()
 {
     QByteArray state = m_dialog->saveGeometry();
-    QByteArray oldState = m_dialogState->getState(m_dialog->getDialogName());
+    QByteArray oldState = getDialogState()->getState(m_dialog->getDialogName());
 
     if(state != oldState)
-        m_dialogState->saveState(m_dialog->getDialogName(), state);
+        getDialogState()->saveState(m_dialog->getDialogName(), state);
 }
 
 void CAbstractFormDialogController::setConnections()

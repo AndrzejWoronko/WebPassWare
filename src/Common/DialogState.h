@@ -5,9 +5,7 @@
 
 class CDialogState
 {
-
-    ADD_UNIQUE_SMART_PTR(QSettings, m_settings, getSettings)
-    //std::unique_ptr<QSettings> m_settings;
+    ADD_QSMART_PTR(QSettings, m_settings, getSettings)
 
 public:
     CDialogState();

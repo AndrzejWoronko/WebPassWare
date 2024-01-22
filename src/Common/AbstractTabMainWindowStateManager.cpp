@@ -2,7 +2,7 @@
 
 CAbstractTabMainWindowStateManager::CAbstractTabMainWindowStateManager()
 {
-    m_tabMainWindowState = std::make_unique<CTabMainWindowState>();
+    m_tabMainWindowState.reset(new CTabMainWindowState());
 }
 
 /*

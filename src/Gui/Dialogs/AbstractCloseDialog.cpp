@@ -57,15 +57,15 @@ void CAbstractCloseDialog::createButtons()
 
 void CAbstractCloseDialog::restoreDialogState()
 {
-    QByteArray state = m_dialogState->getState(getDialogName());
+    QByteArray state = getDialogState()->getState(getDialogName());
     this->restoreGeometry(state);
 }
 
 void CAbstractCloseDialog::saveDialogState()
 {
     QByteArray state = this->saveGeometry();
-    QByteArray oldState = m_dialogState->getState(getDialogName());
+    QByteArray oldState = getDialogState()->getState(getDialogName());
 
     if(state != oldState)
-        m_dialogState->saveState(getDialogName(), state);
+        getDialogState()->saveState(getDialogName(), state);
 }

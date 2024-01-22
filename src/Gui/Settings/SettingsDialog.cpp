@@ -34,15 +34,15 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::restoreDialogState()
 {
-    QByteArray state = m_dialogState->getState(QString("SETTINGS_DIALOG"));
+    QByteArray state = getDialogState()->getState(QString("SETTINGS_DIALOG"));
     this->restoreGeometry(state);
 }
 
 void SettingsDialog::saveDialogState()
 {
     QByteArray state = this->saveGeometry();
-    QByteArray oldState = m_dialogState->getState(QString("SETTINGS_DIALOG"));
+    QByteArray oldState = getDialogState()->getState(QString("SETTINGS_DIALOG"));
 
     if(state != oldState)
-        m_dialogState->saveState(QString("SETTINGS_DIALOG"), state);
+        getDialogState()->saveState(QString("SETTINGS_DIALOG"), state);
 }

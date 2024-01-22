@@ -4,14 +4,13 @@
 CTableState::CTableState()
 {
     APPI->setAppInformation();
-    m_settings = std::make_shared<QSettings>();
+    m_settings.reset(new QSettings());
     m_settings->beginGroup("TableStates");
 }
 
 CTableState::~CTableState()
 {
-    m_settings->endGroup();
-    //safe_delete(m_settings)
+    m_settings->endGroup();    
 }
 
 void CTableState::saveState(const QString &tableName, QByteArray state)

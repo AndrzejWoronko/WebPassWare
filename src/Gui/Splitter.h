@@ -10,7 +10,7 @@
 class CSplitter : public QSplitter
 {
     ADD_FIELD(QString, m_spitter_name, getSplitterName, setSplitterName)
-    ADD_UNIQUE_SMART_PTR(CSplitterStateManager, m_splitter_interf, getSplitterInterf)
+    ADD_QSMART_PTR(CSplitterStateManager, m_splitter_interf, getSplitterInterf)
 
 public:
     explicit CSplitter(const QString &splitterName, Qt::Orientation orientation, QWidget *parent = NULL);

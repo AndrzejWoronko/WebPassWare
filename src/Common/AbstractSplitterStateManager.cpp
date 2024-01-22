@@ -2,7 +2,7 @@
 
 CAbstractSplitterStateManager::CAbstractSplitterStateManager()
 {
-    m_splitterState = std::make_unique<CSplitterState>();
+    m_splitterState.reset(new CSplitterState());
 }
 
 /*

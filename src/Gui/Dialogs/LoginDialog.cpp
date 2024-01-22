@@ -70,17 +70,17 @@ void CLoginDialog::addFields()
 //Zapisanie i odtworzenie układu graficznego dialogu
 void CLoginDialog::restoreDialogState()
 {
-    QByteArray state = m_dialogState->getState(QString("LOGIN_DIALOG"));
+    QByteArray state = getDialogState()->getState(QString("LOGIN_DIALOG"));
     this->restoreGeometry(state);
 }
 
 void CLoginDialog::saveDialogState()
 {
     QByteArray state = this->saveGeometry();
-    QByteArray oldState = m_dialogState->getState(QString("LOGIN_DIALOG"));
+    QByteArray oldState = getDialogState()->getState(QString("LOGIN_DIALOG"));
 
     if(state != oldState)
-        m_dialogState->saveState(QString("LOGIN_DIALOG"), state);
+        getDialogState()->saveState(QString("LOGIN_DIALOG"), state);
 }
 
 void CLoginDialog::accept()

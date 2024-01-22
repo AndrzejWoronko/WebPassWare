@@ -2,7 +2,7 @@
 
 CAbstractTableStateManager::CAbstractTableStateManager()
 {
-    m_tableState = std::make_unique<CTableState>();
+    m_tableState.reset(new CTableState());
 }
 
 /*

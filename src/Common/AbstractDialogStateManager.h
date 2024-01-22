@@ -6,8 +6,7 @@
 class CAbstractDialogStateManager
 {
 
-protected:
-    std::unique_ptr<CDialogState> m_dialogState;
+    ADD_QSMART_PTR(CDialogState, m_dialogState, getDialogState)
 
 public:
     CAbstractDialogStateManager();

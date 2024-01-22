@@ -5,14 +5,15 @@
 
 class CAbstractTabMainWindowStateManager
 {
-protected:
-    std::unique_ptr<CTabMainWindowState> m_tabMainWindowState;
 
-    virtual void restoreTabMainWindowState() = 0;
-    virtual void saveTabMainWindowState() = 0;
+    ADD_QSMART_PTR(CTabMainWindowState, m_tabMainWindowState, getTabMainWindowState)
+
 public:
     CAbstractTabMainWindowStateManager();
     ~CAbstractTabMainWindowStateManager() = default;
+
+    virtual void restoreTabMainWindowState() = 0;
+    virtual void saveTabMainWindowState() = 0;
 };
 
 

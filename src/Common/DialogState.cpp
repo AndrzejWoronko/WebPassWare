@@ -4,14 +4,14 @@
 CDialogState::CDialogState()
 {
     APPI->setAppInformation();
-    m_settings = std::make_unique<QSettings>();
+    m_settings.reset(new QSettings());
     m_settings->beginGroup("DialogStates");
 }
 
 CDialogState::~CDialogState()
 {
     m_settings->endGroup();
-    DEBUG_WITH_LINE << "make_unique destructor: " << getSettings()->fileName();
+    DEBUG_WITH_LINE << "QScopedPointer destructor: " << getSettings()->fileName();
     //safe_delete(m_settings)
 }
 

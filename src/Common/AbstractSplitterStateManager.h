@@ -6,8 +6,7 @@
 class CAbstractSplitterStateManager
 {
 
-protected:
-    std::unique_ptr<CSplitterState> m_splitterState;
+    ADD_QSMART_PTR(CSplitterState, m_splitterState, getSplitterState)
 
 public:
     CAbstractSplitterStateManager();
