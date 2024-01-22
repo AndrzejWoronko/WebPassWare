@@ -9,8 +9,10 @@ CAbstractDialogStateManager::CAbstractDialogStateManager()
     //m_dialogState = std::move(dialog_state);
 }
 
+/*
 CAbstractDialogStateManager::~CAbstractDialogStateManager()
 {
     //safe_delete(m_dialogState)
     DEBUG_WITH_LINE << "unique_ptr destructor";
 }
+*/

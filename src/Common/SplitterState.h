@@ -6,7 +6,7 @@
 class CSplitterState
 {
 
-    ADD_PTR(QSettings, m_settings, getSettings)
+    ADD_SHARED_SMART_PTR(QSettings, m_settings, getSettings)
 
 public:
     CSplitterState();

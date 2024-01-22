@@ -12,7 +12,7 @@ protected:
     virtual void saveTableState() = 0;
 public:
     CAbstractTableStateManager();
-    ~CAbstractTableStateManager();
+    ~CAbstractTableStateManager() = default;
 };
 
 #endif // ABSTRACTTABLESTATEMANAGER_H

@@ -27,6 +27,7 @@ SOURCES += \
     src/Common/MaintenanceTool.cpp \
     src/Common/PasswordGenerator.cpp \
     src/Common/SplitterState.cpp \
+    src/Common/SplitterStateManager.cpp \
     src/Common/TabMainWindowState.cpp \
     src/Common/TableState.cpp \
     src/Common/Tools.cpp \
@@ -114,6 +115,7 @@ HEADERS += \
     src/ApplicationSettings.h \
     src/Common/AbstractDialogStateManager.h \
     src/Common/AbstractSplitterStateManager.h \
+    src/Common/AbstractStateManager.h \
     src/Common/AbstractTabMainWindowStateManager.h \
     src/Common/AbstractTableStateManager.h \
     src/Common/AutoType.h \
@@ -133,6 +135,7 @@ HEADERS += \
     src/Common/PasswordGenerator.h \
     src/Common/Singleton.h \
     src/Common/SplitterState.h \
+    src/Common/SplitterStateManager.h \
     src/Common/TabMainWindowState.h \
     src/Common/TableState.h \
     src/Common/Tools.h \

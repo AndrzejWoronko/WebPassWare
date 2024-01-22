@@ -11,7 +11,7 @@ protected:
 
 public:
     CAbstractDialogStateManager();
-    ~CAbstractDialogStateManager();
+    ~CAbstractDialogStateManager() = default;
 
     virtual void restoreDialogState() = 0;
     virtual void saveDialogState() = 0;

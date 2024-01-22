@@ -12,7 +12,7 @@ protected:
     virtual void saveTabMainWindowState() = 0;
 public:
     CAbstractTabMainWindowStateManager();
-    ~CAbstractTabMainWindowStateManager();
+    ~CAbstractTabMainWindowStateManager() = default;
 };
 
 

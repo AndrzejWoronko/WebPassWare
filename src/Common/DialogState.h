@@ -11,7 +11,7 @@ class CDialogState
 
 public:
     CDialogState();
-    ~CDialogState();
+     ~CDialogState();
 
     void saveState(const QString &dialogName, QByteArray state);
     QByteArray getState(const QString &dialogName);

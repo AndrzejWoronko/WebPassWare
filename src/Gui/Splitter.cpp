@@ -1,8 +1,10 @@
 #include "Splitter.h"
 
-CSplitter::CSplitter(const QString &splitterName,  Qt::Orientation orientation, QWidget *parent) : QSplitter(orientation, parent), CAbstractSplitterStateManager()
+
+CSplitter::CSplitter(const QString &splitterName,  Qt::Orientation orientation, QWidget *parent) : QSplitter(orientation, parent)
 {
     setSplitterName(splitterName);
+    m_splitter_interf = std::make_unique<CSplitterStateManager>();
     //restoreSplitterState(); //Nie ma sensu restore w konstruktorze działa dopiero po dodaniu widgetów
     //setStyleSheet(QString("handle:horizontal { width: 10px; }; handle:vertical { height: 10px; };"));
     //this->setFrameShadow(QFrame::Sunken);
@@ -13,8 +15,9 @@ CSplitter::CSplitter(const QString &splitterName,  Qt::Orientation orientation, 
 //  this->setHandleWidth(10);
 }
 
-CSplitter::CSplitter(Qt::Orientation orientation, QWidget *parent) : QSplitter(orientation, parent), CAbstractSplitterStateManager()
+CSplitter::CSplitter(Qt::Orientation orientation, QWidget *parent) : QSplitter(orientation, parent)
 {
+    m_splitter_interf = std::make_unique<CSplitterStateManager>();
     //if (parent)
     //    setSplitterName(QString("%1_Splitter").arg(parent->objectName()));
     //else
@@ -37,10 +40,12 @@ CSplitter::~CSplitter()
 void CSplitter::restoreSplitterState()
 {
     if (!getSplitterName().isEmpty())
-        {
-            QByteArray state = m_splitterState->getState(getSplitterName());
-            this->restoreState(state);
-            DEBUG_WITH_LINE << "restore Splitter " << getSplitterName();
+        {      
+        QByteArray state;
+        m_splitter_interf->getState(getSplitterName(), state);
+
+        this->restoreState(state);
+        DEBUG_WITH_LINE << "restore Splitter " << getSplitterName();
         }
 }
 
@@ -49,11 +54,12 @@ void CSplitter::saveSplitterState()
     if (!getSplitterName().isEmpty())
     {
         QByteArray state = this->saveState();
-        QByteArray oldState = m_splitterState->getState(getSplitterName());
+        QByteArray oldState;
+        m_splitter_interf->getState(getSplitterName(), oldState);
 
         if(state != oldState)
           {
-            m_splitterState->saveState(getSplitterName(), state);
+            m_splitter_interf->saveState(getSplitterName(), state);
             DEBUG_WITH_LINE << "save Splitter " << getSplitterName();
           }
     }

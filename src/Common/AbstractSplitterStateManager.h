@@ -11,7 +11,7 @@ protected:
 
 public:
     CAbstractSplitterStateManager();
-    ~CAbstractSplitterStateManager();
+    ~CAbstractSplitterStateManager() = default;
 
     virtual void restoreSplitterState() = 0;
     virtual void saveSplitterState() = 0;

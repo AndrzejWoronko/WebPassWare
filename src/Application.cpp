@@ -175,12 +175,11 @@ int CApplication::run()
     if (m_nologin)
         return ret;
 
-    auto login_dialog = new CLoginDialog(tr("Logowanie ..."), ICON("Lock"));
-    if (login_dialog && login_dialog->exec() == QDialog::Rejected)
+    CLoginDialog login_dialog(tr("Logowanie ..."), ICON("Lock"));
+    if (login_dialog.exec() == QDialog::Rejected)
         {
              ret = RET_ERROR;
-        }
-   safe_delete(login_dialog)
+        }   
    return ret;
 }
 

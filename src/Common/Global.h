@@ -25,6 +25,8 @@
  * Deletes object under given pointer, but only if the pointer is not null.
  * Also sets the pointer to the null after deleting is done.
  */
+
+
 #define safe_delete(var) \
     if (var) \
     { \
@@ -119,8 +121,8 @@
               safe_delete(ptr);\
               list.clear();
 
-#define RET_OK       0
-#define RET_ERROR   -1
+constexpr int RET_OK = 0;
+constexpr int RET_ERROR = -1;
 
 #define DATE_FORMAT "yyyy-MM-dd"
 #define MONTH_FORMAT "yyyy-MM"

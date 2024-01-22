@@ -4,14 +4,15 @@
 CSplitterState::CSplitterState()
 {
     APPI->setAppInformation();
-    m_settings = new QSettings();
+    m_settings = std::make_shared<QSettings>();
     m_settings->beginGroup("SplitterStates");
 }
 
 CSplitterState::~CSplitterState()
 {
     m_settings->endGroup();
-    safe_delete(m_settings)
+    DEBUG_WITH_LINE << "make_shared dtor: " << getSettings()->fileName();
+    //safe_delete(m_settings)
 }
 
 void CSplitterState::saveState(const QString &splitterName, QByteArray state)
