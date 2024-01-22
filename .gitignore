@@ -3,6 +3,7 @@ bin/
 .obj/
 .qrc/
 .ui/
+.qtc_clangd/
 
 output/
 
