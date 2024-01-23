@@ -5,8 +5,7 @@
 class ICStateManager
 {
 public:
-    ICStateManager() = default;
-    ~ICStateManager() = default;
+    virtual ~ICStateManager() = default;
 
     virtual void getState(const QString &, QByteArray &state) = 0;
     virtual void saveState(const QString &, const QByteArray &state) = 0;

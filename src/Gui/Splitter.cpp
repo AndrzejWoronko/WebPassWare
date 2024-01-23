@@ -5,6 +5,7 @@ CSplitter::CSplitter(const QString &splitterName,  Qt::Orientation orientation, 
 {
     setSplitterName(splitterName);
     m_splitter_interf.reset(new CSplitterStateManager());
+
     //restoreSplitterState(); //Nie ma sensu restore w konstruktorze działa dopiero po dodaniu widgetów
     //setStyleSheet(QString("handle:horizontal { width: 10px; }; handle:vertical { height: 10px; };"));
     //this->setFrameShadow(QFrame::Sunken);
@@ -19,6 +20,7 @@ CSplitter::CSplitter(Qt::Orientation orientation, QWidget *parent) : QSplitter(o
 {
     //m_splitter_interf = std::make_unique<CSplitterStateManager>();
     m_splitter_interf.reset(new CSplitterStateManager());
+
     //if (parent)
     //    setSplitterName(QString("%1_Splitter").arg(parent->objectName()));
     //else
