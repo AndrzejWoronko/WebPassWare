@@ -13,7 +13,7 @@ CTableState::~CTableState()
     m_settings->endGroup();    
 }
 
-void CTableState::saveState(const QString &tableName, QByteArray state)
+void CTableState::saveState(const QString &tableName, const QByteArray &state)
 {
     m_settings->setValue(tableName, state);
 }

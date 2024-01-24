@@ -36,8 +36,8 @@ CWebPassWareMainWindow::~CWebPassWareMainWindow()
     safe_delete(m_headerContextMenu)
     safe_delete(m_pass_group_proxy_model)
     safe_delete(m_pass_entry_proxy_model)
-    safe_delete(m_pass_group_model)
-    safe_delete(m_pass_entry_model)
+    //safe_delete(m_pass_group_model)
+    //safe_delete(m_pass_entry_model)
 }
 
 void CWebPassWareMainWindow::setInterface(void)
@@ -223,11 +223,11 @@ void CWebPassWareMainWindow::setConnections(void)
     m_pass_entry_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
 //Modele danych
-    m_pass_group_model = PassGroupService::getInstance().getSqlModel();
-    m_pass_entry_model = PassEntryService::getInstance().getSqlModel();
+    m_pass_group_model.reset(PassGroupService::getInstance().getSqlModel());
+    m_pass_entry_model.reset(PassEntryService::getInstance().getSqlModel());
 
-    m_pass_group_proxy_model->setSourceModel(m_pass_group_model);
-    m_pass_entry_proxy_model->setSourceModel(m_pass_entry_model);
+    m_pass_group_proxy_model->setSourceModel(m_pass_group_model.get());
+    m_pass_entry_proxy_model->setSourceModel(m_pass_entry_model.get());
 
 //Podłącznie widoków do tabel
     m_treeGroupList->setModel(m_pass_group_proxy_model);
@@ -653,7 +653,7 @@ void CWebPassWareMainWindow::on_ACTION_SETTINGS_DIALOG_triggered(void)
 
 void CWebPassWareMainWindow::on_ACTION_DATA_EXPORT_DIALOG_triggered()
 {
-    auto dialog = new CCsvExportDialogController(m_pass_entry_model, this);
+    auto dialog = new CCsvExportDialogController(m_pass_entry_model.get(), this);
     dialog->getDialog()->exec();
     dialog->getDialog()->close();
     safe_delete(dialog)

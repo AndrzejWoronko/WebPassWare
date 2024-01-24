@@ -4,7 +4,7 @@
 CSplitter::CSplitter(const QString &splitterName,  Qt::Orientation orientation, QWidget *parent) : QSplitter(orientation, parent)
 {
     setSplitterName(splitterName);
-    m_splitter_interf.reset(new CSplitterStateManager());
+    m_splitter_interf.reset(new CSplitterState());
 
     //restoreSplitterState(); //Nie ma sensu restore w konstruktorze działa dopiero po dodaniu widgetów
     //setStyleSheet(QString("handle:horizontal { width: 10px; }; handle:vertical { height: 10px; };"));
@@ -17,9 +17,8 @@ CSplitter::CSplitter(const QString &splitterName,  Qt::Orientation orientation, 
 }
 
 CSplitter::CSplitter(Qt::Orientation orientation, QWidget *parent) : QSplitter(orientation, parent)
-{
-    //m_splitter_interf = std::make_unique<CSplitterStateManager>();
-    m_splitter_interf.reset(new CSplitterStateManager());
+{    
+    m_splitter_interf.reset(new CSplitterState());
 
     //if (parent)
     //    setSplitterName(QString("%1_Splitter").arg(parent->objectName()));
@@ -47,8 +46,7 @@ void CSplitter::restoreSplitterState()
 
     if (m_splitter_interf)
         {      
-        QByteArray state;
-        m_splitter_interf->getState(getSplitterName(), state);
+        QByteArray state = m_splitter_interf->getState(getSplitterName());
 
         this->restoreState(state);
         DEBUG_WITH_LINE << "restore Splitter " << getSplitterName();
@@ -63,8 +61,7 @@ void CSplitter::saveSplitterState()
     if (m_splitter_interf)
     {
         QByteArray state = this->saveState();
-        QByteArray oldState;
-        m_splitter_interf->getState(getSplitterName(), oldState);
+        QByteArray oldState = m_splitter_interf->getState(getSplitterName());
 
         if(state != oldState)
           {

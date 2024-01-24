@@ -2,8 +2,9 @@
 #define CTABMAINWINDOWSTATE_H
 
 #include "Global.h"
+#include "AbstractStateManager.h"
 
-class CTabMainWindowState
+class CTabMainWindowState: public ICState
 {
 
     ADD_PTR(QSettings, m_settings, getSettings)
@@ -12,8 +13,8 @@ public:
     CTabMainWindowState();
     ~CTabMainWindowState();
 
-    void saveState(const QString &tabMainWindowName, QByteArray state);
-    QByteArray getState(const QString &tabMainWindowName);
+    virtual void saveState(const QString &tabMainWindowName, const QByteArray &state) override final;
+    virtual QByteArray getState(const QString &tabMainWindowName) override final;
 
 };
 

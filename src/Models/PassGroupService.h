@@ -9,7 +9,8 @@
 class PassGroupService : public COrmService<PassGroup>, public Singleton<PassGroupService>
 {
 public:
-    PassGroupService();
+    PassGroupService() = default;
+    ~PassGroupService() = default;
 
     CSqlModel *getSqlModel(void);
     QStringList getGroupNameList(void);

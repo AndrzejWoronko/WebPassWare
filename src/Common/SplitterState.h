@@ -2,18 +2,18 @@
 #define CSPLITTERSTATE_H
 
 #include "Global.h"
+#include "AbstractStateManager.h"
 
-class CSplitterState
+class CSplitterState : public ICState
 {
-
     ADD_QSMART_PTR(QSettings, m_settings, getSettings)
 
 public:
     CSplitterState();
     ~CSplitterState();
 
-    void saveState(const QString &splitterName, QByteArray state);
-    QByteArray getState(const QString &splitterName);
+    virtual void saveState(const QString &splitterName, const QByteArray &state) override final;
+    virtual QByteArray getState(const QString &splitterName) override final;
 
 };
 

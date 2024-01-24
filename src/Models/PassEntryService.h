@@ -9,7 +9,8 @@
 class PassEntryService : public COrmService<PassEntry>, public Singleton<PassEntryService>
 {
 public:
-    PassEntryService();
+    PassEntryService() = default;
+    ~PassEntryService() = default;
 
     CSqlModel *getSqlModel(void);
 };

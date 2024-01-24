@@ -52,8 +52,8 @@ private:
     bool m_visible_passwords;
     CAction *m_visible_passwords_action;
 
-    CSqlModel *m_pass_group_model;
-    CSqlModel *m_pass_entry_model;
+    QSharedPointer<CSqlModel> m_pass_group_model;
+    QSharedPointer<CSqlModel> m_pass_entry_model;
 
     QSortFilterProxyModel *m_pass_group_proxy_model;
     QSortFilterProxyModel *m_pass_entry_proxy_model;

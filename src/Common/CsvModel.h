@@ -4,7 +4,9 @@
 #include "Global.h"
 #include "ImportCsv.h"
 
-class CCsvModel : public QAbstractTableModel
+using IQAbstractTableModel = QAbstractTableModel;
+
+class CCsvModel : public IQAbstractTableModel
 {
     ADD_FIELD(QString, m_fileName, getFileName, setFileName)
     ADD_FIELD(int, m_columns, getColumns, setColumns)

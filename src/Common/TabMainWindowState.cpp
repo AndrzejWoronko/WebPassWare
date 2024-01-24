@@ -14,7 +14,7 @@ CTabMainWindowState::~CTabMainWindowState()
     safe_delete(m_settings)
 }
 
-void CTabMainWindowState::saveState(const QString &tabMainWindowName, QByteArray state)
+void CTabMainWindowState::saveState(const QString &tabMainWindowName, const QByteArray &state)
 {
     m_settings->setValue(tabMainWindowName, state);
 }

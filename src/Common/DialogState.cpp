@@ -11,11 +11,10 @@ CDialogState::CDialogState()
 CDialogState::~CDialogState()
 {
     m_settings->endGroup();
-    DEBUG_WITH_LINE << "QScopedPointer destructor: " << getSettings()->fileName();
-    //safe_delete(m_settings)
+    DEBUG_WITH_LINE << "QScopedPointer destructor: " << getSettings()->fileName();    
 }
 
-void CDialogState::saveState(const QString &dialogName, QByteArray state)
+void CDialogState::saveState(const QString &dialogName, const QByteArray &state)
 {
     m_settings->setValue(dialogName, state);
 }

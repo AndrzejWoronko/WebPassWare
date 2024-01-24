@@ -14,7 +14,7 @@ CSplitterState::~CSplitterState()
     DEBUG_WITH_LINE << "QScopedPointer dtor: " << getSettings()->fileName();
 }
 
-void CSplitterState::saveState(const QString &splitterName, QByteArray state)
+void CSplitterState::saveState(const QString &splitterName, const QByteArray &state)
 {    
     m_settings->setValue(splitterName, state);
 }

@@ -2,6 +2,16 @@
 #define ABSTRACTSTATEMANAGER_H
 #include <Global.h>
 
+
+class ICState
+{
+public:
+    virtual ~ICState() = default;
+
+    virtual QByteArray getState(const QString &) = 0;
+    virtual void saveState(const QString &, const QByteArray &state) = 0;
+};
+
 class ICStateManager
 {
 public:

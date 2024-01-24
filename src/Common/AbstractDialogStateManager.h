@@ -6,7 +6,7 @@
 class CAbstractDialogStateManager
 {
 
-    ADD_QSMART_PTR(CDialogState, m_dialogState, getDialogState)
+    ADD_QSMART_PTR(ICState, m_dialogState, getDialogState)
 
 public:
     CAbstractDialogStateManager();

@@ -2,8 +2,9 @@
 #define DIALOGSTATE_H
 
 #include "Global.h"
+#include "AbstractStateManager.h"
 
-class CDialogState
+class CDialogState : public ICState
 {
     ADD_QSMART_PTR(QSettings, m_settings, getSettings)
 
@@ -11,10 +12,8 @@ public:
     CDialogState();
      ~CDialogState();
 
-    void saveState(const QString &dialogName, QByteArray state);
-    QByteArray getState(const QString &dialogName);
-    //std::unique_ptr<QSettings>& getSettings();
-
+    virtual void saveState(const QString &dialogName, const QByteArray &state) override final;
+    virtual QByteArray getState(const QString &dialogName) override final;
 };
 
 #endif // DIALOGSTATE_H

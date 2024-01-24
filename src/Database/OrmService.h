@@ -6,23 +6,25 @@
 #include "Service.h"
 
 template<class ModelName>
-class COrmService : public CService, public COrmObject<ModelName>
+class COrmService : public COrmObject<ModelName>
 {
 
-    ModelName *m_object;
+    std::unique_ptr<ModelName> m_object;
     qint64 m_insertedId;
+    std::unique_ptr<ICService> m_service;
 
 public:
     COrmService()
     {
         m_insertedId = -1;
-        m_object = new ModelName;
+        m_object = std::make_unique<ModelName>();
+        m_service = std::make_unique<CService>();
     }
 
     virtual ~COrmService()
     {
         DEBUG_WITH_LINE << "OrmService destructor";
-        safe_delete(m_object)
+        //safe_delete(m_object)
     }
 
     ModelName* getObject(void)
@@ -38,15 +40,15 @@ public:
     QList<ModelName*> getObjects(const QString &orderby = QString())
     {
         QList<ModelName*> list;
-        this->clearError();
+        m_service->clearError();
         try
         {
             list = m_object->findAll(orderby);
 
         } catch(CExceptionSql *e)
         {
-            this->showErrorInfo(e);
-            this->setError(e->getMessage());
+            m_service->showErrorInfo(e);
+            m_service->setError(e->getMessage());
         }
         return list;
     }
@@ -61,8 +63,8 @@ public:
 
         } catch(CExceptionSql *e)
         {
-            this->showErrorInfo(e);
-            this->setError(e->getMessage());
+            m_service->showErrorInfo(e);
+            m_service->setError(e->getMessage());
         }
         return list;
     }
@@ -70,15 +72,15 @@ public:
     QList<ModelName*> getObjectsBy(const QHash<QString, QVariant> &params)
     {
         QList<ModelName*> list;
-        this->clearError();
+        m_service->clearError();
         try
         {
             list = m_object->findByAnd(params);
 
         } catch(CExceptionSql *e)
         {
-            this->showErrorInfo(e);
-            this->setError(e->getMessage());
+            m_service->showErrorInfo(e);
+            m_service->setError(e->getMessage());
         }
         return list;
     }
@@ -86,15 +88,15 @@ public:
     ModelName *getFirstObject()
     {
         ModelName* o = NULL;
-        this->clearError();
+        m_service->clearError();
         try
         {
             o = m_object->first();
 
         } catch(CExceptionSql *e)
         {
-            this->showErrorInfo(e);
-            this->setError(e->getMessage());
+            m_service->showErrorInfo(e);
+            m_service->setError(e->getMessage());
         }
         return o;
     }
@@ -102,22 +104,22 @@ public:
     ModelName* getObject(qint64 id)
     {
         ModelName *o = NULL;
-        this->clearError();
+        m_service->clearError();
         try
         {
             o = m_object->find(id);
 
         } catch(CExceptionSql *e)
         {
-            this->showErrorInfo(e);
-            this->setError(e->getMessage());
+            m_service->showErrorInfo(e);
+            m_service->setError(e->getMessage());
         }
         return o;
     }
 
     qint64 addObject(ModelName *o, qint64 newId = 0)
     {
-        this->clearError();
+        m_service->clearError();
         try
         {
             o->save(newId);
@@ -125,8 +127,8 @@ public:
 
         } catch(CExceptionSql *e)
         {
-            this->showErrorInfo(e);
-            this->setError(e->getMessage());
+            m_service->showErrorInfo(e);
+            m_service->setError(e->getMessage());
         }
         return m_insertedId;
     }
@@ -134,15 +136,15 @@ public:
     bool editObject(ModelName *o)
     {
         bool ret = false;
-        this->clearError();
+        m_service->clearError();
         try
         {
             ret = o->update();
 
         } catch(CExceptionSql *e)
         {
-            this->showErrorInfo(e);
-            this->setError(e->getMessage());
+            m_service->showErrorInfo(e);
+            m_service->setError(e->getMessage());
         }
         return ret;
     }
@@ -150,7 +152,7 @@ public:
     bool removeObject(qint64 id)
     {
         bool ret = false;
-        this->clearError();
+        m_service->clearError();
         try
         {
             ModelName *o = m_object->find(id);
@@ -159,8 +161,8 @@ public:
 
         } catch(CExceptionSql *e)
         {
-            this->showErrorInfo(e);
-            this->setError(e->getMessage());
+            m_service->showErrorInfo(e);
+            m_service->setError(e->getMessage());
         }
         return ret;
     }
@@ -168,7 +170,7 @@ public:
     bool deleteObject(qint64 id)
     {
         bool ret = false;
-        this->clearError();
+        m_service->clearError();
         try
         {
             ModelName *o = m_object->find(id);
@@ -177,10 +179,15 @@ public:
 
         } catch(CExceptionSql *e)
         {
-            this->showErrorInfo(e);
-            this->setError(e->getMessage());
+            m_service->showErrorInfo(e);
+            m_service->setError(e->getMessage());
         }
         return ret;
+    }
+
+    QString getError()
+    {
+        return m_service->getError();
     }
 };
 

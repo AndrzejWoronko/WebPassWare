@@ -6,7 +6,7 @@
 class CAbstractSplitterStateManager
 {
 
-    ADD_QSMART_PTR(CSplitterState, m_splitterState, getSplitterState)
+    ADD_QSMART_PTR(ICState, m_splitterState, getSplitterState)
 
 public:
     CAbstractSplitterStateManager();

@@ -6,7 +6,7 @@
 class CAbstractTableStateManager
 {
 
-    ADD_QSMART_PTR(CTableState, m_tableState, getTableState)
+    ADD_QSMART_PTR(ICState, m_tableState, getTableState)
 
 public:
     CAbstractTableStateManager();

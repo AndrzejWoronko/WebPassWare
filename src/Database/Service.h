@@ -4,16 +4,29 @@
 #include "Global.h"
 #include "Exception.h"
 
-class CService
+class ICService
 {
-    ADD_FIELD(QString, m_error, getError, setError)
+public:
+    virtual ~ICService() = default;
+    virtual void clearError() = 0;
+    virtual void showErrorInfo(CException *e) = 0;
+    virtual QString getError() = 0;
+    virtual void setError(const QString &) = 0;
+};
+
+
+class CService: public ICService
+{
+    QString m_error;
 
 public:
     CService();
-    void clearError();
+    ~CService() = default;
 
-protected:
-    void showErrorInfo(CException *e);
+    virtual void clearError() override final;
+    virtual void showErrorInfo(CException *e) override final;
+    virtual void setError(const QString &) override final;
+    virtual QString getError() override final;
 };
 
 #endif // CSERVICE_H

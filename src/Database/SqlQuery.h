@@ -16,6 +16,7 @@ class CSqlQuery : public QSqlQuery
 public:
     CSqlQuery(const QString &query, QSqlDatabase db);
     CSqlQuery(QSqlDatabase db);
+    ~CSqlQuery() = default;
 
     bool exec();
     bool exec(const QString &query);

@@ -6,7 +6,7 @@
 class CAbstractTabMainWindowStateManager
 {
 
-    ADD_QSMART_PTR(CTabMainWindowState, m_tabMainWindowState, getTabMainWindowState)
+    ADD_QSMART_PTR(ICState, m_tabMainWindowState, getTabMainWindowState)
 
 public:
     CAbstractTabMainWindowStateManager();
