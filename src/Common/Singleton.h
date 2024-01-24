@@ -35,5 +35,25 @@ private:
 template <typename T>
 T* Singleton< T >::m_instance = 0;
 
+
+template <typename T>
+class SingletonHolder
+{
+private:
+    SingletonHolder() = default;
+    ~SingletonHolder() = default;
+
+public:
+    SingletonHolder(const SingletonHolder&) = delete;
+    SingletonHolder& operator=(const SingletonHolder&) = delete;
+
+    static T& getInstance()
+    {
+        static T unique_instance;
+
+        return unique_instance;
+    }
+};
+
 #endif // SINGLETON
 

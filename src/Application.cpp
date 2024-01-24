@@ -55,22 +55,15 @@ bool CApplication::notify(QObject * receiver, QEvent * event)
        res = QApplication::notify(receiver, event);
     }
 
-    catch(const QString & error)
-    {
-//        CExceptionDialog d(tr("Nieobsłużony wyjątek"), error);
-//        d.exec();
-        //abort();
-    }
-   catch (std::exception &e)
-    {      
-      CMessageBox::OkDialogCritical(QObject::tr("<p style='font-weight: bold; font-size: x-large; color: #f00'>Błąd krytyczny!</p><p>%1</p>").arg(e.what()));
-      throw e;
-    }
     catch(CExceptionSql *e)
     {
         DEBUG_WITH_LINE << "Nieprzechwycony wyjątek w metodzie: " << e->getSourceMethod() << "\nKomunikat: " << e->getMessage();
         QString msg = tr("Nieprzechwycony wyjątek w metodzie: ") + e->getSourceMethod() + QString("\n")+tr( "Komunikat: ") + e->getMessage();
         CMessageBox::OkDialogCritical(QObject::tr("<p style='font-weight: bold; font-size: x-large; color: #f00'>Błąd krytyczny!</p><p>%1</p>").arg(msg));
+    }
+    catch (std::exception &e)
+    {
+        CMessageBox::OkDialogCritical(QObject::tr("<p style='font-weight: bold; font-size: x-large; color: #f00'>Błąd krytyczny!</p><p>%1</p>").arg(e.what()));
     }
     catch (...)
     {

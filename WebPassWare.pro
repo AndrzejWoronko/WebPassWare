@@ -128,6 +128,7 @@ HEADERS += \
     src/Common/CsvModel.h \
     src/Common/DialogState.h \
     src/Common/ExportCsv.h \
+    src/Common/GenericFactory.h \
     src/Common/Global.h \
     src/Common/ImportCsv.h \
     src/Common/Logger.h \

@@ -269,7 +269,6 @@ bool CDatabase::createTableIndexes(const QString &tableName, const QHash<QString
     return ret;
 }
 
-
 bool CDatabase::dropTableIndexes(const QString &tableName, const QHash<QString, QString> &info)
 {
     bool ret = true;
