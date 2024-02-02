@@ -15,7 +15,7 @@ CDelayEditLine::CDelayEditLine(QWidget *parent) : QLineEdit(parent)
 //     //qobject_safe_delete(m_typingTimer)
 // }
 
-void CDelayEditLine::onTextEdited( const QString & newText)
+void CDelayEditLine::onTextEdited(const QString & newText)
 {
     disconnect(this, &QLineEdit::textChanged, this, &CDelayEditLine::onTextEdited);
     this->setText(newText);
