@@ -9,7 +9,7 @@ class ICService
 public:
     virtual ~ICService() = default;
     virtual void clearError() = 0;
-    virtual void showErrorInfo(CException *e) = 0;
+    virtual void showErrorInfo(CException &e) = 0;
     virtual QString getError() = 0;
     virtual void setError(const QString &) = 0;
 };
@@ -24,7 +24,7 @@ public:
     ~CService() = default;
 
     virtual void clearError() override final;
-    virtual void showErrorInfo(CException *e) override final;
+    virtual void showErrorInfo(CException &e) override final;
     virtual void setError(const QString &) override final;
     virtual QString getError() override final;
 };

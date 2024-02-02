@@ -71,7 +71,7 @@ public:
     QSqlDatabase &getDb();
     CSqlQuery *getQuery();
 
-    static void showErrorInfo(CException *e);
+    static void showErrorInfo(CException &e);
 
     void setQueryLog(void);
     void reConnect();

@@ -25,7 +25,7 @@ public:
             {
                 ormobj->createTable();
             }
-            catch (CExceptionSql *e)
+            catch (CExceptionSql &e)
             {
                 DB.showErrorInfo(e);
             }
@@ -33,7 +33,7 @@ public:
             {
                 ormobj->createIndexes();
             }
-            catch (CExceptionSql *e)
+            catch (CExceptionSql &e)
             {
                 DB.showErrorInfo(e);
             }
@@ -41,7 +41,7 @@ public:
             {
                 ormobj->createUniqueIndexes();
             }
-            catch (CExceptionSql *e)
+            catch (CExceptionSql &e)
             {
                 DB.showErrorInfo(e);
             }
@@ -63,7 +63,7 @@ public:
                 {
                     ormobj->alterTableAddColumn(propertyName);
                 }
-                catch (CExceptionSql *e)
+                catch (CExceptionSql &e)
                 {
                     DB.showErrorInfo(e);
                 }
@@ -101,7 +101,7 @@ public:
             {
                 ormobj->dropIndexes();
             }
-            catch (CExceptionSql *e)
+            catch (CExceptionSql &e)
             {
                 DB.showErrorInfo(e);
             }
@@ -109,7 +109,7 @@ public:
             {
                 ormobj->createIndexes();
             }
-            catch (CExceptionSql *e)
+            catch (CExceptionSql &e)
             {
                 DB.showErrorInfo(e);
             }
@@ -117,7 +117,7 @@ public:
             {
                 ormobj->createUniqueIndexes();
             }
-            catch (CExceptionSql *e)
+            catch (CExceptionSql &e)
             {
                 DB.showErrorInfo(e);
             }

@@ -55,10 +55,10 @@ bool CApplication::notify(QObject * receiver, QEvent * event)
        res = QApplication::notify(receiver, event);
     }
 
-    catch(CExceptionSql *e)
+    catch(CExceptionSql &e)
     {
-        DEBUG_WITH_LINE << "Nieprzechwycony wyjątek w metodzie: " << e->getSourceMethod() << "\nKomunikat: " << e->getMessage();
-        QString msg = tr("Nieprzechwycony wyjątek w metodzie: ") + e->getSourceMethod() + QString("\n")+tr( "Komunikat: ") + e->getMessage();
+        DEBUG_WITH_LINE << "Nieprzechwycony wyjątek w metodzie: " << e.getSourceMethod() << "\nKomunikat: " << e.getMessage();
+        QString msg = tr("Nieprzechwycony wyjątek w metodzie: ") + e.getSourceMethod() + QString("\n")+tr( "Komunikat: ") + e.getMessage();
         CMessageBox::OkDialogCritical(QObject::tr("<p style='font-weight: bold; font-size: x-large; color: #f00'>Błąd krytyczny!</p><p>%1</p>").arg(msg));
     }
     catch (std::exception &e)

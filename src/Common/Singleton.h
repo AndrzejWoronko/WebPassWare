@@ -33,7 +33,7 @@ private:
 };
 
 template <typename T>
-T* Singleton< T >::m_instance = 0;
+T* Singleton< T >::m_instance = nullptr;
 
 
 template <typename T>

@@ -45,10 +45,10 @@ public:
         {
             list = m_object->findAll(orderby);
 
-        } catch(CExceptionSql *e)
+        } catch(CExceptionSql &e)
         {
             m_service->showErrorInfo(e);
-            m_service->setError(e->getMessage());
+            m_service->setError(e.getMessage());
         }
         return list;
     }
@@ -61,10 +61,10 @@ public:
         {
             list = m_object->findBy(fieldName, value);
 
-        } catch(CExceptionSql *e)
+        } catch(CExceptionSql &e)
         {
             m_service->showErrorInfo(e);
-            m_service->setError(e->getMessage());
+            m_service->setError(e.getMessage());
         }
         return list;
     }
@@ -77,10 +77,10 @@ public:
         {
             list = m_object->findByAnd(params);
 
-        } catch(CExceptionSql *e)
+        } catch(CExceptionSql &e)
         {
             m_service->showErrorInfo(e);
-            m_service->setError(e->getMessage());
+            m_service->setError(e.getMessage());
         }
         return list;
     }
@@ -93,10 +93,10 @@ public:
         {
             o = m_object->first();
 
-        } catch(CExceptionSql *e)
+        } catch(CExceptionSql &e)
         {
             m_service->showErrorInfo(e);
-            m_service->setError(e->getMessage());
+            m_service->setError(e.getMessage());
         }
         return o;
     }
@@ -109,10 +109,10 @@ public:
         {
             o = m_object->find(id);
 
-        } catch(CExceptionSql *e)
+        } catch(CExceptionSql &e)
         {
             m_service->showErrorInfo(e);
-            m_service->setError(e->getMessage());
+            m_service->setError(e.getMessage());
         }
         return o;
     }
@@ -125,10 +125,10 @@ public:
             o->save(newId);
             m_insertedId = o->getId();
 
-        } catch(CExceptionSql *e)
+        } catch(CExceptionSql &e)
         {
             m_service->showErrorInfo(e);
-            m_service->setError(e->getMessage());
+            m_service->setError(e.getMessage());
         }
         return m_insertedId;
     }
@@ -141,10 +141,10 @@ public:
         {
             ret = o->update();
 
-        } catch(CExceptionSql *e)
+        } catch(CExceptionSql &e)
         {
             m_service->showErrorInfo(e);
-            m_service->setError(e->getMessage());
+            m_service->setError(e.getMessage());
         }
         return ret;
     }
@@ -159,10 +159,10 @@ public:
             if (o)
                 ret = o->remove();
 
-        } catch(CExceptionSql *e)
+        } catch(CExceptionSql &e)
         {
             m_service->showErrorInfo(e);
-            m_service->setError(e->getMessage());
+            m_service->setError(e.getMessage());
         }
         return ret;
     }
@@ -177,10 +177,10 @@ public:
             if (o)
                 ret = o->setDeleted();
 
-        } catch(CExceptionSql *e)
+        } catch(CExceptionSql &e)
         {
             m_service->showErrorInfo(e);
-            m_service->setError(e->getMessage());
+            m_service->setError(e.getMessage());
         }
         return ret;
     }

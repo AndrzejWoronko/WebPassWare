@@ -195,7 +195,7 @@ public:
         {
             ret = DB.createTable(m_tableName, m_sqlDescriptions);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -210,7 +210,7 @@ public:
         {
             ret =  DB.alterTableAddColumn(m_tableName, field);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -229,7 +229,7 @@ public:
         {
            ret =  DB.createTableIndexes(m_tableName, m_indexFields, false);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -243,7 +243,7 @@ public:
         {
             ret =  DB.createTableIndexes(m_tableName, m_uniqueIndexFields, true);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -258,7 +258,7 @@ public:
         {
             ret =  DB.dropTable(m_tableName);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -273,7 +273,7 @@ public:
             ret = DB.dropTableIndexes(m_tableName, m_indexFields);
             ret = DB.dropTableIndexes(m_tableName, m_uniqueIndexFields);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -287,7 +287,7 @@ public:
         {
             ret =  DB.beginTransaction();
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -301,7 +301,7 @@ public:
         {
             ret =  DB.commitTransaction();
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -315,7 +315,7 @@ public:
         {
             ret = DB.rollbackTransaction();
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -396,7 +396,7 @@ public:
         {
             id = DB.addRecord(m_tableName, info, newId, force_id);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -445,7 +445,7 @@ public:
         {
             ret = DB.updateRecord(m_tableName, info, getIdCondition(m_id));
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -484,7 +484,7 @@ public:
         {
             list = DB.find(m_tableName, "*", getIdCondition(id));
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -502,7 +502,7 @@ public:
         {
             list = DB.find(m_tableName, "*",  getIdCondition(id));
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -523,7 +523,7 @@ public:
         {
             list = DB.find(m_tableName, "*", orderby.isEmpty() ? QString() : orderString + orderby);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -547,7 +547,7 @@ public:
         {
             record = DB.first(m_tableName, pkName);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -569,7 +569,7 @@ public:
         {
             record = DB.last(m_tableName, pkName);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -600,7 +600,7 @@ public:
         {
             list = DB.find(m_tableName, "*",  whereString + " " + orderString);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -636,7 +636,7 @@ public:
         {
             list = DB.find(m_tableName, "*", whereString + " " + orderString);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -664,7 +664,7 @@ public:
         {
             list = DB.find(m_tableName, "*", whereString);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -696,7 +696,7 @@ public:
         {
             list = DB.find(m_tableName, "*", whereString);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -715,7 +715,7 @@ public:
         {
             ret = !DB.find(m_tableName, "*", "").isEmpty();
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -732,7 +732,7 @@ public:
         {
             ret = !DB.find(m_tableName, "*", getIdCondition(id)).isEmpty();
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -760,7 +760,7 @@ public:
                 ret = true;
             }
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -779,7 +779,7 @@ public:
         {
            ret = DB.remove(m_tableName, getIdCondition(m_id));
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -796,7 +796,7 @@ public:
         {
             ret = DB.setDeleted(m_tableName, getIdCondition(m_id));
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -818,7 +818,7 @@ public:
         {
           ret = DB.remove(m_tableName, "");
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -832,7 +832,7 @@ public:
         {
             ret = DB.setDeleted(m_tableName, "");
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -849,7 +849,7 @@ public:
         {
             ret =  DB.count(m_tableName, "*");
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -865,7 +865,7 @@ public:
         {
             ret =  DB.count(m_tableName, fieldName);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }
@@ -906,7 +906,7 @@ public:
         {
             list =  DB.getTableIndexes(m_tableName);
         }
-        catch (CExceptionSql *e)
+        catch (CExceptionSql &e)
         {
             throw e;
         }

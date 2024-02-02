@@ -55,8 +55,8 @@ private:
     QSharedPointer<CSqlModel> m_pass_group_model;
     QSharedPointer<CSqlModel> m_pass_entry_model;
 
-    QSortFilterProxyModel *m_pass_group_proxy_model;
-    QSortFilterProxyModel *m_pass_entry_proxy_model;
+    QSharedPointer<QSortFilterProxyModel> m_pass_group_proxy_model;
+    QSharedPointer<QSortFilterProxyModel> m_pass_entry_proxy_model;
 
     virtual void setInterface(void);
     virtual void setMenu(void);

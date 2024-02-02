@@ -88,7 +88,7 @@ void CDatabase::reConnect()
        {
          DEBUG_WITH_LINE << "not connected";
          DEBUG_WITH_LINE << "Error: " << m_db.lastError().text();
-         //throw new CExceptionSql(QString(Q_FUNC_INFO), QObject::tr("not connected"), m_db.lastError().text());
+         //throw CExceptionSql(QString(Q_FUNC_INFO), QObject::tr("not connected"), m_db.lastError().text());
        }
     else
        {
@@ -110,10 +110,10 @@ CSqlQuery *CDatabase::getQuery()
     return m_query;
 }
 
-void CDatabase::showErrorInfo(CException *e)
+void CDatabase::showErrorInfo(CException &e)
 {
-    DEBUG_WITH_LINE << "Błąd zapisu w metodzie: "  << e->getSourceMethod();
-    DEBUG_WITH_LINE << "Message: " << e->getMessage();
+    DEBUG_WITH_LINE << "Błąd zapisu w metodzie: "  << e.getSourceMethod();
+    DEBUG_WITH_LINE << "Message: " << e.getMessage();
 }
 
 void CDatabase::setQueryLog(void)
@@ -191,7 +191,7 @@ bool CDatabase::createTable(const QString &tableName, const QList <PkNames> &inf
     if (m_query->exec(m_lastQuery))
        return true;
     else
-       throw new CExceptionSql(Q_FUNC_INFO, m_query);
+       throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
@@ -203,7 +203,7 @@ bool CDatabase::dropTable(const QString &tableName)
     if (m_query->exec(m_lastQuery))
         return true;
     else
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
@@ -222,7 +222,7 @@ QList<QSqlIndex> CDatabase::getTableIndexes(const QString &tableName)
     }
     else
     {
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     }
 
     Q_FOREACH(auto i, recs)
@@ -240,7 +240,7 @@ QList<QSqlIndex> CDatabase::getTableIndexes(const QString &tableName)
         }
         else
         {
-            throw new CExceptionSql(Q_FUNC_INFO, m_query);
+            throw CExceptionSql(Q_FUNC_INFO, m_query);
         }
     }
     return result;
@@ -263,7 +263,7 @@ bool CDatabase::createTableIndexes(const QString &tableName, const QHash<QString
         ret = m_query->exec(m_lastQuery);
         if (!ret)
         {
-            throw new CExceptionSql(Q_FUNC_INFO, m_query);
+            throw CExceptionSql(Q_FUNC_INFO, m_query);
         }
     }
     return ret;
@@ -280,7 +280,7 @@ bool CDatabase::dropTableIndexes(const QString &tableName, const QHash<QString, 
         ret = m_query->exec(m_lastQuery); // Przy usunięciu indeksów trzeba do końca zrobić pętle i nie może być wyrzucenie wyjątku
         if (!ret)
         {
-            throw new CExceptionSql(Q_FUNC_INFO, m_query);
+            throw CExceptionSql(Q_FUNC_INFO, m_query);
             DEBUG_WITH_LINE  << " DROP INDEX ERROR : " << " blad: " + m_query->lastError().databaseText() + " komenda: " + m_query->lastQuery() << Qt::endl;
         }
     }
@@ -293,7 +293,7 @@ bool CDatabase::alterTableAddColumn(const QString &tableName, const PkNames &inf
     if (m_query->exec(m_lastQuery))
         return true;
     else
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
@@ -303,7 +303,7 @@ bool CDatabase::resetAutoIncrement(const QString &tableName, qint64 value)
     if (m_query->exec(m_lastQuery))
         return true;
     else
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
@@ -359,7 +359,7 @@ qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVari
         else
         {
             id = -1;
-            throw new CExceptionSql(Q_FUNC_INFO, m_query);
+            throw CExceptionSql(Q_FUNC_INFO, m_query);
         }
     }
     return id;
@@ -381,7 +381,7 @@ bool CDatabase::updateRecord(const QString &tableName, const QHash<QString, QVar
     if (m_query->exec())
         return true;
     else
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
@@ -400,7 +400,7 @@ bool CDatabase::replaceRecord(const QString &tableName, const QHash<QString, QVa
     if (m_query->exec())
         return true;
     else
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
@@ -410,7 +410,7 @@ bool CDatabase::remove(const QString &tableName, const QString &params)
     if (m_query->exec(m_lastQuery))
         return true;
     else
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
@@ -420,7 +420,7 @@ bool CDatabase::setDeleted(const QString &tableName, const QString &params)
     if (m_query->exec(m_lastQuery))
         return true;
     else
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
@@ -438,7 +438,7 @@ QList<QSqlRecord> CDatabase::find(const QString &tableName, const QString &field
     }
     else
     {
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     }
     return result;
 }
@@ -453,7 +453,7 @@ QSqlRecord CDatabase::first(const QString &tableName, const QString &pkName)
     }
     else
     {
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     }
     return QSqlRecord();
 }
@@ -468,7 +468,7 @@ QSqlRecord CDatabase::last(const QString &tableName, const QString &pkName)
     }
     else
     {
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     }
     return QSqlRecord();
 }
@@ -483,7 +483,7 @@ qint64 CDatabase::count(const QString &tableName, const QString &params)
     }
     else
     {
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     }
     return -1;
 }
@@ -498,7 +498,7 @@ qint64 CDatabase::countBy(const QString &tableName, const QString &params)
     }
     else
     {
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     }
     return -1;
 }
@@ -513,7 +513,7 @@ bool CDatabase::beginTransaction(void)
         if (m_query->lastError().nativeErrorCode().toInt() == 1)
             return true;
         else
-            throw new CExceptionSql(Q_FUNC_INFO, m_query);
+            throw CExceptionSql(Q_FUNC_INFO, m_query);
     }
     return false;
 }
@@ -523,7 +523,7 @@ bool CDatabase::commitTransaction(void)
     if (m_query->exec(QString("COMMIT;")))
         return true;
     else
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
@@ -532,7 +532,7 @@ bool CDatabase::rollbackTransaction(void)
     if (m_query->exec(QString("ROLLBACK;")))
         return true;
     else
-        throw new CExceptionSql(Q_FUNC_INFO, m_query);
+        throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 

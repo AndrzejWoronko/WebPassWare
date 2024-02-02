@@ -34,8 +34,8 @@ CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainW
 CWebPassWareMainWindow::~CWebPassWareMainWindow()
 {
     safe_delete(m_headerContextMenu)
-    safe_delete(m_pass_group_proxy_model)
-    safe_delete(m_pass_entry_proxy_model)
+    //safe_delete(m_pass_group_proxy_model)
+    //safe_delete(m_pass_entry_proxy_model)
     //safe_delete(m_pass_group_model)
     //safe_delete(m_pass_entry_model)
 }
@@ -213,11 +213,11 @@ void CWebPassWareMainWindow::setToolBar(void)
 void CWebPassWareMainWindow::setConnections(void)
 {
 //Modele proxy
-    m_pass_group_proxy_model = new QSortFilterProxyModel(this);
+    m_pass_group_proxy_model.reset(new QSortFilterProxyModel(this));
     m_pass_group_proxy_model->setDynamicSortFilter(true);
     m_pass_group_proxy_model->setFilterKeyColumn(-1);
     m_pass_group_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    m_pass_entry_proxy_model = new QSortFilterProxyModel(this);
+    m_pass_entry_proxy_model.reset(new QSortFilterProxyModel(this));
     m_pass_entry_proxy_model->setDynamicSortFilter(true);
     m_pass_entry_proxy_model->setFilterKeyColumn(-1);
     m_pass_entry_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -230,8 +230,8 @@ void CWebPassWareMainWindow::setConnections(void)
     m_pass_entry_proxy_model->setSourceModel(m_pass_entry_model.get());
 
 //Podłącznie widoków do tabel
-    m_treeGroupList->setModel(m_pass_group_proxy_model);
-    m_dataTable->setModel(m_pass_entry_proxy_model);
+    m_treeGroupList->setModel(m_pass_group_proxy_model.get());
+    m_dataTable->setModel(m_pass_entry_proxy_model.get());
 
 //Załadowanie danych do modelu
     m_pass_group_model->refresh();
@@ -247,31 +247,34 @@ void CWebPassWareMainWindow::setConnections(void)
 
 //Tabela lista tabel połaczenia
     m_treeGroupList->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(m_treeGroupList, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showTreeTableListContextMenu(const QPoint &)));
+    connect(m_treeGroupList, &QTreeView::customContextMenuRequested, this, &CWebPassWareMainWindow::showTreeTableListContextMenu);
     //connect(m_treeTableList, SIGNAL(activated(const QModelIndex &)), this, SLOT(showTableData(const QModelIndex &)));
-    connect(m_treeGroupList, SIGNAL(clicked(const QModelIndex &)), this, SLOT(filterTableData(const QModelIndex &)));
-    connect(m_treeGroupList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_ACTION_EDIT_PASS_GROUP_triggered()));
+    connect(m_treeGroupList, &QTreeView::clicked, this, &CWebPassWareMainWindow::filterTableData);
+    connect(m_treeGroupList, &QTreeView::doubleClicked, this, &CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered);
 
 //Tabela danych połaczenia
     m_dataTable->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(m_dataTable, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showDataTableContextMenu(const QPoint &)));
-    connect(m_dataTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_ACTION_EDIT_PASS_ENTRY_triggered()));
-    connect(m_dataTable, SIGNAL(keyInsert()), this, SLOT(on_ACTION_ADD_PASS_ENTRY_triggered()));
-    connect(m_dataTable, SIGNAL(keyEnter()), this, SLOT(on_ACTION_EDIT_PASS_ENTRY_triggered()));
-    connect(m_dataTable, SIGNAL(keyDelete()), this, SLOT(on_ACTION_DEL_PASS_ENTRY_triggered()));
+    connect(m_dataTable, &CTableView::customContextMenuRequested, this, &CWebPassWareMainWindow::showDataTableContextMenu);
+    connect(m_dataTable, &CTableView::doubleClicked, this, &CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered);
+    connect(m_dataTable, &CTableView::keyInsert, this, &CWebPassWareMainWindow::on_ACTION_ADD_PASS_ENTRY_triggered);
+    connect(m_dataTable, &CTableView::keyEnter, this, &CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered);
+    connect(m_dataTable, &CTableView::keyDelete, this, &CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered);
 //Menu dla header tabeli
-    connect(m_dataTable->horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomHeaderContextMenuRequested(const QPoint &)));
+    connect(m_dataTable->horizontalHeader(), &QHeaderView::customContextMenuRequested, this, &CWebPassWareMainWindow::onCustomHeaderContextMenuRequested);
 
 //Odświerzenie info w status bar
     QTimer::singleShot(1000, this, SLOT(refreshInfo()));
 
-    connect(m_filtrGroupList, SIGNAL(delayEditingFinished(const QString &)), m_pass_group_proxy_model, SLOT(setFilterFixedString(const QString &)));
-    connect(m_filtrDataTable, SIGNAL(delayEditingFinished(const QString &)), m_pass_entry_proxy_model, SLOT(setFilterFixedString(const QString &)));
+//Podłaczenie modeli filtrujących
+    connect(m_filtrGroupList, &CDelayEditLine::delayEditingFinished, m_pass_group_proxy_model.get(), &QSortFilterProxyModel::setFilterFixedString);
+    connect(m_filtrDataTable, &CDelayEditLine::delayEditingFinished, m_pass_entry_proxy_model.get(), &QSortFilterProxyModel::setFilterFixedString);
+
 /*
     Turn off clipboard_ptr
+
     auto clipboard_ptr = QApplication::clipboard();
     if (clipboard_ptr)
-       connect(clipboard_ptr, SIGNAL(dataChanged()), this, SLOT(on_ACTION_CLIPBOARD_triggered()));
+        connect(clipboard_ptr, &QClipboard::dataChanged, this, &CWebPassWareMainWindow::on_ACTION_CLIPBOARD_triggered);
 */
 }
 

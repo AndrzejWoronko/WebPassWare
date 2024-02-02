@@ -5,17 +5,17 @@
 #include <QLineEdit>
 #include <QStyle>
 
-#define DELAY_EDIT_LINE_MS    300
+constexpr int DELAY_EDIT_LINE_MS = 300;
 
 class CDelayEditLine : public QLineEdit
 {
     Q_OBJECT
 
-    QTimer *m_typingTimer;
+    QScopedPointer<QTimer> m_typingTimer;
 
 public:
     CDelayEditLine(QWidget *parent = NULL);
-    ~CDelayEditLine();
+    ~CDelayEditLine() = default;
 
 signals:
 

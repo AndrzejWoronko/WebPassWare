@@ -39,7 +39,7 @@ void CFontEdit::setFont(const QFont &arg)
 
 void CFontEdit::initConnections()
 {
-    connect(m_button, SIGNAL(clicked()), this, SLOT(browse()));
+    connect(m_button, &QToolButton::clicked, this, &CFontEdit::browse);
     updateFont();
 }
 
