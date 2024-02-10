@@ -6,7 +6,7 @@
 
 class CSplitterState : public ICState
 {
-    ADD_QSMART_PTR(QSettings, m_settings, getSettings)
+    ADD_QSMART_UNIQUE_PTR(QSettings, m_settings, getSettings)
 
 public:
     CSplitterState();

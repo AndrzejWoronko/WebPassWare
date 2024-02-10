@@ -3,14 +3,15 @@
 
 CTableState::CTableState()
 {
-    APPI->setAppInformation();
+    //APPI->setAppInformation();
     m_settings.reset(new QSettings());
     m_settings->beginGroup("TableStates");
 }
 
 CTableState::~CTableState()
 {
-    m_settings->endGroup();    
+    m_settings->endGroup();
+    DEBUG_WITH_LINE << "QScopedPointer ~dtor: " << getSettings()->fileName();
 }
 
 void CTableState::saveState(const QString &tableName, const QByteArray &state)

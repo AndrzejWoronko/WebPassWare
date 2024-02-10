@@ -55,12 +55,13 @@
 
 class CApplicationSettings : public Singleton<CApplicationSettings>
 {
-    ADD_PTR(QSettings, m_settings, getSettings)
+    ADD_QSMART_UNIQUE_PTR(QSettings, m_settings, getSettings)
 
 public:
 
     CApplicationSettings();
-    ~CApplicationSettings();
+    ~CApplicationSettings() { DEBUG_WITH_LINE << "~dtor "; }
+
 
     void setValue(const QString &name, const QVariant &value);
     void setValueIf(const QString &name, const QVariant &value);

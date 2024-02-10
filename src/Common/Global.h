@@ -115,11 +115,33 @@
             private: \
                 std::shared_ptr<type> name;
 
-#define ADD_QSMART_PTR(type, name, getName) \
+#define ADD_QSMART_UNIQUE_PTR(type, name, getName) \
             public: \
                 QScopedPointer<type>& getName(void){return name;} \
             private: \
                 QScopedPointer<type> name;
+
+#define ADD_QSMART_SHARED_PTR(type, name, getName) \
+            public: \
+                QSharedPointer<type>& getName(void){return name;} \
+            private: \
+                QSharedPointer<type> name;
+
+#define ADD_QSMART_UNIQUE_PTR_PROPERTY(type, name, getName) \
+            private: \
+                Q_PROPERTY(QScopedPointer<type> name READ getName) \
+            public: \
+                QScopedPointer<type>& getName(void){return name;} \
+            private: \
+                QScopedPointer<type> name;
+
+#define ADD_QSMART_SHARED_PTR_PROPERTY(type, name, getName) \
+            private: \
+                Q_PROPERTY(QSharedPointer<type> name READ getName) \
+            public: \
+                QSharedPointer<type>& getName(void){return name;} \
+            private: \
+                QSharedPointer<type> name;
 
 
 #define CLEAR_PTR_LIST(list) \

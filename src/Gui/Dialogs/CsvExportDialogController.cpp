@@ -6,9 +6,9 @@
 CCsvExportDialogController::CCsvExportDialogController(CSqlModel *model, QWidget *parent) :
     QWidget(parent), m_model(model)
 {
-    m_dialog = new CCsvExportDialog();
-    APPI->setAppInformation();
-    m_settings = new QSettings();
+    m_dialog = QSharedPointer<CCsvExportDialog>(new CCsvExportDialog());
+    //APPI->setAppInformation();
+    m_settings.reset(new QSettings());
     m_settings->beginGroup("ExportCsvData");
     restoreLastState();
     restoreDialogState();
@@ -23,8 +23,9 @@ CCsvExportDialogController::~CCsvExportDialogController()
     saveLastState();
     saveDialogState();
     m_settings->endGroup();
-    safe_delete(m_settings)
-    safe_delete(m_dialog)
+    DEBUG_WITH_LINE << "QScopedPointer ~dtor: " << getDataExportSettings()->fileName();
+    //safe_delete(m_settings)
+    //safe_delete(m_dialog)
 }
 
 void CCsvExportDialogController::saveLastState()
@@ -91,7 +92,7 @@ void CCsvExportDialogController::onButtonChoiceFileCsv()
     QString fileName("");
     QString fileType(tr("Plik CSV (*.csv)"));
 
-    fileName = CFileDialog::getSaveFileName(m_dialog, tr("Wybierz plik"), QDir::currentPath(), fileType, QFileDialog::DontConfirmOverwrite, true, m_dialog->getFileNameCsv()->getValue().toString());
+    fileName = CFileDialog::getSaveFileName(m_dialog.get(), tr("Wybierz plik"), QDir::currentPath(), fileType, QFileDialog::DontConfirmOverwrite, true, m_dialog->getFileNameCsv()->getValue().toString());
     if (!fileName.isEmpty())
         {
            if (!fileName.contains(".csv") && !fileName.contains(".CSV"))
@@ -124,9 +125,9 @@ void CCsvExportDialogController::onAccept()
                     delimeter = QChar('\t');
 
                 if (wrtite2Csv(filename, delimeter, codecName, digitSign))
-                    CMessageBox::OkDialogInformation(tr("Dane zostały pomyślnie zapisane."), m_dialog);
+                    CMessageBox::OkDialogInformation(tr("Dane zostały pomyślnie zapisane."), m_dialog.get());
                  else
-                    CMessageBox::OkDialogCritical(tr("Dane nie zostały pomyślnie zapisane !!!"), m_dialog);
+                    CMessageBox::OkDialogCritical(tr("Dane nie zostały pomyślnie zapisane !!!"), m_dialog.get());
 
                 m_dialog->accept();
            }

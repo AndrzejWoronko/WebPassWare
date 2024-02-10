@@ -12,6 +12,7 @@ class CLabel : public QLabel
 
 public:
     CLabel(const QString &text =  QString(), const QString &pixmap = QString(), QWidget *parent = NULL, Qt::WindowFlags f = Qt::WindowFlags());
+    ~CLabel() { DEBUG_WITH_LINE << "~dtor "; }
 
     void setPixmap(const QString &pixmap);
     void setBold(void);

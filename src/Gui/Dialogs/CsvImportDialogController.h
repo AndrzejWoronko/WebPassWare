@@ -12,17 +12,17 @@ class CCsvImportDialogController : public QWidget, public CAbstractDialogStateMa
 {
     Q_OBJECT
 
-    ADD_PTR_PRO(CCsvImportDialog, m_dialog, getDialog)
-    ADD_PTR_PRO(CCsvModel, m_model, getModel)
-    ADD_PTR_PRO(CImportCsv, m_import, getImport)
-    ADD_PTR(QSettings, m_settings, getDataImportSettings)
+    ADD_QSMART_SHARED_PTR(CCsvImportDialog, m_dialog, getDialog)
+    ADD_QSMART_SHARED_PTR(CCsvModel, m_model, getModel)
+    ADD_QSMART_SHARED_PTR(CImportCsv, m_import, getImport)
+    ADD_QSMART_UNIQUE_PTR(QSettings, m_settings, getDataImportSettings)
 
 public:
     CCsvImportDialogController(QWidget *parent = NULL);
     ~CCsvImportDialogController();
 
-    virtual void restoreDialogState();
-    virtual void saveDialogState();
+    virtual void restoreDialogState() override final;
+    virtual void saveDialogState() override final;
 
     void refreshModel();
 

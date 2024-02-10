@@ -5,13 +5,13 @@
 CApplicationSettings::CApplicationSettings()
 {
     APPI->setAppInformation();
-    m_settings = new QSettings();
+    m_settings.reset(new QSettings());
 }
 
-CApplicationSettings::~CApplicationSettings()
-{
-    safe_delete(m_settings)
-}
+// CApplicationSettings::~CApplicationSettings()
+// {
+//     //safe_delete(m_settings)
+// }
 
 void CApplicationSettings::setValue(const QString &name, const QVariant &value)
 {

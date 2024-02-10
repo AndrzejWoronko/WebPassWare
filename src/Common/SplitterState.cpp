@@ -3,7 +3,7 @@
 
 CSplitterState::CSplitterState()
 {
-    APPI->setAppInformation();
+    //APPI->setAppInformation();
     m_settings.reset(new QSettings());
     m_settings->beginGroup("SplitterStates");
 }
@@ -11,7 +11,7 @@ CSplitterState::CSplitterState()
 CSplitterState::~CSplitterState()
 {
     m_settings->endGroup();
-    DEBUG_WITH_LINE << "QScopedPointer dtor: " << getSettings()->fileName();
+    DEBUG_WITH_LINE << "QScopedPointer ~dtor: " << getSettings()->fileName();
 }
 
 void CSplitterState::saveState(const QString &splitterName, const QByteArray &state)

@@ -7,11 +7,6 @@ CAboutDialog::CAboutDialog(QWidget *parent) : CAbstractCloseDialog(QString("ABOU
     this->setWindowTitle(tr("O programie"));
 }
 
-CAboutDialog::~CAboutDialog()
-{
-
-}
-
 void CAboutDialog::addFields()
 {
     m_application_info = new CFormEditorField(QString("m_application_info"), tr("Informacje o aplikacji"), "", true);
@@ -23,7 +18,7 @@ void CAboutDialog::addFields()
 
 void CAboutDialog::createTabWidget()
 {
-    m_tabWidget = new QTabWidget(getWidget());
+    m_tabWidget = new QTabWidget(getWidget().get());
     m_tabWidget->addTab(m_tabInfo = new QWidget(), QString(APP_NAME));
     m_tabWidget->addTab(m_tabAuthor = new QWidget(), tr("Autor"));
     m_tabWidget->addTab(m_tabLicense = new QWidget(),tr("Licencje"));

@@ -4,17 +4,17 @@
 CAbstractCloseDialog::CAbstractCloseDialog(const QString &dialogName, QWidget *parent)
     : CDialog(parent),  CAbstractDialogStateManager()
 {
-      m_VLayoutDialog = new CVBoxLayout(this);
-      m_widget = new QWidget();
-      m_formLayout  = new CGridLayout(m_widget);
+      m_VLayoutDialog = QSharedPointer<CVBoxLayout>(new CVBoxLayout(this));
+      m_widget = QSharedPointer<QWidget>(new QWidget());
+      m_formLayout  = QSharedPointer<CGridLayout>(new CGridLayout(m_widget.get()));
       setDialogName(dialogName);
 }
 
 CAbstractCloseDialog::~CAbstractCloseDialog()
 {
     saveDialogState();
-    safe_delete(m_formLayout)
-    safe_delete(m_widget)
+    //safe_delete(m_formLayout)
+    //safe_delete(m_widget)
 }
 
 void CAbstractCloseDialog::addFieldsAndComponents()
@@ -27,7 +27,7 @@ void CAbstractCloseDialog::addFieldsAndComponents()
 
 void CAbstractCloseDialog::setDialogWidget(void)
 {
-    m_VLayoutDialog->addWidget(m_widget);
+    m_VLayoutDialog->addWidget(m_widget.get());
 }
 
 void CAbstractCloseDialog::setDialogWidget(QTabWidget *tabWidget)
@@ -42,9 +42,9 @@ void CAbstractCloseDialog::setDialogWidget(QWidget *widget)
 
 void CAbstractCloseDialog::createButtons()
 {
-    m_buttonBoxClose = new CButtonBoxClose(this);
-    connect(m_buttonBoxClose, SIGNAL(rejected()), this, SLOT(reject()));
-    m_VLayoutDialog->addWidget(m_buttonBoxClose);
+    m_buttonBoxClose = QSharedPointer<CButtonBoxClose>(new CButtonBoxClose(this));
+    connect(m_buttonBoxClose.get(), SIGNAL(rejected()), this, SLOT(reject()));
+    m_VLayoutDialog->addWidget(m_buttonBoxClose.get());
 }
 
 //void CAbstractCloseDialog::closeEvent(QCloseEvent *event)

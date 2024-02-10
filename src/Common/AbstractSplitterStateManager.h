@@ -3,17 +3,24 @@
 
 #include "SplitterState.h"
 
-class CAbstractSplitterStateManager
+class ICSplitterStateManager
+{
+public:
+    ICSplitterStateManager() = default;
+    virtual ~ICSplitterStateManager() = default;
+
+    virtual void restoreSplitterState() = 0;
+    virtual void saveSplitterState() = 0;
+};
+
+class CAbstractSplitterStateManager : public ICSplitterStateManager
 {
 
-    ADD_QSMART_PTR(ICState, m_splitterState, getSplitterState)
+    ADD_QSMART_UNIQUE_PTR(ICState, m_splitterState, getSplitterState)
 
 public:
     CAbstractSplitterStateManager();
     ~CAbstractSplitterStateManager() = default;
-
-    virtual void restoreSplitterState() = 0;
-    virtual void saveSplitterState() = 0;
 };
 
 #endif // CABSTRACTSPLITTERSTATEMANAGER_H

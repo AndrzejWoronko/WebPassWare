@@ -3,7 +3,7 @@
 CCsvModel::CCsvModel(const QString &fileName, QObject *parent) :
     QAbstractTableModel(parent), m_fileName(fileName), m_columns(0), m_fromLine(0)
 {
-    m_importCsv = new CImportCsv(fileName);
+    m_importCsv = QSharedPointer<CImportCsv>(new CImportCsv(fileName));
     //readFile();
 }
 
@@ -11,11 +11,11 @@ CCsvModel::CCsvModel(const QString &fileName, const QChar &delimeter, const QStr
     QAbstractTableModel(parent), m_fileName(fileName), m_columns(0), m_fromLine(0)
 {
     m_isTitle = isTitle;
-    m_importCsv = new CImportCsv(fileName, delimeter, codecName, digitSign, isTitle);
+    m_importCsv = QSharedPointer<CImportCsv>(new CImportCsv(fileName, delimeter, codecName, digitSign, isTitle));
     //readFile();
 }
 
-CCsvModel::CCsvModel(CImportCsv *importCsv, QObject *parent) :
+CCsvModel::CCsvModel(QSharedPointer<CImportCsv> importCsv, QObject *parent) :
     QAbstractTableModel(parent),  m_columns(0), m_fromLine(0)
 {
    m_importCsv = importCsv;
@@ -25,7 +25,7 @@ CCsvModel::CCsvModel(CImportCsv *importCsv, QObject *parent) :
 
 CCsvModel::~CCsvModel()
 {
-     safe_delete(m_importCsv)
+     //safe_delete(m_importCsv)
 }
 
 QVariant CCsvModel::data(const QModelIndex &index, int role) const

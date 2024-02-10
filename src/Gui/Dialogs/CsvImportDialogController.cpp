@@ -8,9 +8,9 @@ CCsvImportDialogController::CCsvImportDialogController(QWidget *parent) : QWidge
     m_model = NULL;
     m_import = NULL;
 
-    m_dialog = new CCsvImportDialog();
-    APPI->setAppInformation();
-    m_settings = new QSettings();
+    m_dialog = QSharedPointer<CCsvImportDialog>(new CCsvImportDialog());
+    //APPI->setAppInformation();
+    m_settings.reset(new QSettings());
     m_settings->beginGroup("ImportCsvData");
 
     connect(m_dialog->getButtonOk(), SIGNAL(clicked()), this, SLOT(onAccept()));
@@ -36,8 +36,9 @@ CCsvImportDialogController::~CCsvImportDialogController()
     saveLastState();
     saveDialogState();
     m_settings->endGroup();
-    safe_delete(m_settings)
-    safe_delete(m_dialog)
+    DEBUG_WITH_LINE << "QScopedPointer ~dtor: " << getDataImportSettings()->fileName();
+    //safe_delete(m_settings)
+    //safe_delete(m_dialog)
 }
 
 void CCsvImportDialogController::saveLastState()
@@ -87,19 +88,18 @@ void CCsvImportDialogController::onButtonChoiceFileCsv()
     QString fileName("");
     QString fileType = tr("Plik CSV (*.csv)");
 
-    fileName = CFileDialog::getOpenFileName(m_dialog, tr("Wybierz plik"), QDir::currentPath(), fileType);
+    fileName = CFileDialog::getOpenFileName(m_dialog.get(), tr("Wybierz plik"), QDir::currentPath(), fileType);
     if (fileName.length() > 0)
         {
             m_dialog->getFileNameCsv()->setValue(fileName);
             //if (m_import)       delete importu jest w model`u
             //    delete m_import;
             if (m_model)
-                delete m_model;
-            m_import = new CImportCsv(fileName, QChar('\t'));
-
-            m_model = new CCsvModel(m_import);
-            m_dialog->getTableView()->setModel(m_model);
-            m_dialog->getTableViewPreview()->setModel(m_model);
+                m_model.clear();
+            m_import = QSharedPointer<CImportCsv>(new CImportCsv(fileName, QChar('\t')));
+            m_model = QSharedPointer<CCsvModel>(new CCsvModel(m_import));
+            m_dialog->getTableView()->setModel(m_model.get());
+            m_dialog->getTableViewPreview()->setModel(m_model.get());
 //Pobranie danych z formatki i ustawienie importu
             QString sep = m_dialog->getFieldsSeparator()->getValue().toString();
             QChar digitSign = m_dialog->getDigitSign()->getValue().toChar();

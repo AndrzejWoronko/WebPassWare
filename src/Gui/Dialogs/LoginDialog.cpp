@@ -18,14 +18,14 @@ CLoginDialog::CLoginDialog(const QString &title, const QString &iconName, QWidge
     this->setMinimumSize(SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_WIDTH).toInt(), SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_HEIGHT).toInt());
 
     m_VLayoutDialog = new CVBoxLayout(this);
-    m_headerLayout =  new CGridLayout();
-    m_bodyLayout =  new CFormLayout();
-    m_footerLayout =  new CHBoxLayout();
+    m_headerLayout.reset(new CGridLayout());
+    m_bodyLayout.reset(new CFormLayout());
+    m_footerLayout.reset(new CHBoxLayout());
     addFields();
     addFieldsAndComponents();
 
-    connect(getButtonBox(), SIGNAL(accepted()), this, SLOT(accept()));
-    connect(getButtonBox(), SIGNAL(rejected()), this, SLOT(reject()));
+    connect(getButtonBox().get(), SIGNAL(accepted()), this, SLOT(accept()));
+    connect(getButtonBox().get(), SIGNAL(rejected()), this, SLOT(reject()));
 
     this->restoreDialogState();
     m_passwd->setFocus();
@@ -34,37 +34,40 @@ CLoginDialog::CLoginDialog(const QString &title, const QString &iconName, QWidge
 CLoginDialog::~CLoginDialog()
 {
     this->saveDialogState();
+    DEBUG_WITH_LINE << "~dtor ";
 }
 
 void CLoginDialog::addFieldsAndComponents()
 {
-    m_headerLayout->addWidget(m_icon_label, 0, 0, 1, 1);
-    m_headerLayout->addWidget(m_version_label, 0, 1, 1, 2);
-    m_headerLayout->addWidget(m_company_label, 1, 1, 1, 2);
+    m_headerLayout->addWidget(m_icon_label.get(), 0, 0, 1, 1);
+    m_headerLayout->addWidget(m_version_label.get(), 0, 1, 1, 2);
+    m_headerLayout->addWidget(m_company_label.get(), 1, 1, 1, 2);
 
-    CForm::setComponents(m_bodyLayout, m_passwd, m_passwd->getLabel(), 0);
+    CForm::setComponents(m_bodyLayout.get(), m_passwd.get(), m_passwd->getLabel(), 0);
 
-    m_footerLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
-    m_footerLayout->addWidget(m_buttonBox);
+    //m_footerLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    m_footerLayout->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    m_footerLayout->addWidget(m_buttonBox.get());
 
-    m_VLayoutDialog->addLayout(m_headerLayout);
+    m_VLayoutDialog->addLayout(m_headerLayout.get());
     m_VLayoutDialog->addWidget(new CHLine());
-    m_VLayoutDialog->addLayout(m_bodyLayout);
+    m_VLayoutDialog->addLayout(m_bodyLayout.get());
+    //m_VLayoutDialog->addWidget(QSharedPointer<CHLine>(new CHLine()).get());
     m_VLayoutDialog->addWidget(new CHLine());
-    m_VLayoutDialog->addLayout(m_footerLayout);
+    m_VLayoutDialog->addLayout(m_footerLayout.get());
 }
 
 void CLoginDialog::addFields()
 {
 //Fields
-    m_passwd = new CFormTextField(QString("m_passwd"), tr("Hasło do bazy"), "", 32);
+    m_passwd = QSharedPointer<CFormTextField>(new CFormTextField(QString("m_passwd"), tr("Hasło do bazy"), "", 32));
     m_passwd->setPasswdEcho();
 //Przyciski
-    m_buttonBox  = new CButtonBoxOk(this);
+    m_buttonBox = QSharedPointer<CButtonBoxOk>(new CButtonBoxOk(this));
 //Labele
-    m_icon_label = new CLabel(QString(), ICON("WebPassWare"));
-    m_version_label = new CLabel(tr("Wersja programu: %1").arg(CApplication::toString()));
-    m_company_label = new CLabel(tr("Copyright © 2021 %1").arg(APP_ORGANIZATION_NAME));
+    m_icon_label = QSharedPointer<CLabel>(new CLabel(QString(), ICON("WebPassWare")));
+    m_version_label = QSharedPointer<CLabel>(new CLabel(tr("Wersja programu: %1").arg(CApplication::toString())));
+    m_company_label = QSharedPointer<CLabel>(new CLabel(tr("Copyright © 2021 %1").arg(APP_ORGANIZATION_NAME)));
 }
 
 //Zapisanie i odtworzenie układu graficznego dialogu

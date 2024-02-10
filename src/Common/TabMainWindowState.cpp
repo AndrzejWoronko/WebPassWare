@@ -3,15 +3,16 @@
 
 CTabMainWindowState::CTabMainWindowState()
 {
-    APPI->setAppInformation();
-    m_settings = new QSettings();
+    //APPI->setAppInformation();
+    m_settings.reset(new QSettings());
     m_settings->beginGroup("TabMainWindowStates");
 }
 
 CTabMainWindowState::~CTabMainWindowState()
 {
     m_settings->endGroup();
-    safe_delete(m_settings)
+    DEBUG_WITH_LINE << "QScopedPointer ~dtor: " << getSettings()->fileName();
+    //safe_delete(m_settings)
 }
 
 void CTabMainWindowState::saveState(const QString &tabMainWindowName, const QByteArray &state)

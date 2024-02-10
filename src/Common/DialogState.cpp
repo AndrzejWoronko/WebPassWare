@@ -3,7 +3,7 @@
 
 CDialogState::CDialogState()
 {
-    APPI->setAppInformation();
+    //APPI->setAppInformation();
     m_settings.reset(new QSettings());
     m_settings->beginGroup("DialogStates");
 }
@@ -11,7 +11,7 @@ CDialogState::CDialogState()
 CDialogState::~CDialogState()
 {
     m_settings->endGroup();
-    DEBUG_WITH_LINE << "QScopedPointer destructor: " << getSettings()->fileName();    
+    DEBUG_WITH_LINE << "QScopedPointer ~dtor: " << getSettings()->fileName();
 }
 
 void CDialogState::saveState(const QString &dialogName, const QByteArray &state)

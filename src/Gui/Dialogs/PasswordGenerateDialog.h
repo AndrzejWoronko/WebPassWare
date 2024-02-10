@@ -15,10 +15,10 @@ public:
     ~CPasswordGenerateDialog();
 
     //Funkcja tworząca pola
-    virtual void addFields();
+    virtual void addFields() override final;
 
     //Funkcja umieszczająca pola na formatce
-    virtual void addComponents();
+    virtual void addComponents() override final;
 };
 
 #endif // CPASSWORDGENERATEDIALOG_H

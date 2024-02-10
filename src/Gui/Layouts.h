@@ -24,24 +24,28 @@ class CVBoxLayout : public QVBoxLayout
 {
 public:
     CVBoxLayout(QWidget *parent = NULL);
+    ~CVBoxLayout() { DEBUG_WITH_LINE << "~dtor "; }
 };
 
 class CHBoxLayout : public QHBoxLayout
 {
 public:
     CHBoxLayout(QWidget *parent = NULL);
+    ~CHBoxLayout() { DEBUG_WITH_LINE << "~dtor "; }
 };
 
 class CGridLayout : public QGridLayout
 {
 public:
     CGridLayout(QWidget *parent = NULL);
+    ~CGridLayout() { DEBUG_WITH_LINE << "~dtor "; }
 };
 
 class CFormLayout : public QFormLayout
 {
 public:
     CFormLayout(QWidget *parent = NULL);
+    ~CFormLayout() { DEBUG_WITH_LINE << "~dtor "; }
 };
 
 #endif // LAYOUTS_H

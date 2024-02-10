@@ -12,11 +12,11 @@ class CCsvModel : public IQAbstractTableModel
     ADD_FIELD(int, m_columns, getColumns, setColumns)
     ADD_FIELD(int, m_fromLine, getFormLine, setFromLine)
     ADD_FIELD(bool, m_isTitle, getIsTitle, setIsTitle)
-    ADD_PTR(CImportCsv, m_importCsv, getImportCsv)
+    ADD_QSMART_SHARED_PTR(CImportCsv, m_importCsv, getImportCsv)
 
   public:
     CCsvModel(const QString &fileName, QObject *parent = NULL);
-    CCsvModel(CImportCsv *impotCsv, QObject *parent = NULL);
+      CCsvModel(QSharedPointer<CImportCsv> impotCsv, QObject *parent = NULL);
     CCsvModel(const QString &fileName, const QChar &delimeter = QChar(';'), const QString &codecName = QString("iso8859-2"), const QChar & digitSign = QChar('.'), bool isTitle = true, QObject *parent = NULL);
     ~CCsvModel();
 

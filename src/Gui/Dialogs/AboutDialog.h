@@ -24,12 +24,12 @@ class CAboutDialog : public CAbstractCloseDialog
 public:
 
     CAboutDialog(QWidget *parent = NULL);
-    ~CAboutDialog();
+    ~CAboutDialog() = default;
     //Funkcja tworząca pola
-    virtual void addFields();
+    virtual void addFields() override final;
 
     //Funkcja umieszczająca pola na formatce
-    virtual void addComponents();
+    virtual void addComponents() override final;
 
 private:
 
@@ -38,9 +38,9 @@ private:
     CGridLayout *m_licenseLayout;
     CGridLayout *m_sysinfoLayout;
 
-    void addAllInfoComponents();
-    void addAllAuthorComponents();
-    void addAllLicenseComponents();
+    // void addAllInfoComponents();
+    // void addAllAuthorComponents();
+    // void addAllLicenseComponents();
 
     void createTabWidget();
     void setValues();

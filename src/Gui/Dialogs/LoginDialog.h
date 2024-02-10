@@ -12,33 +12,33 @@ class CLoginDialog : public CDialog, public CAbstractDialogStateManager
 {
      Q_OBJECT
 
-     ADD_PTR_PROPERTY(CFormTextField, m_passwd, getPasswd)
-     ADD_PTR_PROPERTY(CLabel, m_icon_label, getIconLabel)
-     ADD_PTR_PROPERTY(CLabel, m_company_label, getCompanyLabel)
-     ADD_PTR_PROPERTY(CLabel, m_version_label, getVersionLabel)
+     ADD_QSMART_SHARED_PTR(CFormTextField, m_passwd, getPasswd)
+     ADD_QSMART_SHARED_PTR(CLabel, m_icon_label, getIconLabel)
+     ADD_QSMART_SHARED_PTR(CLabel, m_company_label, getCompanyLabel)
+     ADD_QSMART_SHARED_PTR(CLabel, m_version_label, getVersionLabel)
      /**
       ButtonBox zawierające przyciski potwierdzenia bądź zaprzestania dokonywanej operacji
     */
-     ADD_PTR_PROPERTY(CButtonBoxOk, m_buttonBox, getButtonBox)
+     ADD_QSMART_SHARED_PTR(CButtonBoxOk, m_buttonBox, getButtonBox)
 public:
      CLoginDialog(const QString &title = QString(), const QString &iconName = QString(), QWidget *parent = NULL);
      ~CLoginDialog();
 
-     virtual void restoreDialogState();
-     virtual void saveDialogState();
+     virtual void restoreDialogState() override final;
+     virtual void saveDialogState() override final;
 
 private:
      void addFields();
      void addFieldsAndComponents();
 
-     CGridLayout *m_headerLayout;
-     CFormLayout *m_bodyLayout;
-     CHBoxLayout *m_footerLayout;
+     QSharedPointer<CGridLayout> m_headerLayout;
+     QSharedPointer<CFormLayout> m_bodyLayout;
+     QSharedPointer<CHBoxLayout> m_footerLayout;
      CVBoxLayout *m_VLayoutDialog;  //Do dialogu
 
 private slots:
 
-     void accept();
+    virtual void accept() override final;
 
 
 };
