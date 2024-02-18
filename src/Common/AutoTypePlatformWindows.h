@@ -1,14 +1,17 @@
 #ifndef CAUTOTYPEPLATFORMWINDOWS_H
 #define CAUTOTYPEPLATFORMWINDOWS_H
 
-#undef NOMINMAX
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
 #include "Global.h"
 #include "AutoTypeAction.h"
 #include "AutoTypePlatform.h"
+
+#ifdef Q_OS_WINDOWS  //Windows
+
+#undef NOMINMAX
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
 
 class CAutoTypePlatformWindows : public QObject, public CAutoTypePlatform
 {
@@ -47,4 +50,5 @@ private:
     CAutoTypePlatformWindows* const m_platform;
 };
 
+#endif
 #endif // CAUTOTYPEPLATFORMWINDOWS_H

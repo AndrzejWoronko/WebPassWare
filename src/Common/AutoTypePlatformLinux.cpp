@@ -2,6 +2,7 @@
 #include "Tools.h"
 
 #ifdef Q_OS_LINUX  //Linux
+/*
 #include "gui/osutils/nixutils/X11Funcs.h"
 
 #include <QX11Info>
@@ -9,7 +10,7 @@
 #include <X11/Xutil.h>
 #include <X11/extensions/XTest.h>
 
-/* map of ASCII non-dead keys to equivalent dead keys that need to be repeated */
+// map of ASCII non-dead keys to equivalent dead keys that need to be repeated
 static const QPair<KeySym, KeySym> deadMap[] = {
     {XK_acute, XK_dead_acute},
     {XK_grave, XK_dead_grave},
@@ -276,11 +277,11 @@ bool CAutoTypePlatformLinux::isTopLevelWindow(Window window)
   return result;
 }
 
-/*
- * Update the keyboard and modifier mapping.
- * We need the KeyboardMapping for AddKeysym.
- * Modifier mapping is required for clearing the modifiers.
- */
+
+// Update the keyboard and modifier mapping.
+// We need the KeyboardMapping for AddKeysym.
+// Modifier mapping is required for clearing the modifiers.
+
 void CAutoTypePlatformLinux::updateKeymap()
 {
     if (m_xkb) {
@@ -288,18 +289,18 @@ void CAutoTypePlatformLinux::updateKeymap()
     }
     m_xkb = XkbGetMap(m_dpy, XkbAllClientInfoMask, XkbUseCoreKbd);
 
-    /* workaround X11 bug https://gitlab.freedesktop.org/xorg/xserver/-/issues/1155 */
+    // workaround X11 bug https://gitlab.freedesktop.org/xorg/xserver/-/issues/1155
     XkbSetMap(m_dpy, XkbAllClientInfoMask, m_xkb);
     XSync(m_dpy, False);
 
-    /* Build updated keymap */
+    // Build updated keymap
     m_keymap.clear();
     m_remapKeycode = 0;
 
     for (int ckeycode = m_xkb->min_key_code; ckeycode < m_xkb->max_key_code; ckeycode++) {
         int groups = XkbKeyNumGroups(m_xkb, ckeycode);
 
-        /* track highest remappable keycode, don't add to keymap */
+        // track highest remappable keycode, don't add to keymap
         if (groups == 0) {
             m_remapKeycode = ckeycode;
             continue;
@@ -320,7 +321,7 @@ void CAutoTypePlatformLinux::updateKeymap()
                     }
                 }
 
-                /* explicitly disallow requiring lock modifiers (Caps Lock and Num Lock) */
+                // explicitly disallow requiring lock modifiers (Caps Lock and Num Lock)
                 if (mask & (LockMask | Mod2Mask)) {
                     continue;
                 }
@@ -330,7 +331,7 @@ void CAutoTypePlatformLinux::updateKeymap()
         }
     }
 
-    /* determine the keycode to use for modifiers */
+    // determine the keycode to use for modifiers
     XModifierKeymap* modifiers = XGetModifierMapping(m_dpy);
     for (int mod_index = ShiftMapIndex; mod_index <= Mod5MapIndex; mod_index++) {
         m_modifier_keycode[mod_index] = 0;
@@ -349,11 +350,11 @@ void CAutoTypePlatformLinux::updateKeymap()
 // The following code is taken from xvkbd 3.0 and has been slightly modified.
 // --------------------------------------------------------------------------
 
-/*
- * Send event to the focused window.
- * If input focus is specified explicitly, select the window
- * before send event to the window.
- */
+//
+//  * Send event to the focused window.
+//  * If input focus is specified explicitly, select the window
+//  * before send event to the window.
+//
 void CAutoTypePlatformLinux::SendKeyEvent(unsigned keycode, bool press)
 {
     XSync(m_dpy, False);
@@ -366,10 +367,10 @@ void CAutoTypePlatformLinux::SendKeyEvent(unsigned keycode, bool press)
     XSetErrorHandler(oldHandler);
 }
 
-/*
- * Send a modifier press/release event for all modifiers
- * which are set in the mask variable.
- */
+
+ // * Send a modifier press/release event for all modifiers
+ // * which are set in the mask variable.
+
 void CAutoTypePlatformLinux::SendModifiers(unsigned int mask, bool press)
 {
     int mod_index;
@@ -380,10 +381,10 @@ void CAutoTypePlatformLinux::SendModifiers(unsigned int mask, bool press)
     }
 }
 
-/*
- * Determines the keycode and modifier mask for the given
- * keysym.
- */
+
+ // * Determines the keycode and modifier mask for the given
+ // * keysym.
+
 bool CAutoTypePlatformLinux::GetKeycode(KeySym keysym, int* keycode, int* group, unsigned int* mask, bool* repeat)
 {
     const KeyDesc* desc = nullptr;
@@ -423,7 +424,7 @@ bool CAutoTypePlatformLinux::GetKeycode(KeySym keysym, int* keycode, int* group,
         return true;
     }
 
-    /* if we can't find an existing key for this keysym, try remapping */
+    // if we can't find an existing key for this keysym, try remapping
     if (RemapKeycode(keysym)) {
         *keycode = m_remapKeycode;
         *group = 0;
@@ -435,9 +436,9 @@ bool CAutoTypePlatformLinux::GetKeycode(KeySym keysym, int* keycode, int* group,
     return false;
 }
 
-/*
- * Get remapped keycode for any keysym.
- */
+
+ // * Get remapped keycode for any keysym.
+
 bool CAutoTypePlatformLinux::RemapKeycode(KeySym keysym)
 {
     if (!m_remapKeycode) {
@@ -461,11 +462,11 @@ bool CAutoTypePlatformLinux::RemapKeycode(KeySym keysym)
     return true;
 }
 
-/*
- * Send sequence of KeyPressed/KeyReleased events to the focused
- * window to simulate keyboard.  If modifiers (shift, control, etc)
- * are set ON, many events will be sent.
- */
+
+ // * Send sequence of KeyPressed/KeyReleased events to the focused
+ // * window to simulate keyboard.  If modifiers (shift, control, etc)
+ // * are set ON, many events will be sent.
+
 void CAutoTypePlatformLinux::sendKey(KeySym keysym, unsigned int modifiers)
 {
     if (keysym == NoSymbol)
@@ -480,12 +481,12 @@ void CAutoTypePlatformLinux::sendKey(KeySym keysym, unsigned int modifiers)
     unsigned int wanted_mask;
     bool repeat;
 
-    /* pull current active layout group */
+    // pull current active layout group
     XkbStateRec state;
     XkbGetState(m_dpy, XkbUseCoreKbd, &state);
     group_active = state.group;
 
-    /* tell GetKeycode we would prefer a key from active group */
+    //tell GetKeycode we would prefer a key from active group
     group = group_active;
 
     Window root, child;
@@ -495,21 +496,21 @@ void CAutoTypePlatformLinux::sendKey(KeySym keysym, unsigned int modifiers)
     XSync(m_dpy, False);
     XQueryPointer(m_dpy, m_rootWindow, &root, &child, &root_x, &root_y, &x, &y, &original_mask);
 
-    /* fail permanently if Caps Lock is on */
+    // fail permanently if Caps Lock is on
     if (original_mask & LockMask)
     {
         DEBUG_WITH_LINE << tr("Sequence aborted: Caps Lock is on");
         return;
     }
 
-    /* retry if keysym affecting modifier is held except Num Lock (Mod2Mask) */
+    // retry if keysym affecting modifier is held except Num Lock (Mod2Mask)
     if (original_mask & (ShiftMask | ControlMask | Mod1Mask | Mod3Mask | Mod4Mask | Mod5Mask))
     {
         DEBUG_WITH_LINE << tr("Sequence aborted: Modifier keys held by user");
         return;
     }
 
-    /* determine keycode, group and mask for the given keysym */
+    // determine keycode, group and mask for the given keysym
     if (!GetKeycode(keysym, &keycode, &group, &wanted_mask, &repeat))
     {
         DEBUG_WITH_LINE << tr("Unable to get valid keycode for key: ") + QString(XKeysymToString(keysym));
@@ -518,34 +519,34 @@ void CAutoTypePlatformLinux::sendKey(KeySym keysym, unsigned int modifiers)
 
     wanted_mask |= modifiers;
 
-    /* modifiers that need to be held but aren't */
+    // modifiers that need to be held but aren't
     unsigned int press_mask = wanted_mask & ~original_mask;
 
-    /* change layout group if necessary */
+    // change layout group if necessary
     if (group_active != group) {
         XkbLockGroup(m_dpy, XkbUseCoreKbd, group);
         XFlush(m_dpy);
     }
 
-    /* hold modifiers */
+    // hold modifiers
     SendModifiers(press_mask, true);
 
-    /* press and release key, with repeat if necessary */
+    // press and release key, with repeat if necessary
     for (int i = 0; i < (repeat ? 2 : 1); i++) {
         SendKeyEvent(keycode, true);
         SendKeyEvent(keycode, false);
     }
 
-    /* release modifiers */
+    // release modifiers
     SendModifiers(press_mask, false);
 
-    /* reset layout group if necessary */
+    // reset layout group if necessary
     if (group_active != group) {
         XkbLockGroup(m_dpy, XkbUseCoreKbd, group_active);
         XFlush(m_dpy);
     }
 
-    /* reset remap to prevent leaking remap keysyms longer than necessary */
+    // reset remap to prevent leaking remap keysyms longer than necessary
     if (keycode == m_remapKeycode) {
         RemapKeycode(NoSymbol);
     }
@@ -613,5 +614,6 @@ void CAutoTypeExecturorLinux::execKey(CAutoTypeKey* action)
 {
   m_platform->sendKey(qtToNativeKeyCode(action->m_key));
 }
+*/
 
 #endif

@@ -1,11 +1,15 @@
 #include "AutoTypePlatformWindows.h"
 #include "Tools.h"
+
+#ifdef Q_OS_WINDOWS //Windows
+
 #include <VersionHelpers.h>
 
 #define HOTKEY_ID 1
 #define MAX_WINDOW_TITLE_LENGTH 1024
-
 #define MOD_NOREPEAT 0x4000 // Missing in MinGW
+
+
 
 CAutoTypePlatformWindows::CAutoTypePlatformWindows(QObject *parent) : QObject(parent)
 {
@@ -386,3 +390,4 @@ void CAutoTypeExecutorWindows::execKey(CAutoTypeKey* action)
     m_platform->setKeyState(action->m_key, true);
     m_platform->setKeyState(action->m_key, false);
 }
+#endif

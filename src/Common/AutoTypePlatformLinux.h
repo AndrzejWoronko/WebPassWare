@@ -5,11 +5,12 @@
 #include <QSet>
 #include <QtPlugin>
 #include <QWidget>
+#include "Global.h"
 
 #ifdef Q_OS_LINUX  //Linux
-
+/*
 #include <X11/XKBlib.h>
-#include "Global.h"
+
 
 #include "AutoTypePlatform.h"
 #include "AutoTypeAction.h"
@@ -95,5 +96,6 @@ public:
 private:
     CAutoTypePlatformLinux* const m_platform;
 };
+*/
 #endif
 #endif // CAUTOTYPEPLATFORMLINUX_H

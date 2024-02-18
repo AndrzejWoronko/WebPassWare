@@ -38,7 +38,7 @@ CAutoType::CAutoType(QObject* parent, bool test)
 #elif Q_OS_MACOS //Macos
       m_platform_intrerface = new CAutoTypePlatformMacos(this);
 #else            //Linux
-      m_platform_intrerface = new CAutoTypePlatformLinux(this);
+      //m_platform_intrerface = new CAutoTypePlatformLinux(this);
 #endif
       }
 }

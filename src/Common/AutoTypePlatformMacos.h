@@ -1,8 +1,8 @@
 #ifndef CAUTOTYPEPLATFORMMACOS_H
 #define CAUTOTYPEPLATFORMMACOS_H
 
-#include <memory>
 #include "Global.h"
+#include <memory>
 
 #ifdef Q_OS_MACOS //Macos
 
