@@ -18,7 +18,7 @@ void CPasswordGenerateDialog::addFields()
 
 void CPasswordGenerateDialog::addComponents()
 {
-    CForm::setComponents(getFormLayout().get(), m_pass_gen_widget, QString(), 0, 0, 6, 8);
+    CForm::setComponents(getFormLayout(), m_pass_gen_widget, QString(), 0, 0, 6, 8);
     m_pass_gen_widget->getAcceptButton()->setVisible(false);
     setDialogWidget();
 }

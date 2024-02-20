@@ -6,15 +6,16 @@ CAbstractCloseDialog::CAbstractCloseDialog(const QString &dialogName, QWidget *p
 {
       m_VLayoutDialog = QSharedPointer<CVBoxLayout>(new CVBoxLayout(this));
       m_widget = QSharedPointer<QWidget>(new QWidget());
-      m_formLayout  = QSharedPointer<CGridLayout>(new CGridLayout(m_widget.get()));
+      m_formLayout  = new CGridLayout(m_widget.get());
       setDialogName(dialogName);
 }
 
 CAbstractCloseDialog::~CAbstractCloseDialog()
 {
     saveDialogState();
-    //safe_delete(m_formLayout)
+    safe_delete(m_formLayout)
     //safe_delete(m_widget)
+    DEBUG_WITH_LINE << "~dtor ";
 }
 
 void CAbstractCloseDialog::addFieldsAndComponents()
