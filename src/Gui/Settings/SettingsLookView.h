@@ -15,8 +15,10 @@ class SettingsLookView : public CAbstractSettingsItemView
     ADD_PTR_PROPERTY(CFormNumberField, m_table_row_height, getTableRowHeight)
     ADD_PTR_PROPERTY(CFormNumberField, m_dialogs_min_height, getDialogsMinHeight)
     ADD_PTR_PROPERTY(CFormNumberField, m_dialogs_min_width, getDialogsMinWidth)
-    ADD_PTR_PROPERTY(CFormCheckField, m_table_alter_row_color, getTableAlterRowColor)
-    ADD_PTR_PROPERTY(CFormCheckField, m_table_show_grid, getTableShowGrid)
+    //ADD_PTR_PROPERTY(CFormCheckField, m_table_alter_row_color, getTableAlterRowColor)
+    //ADD_PTR_PROPERTY(CFormCheckField, m_table_show_grid, getTableShowGrid)
+    ADD_PTR_PROPERTY(CFormToggleSwitchField, m_table_alter_row_color, getTableAlterRowColor)
+    ADD_PTR_PROPERTY(CFormToggleSwitchField, m_table_show_grid, getTableShowGrid)
     ADD_PTR_PROPERTY(CFormNumberField, m_layout_spacing, getLayoutSpacing) //Odstęp pomiędzy widgetami
     ADD_PTR_PROPERTY(CFormNumberField, m_layout_margins, getLayoutMargins) //Margines wokół widgetów
     ADD_PTR_PROPERTY(CFormNumberField, m_login_dialog_min_height, getLoginDialogMinHeight)

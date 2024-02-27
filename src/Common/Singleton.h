@@ -1,5 +1,5 @@
-#ifndef SINGLETON
-#define SINGLETON
+#ifndef SINGLETON_H
+#define SINGLETON_H
 
 #include <stdlib.h>
 
@@ -55,5 +55,5 @@ public:
     }
 };
 
-#endif // SINGLETON
+#endif // SINGLETON_H
 

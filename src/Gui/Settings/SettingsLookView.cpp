@@ -23,9 +23,15 @@ void SettingsLookView::addFields()
     addField(m_dialogs_min_height);
     m_dialogs_min_width = new CFormNumberField(QString("m_dialogs_min_width"), tr("Minimalna szerokość dialogów (w pikselach)"), 0);
     addField(m_dialogs_min_width);
+/*
     m_table_alter_row_color = new CFormCheckField(QString("m_table_alter_row_color"), tr("Inny color w wierszach w tabelach"), true);
     addField(m_table_alter_row_color);
     m_table_show_grid = new CFormCheckField(QString("m_table_show_grid"), tr("Pokaż siatkę w tabelach"), true);
+    addField(m_table_show_grid);
+*/
+    m_table_alter_row_color = new CFormToggleSwitchField(QString("m_table_alter_row_color"), tr("Inny color w wierszach w tabelach"), true);
+    addField(m_table_alter_row_color);
+    m_table_show_grid = new CFormToggleSwitchField(QString("m_table_show_grid"), tr("Pokaż siatkę w tabelach"), true);
     addField(m_table_show_grid);
     m_layout_spacing = new CFormNumberField(QString("m_layout_spacing"), tr("Odstęp pomiędzy elementami graficznymi"), 0);
     addField(m_layout_spacing);

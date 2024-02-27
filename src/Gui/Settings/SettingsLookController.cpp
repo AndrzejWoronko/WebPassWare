@@ -20,8 +20,12 @@ SettingsLookController::SettingsLookController(QWidget *parent) : CAbstractSetti
         connect(v->getFontEdit(), SIGNAL(fontChanged(const QFont&)), this, SLOT(enableButtons()));
         connect(v->getColorSchema(), SIGNAL(currentIndexChanged(int)), this, SLOT(enableButtons()));
         connect(v->getStyleTheme(), SIGNAL(currentIndexChanged(int)), this, SLOT(enableButtons()));
+/*
         connect(v->getTableShowGrid(), SIGNAL(stateChanged(int)), this, SLOT(enableButtons()));
         connect(v->getTableAlterRowColor(), SIGNAL(stateChanged(int)), this, SLOT(enableButtons()));
+ */
+        connect(v->getTableShowGrid(), SIGNAL(checked(bool)), this, SLOT(enableButtons()));
+        connect(v->getTableAlterRowColor(), SIGNAL(checked(bool)), this, SLOT(enableButtons()));
         connect(v->getTableRowHeight(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
         connect(v->getDialogsMinHeight(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
         connect(v->getDialogsMinWidth(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));

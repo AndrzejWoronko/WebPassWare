@@ -67,6 +67,7 @@ SOURCES += \
     src/Gui/Forms/FormSimpleChoiceField.cpp \
     src/Gui/Forms/FormSimpleIndexChoiceField.cpp \
     src/Gui/Forms/FormTextField.cpp \
+    src/Gui/Forms/FormToggleSwitchField.cpp \
     src/Gui/Forms/FormValidator.cpp \
     src/Gui/Forms/FormYesNoChoiceField.cpp \
     src/Gui/ModelForms/PassEntryDialog.cpp \
@@ -100,6 +101,7 @@ SOURCES += \
     src/Gui/Widgets/TabWidget.cpp \
     src/Gui/Widgets/TableView.cpp \
     src/Gui/Widgets/TableViewItemsDelegates.cpp \
+    src/Gui/Widgets/ToggleSwitch.cpp \
     src/Gui/Widgets/ToolButton.cpp \
     src/Models/ModelTableCheck.cpp \
     src/Models/PassEntry.cpp \
@@ -175,6 +177,7 @@ HEADERS += \
     src/Gui/Forms/FormSimpleChoiceField.h \
     src/Gui/Forms/FormSimpleIndexChoiceField.h \
     src/Gui/Forms/FormTextField.h \
+    src/Gui/Forms/FormToggleSwitchField.h \
     src/Gui/Forms/FormValidator.h \
     src/Gui/Forms/FormYesNoChoiceField.h \
     src/Gui/ModelForms/PassEntryDialog.h \
@@ -208,6 +211,7 @@ HEADERS += \
     src/Gui/Widgets/TabWidget.h \
     src/Gui/Widgets/TableView.h \
     src/Gui/Widgets/TableViewItemsDelegates.h \
+    src/Gui/Widgets/ToggleSwitch.h \
     src/Gui/Widgets/ToolButton.h \
     src/Models/ModelTableCheck.h \
     src/Models/PassEntry.h \
@@ -254,3 +258,5 @@ QMAKE_CXXFLAGS += -Wall -Wextra -std=c++14
 QMAKE_LFLAGS_RPATH += \
 
 DISTFILES += TODO README.md
+
+QT += widgets

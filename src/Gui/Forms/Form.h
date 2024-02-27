@@ -20,6 +20,7 @@
 #include "FormYesNoChoiceField.h"
 #include "FormMonthField.h"
 #include "FormRadioButtonField.h"
+#include"FormToggleSwitchField.h"
 
   /**
    * @brief The CForm class - uniwersalna formatka do wprowadzania danych
