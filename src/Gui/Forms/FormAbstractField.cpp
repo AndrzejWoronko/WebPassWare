@@ -1,14 +1,14 @@
 #include "FormAbstractField.h"
 
 
-CFormAbstractField::CFormAbstractField(QVariant::Type type, const QString &variableName, const QString &label, QVariant value)
+CFormAbstractField::CFormAbstractField(QVariant::Type type, const QString &variableName, const QString &label, QVariant value):
+                                       m_type(type),
+                                       m_variableName(variableName),
+                                       m_label(label),
+                                       m_value(value)
 {
-    m_type = type;
-    m_variableName = variableName;
-    m_label = label;
     if (!m_label.isEmpty() && m_label.at(m_label.length() - 1) != ':')
-        m_label.append(":");
-    m_value = value;
+        m_label.append(":");    
     m_widget = NULL;
     m_startValue = value;
 }
