@@ -70,9 +70,14 @@ QBrush CToggleSwitch::hoverOutlineBrush(const QRect &rect)
 QBrush CToggleSwitch::progressBarOutlineBrush(const QRect &rect)
 {
     QLinearGradient gradient(0, rect.height(), rect.width(), 0);
-    gradient.setColorAt(0.0, QColor(0x11, 0xc2, 0xe1));
-    gradient.setColorAt(1.0, QColor(0x89, 0x3a, 0x94));
+    // gradient.setColorAt(0.0, QColor(0x11, 0xc2, 0xe1));
+    // gradient.setColorAt(1.0, QColor(0x89, 0x3a, 0x94));
+
+    gradient.setColorAt(0.0, QColor(Qt::green));
+    gradient.setColorAt(1.0, QColor(Qt::darkGreen));
+
     return QBrush(gradient);
+//  return QBrush(QColor(Qt::green));
 }
 
 QColor CToggleSwitch::pressedOutlineColor()
@@ -93,10 +98,12 @@ void CToggleSwitch::paintEvent(QPaintEvent *)
     // With QSS, we can't use QSS to style our custom widget.
 
     // Similar colors as for pushbuttons (but the shape is different)
-    if (!isEnabled()) {
+    if (!isEnabled())
+    {
         painter.setPen( palete.color(QPalette::Button) /*ColorRepository::buttonOutlineColor()*/);
         painter.setOpacity(0.5);
-    } else if (m_mouseDown) // Sunken
+    }
+    else if (m_mouseDown) // Sunken
         painter.setPen(pressedOutlineColor());
     else if (underMouse() || hasFocus())
         painter.setPen(QPen(hoverOutlineBrush(rect()), 1));
@@ -116,7 +123,9 @@ void CToggleSwitch::paintEvent(QPaintEvent *)
     if (m_checked) {
         valueRect.moveLeft(width() / 2);
         painter.setPen(QPen(progressBarOutlineBrush(valueRect), 1));
-        painter.setBrush(Qt::NoBrush);
+        painter.setBrush(progressBarOutlineBrush(valueRect));
+        //painter.setPen(QColor(Qt::green));
+        //painter.setBrush(QColor(Qt::green));
     } else {
         painter.setBrush(palete.color(QPalette::Background) /*ColorRepository::baseBackground()*/);
     }
