@@ -5,9 +5,9 @@
 
 CMaintenanceTool::CMaintenanceTool(QObject *parent) : QObject(parent), m_state(CMaintenanceTool::NotRunning), m_hasUpdate(false)
 {
-    connect(&m_process, SIGNAL(started()), this, SLOT(processStarted()));
-    connect(&m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processFinished(int,QProcess::ExitStatus)));
-    connect(&m_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)));
+    connect(&m_process, &QProcess::started, this, &CMaintenanceTool::processStarted);
+    connect(&m_process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &CMaintenanceTool::processFinished);
+    connect(&m_process, qOverload<QProcess::ProcessError>(&QProcess::errorOccurred), this, &CMaintenanceTool::processError);
 }
 
 void CMaintenanceTool::checkUpdate()

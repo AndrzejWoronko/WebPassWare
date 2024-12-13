@@ -24,8 +24,8 @@ CLoginDialog::CLoginDialog(const QString &title, const QString &iconName, QWidge
     addFields();
     addFieldsAndComponents();
 
-    connect(getButtonBox().get(), SIGNAL(accepted()), this, SLOT(accept()));
-    connect(getButtonBox().get(), SIGNAL(rejected()), this, SLOT(reject()));
+    connect(getButtonBox().get(), &CButtonBoxOk::accepted, this, &CLoginDialog::accept);
+    connect(getButtonBox().get(), &CButtonBoxOk::rejected, this, &CLoginDialog::reject);
 
     this->restoreDialogState();
     m_passwd->setFocus();

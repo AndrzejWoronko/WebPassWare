@@ -15,10 +15,16 @@
 #include "ModelTableCheck.h"
 #include "MaintenanceTool.h"
 
-CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent) : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent),
-    m_headerContextMenu(NULL), m_visible_passwords(false), m_visible_passwords_action(NULL),
-    m_pass_group_model(NULL), m_pass_entry_model(NULL),
-    m_pass_group_proxy_model(NULL), m_pass_entry_proxy_model(NULL)
+CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent)
+    : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
+    , m_headerContextMenu(NULL)
+    , m_timer(new QTimer(this))
+    , m_visible_passwords(false)
+    , m_visible_passwords_action(NULL)
+    , m_pass_group_model(NULL)
+    , m_pass_entry_model(NULL)
+    , m_pass_group_proxy_model(NULL)
+    , m_pass_entry_proxy_model(NULL)
 {
     SETT.setDefaultGuiSettings();
 //Ustawienie fontu dla całej aplikacji
@@ -248,7 +254,6 @@ void CWebPassWareMainWindow::setConnections(void)
 //Tabela lista tabel połaczenia
     m_treeGroupList->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(m_treeGroupList, &QTreeView::customContextMenuRequested, this, &CWebPassWareMainWindow::showTreeTableListContextMenu);
-    //connect(m_treeTableList, SIGNAL(activated(const QModelIndex &)), this, SLOT(showTableData(const QModelIndex &)));
     connect(m_treeGroupList, &QTreeView::clicked, this, &CWebPassWareMainWindow::filterTableData);
     connect(m_treeGroupList, &QTreeView::doubleClicked, this, &CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered);
 
@@ -263,7 +268,9 @@ void CWebPassWareMainWindow::setConnections(void)
     connect(m_dataTable->horizontalHeader(), &QHeaderView::customContextMenuRequested, this, &CWebPassWareMainWindow::onCustomHeaderContextMenuRequested);
 
 //Odświerzenie info w status bar
-    QTimer::singleShot(1000, this, SLOT(refreshInfo()));
+    m_timer->setInterval(1000);
+    connect(m_timer, &QTimer::timeout, this, &CWebPassWareMainWindow::refreshInfo);
+    m_timer->start(); //Restart co 1 s
 
 //Podłaczenie modeli filtrujących
     connect(m_filtrGroupList, &CDelayEditLine::delayEditingFinished, m_pass_group_proxy_model.get(), &QSortFilterProxyModel::setFilterFixedString);
@@ -410,7 +417,6 @@ void CWebPassWareMainWindow::refreshInfo()
 {
 //  m_dbLabel->setText(tr("Baza: %1, host: %2, baza: %3").arg(DB.getMBaseType()).arg(DB.getMBaseHost()).arg(DB.getMBaseName()));
     m_dateLabel->setText(tr("Date: <b>%1</b> %2").arg(QDate::currentDate().toString(DATE_FORMAT)).arg(QTime::currentTime().toString(TIME_FORMAT)));
-    QTimer::singleShot(1000, this, SLOT(refreshInfo()));
 }
 
 void CWebPassWareMainWindow::onCustomHeaderContextMenuRequested(const QPoint& pos)

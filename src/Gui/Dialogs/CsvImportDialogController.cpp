@@ -13,18 +13,18 @@ CCsvImportDialogController::CCsvImportDialogController(QWidget *parent) : QWidge
     m_settings.reset(new QSettings());
     m_settings->beginGroup("ImportCsvData");
 
-    connect(m_dialog->getButtonOk(), SIGNAL(clicked()), this, SLOT(onAccept()));
-    connect(m_dialog->getButtonCancel(), SIGNAL(clicked()), this, SLOT(onReject()));
-    connect(m_dialog->getButtonChoiceFile(), SIGNAL(clicked()), this, SLOT(onButtonChoiceFileCsv()));
-    connect(m_dialog->getButtonBack(), SIGNAL(clicked()), this, SLOT(onButtonBack()));
-    connect(m_dialog->getButtonNext(), SIGNAL(clicked()), this, SLOT(onButtonNext()));
+    connect(m_dialog->getButtonOk(), &CButton::clicked, this, &CCsvImportDialogController::onAccept);
+    connect(m_dialog->getButtonCancel(), &CButton::clicked, this, &CCsvImportDialogController::onReject);
+    connect(m_dialog->getButtonChoiceFile(), &CButton::clicked, this, &CCsvImportDialogController::onButtonChoiceFileCsv);
+    connect(m_dialog->getButtonBack(), &CButton::clicked, this, &CCsvImportDialogController::onButtonBack);
+    connect(m_dialog->getButtonNext(), &CButton::clicked, this, &CCsvImportDialogController::onButtonNext);
 //Połącznia do combobox
 
-    connect(m_dialog->getFieldsSeparator(), SIGNAL(currentIndexChanged(const QString &)), this, SLOT(onFieldsSeparatorChange(const QString &)));
-    connect(m_dialog->getFileCodec(), SIGNAL(currentIndexChanged(const QString &)), this, SLOT(onFileCodecChange(const QString &)));
-    connect(m_dialog->getDigitSign(), SIGNAL(currentIndexChanged(const QString &)), this, SLOT(onDigitSignChange(const QString &)));
-    connect(m_dialog->getFromLine(), SIGNAL(valueChanged(double)), this, SLOT(onFromLineChange(double)));
-    connect(m_dialog->getIsTitle(), SIGNAL(toggled(bool)), this, SLOT(onIsTitleChange(bool)));
+    connect(m_dialog->getFieldsSeparator(), &CFormSimpleChoiceField::currentTextChanged, this, &CCsvImportDialogController::onFieldsSeparatorChange);
+    connect(m_dialog->getFileCodec(), &CFormSimpleChoiceField::currentTextChanged, this, &CCsvImportDialogController::onFileCodecChange);
+    connect(m_dialog->getDigitSign(), &CFormSimpleChoiceField::currentTextChanged, this, &CCsvImportDialogController::onDigitSignChange);
+    connect(m_dialog->getFromLine(), qOverload<double>(&CFormNumberField::valueChanged), this, &CCsvImportDialogController::onFromLineChange);
+    connect(m_dialog->getIsTitle(), &CFormCheckField::toggled, this, &CCsvImportDialogController::onIsTitleChange);
 
     changePage(0);
     restoreLastState();

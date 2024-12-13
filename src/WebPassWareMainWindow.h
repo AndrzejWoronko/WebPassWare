@@ -42,6 +42,7 @@ class CWebPassWareMainWindow : public CAbstractMainWindow
     ADD_PTR_PROPERTY(CDelayEditLine, m_filtrDataTable, getFiltrDataTable)
 
     ADD_PTR_PROPERTY(QMenu, m_headerContextMenu, getHeaderContextMenu)
+    ADD_PTR_PROPERTY(QTimer, m_timer, getTimer)
 
 public:
     explicit CWebPassWareMainWindow(QWidget *parent = NULL);

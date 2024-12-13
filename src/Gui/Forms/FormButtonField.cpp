@@ -5,7 +5,7 @@
   {
     m_widget = this;
     setValue(value);
-    connect(this, SIGNAL(clicked()), this, SLOT(onPushButtonClicked()));
+    connect(this, &CFormButtonField::clicked, this, &CFormButtonField::onPushButtonClicked);
   }
 
   CFormButtonField::~CFormButtonField()

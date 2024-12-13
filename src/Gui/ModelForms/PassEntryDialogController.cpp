@@ -22,7 +22,7 @@ PassEntryDialogController::PassEntryDialogController(QWidget *parent) :
         auto dlg = dynamic_cast<PassEntryDialog*>(m_dialog);
         if (dlg)
         {
-            connect(dlg->getPassGenWidget(), SIGNAL(newPassword(const QString&)), this, SLOT(setGenPassword(const QString&)));
+            connect(dlg->getPassGenWidget(), &CPasswordGeneratorWidget::newPassword, this, &PassEntryDialogController::setGenPassword);
         }
     }
 }

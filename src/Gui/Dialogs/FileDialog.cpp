@@ -39,7 +39,7 @@ QString CFileDialog::m_startDir = "";
 
 CFileDialog::CFileDialog(QWidget *parent) : QFileDialog(parent)
 {
-  connect(this, SIGNAL(directoryEntered(const QString &)), this, SLOT(onDirectoryEntered(const QString &)));
+  connect(this, &CFileDialog::directoryEntered, this, &CFileDialog::onDirectoryEntered);
 }
 
 QString CFileDialog::getFileName(QWidget *parent, const QString &title, const QString &dir, CFileDialog::Operation operation, const QString &filter, Options options, bool absolutePath, const QString &name)

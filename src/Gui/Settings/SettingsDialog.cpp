@@ -19,8 +19,8 @@ void SettingsDialog::addFieldsAndComponents()
     m_VLayoutDialog->addWidget(m_buttonBox);
 
 
-    //connect(m_buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(m_buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    //connect(m_buttonBox, &CButtonBoxClose::accepted, this, &SettingsDialog::accept);
+    connect(m_buttonBox, &CButtonBoxClose::rejected, this, &SettingsDialog::reject);
     m_widget->setFocus();
     this->restoreDialogState();
 }

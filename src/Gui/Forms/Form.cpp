@@ -63,8 +63,8 @@ bool CForm::exec(const QString &title)
     CButtonBox *buttonBox = new CButtonBox(m_dialog);
     lay.addWidget(buttonBox);
 
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(validateForm()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(rejectForm()));
+    connect(buttonBox, &CButtonBox::accepted, this, &CForm::validateForm);
+    connect(buttonBox, &CButtonBox::rejected, this, &CForm::rejectForm);
 
     m_dialog->resize(400, m_dialog->height());
     bool ret = m_dialog->exec() == QDialog::Accepted;

@@ -6,22 +6,22 @@ CPasswordGeneratorWidget::CPasswordGeneratorWidget(QWidget* parent) : QWidget(pa
 {
     initWidget();
 
-    connect(m_password, SIGNAL(textChanged(const QString&)), SLOT(updateApplyEnabled(const QString&)));
-    connect(m_acceptButton, SIGNAL(clicked()), this, SLOT(emitNewPassword()));
-    connect(m_acceptButton, SIGNAL(clicked()), this, SLOT(saveSettings()));
+    connect(m_password, &CFormTextField::textChanged, this, &CPasswordGeneratorWidget::updateApplyEnabled);
+    connect(m_acceptButton, &CButton::clicked, this, &CPasswordGeneratorWidget::emitNewPassword);
+    connect(m_acceptButton, &CButton::clicked, this, &CPasswordGeneratorWidget::saveSettings);
 
-    connect(m_sliderLength, SIGNAL(valueChanged(int)), this, SLOT(sliderMoved()));
-    connect(m_length, SIGNAL(valueChanged(int)), this, SLOT(spinBoxChanged()));
+    connect(m_sliderLength, &QSlider::valueChanged, this, &CPasswordGeneratorWidget::sliderMoved);
+    connect(m_length, QOverload<int>::of(&CFormNumberIntField::valueChanged), this, &CPasswordGeneratorWidget::spinBoxChanged);
 
-    connect(m_checkButtonUpper, SIGNAL(clicked()), this, SLOT(updateGenerator()));
-    connect(m_checkButtonLower, SIGNAL(clicked()), this, SLOT(updateGenerator()));
-    connect(m_checkButtonNumbers, SIGNAL(clicked()), this, SLOT(updateGenerator()));
-    connect(m_checkButtonSpecialChars, SIGNAL(clicked()), this, SLOT(updateGenerator()));
-    connect(m_checkBoxEnsureEvery, SIGNAL(clicked()), this, SLOT(updateGenerator()));
-    connect(m_checkBoxExcludeAlike, SIGNAL(clicked()), this, SLOT(updateGenerator()));
+    connect(m_checkButtonUpper, &CToolButton::clicked, this, &CPasswordGeneratorWidget::updateGenerator);
+    connect(m_checkButtonLower, &CToolButton::clicked, this, &CPasswordGeneratorWidget::updateGenerator);
+    connect(m_checkButtonNumbers, &CToolButton::clicked, this, &CPasswordGeneratorWidget::updateGenerator);
+    connect(m_checkButtonSpecialChars, &CToolButton::clicked, this, &CPasswordGeneratorWidget::updateGenerator);
+    connect(m_checkBoxEnsureEvery, &CFormCheckField::clicked, this, &CPasswordGeneratorWidget::updateGenerator);
+    connect(m_checkBoxExcludeAlike, &CFormCheckField::clicked, this, &CPasswordGeneratorWidget::updateGenerator);
 
-    connect(m_generateButton, SIGNAL(clicked()), this, SLOT(updateGenerator()));
-    connect(m_generateButton, SIGNAL(clicked()), this, SLOT(saveSettings()));
+    connect(m_generateButton, &CButton::clicked, this, &CPasswordGeneratorWidget::updateGenerator);
+    connect(m_generateButton, &CButton::clicked, this, &CPasswordGeneratorWidget::saveSettings);
 
     loadSettings();
     reset();

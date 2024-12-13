@@ -13,9 +13,9 @@ CCsvExportDialogController::CCsvExportDialogController(CSqlModel *model, QWidget
     restoreLastState();
     restoreDialogState();
 
-    connect(m_dialog->getButtonBox(), SIGNAL(accepted()), this, SLOT(onAccept()));
-    connect(m_dialog->getButtonBox(), SIGNAL(rejected()), this, SLOT(onReject()));
-    connect(m_dialog->getButtonChoiceFileCsv(), SIGNAL(clicked()), this, SLOT(onButtonChoiceFileCsv()));
+    connect(m_dialog->getButtonBox(), &CButtonBoxExport::accepted, this, &CCsvExportDialogController::onAccept);
+    connect(m_dialog->getButtonBox(), &CButtonBoxExport::rejected, this, &CCsvExportDialogController::onReject);
+    connect(m_dialog->getButtonChoiceFileCsv(), &CButton::clicked, this, &CCsvExportDialogController::onButtonChoiceFileCsv);
 }
 
 CCsvExportDialogController::~CCsvExportDialogController()

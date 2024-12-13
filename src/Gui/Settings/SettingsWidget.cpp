@@ -52,5 +52,5 @@ void SettingsWidget::createListWidget()
 
 void SettingsWidget::setConnections()
 {
-    connect(m_list, SIGNAL(currentRowChanged(int)), m_layout, SLOT(setCurrentIndex(int)));
+    connect(m_list, &CListWidget::currentRowChanged, m_layout, &QStackedLayout::setCurrentIndex);
 }

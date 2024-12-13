@@ -28,8 +28,8 @@ void CAbstractFormDialogController::setConnections()
 {
     if (m_dialog)
     {
-        connect(m_dialog->getButtonBox(), SIGNAL(accepted()), this, SLOT(checkRequiredFields()));
-        connect(m_dialog->getButtonBox(), SIGNAL(rejected()), this, SLOT(checkChanges()));
+        connect(m_dialog->getButtonBox(), &CButtonBox::accepted, this, &CAbstractFormDialogController::checkRequiredFields);
+        connect(m_dialog->getButtonBox(), &CButtonBox::rejected, this, &CAbstractFormDialogController::checkChanges);
     }
 }
 

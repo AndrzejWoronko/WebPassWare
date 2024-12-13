@@ -33,23 +33,23 @@ CDateTimeEdit::CDateTimeEdit(const QDateTime &date, QWidget * parent) : QDateTim
 CMonthEdit::CMonthEdit(QWidget * parent) : CDateEdit(parent)
 {
     this->setDisplayFormat(MONTH_FORMAT);
-    connect(this, SIGNAL(dateChanged(const QDate &)), this, SLOT(setMonth(const QDate &)));
+    connect(this, &CMonthEdit::dateChanged, this, &CMonthEdit::setMonth);
 }
 
 CMonthEdit::CMonthEdit(const QDate &date, QWidget * parent ) : CDateEdit(date, parent)
 {    
     this->setDisplayFormat(MONTH_FORMAT);
     this->setMonth(date);
-    connect(this, SIGNAL(dateChanged(const QDate &)), this, SLOT(setMonth(const QDate &)));
+    connect(this, &CMonthEdit::dateChanged, this, &CMonthEdit::setMonth);
 }
 
 void CMonthEdit::setMonth(const QDate &date)
 {
-     QDate d = date;
-     blockSignals(true);
-     d.setDate(date.year(), date.month(), 1);
-     this->setDate(d);
-     blockSignals(false);
-     DEBUG_WITH_LINE << "Month changed: " << d;
-     emit monthChanged(d);
+    QDate d = date;
+    blockSignals(true);
+    d.setDate(date.year(), date.month(), 1);
+    this->setDate(d);
+    blockSignals(false);
+    DEBUG_WITH_LINE << "Month changed: " << d;
+    emit monthChanged(d);
 }

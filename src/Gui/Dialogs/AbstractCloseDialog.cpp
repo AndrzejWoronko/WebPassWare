@@ -44,7 +44,7 @@ void CAbstractCloseDialog::setDialogWidget(QWidget *widget)
 void CAbstractCloseDialog::createButtons()
 {
     m_buttonBoxClose = QSharedPointer<CButtonBoxClose>(new CButtonBoxClose(this));
-    connect(m_buttonBoxClose.get(), SIGNAL(rejected()), this, SLOT(reject()));
+    connect(m_buttonBoxClose.get(), &CButtonBoxClose::rejected, this, &CAbstractCloseDialog::reject);
     m_VLayoutDialog->addWidget(m_buttonBoxClose.get());
 }
 

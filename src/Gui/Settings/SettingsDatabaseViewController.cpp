@@ -7,18 +7,18 @@ SettingsDatabaseViewController::SettingsDatabaseViewController(QWidget *parent) 
 {
     m_view = new SettingsDatabaseView(this);
 
-    connect(m_view, SIGNAL(changesWereMade()), this, SLOT(enableButtons()));
+    connect(m_view, &SettingsDatabaseView::changesWereMade, this, &SettingsDatabaseViewController::enableButtons);
     SettingsDatabaseView* v = dynamic_cast<SettingsDatabaseView*>(m_view);
     if (v)
     {
         getValuesFromSettings();
-        connect(v->getBasePasswd1(), SIGNAL(textChanged(const QString&)), this, SLOT(enableButtons()));
-        connect(v->getBasePasswd2(), SIGNAL(textChanged(const QString&)), this, SLOT(enableButtons()));
+        connect(v->getBasePasswd1(), &CFormTextField::textChanged, this, &SettingsDatabaseViewController::enableButtons);
+        connect(v->getBasePasswd2(), &CFormTextField::textChanged, this, &SettingsDatabaseViewController::enableButtons);
     }
     //Przyciski
-    connect(m_view->getButtonBox()->getSaveButton(), SIGNAL(clicked()), this, SLOT(setValuesToSettings()));
-    connect(m_view->getButtonBox()->getRestoreButton(), SIGNAL(clicked()), this, SLOT(getValuesFromSettings()));
-    connect(m_view->getButtonBox()->getCancelButton(), SIGNAL(clicked()), this, SLOT(getValuesFromSettings()));
+    connect(m_view->getButtonBox()->getSaveButton(), &QPushButton::clicked, this, &SettingsDatabaseViewController::setValuesToSettings);
+    connect(m_view->getButtonBox()->getRestoreButton(), &QPushButton::clicked, this, &SettingsDatabaseViewController::getValuesFromSettings);
+    connect(m_view->getButtonBox()->getCancelButton(), &QPushButton::clicked, this, &SettingsDatabaseViewController::getValuesFromSettings);
 }
 
 void SettingsDatabaseViewController::getValuesFromSettings(void)

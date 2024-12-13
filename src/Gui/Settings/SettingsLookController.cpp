@@ -5,7 +5,7 @@ SettingsLookController::SettingsLookController(QWidget *parent) : CAbstractSetti
 {
     m_view = new SettingsLookView(this);
 
-    connect(m_view, SIGNAL(changesWereMade()), this, SLOT(enableButtons()));
+    connect(m_view, &CAbstractSettingsItemView::changesWereMade, this, &SettingsLookController::enableButtons);
 
     auto v = dynamic_cast<SettingsLookView*>(m_view);
     if (v)
@@ -14,31 +14,28 @@ SettingsLookController::SettingsLookController(QWidget *parent) : CAbstractSetti
         v->getStyleTheme()->setValueList(CStyle::availableStyles());
 
         getValuesFromSettings();
-        connect(v->getFontEdit(), SIGNAL(fontChanged(const QFont&)), APPI, SLOT(updateFont(const QFont &)));
-        connect(v->getColorSchema(), SIGNAL(currentIndexChanged(int)), APPI, SLOT(updatePalette(int)));
-        connect(v->getStyleTheme(), SIGNAL(currentIndexChanged(int)), APPI, SLOT(updateStyleSheet(int)));
-        connect(v->getFontEdit(), SIGNAL(fontChanged(const QFont&)), this, SLOT(enableButtons()));
-        connect(v->getColorSchema(), SIGNAL(currentIndexChanged(int)), this, SLOT(enableButtons()));
-        connect(v->getStyleTheme(), SIGNAL(currentIndexChanged(int)), this, SLOT(enableButtons()));
-/*
-        connect(v->getTableShowGrid(), SIGNAL(stateChanged(int)), this, SLOT(enableButtons()));
-        connect(v->getTableAlterRowColor(), SIGNAL(stateChanged(int)), this, SLOT(enableButtons()));
- */
-        connect(v->getTableShowGrid(), SIGNAL(checked(bool)), this, SLOT(enableButtons()));
-        connect(v->getTableAlterRowColor(), SIGNAL(checked(bool)), this, SLOT(enableButtons()));
-        connect(v->getTableRowHeight(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
-        connect(v->getDialogsMinHeight(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
-        connect(v->getDialogsMinWidth(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
-        connect(v->getLayoutMargins(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
-        connect(v->getLayoutSpacing(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
-        connect(v->getLoginDialogMinHeight(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
-        connect(v->getLoginDialogMinWidth(), SIGNAL(valueChanged(double)), this, SLOT(enableButtons()));
+        connect(v->getFontEdit(), &CFontEdit::fontChanged, APPI, &CApplication::updateFont);
+        connect(v->getColorSchema(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), APPI,  &CApplication::updatePalette);
+        connect(v->getStyleTheme(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), APPI,  &CApplication::updateStyleSheet);
+        connect(v->getFontEdit(), &CFontEdit::fontChanged, this, &SettingsLookController::enableButtons);
+        connect(v->getColorSchema(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), this, &SettingsLookController::enableButtons);
+        connect(v->getStyleTheme(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), this, &SettingsLookController::enableButtons);
+
+        connect(v->getTableShowGrid(), &CFormToggleSwitchField::checked, this, &SettingsLookController::enableButtons);
+        connect(v->getTableAlterRowColor(), &CFormToggleSwitchField::checked, this, &SettingsLookController::enableButtons);
+        connect(v->getTableRowHeight(), qOverload<double>(&CFormNumberField::valueChanged), this, &SettingsLookController::enableButtons);
+        connect(v->getDialogsMinHeight(), qOverload<double>(&CFormNumberField::valueChanged), this, &SettingsLookController::enableButtons);
+        connect(v->getDialogsMinWidth(), qOverload<double>(&CFormNumberField::valueChanged), this, &SettingsLookController::enableButtons);
+        connect(v->getLayoutMargins(), qOverload<double>(&CFormNumberField::valueChanged), this, &SettingsLookController::enableButtons);
+        connect(v->getLayoutSpacing(), qOverload<double>(&CFormNumberField::valueChanged), this, &SettingsLookController::enableButtons);
+        connect(v->getLoginDialogMinHeight(), qOverload<double>(&CFormNumberField::valueChanged), this, &SettingsLookController::enableButtons);
+        connect(v->getLoginDialogMinWidth(), qOverload<double>(&CFormNumberField::valueChanged), this, &SettingsLookController::enableButtons);
     }
 
     //Przyciski
-    connect(m_view->getButtonBox()->getSaveButton(), SIGNAL(clicked()), this, SLOT(setValuesToSettings()));
-    connect(m_view->getButtonBox()->getRestoreButton(), SIGNAL(clicked()), this, SLOT(getValuesFromSettings()));
-    connect(m_view->getButtonBox()->getCancelButton(), SIGNAL(clicked()), this, SLOT(getValuesFromSettings()));
+    connect(m_view->getButtonBox()->getSaveButton(), &QPushButton::clicked, this, &SettingsLookController::setValuesToSettings);
+    connect(m_view->getButtonBox()->getRestoreButton(), &QPushButton::clicked, this, &SettingsLookController::getValuesFromSettings);
+    connect(m_view->getButtonBox()->getCancelButton(), &QPushButton::clicked, this, &SettingsLookController::getValuesFromSettings);
 
 }
 
