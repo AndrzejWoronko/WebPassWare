@@ -16,15 +16,22 @@
 #include "MaintenanceTool.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent)
+    : CWebPassWareMainWindow(&PassEntryService::getInstance(), &PassGroupService::getInstance(), parent)
+{
+}
+
+CWebPassWareMainWindow::CWebPassWareMainWindow(PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent)
     : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
-    , m_headerContextMenu(NULL)
+    , m_headerContextMenu(nullptr)
     , m_timer(new QTimer(this))
     , m_visible_passwords(false)
-    , m_visible_passwords_action(NULL)
-    , m_pass_group_model(NULL)
-    , m_pass_entry_model(NULL)
-    , m_pass_group_proxy_model(NULL)
-    , m_pass_entry_proxy_model(NULL)
+    , m_visible_passwords_action(nullptr)
+    , m_passEntryService(passEntryService ? passEntryService : &PassEntryService::getInstance())
+    , m_passGroupService(passGroupService ? passGroupService : &PassGroupService::getInstance())
+    , m_pass_group_model(nullptr)
+    , m_pass_entry_model(nullptr)
+    , m_pass_group_proxy_model(nullptr)
+    , m_pass_entry_proxy_model(nullptr)
 {
     SETT.setDefaultGuiSettings();
 //Ustawienie fontu dla całej aplikacji
@@ -229,8 +236,8 @@ void CWebPassWareMainWindow::setConnections(void)
     m_pass_entry_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
 //Modele danych
-    m_pass_group_model.reset(PassGroupService::getInstance().getSqlModel());
-    m_pass_entry_model.reset(PassEntryService::getInstance().getSqlModel());
+    m_pass_group_model.reset(m_passGroupService->getSqlModel());
+    m_pass_entry_model.reset(m_passEntryService->getSqlModel());
 
     m_pass_group_proxy_model->setSourceModel(m_pass_group_model.get());
     m_pass_entry_proxy_model->setSourceModel(m_pass_entry_model.get());
@@ -498,7 +505,7 @@ void CWebPassWareMainWindow::on_ACTION_REFRESH_PASS_GROUP_triggered()
 void CWebPassWareMainWindow::on_ACTION_ADD_PASS_GROUP_triggered()
 {
     DEBUG_WITH_LINE << "ADD PASS GROUP";
-    auto dialog_ctrl = new PassGroupDialogController(m_treeGroupList);
+    auto dialog_ctrl = new PassGroupDialogController(m_passGroupService, m_treeGroupList);
     if (dialog_ctrl->exec("Dodanie grupy"))
     {
         if (m_pass_group_model)
@@ -510,7 +517,7 @@ void CWebPassWareMainWindow::on_ACTION_ADD_PASS_GROUP_triggered()
 void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered()
 {
     DEBUG_WITH_LINE << "EDIT PASS GROUP";
-    auto dialog_ctrl = new PassGroupDialogController(m_treeGroupList);
+    auto dialog_ctrl = new PassGroupDialogController(m_passGroupService, m_treeGroupList);
     qint64 id = getCurrentPassGroupId();
 
     if ((id > 0) && dialog_ctrl->exec(id, tr("Edycja grupy")))
@@ -529,7 +536,7 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_GROUP_triggered()
         QString question = tr("Czy chcesz skasować grupę o id: %1 ?").arg(id);
         if (CMessageBox::YesNoDialog(question, m_treeGroupList) == CMessageBox::Yes)
         {
-            PassGroupService::getInstance().deleteObject(id);
+            m_passGroupService->deleteObject(id);
             if (m_pass_group_model)
             {
                 m_pass_entry_model->refresh();
@@ -552,7 +559,7 @@ void CWebPassWareMainWindow::on_ACTION_REFRESH_PASS_ENTRY_triggered()
 void CWebPassWareMainWindow::on_ACTION_ADD_PASS_ENTRY_triggered()
 {
     DEBUG_WITH_LINE << "ADD PASS ENTRY";
-    auto dialog_ctrl = new PassEntryDialogController(m_tabWidget);
+    auto dialog_ctrl = new PassEntryDialogController(m_passEntryService, m_passGroupService, m_tabWidget);
     if (dialog_ctrl->exec(tr("Dodanie rekordu")))
        {
             if (m_pass_entry_model)
@@ -567,7 +574,7 @@ void CWebPassWareMainWindow::on_ACTION_ADD_PASS_ENTRY_triggered()
 void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered()
 {
     DEBUG_WITH_LINE << "EDIT PASS ENTRY";
-    auto dialog_ctrl = new PassEntryDialogController(m_tabWidget);
+    auto dialog_ctrl = new PassEntryDialogController(m_passEntryService, m_passGroupService, m_tabWidget);
     qint64 id = getCurrentPassEntryId();
 
     if ((id > 0) && dialog_ctrl->exec(id, tr("Edycja rekordu")))
@@ -586,12 +593,12 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
     qint64 id = getCurrentPassEntryId();
     if (id > 0)
        {
-            auto pe = PassEntryService::getInstance().getObject(id);
+            auto pe = m_passEntryService->getObject(id);
             {
                 QString question = tr("Czy chcesz skasować wpis o id: %1 %2?").arg(id).arg(pe->getm_title());
                 if (CMessageBox::YesNoDialog(question, m_dataTable) == CMessageBox::Yes)
                 {
-                    PassEntryService::getInstance().deleteObject(id);
+                    m_passEntryService->deleteObject(id);
                     if (m_pass_entry_model)
                         {
                             m_pass_entry_model->refresh();
@@ -609,7 +616,7 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_PASSWORD_triggered()
     qint64 id = getCurrentPassEntryId();
     if (id > 0)
     {
-        auto pe = PassEntryService::getInstance().getObject(id);
+        auto pe = m_passEntryService->getObject(id);
         if (pe)
         {
             QString text = pe->getm_pass();
@@ -629,7 +636,7 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_USER_triggered()
     qint64 id = getCurrentPassEntryId();
     if (id > 0)
     {
-        auto pe = PassEntryService::getInstance().getObject(id);
+        auto pe = m_passEntryService->getObject(id);
         if (pe)
         {
             QString text = pe->getm_user();
@@ -670,7 +677,7 @@ void CWebPassWareMainWindow::on_ACTION_DATA_EXPORT_DIALOG_triggered()
 
 void CWebPassWareMainWindow::on_ACTION_DATA_IMPORT_DIALOG_triggered()
 {
-    auto dialog = new CCsvImportDialogController(this);
+    auto dialog = new CCsvImportDialogController(m_passEntryService, this);
     dialog->getDialog()->exec();
     dialog->getDialog()->close();
     safe_delete(dialog)
@@ -714,7 +721,7 @@ void CWebPassWareMainWindow::on_ACTION_CLIPBOARD_triggered(void)
     this->setFocus();
 
     DEBUG_WITH_LINE << "ADD PASS GROUP";
-    auto dialog_ctrl = new PassGroupDialogController(m_treeGroupList);
+    auto dialog_ctrl = new PassGroupDialogController(m_passGroupService, m_treeGroupList);
     auto f = dialog_ctrl->getDialog()->getFields().value("m_name");
     f->setValue(clip_text);
     if (dialog_ctrl->exec("Dodanie grupy"))

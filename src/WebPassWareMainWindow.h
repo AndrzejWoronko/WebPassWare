@@ -20,6 +20,9 @@
 #include "DelayEditLine.h"
 #include "SqlModel.h"
 
+class PassEntryService;
+class PassGroupService;
+
 class CWebPassWareMainWindow : public CAbstractMainWindow
 {
 
@@ -45,13 +48,16 @@ class CWebPassWareMainWindow : public CAbstractMainWindow
     ADD_PTR_PROPERTY(QTimer, m_timer, getTimer)
 
 public:
-    explicit CWebPassWareMainWindow(QWidget *parent = NULL);
+    explicit CWebPassWareMainWindow(QWidget *parent = nullptr);
+    CWebPassWareMainWindow(PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent = nullptr);
     ~CWebPassWareMainWindow();
 
 private:
 
     bool m_visible_passwords;
     CAction *m_visible_passwords_action;
+    PassEntryService *m_passEntryService;
+    PassGroupService *m_passGroupService;
 
     QSharedPointer<CSqlModel> m_pass_group_model;
     QSharedPointer<CSqlModel> m_pass_entry_model;

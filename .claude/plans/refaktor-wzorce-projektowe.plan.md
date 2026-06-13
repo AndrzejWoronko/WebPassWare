@@ -183,13 +183,15 @@ Jeśli build/test pada z przyczyn zastanych, zapisać dokładny błąd i nie mie
 - 2026-06-13: Faza 1 wykonana. Dodano `IRepository<ModelName>`/`COrmRepository<ModelName>` jako cienki adapter nad `COrmObject`; `COrmService` używa kompozycji i zachowuje publiczne API.
 - 2026-06-13: Faza 2a wykonana. `PassGroupDialogController` i `PassEntryDialogController` mają konstruktory DI z fallbackiem do singletonów; logika `exec()` używa wstrzykniętych serwisów. Główny build, `ORM_test` 23/23 i `Service_test` 6/6 przechodzą.
 - 2026-06-13: Faza 2b wykonana. `CCsvImportDialogController` przyjmuje `PassEntryService` przez konstruktor z fallbackiem; import CSV nie woła singletonu w logice zapisu. Główny build, `ORM_test` 23/23 i `Service_test` 6/6 przechodzą.
+- 2026-06-13: Faza 2 wykonana. `CWebPassWareMainWindow` stał się composition root dla `PassEntryService` i `PassGroupService`; modele, akcje delete/copy/import oraz kontrolery formularzy dostają serwisy z pól klasy. Główny build, `ORM_test` 23/23 i `Service_test` 6/6 przechodzą.
 
 - [x] Faza 0A: baseline build/test opisany.
 - [x] Faza 0B/0C: testy charakteryzacyjne ORM/Service przechodzą.
 - [x] Faza 1: `COrmService` bez dziedziczenia po modelu, publiczne API kompatybilne.
-- [ ] Faza 2: kontrolery mają dependency seam; bez `::getInstance()` w logice metod docelowych. Częściowo: formularze `PassGroupDialogController`/`PassEntryDialogController` i import CSV.
+- [x] Faza 2: kontrolery mają dependency seam; bez `::getInstance()` w logice metod docelowych.
 - [ ] Faza 3: brak cichych awarii w głównych ścieżkach GUI.
 - [ ] Faza 4: finder API migrowane do RAII etapami.
 - [ ] (opc.) Faza 5: mniej lub brak `dynamic_cast` w kontrolerach formularzy.
 - [x] Po Fazie 0: build + wszystkie dostępne testy zielone.
 - [x] Po Fazie 1: build + wszystkie dostępne testy zielone.
+- [x] Po Fazie 2: build + wszystkie dostępne testy zielone.
