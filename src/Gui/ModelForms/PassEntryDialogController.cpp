@@ -123,7 +123,7 @@ bool PassEntryDialogController::exec(const QString &title)
             f = m_dialog->getFields().value("m_id_pass_group");
             if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
             {
-                if (m_passGroupService->getObject(0))
+                if (!m_passGroupService->getOwnedObject(0).isNull())
                 {
                     pe.setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
                 }
@@ -156,8 +156,8 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
         {
             dynamic_cast<CFormNumberField*>(f)->setReadOnly();
         }
-        PassEntry *pe = m_passEntryService->getObject(id);
-        if (!pe)
+        PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
+        if (pe.isNull())
         {
             QString error = m_passEntryService->getError();
             if (error.isEmpty())
@@ -190,7 +190,7 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             f = m_dialog->getFields().value("m_id_pass_group");
             if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
             {
-                if (m_passGroupService->getObject(0))
+                if (!m_passGroupService->getOwnedObject(0).isNull())
                 {
                     dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setIndexValue(pe->getm_id_pass_group());
                 }
@@ -223,7 +223,7 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             f = m_dialog->getFields().value("m_id_pass_group");
             if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
             {
-                if (m_passGroupService->getObject(0))
+                if (!m_passGroupService->getOwnedObject(0).isNull())
                 {
                     pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
                 }
@@ -232,13 +232,12 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
                     pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
                 }
             }
-            ret = m_passEntryService->editObject(pe);
+            ret = m_passEntryService->editObject(pe.data());
             if (!ret)
             {
                 CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
             }
         }
-        safe_delete(pe)
     }
     return ret;
 }

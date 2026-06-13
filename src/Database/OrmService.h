@@ -8,10 +8,25 @@
 template<class ModelName>
 class COrmService
 {
+public:
+    using OwnedObject = QSharedPointer<ModelName>;
+    using OwnedObjectList = QList<OwnedObject>;
 
+private:
     std::unique_ptr<IRepository<ModelName>> m_repository;
     qint64 m_insertedId;
     std::unique_ptr<ICService> m_service;
+
+    OwnedObjectList takeOwnership(QList<ModelName*> objects)
+    {
+        OwnedObjectList ownedObjects;
+        Q_FOREACH(ModelName *object, objects)
+        {
+            ownedObjects.append(OwnedObject(object));
+        }
+        objects.clear();
+        return ownedObjects;
+    }
 
 public:
     COrmService()
@@ -52,6 +67,11 @@ public:
         return list;
     }
 
+    OwnedObjectList getOwnedObjects(const QString &orderby = QString())
+    {
+        return takeOwnership(getObjects(orderby));
+    }
+
     QList<ModelName*> getObjectsBy(const QString &fieldName, const QVariant value)
     {
         QList<ModelName*> list;
@@ -66,6 +86,11 @@ public:
             m_service->setError(e.getMessage());
         }
         return list;
+    }
+
+    OwnedObjectList getOwnedObjectsBy(const QString &fieldName, const QVariant value)
+    {
+        return takeOwnership(getObjectsBy(fieldName, value));
     }
 
     QList<ModelName*> getObjectsBy(const QHash<QString, QVariant> &params)
@@ -84,6 +109,11 @@ public:
         return list;
     }
 
+    OwnedObjectList getOwnedObjectsBy(const QHash<QString, QVariant> &params)
+    {
+        return takeOwnership(getObjectsBy(params));
+    }
+
     ModelName *getFirstObject()
     {
         ModelName* o = nullptr;
@@ -100,6 +130,11 @@ public:
         return o;
     }
 
+    OwnedObject getOwnedFirstObject()
+    {
+        return OwnedObject(getFirstObject());
+    }
+
     ModelName* getObject(qint64 id)
     {
         ModelName *o = nullptr;
@@ -114,6 +149,11 @@ public:
             m_service->setError(e.getMessage());
         }
         return o;
+    }
+
+    OwnedObject getOwnedObject(qint64 id)
+    {
+        return OwnedObject(getObject(id));
     }
 
     qint64 addObject(ModelName *o, qint64 newId = 0)

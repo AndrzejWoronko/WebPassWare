@@ -15,7 +15,7 @@ CSqlModel* PassGroupService::getSqlModel(void)
 
 QStringList PassGroupService::getGroupNameList(void)
 {
-    QList<PassGroup*> list = this->getObjects(QString("id_pass_group"));
+    OwnedObjectList list = this->getOwnedObjects(QString("id_pass_group"));
     QStringList ret_list;
     Q_FOREACH(auto pg, list)
     {

@@ -598,8 +598,8 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
     qint64 id = getCurrentPassEntryId();
     if (id > 0)
        {
-            auto pe = m_passEntryService->getObject(id);
-            if (!pe)
+            PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
+            if (pe.isNull())
             {
                 QString error = m_passEntryService->getError();
                 if (error.isEmpty())
@@ -617,7 +617,6 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
                     if (!deleted)
                     {
                         CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd kasowania rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
-                        safe_delete(pe)
                         return;
                     }
                     if (m_pass_entry_model)
@@ -627,7 +626,6 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
                         }
                 }
             }
-            safe_delete(pe)
        }
     DEBUG_WITH_LINE << "DEL PASS ENTRY";
 }
@@ -637,8 +635,8 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_PASSWORD_triggered()
     qint64 id = getCurrentPassEntryId();
     if (id > 0)
     {
-        auto pe = m_passEntryService->getObject(id);
-        if (!pe)
+        PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
+        if (pe.isNull())
         {
             QString error = m_passEntryService->getError();
             if (error.isEmpty())
@@ -648,7 +646,7 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_PASSWORD_triggered()
             CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
             return;
         }
-        if (pe)
+        if (!pe.isNull())
         {
             QString text = pe->getm_pass();
             QMimeData *mimeData = new QMimeData();
@@ -657,7 +655,6 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_PASSWORD_triggered()
             QApplication::clipboard()->setMimeData(mimeData);
             DEBUG_WITH_LINE << text;
         }
-        safe_delete(pe)
     }
     DEBUG_WITH_LINE << "COPY PASS ENTRY PASSWORD";
 }
@@ -667,8 +664,8 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_USER_triggered()
     qint64 id = getCurrentPassEntryId();
     if (id > 0)
     {
-        auto pe = m_passEntryService->getObject(id);
-        if (!pe)
+        PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
+        if (pe.isNull())
         {
             QString error = m_passEntryService->getError();
             if (error.isEmpty())
@@ -678,7 +675,7 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_USER_triggered()
             CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
             return;
         }
-        if (pe)
+        if (!pe.isNull())
         {
             QString text = pe->getm_user();
             QMimeData *mimeData = new QMimeData();
@@ -687,7 +684,6 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_USER_triggered()
             QApplication::clipboard()->setMimeData(mimeData);
             DEBUG_WITH_LINE << text;
         }
-        safe_delete(pe)
     }
     DEBUG_WITH_LINE << "COPY PASS ENTRY USER";
 }

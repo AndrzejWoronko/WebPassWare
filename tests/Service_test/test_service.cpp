@@ -23,6 +23,7 @@ private Q_SLOTS:
     void cleanupTestCase();
     void cleanup();
     void test_servicePrototypeObject();
+    void test_ownedFinderApi();
     void test_passGroupCrud();
     void test_passEntryCrud();
     void test_errorPathSetsError();
@@ -80,6 +81,48 @@ void Test_Service::test_servicePrototypeObject()
 
     QVERIFY(service.getObject() != nullptr);
     QCOMPARE(service.getObject()->getTableName(), QString("pass_group"));
+}
+
+void Test_Service::test_ownedFinderApi()
+{
+    PassGroupService groupService;
+    PassGroup group;
+    group.setm_name("Loginy");
+    const qint64 groupId = groupService.addObject(&group);
+    QVERIFY(groupId > 0);
+
+    PassGroupService::OwnedObject ownedGroup = groupService.getOwnedObject(groupId);
+    QVERIFY(!ownedGroup.isNull());
+    QCOMPARE(ownedGroup->getm_name(), QString("Loginy"));
+
+    PassGroupService::OwnedObjectList ownedGroups = groupService.getOwnedObjects(QString("id_pass_group"));
+    QCOMPARE(ownedGroups.size(), 1);
+    QCOMPARE(ownedGroups.first()->getId(), groupId);
+
+    PassEntryService entryService;
+    PassEntry entry;
+    entry.setm_title("Email");
+    entry.setm_user("user@example.com");
+    entry.setm_pass("secret");
+    entry.setm_web_url("https://example.com");
+    entry.setm_id_pass_group(groupId);
+
+    const qint64 entryId = entryService.addObject(&entry);
+    QVERIFY(entryId > 0);
+
+    PassEntryService::OwnedObject ownedEntry = entryService.getOwnedObject(entryId);
+    QVERIFY(!ownedEntry.isNull());
+    QCOMPARE(ownedEntry->getm_title(), QString("Email"));
+
+    PassEntryService::OwnedObjectList byTitle = entryService.getOwnedObjectsBy("m_title", QVariant("Email"));
+    QCOMPARE(byTitle.size(), 1);
+    QCOMPARE(byTitle.first()->getId(), entryId);
+
+    QHash<QString, QVariant> params;
+    params.insert("m_user", QVariant("user@example.com"));
+    PassEntryService::OwnedObjectList byParams = entryService.getOwnedObjectsBy(params);
+    QCOMPARE(byParams.size(), 1);
+    QCOMPARE(byParams.first()->getId(), entryId);
 }
 
 void Test_Service::test_passGroupCrud()

@@ -94,8 +94,8 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
            {
              dynamic_cast<CFormNumberField*>(f)->setReadOnly();
            }
-        PassGroup *pg = m_passGroupService->getObject(id);
-        if (!pg)
+        PassGroupService::OwnedObject pg = m_passGroupService->getOwnedObject(id);
+        if (pg.isNull())
         {
             QString error = m_passGroupService->getError();
             if (error.isEmpty())
@@ -116,13 +116,12 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
                f = m_dialog->getFields().value("m_name");
                if (f)
                    pg->setm_name(f->getValue().toString());
-               ret = m_passGroupService->editObject(pg);
+               ret = m_passGroupService->editObject(pg.data());
                if (!ret)
                {
                    CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), this);
                }
            }
-       safe_delete(pg)
     }
     return ret;
 }
