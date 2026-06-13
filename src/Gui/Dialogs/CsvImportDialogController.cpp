@@ -3,10 +3,17 @@
 #include "PassEntryService.h"
 #include "MessageBox.h"
 
-CCsvImportDialogController::CCsvImportDialogController(QWidget *parent) : QWidget(parent)
+CCsvImportDialogController::CCsvImportDialogController(QWidget *parent) :
+    CCsvImportDialogController(&PassEntryService::getInstance(), parent)
 {
-    m_model = NULL;
-    m_import = NULL;
+}
+
+CCsvImportDialogController::CCsvImportDialogController(PassEntryService *passEntryService, QWidget *parent) :
+    QWidget(parent),
+    m_passEntryService(passEntryService ? passEntryService : &PassEntryService::getInstance())
+{
+    m_model = nullptr;
+    m_import = nullptr;
 
     m_dialog = QSharedPointer<CCsvImportDialog>(new CCsvImportDialog());
     //APPI->setAppInformation();
@@ -254,9 +261,9 @@ void CCsvImportDialogController::onAccept()
                   pe.setm_web_url(m_model->getValueForImport(r, m_dialog->getWebChoice()->getValue().toString()).toString());
                   pe.setm_desc(m_model->getValueForImport(r, m_dialog->getDescChoice()->getValue().toString()).toString());
 
-                  if (PassEntryService::getInstance().addObject(&pe) < 0)
+                  if (m_passEntryService->addObject(&pe) < 0)
                   {
-                      CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania rekordu !!!"), tr("Opis błędu"), PassEntryService::getInstance().getError()), this);
+                      CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
                   }
                 }
                m_dialog->accept();
@@ -276,4 +283,3 @@ void CCsvImportDialogController::onReject()
 {
     m_dialog->reject();
 }
-

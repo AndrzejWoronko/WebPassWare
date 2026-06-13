@@ -8,6 +8,8 @@
 #include "CsvModel.h"
 #include "ImportCsv.h"
 
+class PassEntryService;
+
 class CCsvImportDialogController : public QWidget, public CAbstractDialogStateManager
 {
     Q_OBJECT
@@ -18,7 +20,8 @@ class CCsvImportDialogController : public QWidget, public CAbstractDialogStateMa
     ADD_QSMART_UNIQUE_PTR(QSettings, m_settings, getDataImportSettings)
 
 public:
-    CCsvImportDialogController(QWidget *parent = NULL);
+    CCsvImportDialogController(QWidget *parent = nullptr);
+    CCsvImportDialogController(PassEntryService *passEntryService, QWidget *parent = nullptr);
     ~CCsvImportDialogController();
 
     virtual void restoreDialogState() override final;
@@ -29,6 +32,8 @@ public:
 private:
     void saveLastState();
     void restoreLastState();
+
+    PassEntryService *m_passEntryService;
 
 public slots:
 
