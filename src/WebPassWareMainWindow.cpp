@@ -536,7 +536,12 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_GROUP_triggered()
         QString question = tr("Czy chcesz skasować grupę o id: %1 ?").arg(id);
         if (CMessageBox::YesNoDialog(question, m_treeGroupList) == CMessageBox::Yes)
         {
-            m_passGroupService->deleteObject(id);
+            const bool deleted = m_passGroupService->deleteObject(id);
+            if (!deleted)
+            {
+                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd kasowania grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), this);
+                return;
+            }
             if (m_pass_group_model)
             {
                 m_pass_entry_model->refresh();
@@ -598,7 +603,13 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
                 QString question = tr("Czy chcesz skasować wpis o id: %1 %2?").arg(id).arg(pe->getm_title());
                 if (CMessageBox::YesNoDialog(question, m_dataTable) == CMessageBox::Yes)
                 {
-                    m_passEntryService->deleteObject(id);
+                    const bool deleted = m_passEntryService->deleteObject(id);
+                    if (!deleted)
+                    {
+                        CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd kasowania rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
+                        safe_delete(pe)
+                        return;
+                    }
                     if (m_pass_entry_model)
                         {
                             m_pass_entry_model->refresh();

@@ -1,6 +1,7 @@
 #include "PassEntryDialogController.h"
 #include "PassEntryService.h"
 #include "PassGroupService.h"
+#include "MessageBox.h"
 
 PassEntryDialogController::PassEntryDialogController(QWidget *parent) :
     PassEntryDialogController(&PassEntryService::getInstance(), &PassGroupService::getInstance(), parent)
@@ -132,7 +133,13 @@ bool PassEntryDialogController::exec(const QString &title)
                 }
             }
 
-            return m_passEntryService->addObject(&pe) != -1; //Zapis do bazy
+            const qint64 newId = m_passEntryService->addObject(&pe); //Zapis do bazy
+            if (newId < 0)
+            {
+                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
+                return false;
+            }
+            return true;
         }
     }
     return false;
@@ -218,6 +225,10 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
                     }
                 }
                 ret = m_passEntryService->editObject(pe);
+                if (!ret)
+                {
+                    CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
+                }
             }
         }
         safe_delete(pe)

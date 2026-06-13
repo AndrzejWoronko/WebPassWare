@@ -1,5 +1,6 @@
 #include "PassGroupDialogController.h"
 #include "PassGroupService.h"
+#include "MessageBox.h"
 
 PassGroupDialogController::PassGroupDialogController(QWidget *parent) :
     PassGroupDialogController(&PassGroupService::getInstance(), parent)
@@ -70,7 +71,13 @@ bool PassGroupDialogController::exec(const QString &title)
             if (f)
                 pg.setm_name(f->getValue().toString());
 
-            return m_passGroupService->addObject(&pg) != -1;
+            const qint64 newId = m_passGroupService->addObject(&pg);
+            if (newId < 0)
+            {
+                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), this);
+                return false;
+            }
+            return true;
         }
     }
     return false;
@@ -105,6 +112,10 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
                    if (f)
                        pg->setm_name(f->getValue().toString());
                    ret = m_passGroupService->editObject(pg);
+                   if (!ret)
+                   {
+                       CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), this);
+                   }
                }
            }
        safe_delete(pg)
