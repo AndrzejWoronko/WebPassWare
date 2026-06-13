@@ -95,27 +95,31 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
              dynamic_cast<CFormNumberField*>(f)->setReadOnly();
            }
         PassGroup *pg = m_passGroupService->getObject(id);
-        if (pg)
-           {
-                f = m_dialog->getFields().value("m_id");
-                if (f)
-                    f->setValue(pg->getId());
-                f = m_dialog->getFields().value("m_name");
-                if (f)
-                    f->setValue(pg->getm_name());
-           }
+        if (!pg)
+        {
+            QString error = m_passGroupService->getError();
+            if (error.isEmpty())
+            {
+                error = tr("Nie znaleziono grupy o id: %1.").arg(id);
+            }
+            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania grupy !!!"), tr("Opis błędu"), error), this);
+            return false;
+        }
+        f = m_dialog->getFields().value("m_id");
+        if (f)
+            f->setValue(pg->getId());
+        f = m_dialog->getFields().value("m_name");
+        if (f)
+            f->setValue(pg->getm_name());
         if (m_dialog->exec())
            {
-               if (pg)
+               f = m_dialog->getFields().value("m_name");
+               if (f)
+                   pg->setm_name(f->getValue().toString());
+               ret = m_passGroupService->editObject(pg);
+               if (!ret)
                {
-                   f = m_dialog->getFields().value("m_name");
-                   if (f)
-                       pg->setm_name(f->getValue().toString());
-                   ret = m_passGroupService->editObject(pg);
-                   if (!ret)
-                   {
-                       CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), this);
-                   }
+                   CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), this);
                }
            }
        safe_delete(pg)

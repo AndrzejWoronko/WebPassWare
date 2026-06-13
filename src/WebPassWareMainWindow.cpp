@@ -599,6 +599,16 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
     if (id > 0)
        {
             auto pe = m_passEntryService->getObject(id);
+            if (!pe)
+            {
+                QString error = m_passEntryService->getError();
+                if (error.isEmpty())
+                {
+                    error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
+                }
+                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
+                return;
+            }
             {
                 QString question = tr("Czy chcesz skasować wpis o id: %1 %2?").arg(id).arg(pe->getm_title());
                 if (CMessageBox::YesNoDialog(question, m_dataTable) == CMessageBox::Yes)
@@ -628,6 +638,16 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_PASSWORD_triggered()
     if (id > 0)
     {
         auto pe = m_passEntryService->getObject(id);
+        if (!pe)
+        {
+            QString error = m_passEntryService->getError();
+            if (error.isEmpty())
+            {
+                error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
+            }
+            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
+            return;
+        }
         if (pe)
         {
             QString text = pe->getm_pass();
@@ -648,6 +668,16 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_USER_triggered()
     if (id > 0)
     {
         auto pe = m_passEntryService->getObject(id);
+        if (!pe)
+        {
+            QString error = m_passEntryService->getError();
+            if (error.isEmpty())
+            {
+                error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
+            }
+            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
+            return;
+        }
         if (pe)
         {
             QString text = pe->getm_user();

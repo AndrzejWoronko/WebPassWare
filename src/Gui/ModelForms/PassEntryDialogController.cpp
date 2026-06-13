@@ -157,7 +157,17 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             dynamic_cast<CFormNumberField*>(f)->setReadOnly();
         }
         PassEntry *pe = m_passEntryService->getObject(id);
-        if (pe) //Podtawienie wartości do formatki
+        if (!pe)
+        {
+            QString error = m_passEntryService->getError();
+            if (error.isEmpty())
+            {
+                error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
+            }
+            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
+            return false;
+        }
+        //Podtawienie wartości do formatki
         {
             f = m_dialog->getFields().value("m_id");
             if (f)
@@ -195,40 +205,37 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
 
         if (m_dialog->exec())
         {
-            if (pe)
+            f = m_dialog->getFields().value("m_title");
+            if (f)
+                pe->setm_title(f->getValue().toString());
+            f = m_dialog->getFields().value("m_user");
+            if (f)
+                pe->setm_user(f->getValue().toString());
+            f = m_dialog->getFields().value("m_pass");
+            if (f)
+                pe->setm_pass(f->getValue().toString());
+            f = m_dialog->getFields().value("m_web_url");
+            if (f)
+                pe->setm_web_url(f->getValue().toString());
+            f = m_dialog->getFields().value("m_desc");
+            if (f)
+                pe->setm_desc(f->getValue().toString());
+            f = m_dialog->getFields().value("m_id_pass_group");
+            if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
             {
-                f = m_dialog->getFields().value("m_title");
-                if (f)
-                    pe->setm_title(f->getValue().toString());
-                f = m_dialog->getFields().value("m_user");
-                if (f)
-                    pe->setm_user(f->getValue().toString());
-                f = m_dialog->getFields().value("m_pass");
-                if (f)
-                    pe->setm_pass(f->getValue().toString());
-                f = m_dialog->getFields().value("m_web_url");
-                if (f)
-                    pe->setm_web_url(f->getValue().toString());
-                f = m_dialog->getFields().value("m_desc");
-                if (f)
-                    pe->setm_desc(f->getValue().toString());
-                f = m_dialog->getFields().value("m_id_pass_group");
-                if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
+                if (m_passGroupService->getObject(0))
                 {
-                    if (m_passGroupService->getObject(0))
-                    {
-                        pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
-                    }
-                    else
-                    {
-                        pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
-                    }
+                    pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
                 }
-                ret = m_passEntryService->editObject(pe);
-                if (!ret)
+                else
                 {
-                    CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
+                    pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
                 }
+            }
+            ret = m_passEntryService->editObject(pe);
+            if (!ret)
+            {
+                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
             }
         }
         safe_delete(pe)
