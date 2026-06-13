@@ -5,8 +5,8 @@ CSqlModel* PassGroupService::getSqlModel(void)
     SqlFieldsDesc list;
 
     list.clear();
-    list.insert("id_pass_group", new CSqlField(QString("long"), tr("Id grupy"), tr("Id grupy"), list.count()));
-    list.insert("m_name", new CSqlField(QString("string"), tr("Nazwa grupy"), tr("Nazwa grupy"), list.count()));
+    list.insert("id_pass_group", new CSqlField(QString("long"), QObject::tr("Id grupy"), QObject::tr("Id grupy"), list.count()));
+    list.insert("m_name", new CSqlField(QString("string"), QObject::tr("Nazwa grupy"), QObject::tr("Nazwa grupy"), list.count()));
 
     QString query = CSqlModel::getSelectQueryStringFromFieldsDescList(list, QString("pass_group"));
     QScopedPointer<CSqlModel> sql_model(new CSqlModel(query, QString("pass_group"), list));

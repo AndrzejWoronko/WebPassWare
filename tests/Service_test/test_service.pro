@@ -13,6 +13,7 @@ INCLUDEPATH += ../../src/ ../../src/Common/ ../../src/Database/ \
 DEPENDPATH  += $${INCLUDEPATH}
 
 HEADERS += \
+    ../../src/Database/OrmRepository.h \
     ../../src/Database/SqlModel.h \
     ../../src/Models/PassEntry.h \
     ../../src/Models/PassGroup.h

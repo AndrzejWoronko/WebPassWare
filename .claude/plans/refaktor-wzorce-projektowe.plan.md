@@ -180,12 +180,14 @@ Jeśli build/test pada z przyczyn zastanych, zapisać dokładny błąd i nie mie
 
 - 2026-06-13: Faza 0A/0C wykonana. Główny build przechodzi; `ORM_test` ma 23/23 pass; `Service_test` ma 6/6 pass.
 - 2026-06-13: wykonany pierwszy stabilizujący krok Fazy 1: `COrmService::getObject()` zwraca `m_object.get()`, a `getObjectsBy(field, value)` czyści błąd przez `m_service`.
+- 2026-06-13: Faza 1 wykonana. Dodano `IRepository<ModelName>`/`COrmRepository<ModelName>` jako cienki adapter nad `COrmObject`; `COrmService` używa kompozycji i zachowuje publiczne API.
 
 - [x] Faza 0A: baseline build/test opisany.
 - [x] Faza 0B/0C: testy charakteryzacyjne ORM/Service przechodzą.
-- [ ] Faza 1: `COrmService` bez dziedziczenia po modelu, publiczne API kompatybilne.
+- [x] Faza 1: `COrmService` bez dziedziczenia po modelu, publiczne API kompatybilne.
 - [ ] Faza 2: kontrolery mają dependency seam; bez `::getInstance()` w logice metod docelowych.
 - [ ] Faza 3: brak cichych awarii w głównych ścieżkach GUI.
 - [ ] Faza 4: finder API migrowane do RAII etapami.
 - [ ] (opc.) Faza 5: mniej lub brak `dynamic_cast` w kontrolerach formularzy.
 - [x] Po Fazie 0: build + wszystkie dostępne testy zielone.
+- [x] Po Fazie 1: build + wszystkie dostępne testy zielone.

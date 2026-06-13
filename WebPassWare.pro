@@ -144,6 +144,7 @@ HEADERS += \
     src/Database/Exception.h \
     src/Database/ExceptionSql.h \
     src/Database/OrmObject.h \
+    src/Database/OrmRepository.h \
     src/Database/OrmService.h \
     src/Database/Service.h \
     src/Database/SqlField.h \

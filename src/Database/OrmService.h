@@ -2,14 +2,14 @@
 #define CORMSERVICE_H
 
 #include "Global.h"
-#include "OrmObject.h"
+#include "OrmRepository.h"
 #include "Service.h"
 
 template<class ModelName>
-class COrmService : public COrmObject<ModelName>
+class COrmService
 {
 
-    std::unique_ptr<ModelName> m_object;
+    std::unique_ptr<IRepository<ModelName>> m_repository;
     qint64 m_insertedId;
     std::unique_ptr<ICService> m_service;
 
@@ -17,19 +17,18 @@ public:
     COrmService()
     {
         m_insertedId = -1;
-        m_object = std::make_unique<ModelName>();
+        m_repository = std::make_unique<COrmRepository<ModelName>>();
         m_service = std::make_unique<CService>();
     }
 
     virtual ~COrmService()
     {
         DEBUG_WITH_LINE << "OrmService destructor";
-        //safe_delete(m_object)
     }
 
     ModelName* getObject(void)
     {
-        return m_object.get();
+        return m_repository->prototype();
     }
 
     qint64 getInsertedId()
@@ -43,7 +42,7 @@ public:
         m_service->clearError();
         try
         {
-            list = m_object->findAll(orderby);
+            list = m_repository->findAll(orderby);
 
         } catch(CExceptionSql &e)
         {
@@ -59,7 +58,7 @@ public:
         m_service->clearError();
         try
         {
-            list = m_object->findBy(fieldName, value);
+            list = m_repository->findBy(fieldName, value);
 
         } catch(CExceptionSql &e)
         {
@@ -75,7 +74,7 @@ public:
         m_service->clearError();
         try
         {
-            list = m_object->findByAnd(params);
+            list = m_repository->findByAnd(params);
 
         } catch(CExceptionSql &e)
         {
@@ -87,11 +86,11 @@ public:
 
     ModelName *getFirstObject()
     {
-        ModelName* o = NULL;
+        ModelName* o = nullptr;
         m_service->clearError();
         try
         {
-            o = m_object->first();
+            o = m_repository->first();
 
         } catch(CExceptionSql &e)
         {
@@ -103,11 +102,11 @@ public:
 
     ModelName* getObject(qint64 id)
     {
-        ModelName *o = NULL;
+        ModelName *o = nullptr;
         m_service->clearError();
         try
         {
-            o = m_object->find(id);
+            o = m_repository->find(id);
 
         } catch(CExceptionSql &e)
         {
@@ -122,8 +121,7 @@ public:
         m_service->clearError();
         try
         {
-            o->save(newId);
-            m_insertedId = o->getId();
+            m_insertedId = m_repository->add(o, newId);
 
         } catch(CExceptionSql &e)
         {
@@ -139,7 +137,7 @@ public:
         m_service->clearError();
         try
         {
-            ret = o->update();
+            ret = m_repository->update(o);
 
         } catch(CExceptionSql &e)
         {
@@ -155,9 +153,7 @@ public:
         m_service->clearError();
         try
         {
-            ModelName *o = m_object->find(id);
-            if (o)
-                ret = o->remove();
+            ret = m_repository->remove(id);
 
         } catch(CExceptionSql &e)
         {
@@ -173,9 +169,7 @@ public:
         m_service->clearError();
         try
         {
-            ModelName *o = m_object->find(id);
-            if (o)
-                ret = o->setDeleted();
+            ret = m_repository->markDeleted(id);
 
         } catch(CExceptionSql &e)
         {
