@@ -36,6 +36,22 @@ protected:
 
     CForm::FormMode m_mode;
 
+    template<class FieldType>
+    FieldType *getFieldAs(const QString &fieldName) const
+    {
+        if (!m_dialog)
+        {
+            return nullptr;
+        }
+        return dynamic_cast<FieldType*>(m_dialog->getFields().value(fieldName));
+    }
+
+    template<class DialogType>
+    DialogType *getDialogAs() const
+    {
+        return dynamic_cast<DialogType*>(m_dialog);
+    }
+
 public slots:
     void checkChanges();
     void checkRequiredFields();

@@ -89,11 +89,11 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
     if (m_dialog)
     {
         m_dialog->setWindowTitle(title);
-        CFormAbstractField *f = m_dialog->getFields().value("m_id");
-        if (f && dynamic_cast<CFormNumberField*>(f))
-           {
-             dynamic_cast<CFormNumberField*>(f)->setReadOnly();
-           }
+        CFormNumberField *idField = getFieldAs<CFormNumberField>("m_id");
+        if (idField)
+        {
+            idField->setReadOnly();
+        }
         PassGroupService::OwnedObject pg = m_passGroupService->getOwnedObject(id);
         if (pg.isNull())
         {
@@ -105,7 +105,7 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
             CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania grupy !!!"), tr("Opis błędu"), error), this);
             return false;
         }
-        f = m_dialog->getFields().value("m_id");
+        CFormAbstractField *f = m_dialog->getFields().value("m_id");
         if (f)
             f->setValue(pg->getId());
         f = m_dialog->getFields().value("m_name");

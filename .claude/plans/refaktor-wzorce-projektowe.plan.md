@@ -187,15 +187,19 @@ Jeśli build/test pada z przyczyn zastanych, zapisać dokładny błąd i nie mie
 - 2026-06-13: Faza 3a wykonana. Formularze dodawania/edycji oraz akcje kasowania pokazują błąd serwisu przez `CMessageBox` zamiast cicho zwracać `false`/ignorować wynik. Główny build, `ORM_test` 23/23 i `Service_test` 6/6 przechodzą.
 - 2026-06-13: Faza 3 wykonana. Edycja formularzy oraz akcje kasowania/kopiowania jawnie obsługują brak rekordu/grupy (`nullptr` z `getObject`) i pokazują opis błędu lub komunikat "nie znaleziono". Główny build, `ORM_test` 23/23 i `Service_test` 6/6 przechodzą.
 - 2026-06-13: Faza 4a wykonana. Dodano kompatybilne RAII API w `COrmService`: `OwnedObject`, `OwnedObjectList`, `getOwnedObject`, `getOwnedObjects`, `getOwnedObjectsBy`; zmigrowano pierwsze GUI call sites i `PassGroupService::getGroupNameList`. Główny build, `ORM_test` 23/23 i `Service_test` 7/7 przechodzą.
+- 2026-06-13: Faza 4 wykonana dla produkcyjnych call sites. GUI i `PassGroupService::getGroupNameList` używają RAII API; stare raw-pointer API zostaje jako kompatybilny shim i test charakterystyczny. Główny build, `ORM_test` 23/23 i `Service_test` 7/7 przechodzą.
+- 2026-06-13: Faza 5 wykonana. Dodano `getFieldAs<T>()` i `getDialogAs<T>()` w `CAbstractFormDialogController`; `PassGroupDialogController` i `PassEntryDialogController` nie mają już lokalnych `dynamic_cast` dla pól formularzy. Główny build, `ORM_test` 23/23 i `Service_test` 7/7 przechodzą.
 
 - [x] Faza 0A: baseline build/test opisany.
 - [x] Faza 0B/0C: testy charakteryzacyjne ORM/Service przechodzą.
 - [x] Faza 1: `COrmService` bez dziedziczenia po modelu, publiczne API kompatybilne.
 - [x] Faza 2: kontrolery mają dependency seam; bez `::getInstance()` w logice metod docelowych.
 - [x] Faza 3: brak cichych awarii w głównych ścieżkach GUI.
-- [ ] Faza 4: finder API migrowane do RAII etapami. Częściowo: dodane kompatybilne RAII API i pierwsze produkcyjne call sites.
-- [ ] (opc.) Faza 5: mniej lub brak `dynamic_cast` w kontrolerach formularzy.
+- [x] Faza 4: finder API migrowane do RAII etapami.
+- [x] (opc.) Faza 5: mniej lub brak `dynamic_cast` w kontrolerach formularzy.
 - [x] Po Fazie 0: build + wszystkie dostępne testy zielone.
 - [x] Po Fazie 1: build + wszystkie dostępne testy zielone.
 - [x] Po Fazie 2: build + wszystkie dostępne testy zielone.
 - [x] Po Fazie 3: build + wszystkie dostępne testy zielone.
+- [x] Po Fazie 4: build + wszystkie dostępne testy zielone.
+- [x] Po Fazie 5: build + wszystkie dostępne testy zielone.
