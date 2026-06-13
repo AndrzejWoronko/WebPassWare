@@ -2,7 +2,13 @@
 #include "PassGroupService.h"
 
 PassGroupDialogController::PassGroupDialogController(QWidget *parent) :
-    CAbstractFormDialogController(new PassGroupDialog(parent), parent)
+    PassGroupDialogController(&PassGroupService::getInstance(), parent)
+{
+}
+
+PassGroupDialogController::PassGroupDialogController(PassGroupService *passGroupService, QWidget *parent) :
+    CAbstractFormDialogController(new PassGroupDialog(parent), parent),
+    m_passGroupService(passGroupService ? passGroupService : &PassGroupService::getInstance())
 {
     if (m_dialog)
     {
@@ -52,7 +58,7 @@ bool PassGroupDialogController::exec(const QString &title)
     if (m_dialog)
     {
         m_dialog->setWindowTitle(title);
-        CFormAbstractField *f = NULL;
+        CFormAbstractField *f = nullptr;
 //        m_dialog->getFields().value("m_id");
 //        if (f)
 //            f->getWidget()->setVisible(false);
@@ -64,7 +70,7 @@ bool PassGroupDialogController::exec(const QString &title)
             if (f)
                 pg.setm_name(f->getValue().toString());
 
-            return PassGroupService::getInstance().addObject(&pg) != -1;
+            return m_passGroupService->addObject(&pg) != -1;
         }
     }
     return false;
@@ -81,7 +87,7 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
            {
              dynamic_cast<CFormNumberField*>(f)->setReadOnly();
            }
-        PassGroup *pg = PassGroupService::getInstance().getObject(id);
+        PassGroup *pg = m_passGroupService->getObject(id);
         if (pg)
            {
                 f = m_dialog->getFields().value("m_id");
@@ -98,7 +104,7 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
                    f = m_dialog->getFields().value("m_name");
                    if (f)
                        pg->setm_name(f->getValue().toString());
-                   ret = PassGroupService::getInstance().editObject(pg);
+                   ret = m_passGroupService->editObject(pg);
                }
            }
        safe_delete(pg)

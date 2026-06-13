@@ -5,13 +5,17 @@
 #include "AbstractFormDialogController.h"
 #include "PassEntryDialog.h"
 
+class PassEntryService;
+class PassGroupService;
+
 class PassEntryDialogController : public CAbstractFormDialogController
 {
     Q_OBJECT
 
 public:
 
-    explicit PassEntryDialogController(QWidget *parent = NULL);
+    explicit PassEntryDialogController(QWidget *parent = nullptr);
+    PassEntryDialogController(PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent = nullptr);
     ~PassEntryDialogController();
 
     static QString validateForm(FormFieldHashList fields);
@@ -22,6 +26,10 @@ public:
 
 private Q_SLOTS:
     void setGenPassword(const QString& password);
+
+private:
+    PassEntryService *m_passEntryService;
+    PassGroupService *m_passGroupService;
 };
 
 #endif // PASSENTRYDIALOGCONTROLLER_H

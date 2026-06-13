@@ -3,7 +3,14 @@
 #include "PassGroupService.h"
 
 PassEntryDialogController::PassEntryDialogController(QWidget *parent) :
-    CAbstractFormDialogController(new PassEntryDialog(parent), parent)
+    PassEntryDialogController(&PassEntryService::getInstance(), &PassGroupService::getInstance(), parent)
+{
+}
+
+PassEntryDialogController::PassEntryDialogController(PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent) :
+    CAbstractFormDialogController(new PassEntryDialog(parent), parent),
+    m_passEntryService(passEntryService ? passEntryService : &PassEntryService::getInstance()),
+    m_passGroupService(passGroupService ? passGroupService : &PassGroupService::getInstance())
 {
     if (m_dialog)
     {
@@ -17,7 +24,7 @@ PassEntryDialogController::PassEntryDialogController(QWidget *parent) :
         f = m_dialog->getFields().value("m_id_pass_group");
         if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
         {
-            dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setValueList(PassGroupService::getInstance().getGroupNameList());
+            dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setValueList(m_passGroupService->getGroupNameList());
         }
         auto dlg = dynamic_cast<PassEntryDialog*>(m_dialog);
         if (dlg)
@@ -88,7 +95,7 @@ bool PassEntryDialogController::exec(const QString &title)
     if (m_dialog)
     {
         m_dialog->setWindowTitle(title);
-          CFormAbstractField *f = NULL;
+          CFormAbstractField *f = nullptr;
 //        f = m_dialog->getFields().value("m_id");
 //        if (f)
 //            f->getWidget()->setVisible(false);
@@ -115,13 +122,17 @@ bool PassEntryDialogController::exec(const QString &title)
             f = m_dialog->getFields().value("m_id_pass_group");
             if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
             {
-                if (PassGroupService::getInstance().getObject(0))
+                if (m_passGroupService->getObject(0))
+                {
                     pe.setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
+                }
                 else
+                {
                     pe.setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
+                }
             }
 
-            return PassEntryService::getInstance().addObject(&pe) != -1; //Zapis do bazy
+            return m_passEntryService->addObject(&pe) != -1; //Zapis do bazy
         }
     }
     return false;
@@ -138,7 +149,7 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
         {
             dynamic_cast<CFormNumberField*>(f)->setReadOnly();
         }
-        PassEntry *pe = PassEntryService::getInstance().getObject(id);
+        PassEntry *pe = m_passEntryService->getObject(id);
         if (pe) //Podtawienie wartości do formatki
         {
             f = m_dialog->getFields().value("m_id");
@@ -162,10 +173,14 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             f = m_dialog->getFields().value("m_id_pass_group");
             if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
             {
-                if (PassGroupService::getInstance().getObject(0))
+                if (m_passGroupService->getObject(0))
+                {
                     dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setIndexValue(pe->getm_id_pass_group());
+                }
                 else
+                {
                     dynamic_cast<CFormSimpleIndexChoiceField*>(f)->setIndexValue(pe->getm_id_pass_group() - 1);
+                }
 //                if (f)
 //                    f->setValue(pe->getm_id_pass_group());
             }
@@ -193,12 +208,16 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
                 f = m_dialog->getFields().value("m_id_pass_group");
                 if (f && dynamic_cast<CFormSimpleIndexChoiceField*>(f))
                 {
-                    if (PassGroupService::getInstance().getObject(0))
+                    if (m_passGroupService->getObject(0))
+                    {
                         pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue());
+                    }
                     else
+                    {
                         pe->setm_id_pass_group(dynamic_cast<CFormSimpleIndexChoiceField*>(f)->getIndexValue() + 1);
+                    }
                 }
-                ret = PassEntryService::getInstance().editObject(pe);
+                ret = m_passEntryService->editObject(pe);
             }
         }
         safe_delete(pe)
