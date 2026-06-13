@@ -114,7 +114,11 @@ private Q_SLOTS:
 
 Test_ORMObject::Test_ORMObject()
 {
-    DB.getInstance();
+    const QString dataPath = QDir::temp().filePath(QString("webpassware-orm-test-data-%1").arg(QUuid::createUuid().toString(QUuid::Id128)));
+    QDir().mkpath(dataPath);
+    qputenv("XDG_DATA_HOME", QFile::encodeName(dataPath));
+
+    SingletonDatabase::getInstance();
 
     DB.setEchoQuery(true);
     DB.setLogQuery(true);
@@ -402,7 +406,7 @@ void Test_ORMObject::test_updateProperty()
     model.setnameInt(10);
     model.save();
     QCOMPARE(model.updateProperty("nameString", "Hello"), true);
-    QCOMPARE(model.updateProperty("ololoProperty", 123), false);
+    QVERIFY_EXCEPTION_THROWN(model.updateProperty("ololoProperty", 123), CExceptionSql);
     QCOMPARE(model2.updateProperty("nameInt", 20), false);
     QCOMPARE(model2.first()->getnameString(), QString("Hello"));
 }
@@ -525,7 +529,7 @@ void Test_ORMObject::test_countByFieldName()
     model3.save();
     QCOMPARE(model1.count("nameInt"), 3);
     QCOMPARE(model2.count("nameString"), 3);
-    QCOMPARE(model2.count("someField"), -1);
+    QVERIFY_EXCEPTION_THROWN(model2.count("someField"), CExceptionSql);
 }
 
 void Test_ORMObject::test_first()

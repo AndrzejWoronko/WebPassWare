@@ -29,7 +29,7 @@ public:
 
     ModelName* getObject(void)
     {
-        return m_object;
+        return m_object.get();
     }
 
     qint64 getInsertedId()
@@ -56,7 +56,7 @@ public:
     QList<ModelName*> getObjectsBy(const QString &fieldName, const QVariant value)
     {
         QList<ModelName*> list;
-        this->clearError();
+        m_service->clearError();
         try
         {
             list = m_object->findBy(fieldName, value);

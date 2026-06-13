@@ -22,6 +22,8 @@ DEPENDPATH  += $${INCLUDEPATH}
 
 HEADERS += ../../src/Database/OrmObject.cpp
 
-SOURCES += ../../src/Database/OrmObject.cpp test_orm.cpp
+SOURCES += ../../src/Database/OrmObject.cpp \
+    ../TestSupport/ApplicationSettingsStub.cpp \
+    test_orm.cpp
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
