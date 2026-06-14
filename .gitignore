@@ -58,3 +58,5 @@ CURRENT_VERSION.TXT
 *.out
 *.app
 
+.vscode/
+build/
