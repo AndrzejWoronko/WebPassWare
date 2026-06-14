@@ -567,7 +567,7 @@ QString CAutoType::autoTypeSequence(const Entry* entry)
           }
         else
           {
-            sequence = "{USERNAME}{TAB}{PASSWORD}{ENTER}";
+            sequence = "{USERNAME}{TAB}{DELAY 500}{PASSWORD}{ENTER}";
           }
     }
     return sequence;
