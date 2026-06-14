@@ -44,13 +44,30 @@ public:
     const int m_delayMs;
 };
 
+class CAutoTypeSetDelay : public CAutoTypeAction
+{
+public:
+    explicit CAutoTypeSetDelay(int delayMs);
+    CAutoTypeAction* clone();
+    void accept(CAutoTypeExecutor* executor);
+
+    const int m_delayMs;
+};
+
 class CAutoTypeExecutor
 {
 public:
+    CAutoTypeExecutor();
     virtual ~CAutoTypeExecutor() {}
     virtual void execChar(CAutoTypeChar* action) = 0;
     virtual void execKey(CAutoTypeKey* action) = 0;
     virtual void execDelay(CAutoTypeDelay* action);
+    virtual void execSetDelay(CAutoTypeSetDelay* action);
+
+    int delay() const;
+
+protected:
+    int m_delay;
 };
 
 

@@ -2,8 +2,8 @@
 #include "Tools.h"
 
 #ifdef Q_OS_LINUX  //Linux
-/*
-#include "gui/osutils/nixutils/X11Funcs.h"
+
+#include "X11Funcs.h"
 
 #include <QX11Info>
 #include <X11/XKBlib.h>
@@ -46,6 +46,8 @@ CAutoTypePlatformLinux::CAutoTypePlatformLinux(QObject *parent) : QObject(parent
   m_xkb = nullptr;
 
   m_loaded = true;
+
+  updateKeymap();
 }
 
 bool CAutoTypePlatformLinux::isAvailable()
@@ -447,13 +449,13 @@ bool CAutoTypePlatformLinux::RemapKeycode(KeySym keysym)
 
     if (keysym != NoSymbol) {
         int type = XkbOneLevelIndex;
-        if (XkbChangeTypesOfKey(m_xkb, m_remapKeycode, 1, XkbGroup1Mask, &type, NULL) != Success) {
+        if (XkbChangeTypesOfKey(m_xkb, m_remapKeycode, 1, XkbGroup1Mask, &type, nullptr) != Success) {
             return false;
         }
 
         XkbKeySymEntry(m_xkb, m_remapKeycode, 0, 0) = keysym;
     } else {
-        XkbChangeTypesOfKey(m_xkb, m_remapKeycode, 0, XkbGroup1Mask, NULL, NULL);
+        XkbChangeTypesOfKey(m_xkb, m_remapKeycode, 0, XkbGroup1Mask, nullptr, nullptr);
     }
 
     XkbSetMap(m_dpy, XkbAllClientInfoMask, m_xkb);
@@ -595,11 +597,6 @@ bool CAutoTypePlatformLinux::raiseWindow(WId window)
     return true;
 }
 
-int CAutoTypePlatformLinux::initialTimeout()
-{
-    return 500;
-}
-
 CAutoTypeExecturorLinux::CAutoTypeExecturorLinux(CAutoTypePlatformLinux* platform)
     : m_platform(platform)
 {
@@ -614,6 +611,5 @@ void CAutoTypeExecturorLinux::execKey(CAutoTypeKey* action)
 {
   m_platform->sendKey(qtToNativeKeyCode(action->m_key));
 }
-*/
 
 #endif

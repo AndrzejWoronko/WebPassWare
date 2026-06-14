@@ -95,6 +95,7 @@ public slots:
     void on_ACTION_DEL_PASS_ENTRY_triggered();
     void on_ACTION_COPY_PASS_ENTRY_PASSWORD_triggered();
     void on_ACTION_COPY_PASS_ENTRY_USER_triggered();
+    void on_ACTION_AUTOTYPE_PASS_ENTRY_triggered();
 
     void on_ACTION_GENERATOR_DIALOG_triggered();
 

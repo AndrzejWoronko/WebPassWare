@@ -20,6 +20,7 @@
 #include "ModelTableCheck.h"
 #include "MaintenanceTool.h"
 #include "ToolButton.h"
+#include "AutoType.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent)
     : CWebPassWareMainWindow(&PassEntryService::getInstance(), &PassGroupService::getInstance(), parent)
@@ -141,6 +142,10 @@ void CWebPassWareMainWindow::setActions(void)
 
     CAction *action_CopyPassEntryPassword = new CAction(tr("Kopiowanie hasła do schowka"), ICON("Copy"), tr("Kopiowanie hasła do schowka"), QString("Ctrl+C"), QString("ACTION_COPY_PASS_ENTRY_PASSWORD"), this);
     m_actions.insert(action_CopyPassEntryPassword->getActionName(), action_CopyPassEntryPassword);
+
+    CAction *action_AutoTypePassEntry = new CAction(tr("Auto-Type"), ICON("Lightning"), tr("Automatyczne wpisanie danych logowania"), QString("Ctrl+Shift+V"), QString("ACTION_AUTOTYPE_PASS_ENTRY"), this);
+    action_AutoTypePassEntry->setEnabled(autoType()->isAvailable());
+    m_actions.insert(action_AutoTypePassEntry->getActionName(), action_AutoTypePassEntry);
 
     CAction *action_RefreshAll = new CAction(tr("Odświeżenie danych"), ICON("Refresh"), tr("Odświeżenie danych"), QString(""), QString("ACTION_REFRESH_ALL"), this);
     m_actions.insert(action_RefreshAll->getActionName(), action_RefreshAll);
@@ -318,6 +323,9 @@ QWidget *CWebPassWareMainWindow::initTabData()
     CToolButton *copyDataButtonPass = new CToolButton(CButtonPrivate(tr("Hasło do schowka"), tr("Kopiowanie hasła do schowka"), ICON("Copy")), tab);
     copyDataButtonPass->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     copyDataButtonPass->setDefaultAction(m_actions.value("ACTION_COPY_PASS_ENTRY_PASSWORD"));
+    CToolButton *autoTypeButton = new CToolButton(CButtonPrivate(tr("Auto-Type"), tr("Automatyczne wpisanie danych logowania"), ICON("Lightning")), tab);
+    autoTypeButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    autoTypeButton->setDefaultAction(m_actions.value("ACTION_AUTOTYPE_PASS_ENTRY"));
     CToolButton *addRowButton = new CToolButton(CButtonPrivate(tr("Dodanie wpisu"), tr("Dodanie wpisu"), ICON("Add-row")), tab);
     addRowButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     addRowButton->setDefaultAction(m_actions.value("ACTION_ADD_PASS_ENTRY"));
@@ -333,6 +341,7 @@ QWidget *CWebPassWareMainWindow::initTabData()
 
     hboxLayout->addWidget(copyDataButtonUser);
     hboxLayout->addWidget(copyDataButtonPass);
+    hboxLayout->addWidget(autoTypeButton);
     hboxLayout->addWidget(addRowButton);
     hboxLayout->addWidget(editRowButton);
     hboxLayout->addWidget(delRowButton);    
@@ -469,6 +478,7 @@ void CWebPassWareMainWindow::showDataTableContextMenu(const QPoint &position)
     contextmenu.addAction(m_actions.value(QString("ACTION_DEL_PASS_ENTRY")));
     contextmenu.addAction(m_actions.value(QString("ACTION_COPY_PASS_ENTRY_PASSWORD")));
     contextmenu.addAction(m_actions.value(QString("ACTION_COPY_PASS_ENTRY_USER")));
+    contextmenu.addAction(m_actions.value(QString("ACTION_AUTOTYPE_PASS_ENTRY")));
     contextmenu.addSeparator();
     contextmenu.addAction(m_actions.value(QString("ACTION_REFRESH_PASS_ENTRY")));
     contextmenu.exec(m_dataTable->mapToGlobal(position));
@@ -692,6 +702,31 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_USER_triggered()
         }
     }
     DEBUG_WITH_LINE << "COPY PASS ENTRY USER";
+}
+
+void CWebPassWareMainWindow::on_ACTION_AUTOTYPE_PASS_ENTRY_triggered()
+{
+    qint64 id = getCurrentPassEntryId();
+    if (id > 0)
+    {
+        PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
+        if (pe.isNull())
+        {
+            QString error = m_passEntryService->getError();
+            if (error.isEmpty())
+            {
+                error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
+            }
+            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
+            return;
+        }
+        if (!pe.isNull())
+        {
+            Entry entry(pe->getm_user(), pe->getm_pass());
+            autoType()->performAutoType(&entry, this);
+        }
+    }
+    DEBUG_WITH_LINE << "AUTOTYPE PASS ENTRY";
 }
 
 void CWebPassWareMainWindow::on_ACTION_GENERATOR_DIALOG_triggered()

@@ -1,4 +1,5 @@
 #include "AutoTypePlatformMacos.h"
+#include "MacUtils.h"
 #include "Tools.h"
 
 #ifdef Q_OS_MACOS //Macos
@@ -56,10 +57,34 @@ QStringList CAutoTypePlatformMacos::windowTitles()
 
 //
 // Get active window process id
+// see: Quartz Window Services
 //
 WId CAutoTypePlatformMacos::activeWindow()
 {
-    return NULL;
+    WId pid = 0;
+
+    CFArrayRef windowList = ::CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID);
+    if (windowList != nullptr) {
+        CFIndex count = ::CFArrayGetCount(windowList);
+
+        for (CFIndex i = 0; i < count; i++) {
+            CFDictionaryRef window = static_cast<CFDictionaryRef>(::CFArrayGetValueAtIndex(windowList, i));
+            if (windowLayer(window) == 0) {
+                CFNumberRef pidRef = static_cast<CFNumberRef>(::CFDictionaryGetValue(window, kCGWindowOwnerPID));
+                int ownerPid = 0;
+                if (pidRef != nullptr && ::CFNumberGetValue(pidRef, kCFNumberIntType, &ownerPid)) {
+                    pid = static_cast<WId>(ownerPid);
+                }
+
+                // First toplevel window in list (front to back order)
+                break;
+            }
+        }
+
+        ::CFRelease(windowList);
+    }
+
+    return pid;
 }
 
 //
@@ -109,23 +134,23 @@ CAutoTypeExecutor* CAutoTypePlatformMacos::createExecutor()
 //
 bool CAutoTypePlatformMacos::raiseWindow(WId pid)
 {
-    return false;
+    return macUtilsRaiseProcess(static_cast<pid_t>(pid));
 }
 
 //
-// Activate last active window
+// Hide our own application window
 //
 bool CAutoTypePlatformMacos::hideOwnWindow()
 {
-    return false;
+    return macUtilsHideOwnApp();
 }
 
 //
-// Activate keepassx window
+// Activate (unhide) our own application window
 //
 bool CAutoTypePlatformMacos::raiseOwnWindow()
 {
-    return false;
+    return macUtilsRaiseOwnApp();
 }
 
 //

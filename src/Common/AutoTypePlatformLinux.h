@@ -8,7 +8,7 @@
 #include "Global.h"
 
 #ifdef Q_OS_LINUX  //Linux
-/*
+
 #include <X11/XKBlib.h>
 
 
@@ -22,7 +22,7 @@ class CAutoTypePlatformLinux : public QObject, public CAutoTypePlatform
     Q_OBJECT
 
 public:
-    CAutoTypePlatformLinux(QObject *parent = NULL);
+    CAutoTypePlatformLinux(QObject *parent = nullptr);
     bool isAvailable() override;
     void unload() override;
     QStringList windowTitles() override;
@@ -96,6 +96,6 @@ public:
 private:
     CAutoTypePlatformLinux* const m_platform;
 };
-*/
+
 #endif
 #endif // CAUTOTYPEPLATFORMLINUX_H

@@ -3,12 +3,13 @@
 
 #include "AutoTypePlatform.h"
 #include "AutoTypePlatformTest.h"
+#include "Tools.h"
 
 #ifdef Q_OS_WIN  //Windows
 
 #include "AutoTypePlatformWindows.h"
 
-#elif Q_OS_MACOS //Macos
+#elif defined(Q_OS_MACOS) //Macos
 
 #include "AutoTypePlatformMacos.h"
 
@@ -35,11 +36,16 @@ CAutoType::CAutoType(QObject* parent, bool test)
       {
 #ifdef Q_OS_WIN  //Windows
       m_platform_intrerface = new CAutoTypePlatformWindows(this);
-#elif Q_OS_MACOS //Macos
+#elif defined(Q_OS_MACOS) //Macos
       m_platform_intrerface = new CAutoTypePlatformMacos(this);
 #else            //Linux
-      //m_platform_intrerface = new CAutoTypePlatformLinux(this);
+      m_platform_intrerface = new CAutoTypePlatformLinux(this);
 #endif
+      }
+
+    if (m_platform_intrerface)
+      {
+        m_executor = m_platform_intrerface->createExecutor();
       }
 }
 
@@ -115,7 +121,7 @@ void CAutoType::performAutoType(const Entry* entry, QWidget* hideWindow, const Q
         window = m_platform_intrerface->activeWindow();
       }
 
-    QCoreApplication::processEvents(QEventLoop::AllEvents, 10);
+    Tools::wait(10);
 
     Q_FOREACH(auto action, actions)
       {
@@ -126,7 +132,7 @@ void CAutoType::performAutoType(const Entry* entry, QWidget* hideWindow, const Q
           }
 
         action->accept(m_executor);
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 10);
+        Tools::wait(m_executor->delay());
       }
     CLEAR_PTR_LIST(actions)
     m_inAutoType = false;
@@ -251,6 +257,7 @@ void CAutoType::unregisterGlobalShortcut()
 
 int CAutoType::callEventFilter(void* event)
 {
+    Q_UNUSED(event)
 /*
     if (!m_platform_intrerface) {
         return -1;
@@ -258,6 +265,7 @@ int CAutoType::callEventFilter(void* event)
 
     return m_platform_intrerface->platformEventFilter(event);
 */
+    return -1;
 }
 
 bool CAutoType::parseActions(const QString& sequence, const Entry* entry, QList<CAutoTypeAction*>& actions)
@@ -267,20 +275,35 @@ bool CAutoType::parseActions(const QString& sequence, const Entry* entry, QList<
 
     Q_FOREACH(auto ch, sequence)
       {
-        // TODO: implement support for {{}, {}} and {DELAY=X}
-
         if (inTmpl)
           {
             if (ch == '{')
               {
-                DEBUG_WITH_LINE << "Syntax error in auto-type sequence.";
-                return false;
+                // "{{}" escape sequence -> literal '{'
+                if (tmpl.isEmpty())
+                  {
+                    tmpl += ch;
+                  }
+                else
+                  {
+                    DEBUG_WITH_LINE << "Syntax error in auto-type sequence.";
+                    return false;
+                  }
               }
             else if (ch == '}')
               {
-                actions.append(this->createActionFromTemplate(tmpl, entry));
-                inTmpl = false;
-                tmpl.clear();
+                // "{}}" escape sequence -> literal '}': the first '}' starts
+                // the placeholder name, the second one closes it.
+                if (tmpl.isEmpty())
+                  {
+                    tmpl += ch;
+                  }
+                else
+                  {
+                    actions.append(this->createActionFromTemplate(tmpl, entry));
+                    inTmpl = false;
+                    tmpl.clear();
+                  }
               }
             else
               {
@@ -309,6 +332,19 @@ QList<CAutoTypeAction*> CAutoType::createActionFromTemplate(const QString& tmpl,
     QString tmplName = tmpl.toLower();
     int num = -1;
     QList<CAutoTypeAction*> list;
+
+    // {DELAY=X} sets a persistent delay between subsequent actions,
+    // as opposed to {DELAY X} which inserts a single pause.
+    QRegExp setDelayRegEx("delay=(\\d+)", Qt::CaseSensitive, QRegExp::RegExp2);
+    if (setDelayRegEx.exactMatch(tmplName))
+      {
+        int delayMs = setDelayRegEx.cap(1).toInt();
+        if (delayMs <= 10000)
+          {
+            list.append(new CAutoTypeSetDelay(delayMs));
+          }
+        return list;
+      }
 
     QRegExp repeatRegEx("(.+) (\\d+)", Qt::CaseSensitive, QRegExp::RegExp2);
     if (repeatRegEx.exactMatch(tmplName))

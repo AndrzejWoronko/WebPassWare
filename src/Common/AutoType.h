@@ -5,10 +5,10 @@
 #include <QStringList>
 #include <QWidget>
 #include "Global.h"
+#include "AutoTypePlatform.h"
 
 class CAutoTypeAction;
 class CAutoTypeExecutor;
-class CAutoTypePlatform;
 
 typedef QPair<QString, QString> Entry;
 
@@ -27,7 +27,7 @@ public:
     inline bool isAvailable()
     {
         if (m_platform_intrerface)
-          return true;
+          return m_platform_intrerface->isAvailable();
         else
           return false;
     }

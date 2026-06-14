@@ -17,6 +17,7 @@ SOURCES += \
     src/Common/AutoTypePlatform.cpp \
     src/Common/AutoTypePlatformLinux.cpp \
     src/Common/AutoTypePlatformMacos.cpp \
+    src/Common/X11Funcs.cpp \
     src/Common/AutoTypePlatformTest.cpp \
     src/Common/AutoTypePlatformWindows.cpp \
     src/Common/CsvModel.cpp \
@@ -124,6 +125,7 @@ HEADERS += \
     src/Common/AutoTypePlatform.h \
     src/Common/AutoTypePlatformLinux.h \
     src/Common/AutoTypePlatformMacos.h \
+    src/Common/X11Funcs.h \
     src/Common/AutoTypePlatformTest.h \
     src/Common/AutoTypePlatformWindows.h \
     src/Common/CsvModel.h \
@@ -240,6 +242,9 @@ DEST_DIR = $${DEST_BINS}
 
 macx {
     CONFIG  += app_bundle
+    OBJECTIVE_SOURCES += src/Common/MacUtils.mm
+    HEADERS += src/Common/MacUtils.h
+    LIBS += -framework AppKit
 }
 
 win32 {
@@ -252,6 +257,10 @@ win32 {
 }
 unix {
     DESTDIR = $$DEST_DIR
+}
+unix:!macx {
+    QT += x11extras
+    LIBS += -lX11 -lXtst
 }
 
 QMAKE_CXXFLAGS += -Wall -Wextra -std=c++14
