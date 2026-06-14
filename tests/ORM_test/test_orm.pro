@@ -27,3 +27,7 @@ SOURCES += ../../src/Database/OrmObject.cpp \
     test_orm.cpp
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+! include( ../test_clean.pri ) {
+    error( test_orm.pro: Cannot find the test_clean.pri file! )
+}

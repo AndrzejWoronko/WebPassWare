@@ -37,3 +37,7 @@ SOURCES += \
     test_service.cpp
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+! include( ../test_clean.pri ) {
+    error( test_service.pro: Cannot find the test_clean.pri file! )
+}
