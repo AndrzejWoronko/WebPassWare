@@ -3,39 +3,22 @@
 
 #include <stdlib.h>
 
-template <typename T>
+// Mayers singleton template class
+
+template<typename T>
 class Singleton
 {
 public:
     static T& getInstance()
     {
-        if (0 == m_instance)
-        {
-            m_instance = new T();
-            ::atexit( destroy );
-        }
-        else
-        {
-
-        };
-        return *m_instance;
-    }
-private:
-
-    static T* m_instance;
-
-private:
-    static void destroy()
-    {
-        delete m_instance;
-        m_instance = nullptr;
+        static T uniqueInstance;
+        return uniqueInstance;
     }
 };
 
-template <typename T>
-T* Singleton< T >::m_instance = nullptr;
-
-
+///------------------------
+/// Generic Singleton Holder
+///
 template <typename T>
 class SingletonHolder
 {
@@ -56,4 +39,3 @@ public:
 };
 
 #endif // SINGLETON_H
-
