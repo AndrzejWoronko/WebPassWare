@@ -6,9 +6,6 @@
 #include <QStatusBar>
 #include <QWidget>
 #include <QToolBar>
-#include <QClipboard>
-#include <QDesktopWidget>
-#include <QScreen>
 
 #include "Global.h"
 #include "Layouts.h"

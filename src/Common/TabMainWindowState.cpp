@@ -1,5 +1,4 @@
 #include "TabMainWindowState.h"
-#include "Application.h"
 
 CTabMainWindowState::CTabMainWindowState()
 {

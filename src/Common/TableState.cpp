@@ -1,5 +1,4 @@
 #include "TableState.h"
-#include "Application.h"
 
 CTableState::CTableState()
 {

@@ -1,4 +1,5 @@
 #include "CsvModel.h"
+#include "ImportCsv.h"
 
 CCsvModel::CCsvModel(const QString &fileName, QObject *parent) :
     QAbstractTableModel(parent), m_fileName(fileName), m_columns(0), m_fromLine(0)

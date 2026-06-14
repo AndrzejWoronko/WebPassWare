@@ -1,12 +1,7 @@
-#include <stdexcept>
 #include <QApplication>
-#include <QSplashScreen>
-#include <QtGui>
-#include <QMessageBox>
-#include <QString>
+#include <QCoreApplication>
 #include <QDir>
-#include <QThread>
-#include <unistd.h>
+#include <QString>
 #include "Global.h"
 #include "Logger.h"
 #include "Style.h"

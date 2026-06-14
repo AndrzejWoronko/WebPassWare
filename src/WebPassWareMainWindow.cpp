@@ -1,4 +1,8 @@
 #include "WebPassWareMainWindow.h"
+
+#include <QClipboard>
+#include <QMimeData>
+
 #include "AboutDialog.h"
 #include "Application.h"
 #include "PassEntryService.h"
@@ -12,8 +16,10 @@
 #include "TableViewItemsDelegates.h"
 #include "CsvExportDialogController.h"
 #include "CsvImportDialogController.h"
+#include "Frame.h"
 #include "ModelTableCheck.h"
 #include "MaintenanceTool.h"
+#include "ToolButton.h"
 
 CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent)
     : CWebPassWareMainWindow(&PassEntryService::getInstance(), &PassGroupService::getInstance(), parent)

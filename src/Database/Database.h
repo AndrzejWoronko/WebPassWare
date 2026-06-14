@@ -2,10 +2,11 @@
 #define DATABASE_H
 
 #include "Global.h"
-#include <QtSql>
 #include <QSqlDatabase>
+#include <QSqlIndex>
+#include <QSqlRecord>
 #include "SqlQuery.h"
-#include "ExceptionSql.h"
+#include "Exception.h"
 
 #define DB_CONNECTION_NAME "WebPassWareDbConnection"
 #define DB_NAME "WebPassWare.db"
@@ -128,4 +129,3 @@ using SingletonDatabase = SingletonHolder<CDatabase>;
 
 
 #endif // DATABASE_H
-

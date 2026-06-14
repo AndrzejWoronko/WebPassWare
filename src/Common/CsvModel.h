@@ -2,7 +2,9 @@
 #define CCSVMODEL_H
 
 #include "Global.h"
-#include "ImportCsv.h"
+#include <QAbstractTableModel>
+
+class CImportCsv;
 
 using IQAbstractTableModel = QAbstractTableModel;
 

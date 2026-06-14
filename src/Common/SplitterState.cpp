@@ -1,5 +1,4 @@
 #include "SplitterState.h"
-#include "Application.h"
 
 CSplitterState::CSplitterState()
 {

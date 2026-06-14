@@ -1,5 +1,4 @@
 #include "DialogState.h"
-#include "Application.h"
 
 CDialogState::CDialogState()
 {

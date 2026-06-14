@@ -1,22 +1,17 @@
 #ifndef CWEBPASSWAREMAINWINDOW_H
 #define CWEBPASSWAREMAINWINDOW_H
 
-#include <QFrame>
 #include <QLabel>
+#include <QMenu>
+#include <QSortFilterProxyModel>
+#include <QTimer>
 #include <QTreeView>
-#include <QTextEdit>
-#include <QLineEdit>
-#include <QSqlQuery>
-#include <QSqlTableModel>
 
 #include "Global.h"
 #include "AbstractMainWindow.h"
 
-#include "AbstractDialogStateManager.h"
 #include "TabWidget.h"
 #include "TableView.h"
-#include "ToolButton.h"
-#include "Frame.h"
 #include "DelayEditLine.h"
 #include "SqlModel.h"
 

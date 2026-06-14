@@ -1,7 +1,10 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 #include <QApplication>
-#include <QtGui>
+#include <QColor>
+#include <QFont>
+#include <QHash>
+#include <QPalette>
 #include <QTranslator>
 
 #include "Global.h"

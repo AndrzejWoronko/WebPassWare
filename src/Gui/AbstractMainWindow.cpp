@@ -2,6 +2,9 @@
 #include "MessageBox.h"
 #include "Style.h"
 
+#include <QGuiApplication>
+#include <QScreen>
+
 CAbstractMainWindow::CAbstractMainWindow(const QString &name,QWidget *parent) :
         QMainWindow(parent), CAbstractDialogStateManager(), m_main_window_name(name)
 {

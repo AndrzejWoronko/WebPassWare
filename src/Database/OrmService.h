@@ -2,6 +2,7 @@
 #define CORMSERVICE_H
 
 #include "Global.h"
+#include "ExceptionSql.h"
 #include "OrmRepository.h"
 #include "Service.h"
 

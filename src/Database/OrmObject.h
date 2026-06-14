@@ -8,6 +8,7 @@
 #include "Global.h"
 #include "Tools.h"
 #include "Database.h"
+#include "ExceptionSql.h"
 
 #define ORM_PROPERTY(type, name) \
 Q_PROPERTY(type name READ get##name WRITE set##name) \

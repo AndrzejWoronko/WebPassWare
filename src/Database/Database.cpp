@@ -1,5 +1,6 @@
 #include "Database.h"
 #include "ApplicationSettings.h"
+#include "ExceptionSql.h"
 
 CDatabase::CDatabase(const QString &database_name): m_base_name(database_name)
 {
@@ -535,4 +536,3 @@ bool CDatabase::rollbackTransaction(void)
         throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
-
