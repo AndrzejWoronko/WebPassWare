@@ -102,7 +102,7 @@ which `main.cpp` sets to the busy mouse cursor.
 - `CWebPassWareMainWindow` (`src/WebPassWareMainWindow.h`) — main window.
 
 ### Common utilities (`src/Common/`)
-- State persistence: `AbstractDialogStateManager`, `AbstractTableStateManager`, `AbstractSplitterStateManager`, `AbstractTabMainWindowStateManager` + corresponding `*State` classes.
+- State persistence: `AbstractDialogStateManager`, `AbstractSplitterStateManager` + `DialogState`, `SplitterState`.
 - Auto-type subsystem: `CAutoType` (created in `main.cpp` with `CAutoType::createPlatform()`,
   passed to the main window; tests inject `CAutoTypePlatformTest`), `AutoTypeAction`,
   `AutoTypePlatform{Linux,Macos,Windows,Test}`. Without an X11 display the Linux

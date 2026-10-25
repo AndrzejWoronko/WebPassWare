@@ -126,10 +126,6 @@ qt_add_library(wpw_gui STATIC
     src/Common/AbstractSplitterStateManager.cpp
     src/Common/AbstractSplitterStateManager.h
     src/Common/AbstractStateManager.h
-    src/Common/AbstractTabMainWindowStateManager.cpp
-    src/Common/AbstractTabMainWindowStateManager.h
-    src/Common/AbstractTableStateManager.cpp
-    src/Common/AbstractTableStateManager.h
     src/Common/AutoType.cpp
     src/Common/AutoType.h
     src/Common/AutoTypeAction.cpp
@@ -144,10 +140,6 @@ qt_add_library(wpw_gui STATIC
     src/Common/MaintenanceTool.h
     src/Common/SplitterState.cpp
     src/Common/SplitterState.h
-    src/Common/TabMainWindowState.cpp
-    src/Common/TabMainWindowState.h
-    src/Common/TableState.cpp
-    src/Common/TableState.h
     src/Gui/AbstractFormDialog.cpp
     src/Gui/AbstractFormDialog.h
     src/Gui/AbstractFormDialogController.cpp
