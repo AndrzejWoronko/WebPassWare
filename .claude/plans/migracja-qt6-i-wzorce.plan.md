@@ -477,3 +477,24 @@ Etap B: 8–12 MD (B3 i B5 największe).
   migracją (`<plik>.bak-v<wersja>`) dodana.
   Dalej: B5 (okno główne), B6 (formularze), B7 (auto-type, ustawienia, CSV, stan,
   tłumaczenia).
+- 2026-10-25: B5 zrobione z odstępstwami: `tst_mainwindow` (offscreen, prawdziwy
+  `CApplication`, 13 testów); poprawki: pusta akcja `ACTION_VISIT_WEBSITE` (`a3c7011`),
+  Ctrl+X → Wyjście pod Ctrl+Q (`4063213`), lista grup po usunięciu (`15eb259`),
+  `getCurrentPassEntryId` i opis akcji (`fa9c960`), wyciek okien formularzy i walidatora
+  (`699a0a0`); Observer: serwisy emitują `changed()`, okno odświeża modele na sygnał,
+  import CSV z jednym sygnałem po commit (`96dbcf8`); `selectedEntry()`/`copyToClipboard()`
+  zamiast 4 kopii (`afd7e7e`). Podwójne wyzwalanie Insert się nie potwierdziło (test zostaje
+  jako straż). **Odstępstwa:** bez fasady `PasswordVault` (serwisy z sygnałem wystarczają)
+  i bez klas `EntryActions/GroupActions/ClipboardActions` (po pomocnikach każdy handler ma
+  kilka linii; podział tylko przepisałby `connectSlotsByName`).
+- 2026-10-25: B6 częściowo: grupa wpisu po id w `itemData`, bez usuniętych grup
+  (`76a4182`, prawdziwy błąd przy dziurze w id). **Odłożone:** wspólna baza
+  `CAbstractFormDialog`/`CAbstractCloseDialog`, kontrolery jako `QObject` (komunikaty
+  używają kontrolera jako rodzica), wspólne `isEmptyForm`/`validateForm`.
+- 2026-10-25: B7 częściowo: CSV wg RFC 4180 (`599feec`), tłumaczenia Qt działają
+  (`2af2f1d`), `CLogger` (`f38f665`), auto-type wstrzykiwany + `createPlatform()` +
+  destruktor platformy Linux (`ab2931b`), wyciek akcji przy błędzie składni (`07439ec`),
+  martwe menedżery stanu (`1fcf6b9`), `GenericFactory.h` (`30194c0`), kod wyjścia `main`
+  (`18fe55a`). **Odłożone:** rejestr stron ustawień (dopasowanie po indeksie działa,
+  dwie strony), `MaintenanceTool` bez `waitForFinished` (tylko z instalatorem Qt IFW),
+  nagłówek platformy Linux bez X11 (obejście moc działa). ctest 12/12.
