@@ -32,8 +32,8 @@ cmake --preset debug && cmake --build --preset debug && ctest --preset debug
 ## Tests
 
 Qt Test, one executable per unit, registered in `tests/CMakeLists.txt` via
-`wpw_add_test` (each test compiles the sources it needs). `ctest` runs them offscreen;
-`tst_autotype` needs X11 (`QT_QPA_PLATFORM=xcb`).
+`wpw_add_test`, linked against `wpw_core` (runs under `QCoreApplication`) or `wpw_gui`.
+`ctest` runs them offscreen; `tst_autotype` needs X11 (`QT_QPA_PLATFORM=xcb`).
 
 - `tst_orm` (`tests/ORM_test`): ORM on its own models.
 - `tst_service` (`tests/Service_test`): real Database, Models and services; pins the
@@ -44,14 +44,18 @@ Qt Test, one executable per unit, registered in `tests/CMakeLists.txt` via
 - `tst_forms` (`tests/Forms_test`): form field `isDirty()`.
 - `tst_autotype` (`tests/AutoType_test`): auto-type sequence parsing.
 
-`tests/TestSupport/` holds `ApplicationSettingsStub.cpp`. The SQL layer sets a busy
-cursor, so database tests need a `QApplication`.
 
 Migration to Qt 6.12 + CMake and the second design-pattern round:
 `.claude/plans/migracja-qt6-i-wzorce.plan.md` (Polish; update its "Postęp" section
 after each phase). Reference project: `/home/woronek/git/IpcFirmwareTool`.
 
 ## Architecture
+
+CMake targets: `wpw_core` (static; `src/Database`, `src/Models`, the non-GUI parts of
+`src/Common`; Qt Core + Sql, never Widgets or Gui), `wpw_gui` (static; everything else
+except `main.cpp`) and the `webpassware` executable. The core sees only its own include
+directories. It shows activity through `wpw::BusyIndicator` hooks (`src/Database/`),
+which `main.cpp` sets to the busy mouse cursor.
 
 ### Three-layer pattern
 

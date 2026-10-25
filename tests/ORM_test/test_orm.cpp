@@ -7,12 +7,8 @@
 #include <QFile>
 #include <QSqlDriver>
 #include "Global.h"
-#include "Tools.cpp"
-#include "Logger.cpp"
-#include "ExceptionSql.cpp"
-#include "Exception.cpp"
-#include "Database.cpp"
-#include "SqlQuery.cpp"
+#include "Database.h"
+#include "ExceptionSql.h"
 #include "OrmObject.h"
 
 // QSqlDatabase::exec() is deprecated in Qt 6.

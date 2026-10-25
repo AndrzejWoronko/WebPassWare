@@ -1,5 +1,5 @@
 #include "Database.h"
-#include "ApplicationSettings.h"
+#include <QSettings>
 #include "ExceptionSql.h"
 
 CDatabase::CDatabase(const QString &database_name): m_base_name(database_name)
@@ -28,18 +28,20 @@ CDatabase::~CDatabase()
 
 QString CDatabase::getDatabaseHashPassword()
 {
-    return SETT.getSettings()->value(DATABASE_SETTING_PASSWORD).toString();
+    // The application's settings file (organisation and name are set by
+    // CApplication before the database is used).
+    return QSettings().value(DATABASE_SETTING_PASSWORD).toString();
 }
 
 void CDatabase::setDatabasePassword(const QString &passwd)
 {
     QString hash_passwd = QCryptographicHash::hash(passwd.toLatin1(), QCryptographicHash::Md5).toHex();
-    SETT.getSettings()->setValue(DATABASE_SETTING_PASSWORD, hash_passwd);
+    QSettings().setValue(DATABASE_SETTING_PASSWORD, hash_passwd);
 }
 
 void CDatabase::setDatabaseHashPassword(const QString &passwd)
 {
-    SETT.getSettings()->setValue(DATABASE_SETTING_PASSWORD, passwd);
+    QSettings().setValue(DATABASE_SETTING_PASSWORD, passwd);
 }
 
 void CDatabase::initConnection()

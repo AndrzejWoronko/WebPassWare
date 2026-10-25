@@ -1,5 +1,5 @@
-#include <QApplication>
 #include "SqlModel.h"
+#include "BusyIndicator.h"
 #include "Database.h"
 
 CSqlModel::CSqlModel(const QString &selectQuery, const QString &table_name, const SqlFieldsDesc &list, QVariantHash data, QObject *parent) : QSqlQueryModel(parent)
@@ -94,8 +94,7 @@ QVariant CSqlModel::rawData(const QModelIndex &index, int role) const
 
 void CSqlModel::refresh()
 {
-      if (qApp)
-          qApp->setOverrideCursor(QCursor(Qt::BusyCursor));
+      wpw::BusyIndicator::Scope busy;
         {
           if (DB.isConnected())
              {
@@ -131,8 +130,6 @@ void CSqlModel::refresh()
           else if (this->lastError().isValid())
                    DEBUG_WITH_LINE <<  this->lastError();
         }
-      if (qApp)
-          qApp->restoreOverrideCursor();
 }
 
 QString CSqlModel::getFieldNameByColumn(int column)

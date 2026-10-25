@@ -1,5 +1,5 @@
-#include <QApplication>
 #include "SqlQuery.h"
+#include "BusyIndicator.h"
 #include "Logger.h"
 
 CSqlQuery::CSqlQuery(QSqlDatabase db) :  QSqlQuery(QString(), db),
@@ -71,13 +71,11 @@ void CSqlQuery::setLogFromDB(bool echo_error, bool log_error, bool echo_query, b
 void CSqlQuery::setSqlCursor()
 {
     m_time = QDateTime::currentDateTime();
-    if (qApp)
-       qApp->setOverrideCursor(QCursor(Qt::BusyCursor));
+    wpw::BusyIndicator::begin();
 }
 
 void CSqlQuery::restoreSqlCursor()
 {
-    if (qApp)
-        qApp->restoreOverrideCursor();
+    wpw::BusyIndicator::end();
     DEBUG_WITH_LINE << "Query time: (" << m_time.msecsTo(QDateTime::currentDateTime())/1000.0 << "sec)";
 }

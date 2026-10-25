@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QUuid>
 
+#include "BusyIndicator.h"
 #include "Database.h"
 #include "ExceptionSql.h"
 #include "PassEntryService.h"
@@ -37,6 +38,7 @@ private Q_SLOTS:
     void test_errorPathSetsError();
     void test_tableDdlIsStable();
     void test_declaredTypeNamesKeepTypedefs();
+    void test_busyIndicatorWrapsQueries();
 
 private:
     void createTables();
@@ -269,6 +271,20 @@ void Test_Service::test_declaredTypeNamesKeepTypedefs()
     QCOMPARE(names.value("m_id_pass_group"), QString("qint64"));
     QCOMPARE(names.value("deleted"), QString("bool"));
     QCOMPARE(names.value("timestp"), QString("Timestamp"));
+}
+
+void Test_Service::test_busyIndicatorWrapsQueries()
+{
+    int begun = 0;
+    int ended = 0;
+    wpw::BusyIndicator::setHooks([&begun]() { ++begun; }, [&ended]() { ++ended; });
+
+    PassGroupService service;
+    PassGroupService::OwnedObjectList groups = service.getOwnedObjects(QString("id_pass_group"));
+    wpw::BusyIndicator::setHooks(nullptr, nullptr);
+
+    QVERIFY(begun > 0);
+    QCOMPARE(ended, begun);
 }
 
 QTEST_MAIN(Test_Service)

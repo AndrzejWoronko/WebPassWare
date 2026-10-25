@@ -9,6 +9,7 @@
 #include "WebPassWareMainWindow.h"
 #include "Database.h"
 #include "ModelTableCheck.h"
+#include "BusyIndicator.h"
 
 // Projekty wzorcowe
 //https://github.com/orgs/keepassxreboot/repositories
@@ -45,6 +46,8 @@ int main(int argc, char **argv)
     CWebPassWareMainWindow *w = nullptr;
 
     a = new CApplication(argc, argv);
+    wpw::BusyIndicator::setHooks([]() { QApplication::setOverrideCursor(QCursor(Qt::BusyCursor)); },
+                                 []() { QApplication::restoreOverrideCursor(); });
 
     QDir d(QCoreApplication::applicationDirPath());
 

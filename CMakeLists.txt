@@ -30,21 +30,81 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 endif()
 
 # The include directories the sources rely on ("Database.h", not
-# "Database/Database.h"); shared with the tests.
-set(WPW_INCLUDE_DIRS
+# "Database/Database.h"). The core sees only its own directories, so a GUI
+# header included there fails to compile.
+set(WPW_CORE_INCLUDE_DIRS
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/Common
+    ${CMAKE_SOURCE_DIR}/src/Database
+    ${CMAKE_SOURCE_DIR}/src/Models
+)
+set(WPW_GUI_INCLUDE_DIRS
     ${CMAKE_SOURCE_DIR}/src/Gui
     ${CMAKE_SOURCE_DIR}/src/Gui/Widgets
     ${CMAKE_SOURCE_DIR}/src/Gui/Dialogs
     ${CMAKE_SOURCE_DIR}/src/Gui/Forms
-    ${CMAKE_SOURCE_DIR}/src/Database
-    ${CMAKE_SOURCE_DIR}/src/Models
     ${CMAKE_SOURCE_DIR}/src/Gui/ModelForms
     ${CMAKE_SOURCE_DIR}/src/Gui/Settings
 )
 
-qt_add_executable(webpassware WIN32 MACOSX_BUNDLE
+# Data layer and logic without Qt Widgets: database, models, CSV, password
+# generator. The GUI and the tests link it.
+qt_add_library(wpw_core STATIC
+    src/Common/CsvModel.cpp
+    src/Common/CsvModel.h
+    src/Common/ExportCsv.cpp
+    src/Common/ExportCsv.h
+    src/Common/GenericFactory.h
+    src/Common/Global.h
+    src/Common/ImportCsv.cpp
+    src/Common/ImportCsv.h
+    src/Common/Logger.cpp
+    src/Common/Logger.h
+    src/Common/PasswordGenerator.cpp
+    src/Common/PasswordGenerator.h
+    src/Common/Singleton.h
+    src/Common/Tools.cpp
+    src/Common/Tools.h
+    src/Database/BusyIndicator.cpp
+    src/Database/BusyIndicator.h
+    src/Database/Database.cpp
+    src/Database/Database.h
+    src/Database/Exception.cpp
+    src/Database/Exception.h
+    src/Database/ExceptionSql.cpp
+    src/Database/ExceptionSql.h
+    src/Database/OrmObject.cpp
+    src/Database/OrmObject.h
+    src/Database/OrmRepository.h
+    src/Database/OrmService.cpp
+    src/Database/OrmService.h
+    src/Database/Service.cpp
+    src/Database/Service.h
+    src/Database/SqlField.cpp
+    src/Database/SqlField.h
+    src/Database/SqlModel.cpp
+    src/Database/SqlModel.h
+    src/Database/SqlQuery.cpp
+    src/Database/SqlQuery.h
+    src/Models/ModelTableCheck.cpp
+    src/Models/ModelTableCheck.h
+    src/Models/PassEntry.cpp
+    src/Models/PassEntry.h
+    src/Models/PassEntryService.cpp
+    src/Models/PassEntryService.h
+    src/Models/PassGroup.cpp
+    src/Models/PassGroup.h
+    src/Models/PassGroupService.cpp
+    src/Models/PassGroupService.h
+)
+target_include_directories(wpw_core PUBLIC ${WPW_CORE_INCLUDE_DIRS})
+target_link_libraries(wpw_core PUBLIC Qt6::Core Qt6::Sql)
+if(WIN32)
+    target_link_libraries(wpw_core PUBLIC psapi)
+endif()
+
+# The windows, dialogs and auto-type, as a library so the tests can drive them.
+qt_add_library(wpw_gui STATIC
     src/Application.cpp
     src/Application.h
     src/ApplicationSettings.cpp
@@ -66,50 +126,16 @@ qt_add_executable(webpassware WIN32 MACOSX_BUNDLE
     src/Common/AutoTypePlatform.h
     src/Common/AutoTypePlatformTest.cpp
     src/Common/AutoTypePlatformTest.h
-    src/Common/CsvModel.cpp
-    src/Common/CsvModel.h
     src/Common/DialogState.cpp
     src/Common/DialogState.h
-    src/Common/ExportCsv.cpp
-    src/Common/ExportCsv.h
-    src/Common/GenericFactory.h
-    src/Common/Global.h
-    src/Common/ImportCsv.cpp
-    src/Common/ImportCsv.h
-    src/Common/Logger.cpp
-    src/Common/Logger.h
     src/Common/MaintenanceTool.cpp
     src/Common/MaintenanceTool.h
-    src/Common/PasswordGenerator.cpp
-    src/Common/PasswordGenerator.h
-    src/Common/Singleton.h
     src/Common/SplitterState.cpp
     src/Common/SplitterState.h
     src/Common/TabMainWindowState.cpp
     src/Common/TabMainWindowState.h
     src/Common/TableState.cpp
     src/Common/TableState.h
-    src/Common/Tools.cpp
-    src/Common/Tools.h
-    src/Database/Database.cpp
-    src/Database/Database.h
-    src/Database/Exception.cpp
-    src/Database/Exception.h
-    src/Database/ExceptionSql.cpp
-    src/Database/ExceptionSql.h
-    src/Database/OrmObject.cpp
-    src/Database/OrmObject.h
-    src/Database/OrmRepository.h
-    src/Database/OrmService.cpp
-    src/Database/OrmService.h
-    src/Database/Service.cpp
-    src/Database/Service.h
-    src/Database/SqlField.cpp
-    src/Database/SqlField.h
-    src/Database/SqlModel.cpp
-    src/Database/SqlModel.h
-    src/Database/SqlQuery.cpp
-    src/Database/SqlQuery.h
     src/Gui/AbstractFormDialog.cpp
     src/Gui/AbstractFormDialog.h
     src/Gui/AbstractFormDialogController.cpp
@@ -238,35 +264,28 @@ qt_add_executable(webpassware WIN32 MACOSX_BUNDLE
     src/Gui/Widgets/ToggleSwitch.h
     src/Gui/Widgets/ToolButton.cpp
     src/Gui/Widgets/ToolButton.h
-    src/Models/ModelTableCheck.cpp
-    src/Models/ModelTableCheck.h
-    src/Models/PassEntry.cpp
-    src/Models/PassEntry.h
-    src/Models/PassEntryService.cpp
-    src/Models/PassEntryService.h
-    src/Models/PassGroup.cpp
-    src/Models/PassGroup.h
-    src/Models/PassGroupService.cpp
-    src/Models/PassGroupService.h
     src/WebPassWareMainWindow.cpp
     src/WebPassWareMainWindow.h
+)
+target_include_directories(wpw_gui PUBLIC ${WPW_GUI_INCLUDE_DIRS})
+target_link_libraries(wpw_gui PUBLIC wpw_core Qt6::Gui Qt6::Svg Qt6::Widgets)
+
+qt_add_executable(webpassware WIN32 MACOSX_BUNDLE
     src/main.cpp
     icons.qrc
     style.qrc
 )
-target_include_directories(webpassware PRIVATE ${WPW_INCLUDE_DIRS})
-target_link_libraries(webpassware PRIVATE Qt6::Core Qt6::Gui Qt6::Sql Qt6::Svg Qt6::Widgets)
+target_link_libraries(webpassware PRIVATE wpw_gui)
 
 if(WIN32)
-    target_sources(webpassware PRIVATE
-        src/Common/AutoTypePlatformWindows.h src/Common/AutoTypePlatformWindows.cpp mainicon.rc)
-    target_link_libraries(webpassware PRIVATE psapi)
+    target_sources(wpw_gui PRIVATE src/Common/AutoTypePlatformWindows.h src/Common/AutoTypePlatformWindows.cpp)
+    target_sources(webpassware PRIVATE mainicon.rc)
 elseif(APPLE)
     enable_language(OBJCXX)
-    target_sources(webpassware PRIVATE
+    target_sources(wpw_gui PRIVATE
         src/Common/AutoTypePlatformMacos.h src/Common/AutoTypePlatformMacos.cpp
         src/Common/MacUtils.h src/Common/MacUtils.mm)
-    target_link_libraries(webpassware PRIVATE "-framework AppKit")
+    target_link_libraries(wpw_gui PUBLIC "-framework AppKit")
     set(wpw_macos_icon ${CMAKE_SOURCE_DIR}/packaging/webpassware.icns)
     set_source_files_properties(${wpw_macos_icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     target_sources(webpassware PRIVATE ${wpw_macos_icon})
@@ -279,10 +298,10 @@ elseif(APPLE)
         MACOSX_BUNDLE_INFO_STRING AWSoftware)
 else()
     find_package(X11 REQUIRED)
-    target_sources(webpassware PRIVATE
+    target_sources(wpw_gui PRIVATE
         src/Common/AutoTypePlatformLinux.h src/Common/AutoTypePlatformLinux.cpp
         src/Common/X11Funcs.h src/Common/X11Funcs.cpp)
-    target_link_libraries(webpassware PRIVATE X11::X11 X11::Xtst)
+    target_link_libraries(wpw_gui PUBLIC X11::X11 X11::Xtst)
 endif()
 
 if(WPW_BUILD_TESTS)
