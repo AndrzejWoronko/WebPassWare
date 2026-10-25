@@ -8,6 +8,5 @@
 - Aktualizacja przez internet: CMaintenanceTool uruchamia maintenancetool z Qt Installer Framework,
   którego paczka DEB nie ma; teraz brak narzędzia daje komunikat "Brak aktualizacji". Do decyzji:
   ukryć akcję bez maintenancetool, usunąć funkcję albo wrócić do instalatora Qt IFW
-- Kodowanie "DOS/OS2-852" w CSV nigdy nie działało (zapis w UTF-8); do decyzji: prawdziwe CP852
-  ("IBM852" w ICU) albo usunięcie z listy
+- Kodowanie "DOS/OS2-852" w CSV: prawdziwe CP852 ("IBM852" w ICU) - OK
 - Szyfrowanie haseł wpisów w bazie (osobny plan)

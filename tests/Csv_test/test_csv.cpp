@@ -57,8 +57,8 @@ void Test_Csv::test_exportBytes_data()
     QTest::newRow("ISO-8859-2") << QString("ISO-8859-2") << QByteArray::fromHex("5a61bff3b3e62067eab66cb1206a61bcf13bb1b6bc");
     QTest::newRow("Windows-1250") << QString("Windows-1250") << QByteArray::fromHex("5a61bff3b3e62067ea9c6cb9206a619ff13bb99c9f");
     QTest::newRow("UTF-8") << QString("UTF-8") << kText.toUtf8() + ";" + kShort.toUtf8();
-    // Qt 5 knows no codec by this name, so the stream keeps its default (UTF-8).
-    QTest::newRow("DOS/OS2-852") << QString("DOS/OS2-852") << kText.toUtf8() + ";" + kShort.toUtf8();
+    // The dialogs' name for code page 852 (DOS Latin 2).
+    QTest::newRow("DOS/OS2-852") << QString("DOS/OS2-852") << QByteArray::fromHex("5a61bea288862067a9986ca5206a61abe43ba598ab");
 }
 
 void Test_Csv::test_exportBytes()

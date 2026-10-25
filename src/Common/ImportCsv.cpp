@@ -2,12 +2,14 @@
 
 #include <QStringDecoder>
 
+#include "CsvCodec.h"
+
 // QTextStream in Qt 6 only knows the Unicode encodings and Latin-1, so the
-// file is decoded as a whole (ICU covers ISO-8859-2 and Windows-1250). An
-// unknown name falls back to UTF-8, as the Qt 5 stream kept its default codec.
+// file is decoded as a whole (ICU covers ISO-8859-2, Windows-1250 and CP852).
+// An unknown name falls back to UTF-8, as the Qt 5 stream kept its default codec.
 static QString decodeCsv(const QByteArray &bytes, const QString &codecName)
 {
-    QStringDecoder decoder(codecName.toLatin1().constData());
+    QStringDecoder decoder(wpw::csvCodecName(codecName).constData());
     if (!decoder.isValid())
     {
         decoder = QStringDecoder(QStringConverter::Utf8);

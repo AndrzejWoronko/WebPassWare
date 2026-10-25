@@ -50,6 +50,8 @@ set(WPW_GUI_INCLUDE_DIRS
 # Data layer and logic without Qt Widgets: database, models, CSV, password
 # generator. The GUI and the tests link it.
 qt_add_library(wpw_core STATIC
+    src/Common/CsvCodec.cpp
+    src/Common/CsvCodec.h
     src/Common/CsvModel.cpp
     src/Common/CsvModel.h
     src/Common/ExportCsv.cpp

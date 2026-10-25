@@ -2,12 +2,14 @@
 
 #include <QStringEncoder>
 
+#include "CsvCodec.h"
+
 // QTextStream in Qt 6 only knows the Unicode encodings and Latin-1, so the
 // text is collected in a string and encoded when the file is finished. An
 // unknown name falls back to UTF-8, as the Qt 5 stream kept its default codec.
 static QByteArray encodeCsv(const QString &text, const QString &codecName)
 {
-    QStringEncoder encoder(codecName.toLatin1().constData());
+    QStringEncoder encoder(wpw::csvCodecName(codecName).constData());
     if (!encoder.isValid())
     {
         encoder = QStringEncoder(QStringConverter::Utf8);
