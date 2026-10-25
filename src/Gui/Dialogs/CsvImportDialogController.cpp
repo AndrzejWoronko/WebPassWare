@@ -1,4 +1,5 @@
 #include "CsvImportDialogController.h"
+#include <QSignalBlocker>
 #include "Application.h"
 #include "PassEntryService.h"
 #include "MessageBox.h"
@@ -254,6 +255,8 @@ void CCsvImportDialogController::onAccept()
                    CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd importu !!!"), tr("Opis błędu"), tx.error()), this);
                    return;
                }
+               // One refresh after the commit, none for rows a rollback discards.
+               QSignalBlocker blockChanges(m_passEntryService);
                int failedRows = 0;
                QString firstError;
                for (int r = 0; r < m_model->rowCount(); r++)
@@ -285,6 +288,8 @@ void CCsvImportDialogController::onAccept()
                    CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd importu !!!"), tr("Opis błędu"), tx.error()), this);
                    return;
                }
+               blockChanges.unblock();
+               m_passEntryService->notifyChanged();
                m_dialog->accept();
            }
         else

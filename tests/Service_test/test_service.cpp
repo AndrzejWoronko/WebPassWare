@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QUuid>
 #include <QSettings>
+#include <QSignalSpy>
 #include <QCryptographicHash>
 
 #include <memory>
@@ -41,6 +42,7 @@ private Q_SLOTS:
     void test_orderByRejectsUnknownColumn();
     void test_databasePasswordIsSalted();
     void test_failedAddReturnsMinusOne();
+    void test_changedSignal();
     void test_databasePasswordUpgradesLegacyHash();
 
 private:
@@ -390,6 +392,38 @@ void Test_Service::test_failedAddReturnsMinusOne()
     QCOMPARE(service.addObject(&duplicate, id), qint64(-1));
     QVERIFY(!service.getError().isEmpty());
     QCOMPARE(service.getInsertedId(), qint64(-1));
+}
+
+void Test_Service::test_changedSignal()
+{
+    PassGroupService service(*m_db);
+    QSignalSpy spy(&service, &PassGroupService::changed);
+
+    PassGroup group;
+    group.setm_name("Zmiany");
+    const qint64 id = service.addObject(&group);
+    QVERIFY(id > 0);
+    QCOMPARE(spy.count(), 1);
+
+    PassGroupService::OwnedObject found = service.getOwnedObject(id);
+    QCOMPARE(spy.count(), 1);
+    found->setm_name("Zmienione");
+    QVERIFY(service.editObject(found.data()));
+    QCOMPARE(spy.count(), 2);
+
+    QVERIFY(service.deleteObject(id));
+    QCOMPARE(spy.count(), 3);
+    QVERIFY(service.removeObject(id));
+    QCOMPARE(spy.count(), 4);
+
+    // A failed change is not a change.
+    PassGroup duplicate;
+    duplicate.setm_name("Druga");
+    QVERIFY(service.addObject(&duplicate) > 0);
+    QCOMPARE(spy.count(), 5);
+    PassGroup again;
+    QCOMPARE(service.addObject(&again, duplicate.getId()), qint64(-1));
+    QCOMPARE(spy.count(), 5);
 }
 
 QTEST_MAIN(Test_Service)

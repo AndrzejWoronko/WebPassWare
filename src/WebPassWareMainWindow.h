@@ -108,6 +108,8 @@ public slots:
     void on_ACTION_DATA_IMPORT_DIALOG_triggered();
     void on_ACTION_DATA_CHECK_triggered();
 
+    void onEntriesChanged();
+    void onGroupsChanged();
     void on_ACTION_CHECK_UPDATES_triggered(void);
 
 

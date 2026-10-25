@@ -6,10 +6,23 @@
 #include "OrmService.h"
 #include "PassGroup.h"
 
-class PassGroupService : public COrmService<PassGroup>
+// Emits changed() after every successful change, so views can refresh.
+class PassGroupService : public QObject, public COrmService<PassGroup>
 {
+    Q_OBJECT
+
 public:
-    explicit PassGroupService(CDatabase &db) : COrmService(db) {}
+    explicit PassGroupService(CDatabase &db, QObject *parent = nullptr) : QObject(parent), COrmService(db) {}
+
+    void notifyChanged() override
+    {
+        emit changed();
+    }
+
+signals:
+    void changed();
+
+public:
     ~PassGroupService() = default;
 
     CSqlModel *getSqlModel(void);

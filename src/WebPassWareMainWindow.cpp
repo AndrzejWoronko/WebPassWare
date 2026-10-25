@@ -259,6 +259,10 @@ void CWebPassWareMainWindow::setConnections(void)
     m_pass_entry_model->refresh();
     m_dataTable->resizeColumnsToContents();
 
+// Views follow every change made through the services (dialogs, import, delete).
+    connect(m_passEntryService, &PassEntryService::changed, this, &CWebPassWareMainWindow::onEntriesChanged);
+    connect(m_passGroupService, &PassGroupService::changed, this, &CWebPassWareMainWindow::onGroupsChanged);
+
 //Podłaczenie delegate dla password
     if (m_pass_entry_model)
        {
@@ -519,11 +523,7 @@ void CWebPassWareMainWindow::on_ACTION_ADD_PASS_GROUP_triggered()
 {
     DEBUG_WITH_LINE << "ADD PASS GROUP";
     auto dialog_ctrl = new PassGroupDialogController(m_passGroupService, m_treeGroupList);
-    if (dialog_ctrl->exec("Dodanie grupy"))
-    {
-        if (m_pass_group_model)
-            m_pass_group_model->refresh();
-    }
+    dialog_ctrl->exec("Dodanie grupy");
     safe_delete(dialog_ctrl);
 }
 
@@ -533,10 +533,9 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered()
     auto dialog_ctrl = new PassGroupDialogController(m_passGroupService, m_treeGroupList);
     qint64 id = getCurrentPassGroupId();
 
-    if ((id > 0) && dialog_ctrl->exec(id, tr("Edycja grupy")))
+    if (id > 0)
     {
-        if (m_pass_group_model)
-            m_pass_group_model->refresh();
+        dialog_ctrl->exec(id, tr("Edycja grupy"));
     }
     safe_delete(dialog_ctrl);
 }
@@ -554,14 +553,6 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_GROUP_triggered()
             {
                 CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd kasowania grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), this);
                 return;
-            }
-            if (m_pass_group_model)
-            {
-                m_pass_group_model->refresh();
-            }
-            if (m_pass_entry_model)
-            {
-                m_pass_entry_model->refresh();
             }
         }
     }
@@ -582,14 +573,7 @@ void CWebPassWareMainWindow::on_ACTION_ADD_PASS_ENTRY_triggered()
 {
     DEBUG_WITH_LINE << "ADD PASS ENTRY";
     auto dialog_ctrl = new PassEntryDialogController(m_passEntryService, m_passGroupService, m_tabWidget);
-    if (dialog_ctrl->exec(tr("Dodanie rekordu")))
-       {
-            if (m_pass_entry_model)
-                {
-                   m_pass_entry_model->refresh();
-                   m_dataTable->resizeColumnsToContents();
-                }
-       }
+    dialog_ctrl->exec(tr("Dodanie rekordu"));
     safe_delete(dialog_ctrl);
 }
 
@@ -599,13 +583,9 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered()
     auto dialog_ctrl = new PassEntryDialogController(m_passEntryService, m_passGroupService, m_tabWidget);
     qint64 id = getCurrentPassEntryId();
 
-    if ((id > 0) && dialog_ctrl->exec(id, tr("Edycja rekordu")))
+    if (id > 0)
        {
-            if (m_pass_entry_model)
-               {
-                   m_pass_entry_model->refresh();
-                   m_dataTable->resizeColumnsToContents();
-               }
+            dialog_ctrl->exec(id, tr("Edycja rekordu"));
        }
     safe_delete(dialog_ctrl);
 }
@@ -636,11 +616,6 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
                         CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd kasowania rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
                         return;
                     }
-                    if (m_pass_entry_model)
-                        {
-                            m_pass_entry_model->refresh();
-                            m_dataTable->resizeColumnsToContents();
-                        }
                 }
             }
        }
@@ -758,7 +733,6 @@ void CWebPassWareMainWindow::on_ACTION_DATA_IMPORT_DIALOG_triggered()
     dialog->getDialog()->exec();
     dialog->getDialog()->close();
     safe_delete(dialog);
-    m_pass_entry_model->refresh();
 }
 
 void CWebPassWareMainWindow::on_ACTION_DATA_CHECK_triggered()
@@ -802,11 +776,7 @@ void CWebPassWareMainWindow::on_ACTION_CLIPBOARD_triggered(void)
     auto dialog_ctrl = new PassGroupDialogController(m_passGroupService, m_treeGroupList);
     auto f = dialog_ctrl->getDialog()->getFields().value("m_name");
     f->setValue(clip_text);
-    if (dialog_ctrl->exec("Dodanie grupy"))
-    {
-       if (m_pass_group_model)
-            m_pass_group_model->refresh();
-    }
+    dialog_ctrl->exec("Dodanie grupy");
     safe_delete(dialog_ctrl);
     this->showMinimized();
     //clipboard_ptr->clear();
@@ -819,4 +789,23 @@ void CWebPassWareMainWindow::on_ACTION_CLIPBOARD_triggered(void)
 
     DEBUG_WITH_LINE << "COPY PASS ENTRY PASSWORD";
 */
+}
+
+void CWebPassWareMainWindow::onEntriesChanged()
+{
+    if (m_pass_entry_model)
+    {
+        m_pass_entry_model->refresh();
+        m_dataTable->resizeColumnsToContents();
+    }
+}
+
+void CWebPassWareMainWindow::onGroupsChanged()
+{
+    if (m_pass_group_model)
+    {
+        m_pass_group_model->refresh();
+    }
+    // The entry list shows the group names.
+    onEntriesChanged();
 }

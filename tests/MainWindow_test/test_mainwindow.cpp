@@ -38,6 +38,7 @@ private Q_SLOTS:
     void test_insertOpensOneDialog();
     void test_deletedGroupLeavesList();
     void test_formDialogsDoNotPileUp();
+    void test_viewsFollowServiceChanges();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -210,6 +211,24 @@ void Test_MainWindow::test_formDialogsDoNotPileUp()
     action("ACTION_ADD_PASS_ENTRY")->trigger();
     QCOMPARE(m_closed.count(), 3);
     QCOMPARE(m_window->findChildren<QDialog *>().size(), 0);
+}
+
+void Test_MainWindow::test_viewsFollowServiceChanges()
+{
+    auto *table = m_window->findChild<CTableView *>();
+    auto *tree = m_window->findChild<QTreeView *>();
+    const int entries = table->model()->rowCount();
+    const int groups = tree->model()->rowCount();
+
+    PassEntry entry;
+    entry.setm_title("Nowy");
+    QVERIFY(m_entries->addObject(&entry) > 0);
+    QCOMPARE(table->model()->rowCount(), entries + 1);
+
+    PassGroup group;
+    group.setm_name("Nowa");
+    QVERIFY(m_groups->addObject(&group) > 0);
+    QCOMPARE(tree->model()->rowCount(), groups + 1);
 }
 
 int main(int argc, char **argv)

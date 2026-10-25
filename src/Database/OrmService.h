@@ -45,6 +45,12 @@ public:
         DEBUG_WITH_LINE << "OrmService destructor";
     }
 
+    // Called after every successful change of the table (add, edit, mark
+    // deleted, remove); the concrete services emit a signal from it.
+    virtual void notifyChanged()
+    {
+    }
+
     ModelName* getObject(void)
     {
         return m_repository->prototype();
@@ -173,6 +179,10 @@ public:
         try
         {
             m_insertedId = m_repository->add(o, newId);
+            if (m_insertedId >= 0)
+            {
+                notifyChanged();
+            }
 
         } catch(CExceptionSql &e)
         {
@@ -189,6 +199,10 @@ public:
         try
         {
             ret = m_repository->update(o);
+            if (ret)
+            {
+                notifyChanged();
+            }
 
         } catch(CExceptionSql &e)
         {
@@ -205,6 +219,10 @@ public:
         try
         {
             ret = m_repository->remove(id);
+            if (ret)
+            {
+                notifyChanged();
+            }
 
         } catch(CExceptionSql &e)
         {
@@ -221,6 +239,10 @@ public:
         try
         {
             ret = m_repository->markDeleted(id);
+            if (ret)
+            {
+                notifyChanged();
+            }
 
         } catch(CExceptionSql &e)
         {
