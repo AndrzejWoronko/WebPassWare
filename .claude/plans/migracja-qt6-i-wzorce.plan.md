@@ -456,3 +456,11 @@ Etap B: 8–12 MD (B3 i B5 największe).
   service 10, legacydb 6); test dymny: świeża baza z `-c` (schemat bez zmian) i stara
   baza. Zostało w B2: `SETT`, `APPI`, `STYLE`, `LOG_*`, `CAutoType::instance`; w B3:
   prepared statements, typy SQLite, `deleted` 0/1, `TransactionGuard`, migracje.
+- 2026-10-25: B3 część 1 (`dc50e80`): wartości przez `bindValue` (koniec wstrzyknięcia
+  SQL w `findBy*`), kolumny i ORDER BY tylko z modelu, `CSqlModel` z powiązaniami.
+- 2026-10-25: B4 zrobione: `wpw::MasterPassword` (PBKDF2-SHA256, sól, UTF-8; MD5
+  przyjmowany i wymieniany przy logowaniu), pierwsze uruchomienie ustawia hasło,
+  strona ustawień bez skrótu i z obecnym hasłem, `-l` usunięte, hasła poza logami
+  (`2bc7e55`..`cf756b9`). ctest 9/9 (nowe: tst_masterpassword, tst_logindialog).
+  Dalej: reszta B3 (typy SQLite, `deleted` 0/1, migracje `user_version`,
+  `TransactionGuard`, import CSV w transakcji), potem reszta B2 i B5–B7.
