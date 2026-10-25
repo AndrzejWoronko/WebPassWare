@@ -62,7 +62,7 @@ void CDatabase::initConnection()
             QDir d;
             d.mkpath(dir);
        }
-//    QFileInfo f(SETT.getSettings()->fileName());
+//    QFileInfo f(CApplicationSettings().fileName());
 //    QString dir = f.absolutePath()
     m_base_name_full_path =  QString("%1/%2").arg(dir, m_base_name);
     DEBUG_WITH_LINE << "DB file path is: " << m_base_name_full_path;

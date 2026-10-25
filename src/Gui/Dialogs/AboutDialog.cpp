@@ -62,7 +62,7 @@ m_application_info->setHtml(tr( "<html><head/><body>"
                        .arg(APP_ORGANIZATION_NAME)
                        .arg(APP_VERSION)
                        .arg(QT_VERSION_STR)                       
-                       .arg(SETT.getSettings()->fileName())
+                       .arg(CApplicationSettings().fileName())
                        .arg(QDir::currentPath())
                        .arg(QCoreApplication::applicationDirPath())
                        );

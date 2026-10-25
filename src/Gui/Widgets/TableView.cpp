@@ -8,10 +8,10 @@ CTableView::CTableView(QWidget * parent) : QTableView(parent)
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
 //set row color
     //this->setAlternatingRowColors(true);
-    this->setAlternatingRowColors(SETT.getValue(SETTINGS_GUI_SHOW_GRID_ROW_COLORS, QVariant(true)).toBool());
+    this->setAlternatingRowColors(CApplicationSettings().getValue(SETTINGS_GUI_SHOW_GRID_ROW_COLORS, QVariant(true)).toBool());
 //Set show grid
     //this->setShowGrid(true);
-    this->setShowGrid(SETT.getValue(SETTINGS_GUI_SHOW_GRID, QVariant(true)).toBool());
+    this->setShowGrid(CApplicationSettings().getValue(SETTINGS_GUI_SHOW_GRID, QVariant(true)).toBool());
     //this->setMenu();
     this->setFocusPolicy(Qt::StrongFocus);
     this->setSortingEnabled(true);
@@ -59,7 +59,7 @@ void CTableView::setupVerticalHeader(double rowHeight)
   if (rowHeight == -1.0)
     {
       //rowHeight = 2;
-      rowHeight = SETT.getValue(SETTINGS_GUI_ROW_HEIGHT, QVariant(2)).toDouble();
+      rowHeight = CApplicationSettings().getValue(SETTINGS_GUI_ROW_HEIGHT, QVariant(2)).toDouble();
     }
   rowHeight *= this->verticalHeader()->fontMetrics().height();
   this->verticalHeader()->setDefaultSectionSize(rowHeight);

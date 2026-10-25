@@ -36,10 +36,10 @@ CWebPassWareMainWindow::CWebPassWareMainWindow(CDatabase &db, PassEntryService *
     , m_pass_group_proxy_model(nullptr)
     , m_pass_entry_proxy_model(nullptr)
 {
-    SETT.setDefaultGuiSettings();
+    CApplicationSettings().setDefaultGuiSettings();
 //Ustawienie fontu dla całej aplikacji
     QFont f;
-    if (f.fromString(SETT.getValue(SETTINGS_GUI_FONT).toString()))
+    if (f.fromString(CApplicationSettings().getValue(SETTINGS_GUI_FONT).toString()))
         APPI->setFont(f);
 
     setAdditionalWidgets();

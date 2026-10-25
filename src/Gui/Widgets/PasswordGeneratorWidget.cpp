@@ -102,28 +102,28 @@ void CPasswordGeneratorWidget::initWidget()
 
 void CPasswordGeneratorWidget::loadSettings()
 {
-    m_checkButtonUpper->setChecked(SETT.getValue(GENERATOR_SETTING_ENTRY_UPPER_CASE, true).toBool());
-    m_checkButtonLower->setChecked(SETT.getValue(GENERATOR_SETTING_ENTRY_LOWER_CASE, true).toBool());
-    m_checkButtonNumbers->setChecked(SETT.getValue(GENERATOR_SETTING_ENTRY_NUMBERS, true).toBool());
-    m_checkButtonSpecialChars->setChecked(SETT.getValue(GENERATOR_SETTING_ENTRY_SPECIAL_CHARS, false).toBool());
+    m_checkButtonUpper->setChecked(CApplicationSettings().getValue(GENERATOR_SETTING_ENTRY_UPPER_CASE, true).toBool());
+    m_checkButtonLower->setChecked(CApplicationSettings().getValue(GENERATOR_SETTING_ENTRY_LOWER_CASE, true).toBool());
+    m_checkButtonNumbers->setChecked(CApplicationSettings().getValue(GENERATOR_SETTING_ENTRY_NUMBERS, true).toBool());
+    m_checkButtonSpecialChars->setChecked(CApplicationSettings().getValue(GENERATOR_SETTING_ENTRY_SPECIAL_CHARS, false).toBool());
 
-    m_checkBoxExcludeAlike->setChecked(SETT.getValue(GENERATOR_SETTING_ENTRY_EXCLUDE_ALIKE, true).toBool());
-    m_checkBoxEnsureEvery->setChecked(SETT.getValue(GENERATOR_SETTING_ENTRY_ENSURE_EVERY, true).toBool());
+    m_checkBoxExcludeAlike->setChecked(CApplicationSettings().getValue(GENERATOR_SETTING_ENTRY_EXCLUDE_ALIKE, true).toBool());
+    m_checkBoxEnsureEvery->setChecked(CApplicationSettings().getValue(GENERATOR_SETTING_ENTRY_ENSURE_EVERY, true).toBool());
 
-    m_length->setValue(SETT.getValue(GENERATOR_SETTING_ENTRY_LENGTH, 16).toInt());
+    m_length->setValue(CApplicationSettings().getValue(GENERATOR_SETTING_ENTRY_LENGTH, 16).toInt());
 }
 
 void CPasswordGeneratorWidget::saveSettings()
 {
-    SETT.setValue(GENERATOR_SETTING_ENTRY_UPPER_CASE, m_checkButtonUpper->isChecked());
-    SETT.setValue(GENERATOR_SETTING_ENTRY_LOWER_CASE, m_checkButtonLower->isChecked());
-    SETT.setValue(GENERATOR_SETTING_ENTRY_NUMBERS, m_checkButtonNumbers->isChecked());
-    SETT.setValue(GENERATOR_SETTING_ENTRY_SPECIAL_CHARS, m_checkButtonSpecialChars->isChecked());
+    CApplicationSettings().setValue(GENERATOR_SETTING_ENTRY_UPPER_CASE, m_checkButtonUpper->isChecked());
+    CApplicationSettings().setValue(GENERATOR_SETTING_ENTRY_LOWER_CASE, m_checkButtonLower->isChecked());
+    CApplicationSettings().setValue(GENERATOR_SETTING_ENTRY_NUMBERS, m_checkButtonNumbers->isChecked());
+    CApplicationSettings().setValue(GENERATOR_SETTING_ENTRY_SPECIAL_CHARS, m_checkButtonSpecialChars->isChecked());
 
-    SETT.setValue(GENERATOR_SETTING_ENTRY_EXCLUDE_ALIKE, m_checkBoxExcludeAlike->isChecked());
-    SETT.setValue(GENERATOR_SETTING_ENTRY_ENSURE_EVERY, m_checkBoxEnsureEvery->isChecked());
+    CApplicationSettings().setValue(GENERATOR_SETTING_ENTRY_EXCLUDE_ALIKE, m_checkBoxExcludeAlike->isChecked());
+    CApplicationSettings().setValue(GENERATOR_SETTING_ENTRY_ENSURE_EVERY, m_checkBoxEnsureEvery->isChecked());
 
-    SETT.setValue(GENERATOR_SETTING_ENTRY_LENGTH, m_length->getValue().toInt());
+    CApplicationSettings().setValue(GENERATOR_SETTING_ENTRY_LENGTH, m_length->getValue().toInt());
 }
 
 void CPasswordGeneratorWidget::reset()

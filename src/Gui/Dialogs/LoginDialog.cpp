@@ -16,7 +16,7 @@ CLoginDialog::CLoginDialog(CDatabase &db, const QString &title, const QString &i
     this->setModal(true);
     this->setWindowTitle(m_firstRun ? tr("Ustaw hasło główne") : title);
     this->centerWindow();
-    this->setMinimumSize(SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_WIDTH).toInt(), SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_HEIGHT).toInt());
+    this->setMinimumSize(CApplicationSettings().getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_WIDTH).toInt(), CApplicationSettings().getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_HEIGHT).toInt());
 
     m_VLayoutDialog = new CVBoxLayout(this);
     m_headerLayout.reset(new CGridLayout());

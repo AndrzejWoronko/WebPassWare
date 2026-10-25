@@ -13,7 +13,7 @@ CStyle::~CStyle()
 
 void CStyle::initActualStyle()
 {
-    m_actualStyle = static_cast<StyleSheet>(SETT.getValue(SETTINGS_GUI_STYLE).toInt());
+    m_actualStyle = static_cast<StyleSheet>(CApplicationSettings().getValue(SETTINGS_GUI_STYLE).toInt());
 
     switch (m_actualStyle)
     {
@@ -59,7 +59,7 @@ void CStyle::setApplicationStyle(QApplication *app)
 void CStyle::changeApplicationStyle(StyleSheet newStyle)
 {
     setStyleSheet(newStyle);
-    SETT.setValue(SETTINGS_GUI_STYLE, QVariant(newStyle));
+    CApplicationSettings().setValue(SETTINGS_GUI_STYLE, QVariant(newStyle));
     initActualStyle();
 }
 

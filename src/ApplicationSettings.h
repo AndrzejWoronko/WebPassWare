@@ -2,7 +2,7 @@
 #define APPLICATIONSETTINGS_H
 
 #include "Global.h"
-#include <QMutex>
+#include <QSettings>
 
 #ifndef APP_NAME
 #define APP_NAME "WebPassWare"
@@ -51,26 +51,25 @@
 #define SETTINGS_GUI_LAYOUT_MARGIN SETTINGS_GUI_PREFIX + "LayoutMargin"
 
 
-#define SETT CApplicationSettings::getInstance()
-
-class CApplicationSettings : public Singleton<CApplicationSettings>
+// The program's settings in its settings file (QSettings with the
+// organisation and name CApplication sets at start). Create one where it is
+// needed; there is no shared instance.
+class CApplicationSettings
 {
-    ADD_QSMART_UNIQUE_PTR(QSettings, m_settings, getSettings)
-
 public:
 
-    CApplicationSettings();
-    ~CApplicationSettings() { DEBUG_WITH_LINE << "~dtor "; }
+    CApplicationSettings() = default;
 
 
     void setValue(const QString &name, const QVariant &value);
     void setValueIf(const QString &name, const QVariant &value);
     QVariant getValue(const QString &name, const QVariant &def_value = QVariant(0));
     void setDefaultGuiSettings(void);
+    QString fileName() const;
 
 private:
 
-    QMutex m_settingsMutex;
+    QSettings m_settings;
 };
 
 #endif // APPLICATIONSETTINGS_H

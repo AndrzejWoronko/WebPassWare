@@ -1,12 +1,7 @@
 #include "ApplicationSettings.h"
-#include "Application.h"
+#include <QFont>
+#include <QGuiApplication>
 #include "Layouts.h"
-
-CApplicationSettings::CApplicationSettings()
-{
-    APPI->setAppInformation();
-    m_settings.reset(new QSettings());
-}
 
 // CApplicationSettings::~CApplicationSettings()
 // {
@@ -15,25 +10,23 @@ CApplicationSettings::CApplicationSettings()
 
 void CApplicationSettings::setValue(const QString &name, const QVariant &value)
 {
-    QMutexLocker lock(&m_settingsMutex);
-    m_settings->setValue(name, value);
+    m_settings.setValue(name, value);
 }
 
 void CApplicationSettings::setValueIf(const QString &name, const QVariant &value)
 {
-    QMutexLocker lock(&m_settingsMutex);
-    if (!m_settings->contains(name))
-        m_settings->setValue(name, value);
+    if (!m_settings.contains(name))
+        m_settings.setValue(name, value);
 }
 
 QVariant CApplicationSettings::getValue(const QString &name, const QVariant &def_value)
 {
-    return  m_settings->value(name, def_value);
+    return  m_settings.value(name, def_value);
 }
 
 void CApplicationSettings::setDefaultGuiSettings(void)
 {
-    QFont f = APPI->font();
+    QFont f = QGuiApplication::font();
     this->setValueIf(SETTINGS_GUI_SHOW_GRID, QVariant(true));
     this->setValueIf(SETTINGS_GUI_SHOW_GRID_ROW_COLORS, QVariant(true));
     this->setValueIf(SETTINGS_GUI_ROW_HEIGHT, QVariant(2));
@@ -46,4 +39,9 @@ void CApplicationSettings::setDefaultGuiSettings(void)
     this->setValueIf(SETTINGS_GUI_LOGIN_DIALOG_MIN_WIDTH, QVariant(500));
     this->setValueIf(SETTINGS_GUI_LAYOUT_SPACING, QVariant(DEFAULT_LAYOUT_SPACING));
     this->setValueIf(SETTINGS_GUI_LAYOUT_MARGIN, QVariant(DEFAULT_LAYOUT_MARGIN));
+}
+
+QString CApplicationSettings::fileName() const
+{
+    return m_settings.fileName();
 }
