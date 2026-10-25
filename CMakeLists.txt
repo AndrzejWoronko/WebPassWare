@@ -53,6 +53,8 @@ set(WPW_GUI_INCLUDE_DIRS
 qt_add_library(wpw_core STATIC
     src/Common/CsvCodec.cpp
     src/Common/CsvCodec.h
+    src/Common/CsvFormat.cpp
+    src/Common/CsvFormat.h
     src/Common/CsvModel.cpp
     src/Common/CsvModel.h
     src/Common/ExportCsv.cpp

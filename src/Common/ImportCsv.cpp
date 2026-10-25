@@ -3,6 +3,7 @@
 #include <QStringDecoder>
 
 #include "CsvCodec.h"
+#include "CsvFormat.h"
 
 // QTextStream in Qt 6 only knows the Unicode encodings and Latin-1, so the
 // file is decoded as a whole (ICU covers ISO-8859-2, Windows-1250 and CP852).
@@ -57,9 +58,27 @@ void CImportCsv::setDigitSign( const QChar &digitSign)
 
 void CImportCsv::readHeader(void)
 {
-    QString line;
-    line = m_in->readLine();
-    m_title = line.split(m_delimiter);
+    readRecord(&m_title);
+}
+
+bool CImportCsv::readRecord(QStringList *fields)
+{
+    QString record = m_in->readLine();
+    if (record.isNull())
+    {
+        return false;
+    }
+    // A quoted field with a line break continues in the next lines.
+    while (!wpw::Csv::splitRecord(record, m_delimiter, fields))
+    {
+        const QString next = m_in->readLine();
+        if (next.isNull())
+        {
+            break;
+        }
+        record += QChar(u'\n') + next;
+    }
+    return true;
 }
 
 void CImportCsv::headerToString(void)
@@ -73,14 +92,7 @@ void CImportCsv::headerToString(void)
 
 bool CImportCsv::readLine(void)
 {
-    QString line;
-
-    line = m_in->readLine();
-    if (line.isNull())
-        return false;
-    else
-        m_buff = line.split(m_delimiter);
-    return true;
+    return readRecord(&m_buff);
 }
 
 bool CImportCsv::openFile()
@@ -102,12 +114,11 @@ bool CImportCsv::openFile()
         headerToString();
     }
     m_rowCount = 0;
+    QStringList record;
     do
     {
-        m_in->readLine();
+        readRecord(&record);
         m_rowCount++;
-
-        //} while (!line.isNull());
     } while (!m_in->atEnd());
     m_in->seek(0);
     return true;

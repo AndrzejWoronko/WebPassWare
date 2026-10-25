@@ -3,6 +3,7 @@
 #include <QStringEncoder>
 
 #include "CsvCodec.h"
+#include "CsvFormat.h"
 
 // QTextStream in Qt 6 only knows the Unicode encodings and Latin-1, so the
 // text is collected in a string and encoded when the file is finished. An
@@ -83,14 +84,14 @@ void CExportCsv::writeHeader(QVector<QVariant> data)
         for(int i = 0; i < data.length() - 1; i++)
         {
             if (m_textDelimiter)
-                *m_out << "\"" << data.at(i).toString().replace("\"","'") << "\"" << m_delimiter;
+                *m_out << wpw::Csv::quoteField(data.at(i).toString(), m_delimiter, true) << m_delimiter;
             else
-                *m_out << data.at(i).toString() << m_delimiter;
+                *m_out << wpw::Csv::quoteField(data.at(i).toString(), m_delimiter) << m_delimiter;
         }
         if (m_textDelimiter)
-            *m_out << "\"" << data.last().toString().replace("\"","'") << "\"" << m_end_of_line;
+            *m_out << wpw::Csv::quoteField(data.last().toString(), m_delimiter, true) << m_end_of_line;
         else
-            *m_out << data.last().toString() << m_end_of_line;
+            *m_out << wpw::Csv::quoteField(data.last().toString(), m_delimiter) << m_end_of_line;
     }
 }
 
@@ -101,14 +102,14 @@ void CExportCsv::writeHeader(QStringList data)
         for(int i = 0; i < data.length() - 1; i++)
         {
             if (m_textDelimiter)
-                *m_out << "\"" << data[i].replace("\"","'") << "\"" << m_delimiter;
+                *m_out << wpw::Csv::quoteField(data.at(i), m_delimiter, true) << m_delimiter;
             else
-                *m_out << data.at(i) << m_delimiter;
+                *m_out << wpw::Csv::quoteField(data.at(i), m_delimiter) << m_delimiter;
         }
         if (m_textDelimiter)
-            *m_out << "\"" << data.last().replace("\"","'") << "\"" << m_end_of_line;
+            *m_out << wpw::Csv::quoteField(data.last(), m_delimiter, true) << m_end_of_line;
         else
-            *m_out << data.last() << m_end_of_line;
+            *m_out << wpw::Csv::quoteField(data.last(), m_delimiter) << m_end_of_line;
     }
 }
 
@@ -123,11 +124,11 @@ void CExportCsv::writeLine(QVector<QVariant> data)
         }
         else if (data.at(i).userType() == QMetaType::QString && m_textDelimiter)
         {
-            *m_out  << "\"" << data.at(i).toString().replace("\"","'")  << "\"" << m_delimiter;
+            *m_out  << wpw::Csv::quoteField(data.at(i).toString(), m_delimiter, true) << m_delimiter;
         }
         else
         {
-            *m_out << data.at(i).toString() << m_delimiter;
+            *m_out << wpw::Csv::quoteField(data.at(i).toString(), m_delimiter) << m_delimiter;
         }
     }
 
@@ -138,11 +139,11 @@ void CExportCsv::writeLine(QVector<QVariant> data)
     }
     else if (data.last().userType() == QMetaType::QString && m_textDelimiter)
     {
-        *m_out  << "\"" << data.last().toString().replace("\"","'")  << "\"" << m_end_of_line;
+        *m_out  << wpw::Csv::quoteField(data.last().toString(), m_delimiter, true) << m_end_of_line;
     }
     else
     {
-        *m_out << data.last().toString() << m_end_of_line;
+        *m_out << wpw::Csv::quoteField(data.last().toString(), m_delimiter) << m_end_of_line;
     }
 }
 
@@ -156,12 +157,12 @@ void CExportCsv::writeLine(QStringList data)
     for(int i = 0; i < data.length() - 1; i++)
     {
         if (m_textDelimiter)
-            *m_out << "\"" << data[i].replace("\"","'") << "\"" << m_delimiter;
+            *m_out << wpw::Csv::quoteField(data.at(i), m_delimiter, true) << m_delimiter;
         else
-            *m_out << data.at(i) << m_delimiter;
+            *m_out << wpw::Csv::quoteField(data.at(i), m_delimiter) << m_delimiter;
     }
     if (m_textDelimiter)
-        *m_out << "\"" << data.last().replace("\"","'") << "\"" << m_end_of_line;
+        *m_out << wpw::Csv::quoteField(data.last(), m_delimiter, true) << m_end_of_line;
     else
-        *m_out << data.last() << m_end_of_line;
+        *m_out << wpw::Csv::quoteField(data.last(), m_delimiter) << m_end_of_line;
 }

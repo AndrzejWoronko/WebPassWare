@@ -20,7 +20,8 @@ private Q_SLOTS:
     void test_exportBytes();
     void test_importReadsBack_data();
     void test_importReadsBack();
-    void test_importSplitsQuotedFieldsNaively();
+    void test_importQuotedFields();
+    void test_roundTripSpecialCharacters();
 
 private:
     QString writeFile(const QString &name, const QByteArray &bytes);
@@ -109,16 +110,40 @@ void Test_Csv::test_importReadsBack()
     QVERIFY(!csv.readLine());
 }
 
-void Test_Csv::test_importSplitsQuotedFieldsNaively()
+void Test_Csv::test_importQuotedFields()
 {
-    const QString path = writeFile("quoted.csv", QByteArray("a;b\n\"x;y\";z\n"));
+    // RFC 4180: quoted fields may hold the delimiter, doubled quotes and line breaks.
+    const QString path = writeFile("quoted.csv", QByteArray("a;b\n\"x;y\";z\n\"say \"\"hi\"\"\";\"two\nlines\"\nplain;\n"));
     QVERIFY(!path.isEmpty());
 
     CImportCsv csv(path, QChar(';'), QString("UTF-8"), QChar(','), false);
     QVERIFY(csv.openFile());
+    QCOMPARE(csv.getRowCount(), qint64(4));
     QVERIFY(csv.readLine());
+    QCOMPARE(csv.getBuff(), QStringList() << "a" << "b");
     QVERIFY(csv.readLine());
-    QCOMPARE(csv.getBuff(), QStringList() << "\"x" << "y\"" << "z");
+    QCOMPARE(csv.getBuff(), QStringList() << "x;y" << "z");
+    QVERIFY(csv.readLine());
+    QCOMPARE(csv.getBuff(), QStringList() << "say \"hi\"" << "two\nlines");
+    QVERIFY(csv.readLine());
+    QCOMPARE(csv.getBuff(), QStringList() << "plain" << "");
+    QVERIFY(!csv.readLine());
+}
+
+void Test_Csv::test_roundTripSpecialCharacters()
+{
+    const QString path = m_dir.filePath("roundtrip.csv");
+    const QStringList row = QStringList() << "Bank" << "p;a\"ss" << "linia1\nlinia2";
+    {
+        CExportCsv csv(path, QChar(';'), QString("UTF-8"), QChar(','));
+        QVERIFY(csv.getIsOpen());
+        csv.writeLine(QVector<QVariant>() << QVariant(row.at(0)) << QVariant(row.at(1)) << QVariant(row.at(2)));
+    }
+    CImportCsv csv(path, QChar(';'), QString("UTF-8"), QChar(','), false);
+    QVERIFY(csv.openFile());
+    QVERIFY(csv.readLine());
+    QCOMPARE(csv.getBuff(), row);
+    QVERIFY(!csv.readLine());
 }
 
 QTEST_MAIN(Test_Csv)

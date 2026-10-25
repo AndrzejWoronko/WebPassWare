@@ -35,6 +35,8 @@ private:
 
     int getFieldNrByName(const QString &fieldName);
     void headerToString(void);
+    // One record, possibly over several lines (quoted line breaks).
+    bool readRecord(QStringList *fields);
 
     QString m_content;
     QTextStream *m_in;
