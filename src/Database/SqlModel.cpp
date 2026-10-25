@@ -118,7 +118,9 @@ void CSqlModel::refresh()
                 DEBUG_WITH_LINE << query.lastQuery();
 
 //                beginResetModel();  //Uwaga bardzo ważne. bez tego nie wywołuje się data i headerData
-                QSqlQueryModel::setQuery(query.lastQuery(), m_db.getDb());
+                // The executed query itself, so the bound values are used.
+                query.exec();
+                QSqlQueryModel::setQuery(std::move(query));
                 if (this->lastError().isValid())
                     DEBUG_WITH_LINE <<  this->lastError();
                 else

@@ -302,8 +302,11 @@ bool CDatabase::alterTableAddColumn(const QString &tableName, const PkNames &inf
 
 bool CDatabase::resetAutoIncrement(const QString &tableName, qint64 value)
 {
-    m_lastQuery = QString("UPDATE SQLITE_SEQUENCE SET SEQ=%1 WHERE NAME='%2';").arg(value).arg(tableName);
-    if (m_query->exec(m_lastQuery))
+    m_lastQuery = QString("UPDATE SQLITE_SEQUENCE SET SEQ = :seq WHERE NAME = :name;");
+    QVariantHash bindings;
+    bindings.insert(":seq", value);
+    bindings.insert(":name", tableName);
+    if (execPrepared(bindings))
         return true;
     else
         throw CExceptionSql(Q_FUNC_INFO, m_query);
@@ -368,7 +371,20 @@ qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVari
     return id;
 }
 
-bool CDatabase::updateRecord(const QString &tableName, const QHash<QString, QVariant> &info, const QString &params)
+bool CDatabase::execPrepared(const QVariantHash &bindings)
+{
+    if (!m_query->prepare(m_lastQuery))
+    {
+        return false;
+    }
+    for (auto it = bindings.constBegin(); it != bindings.constEnd(); ++it)
+    {
+        m_query->bindValue(it.key(), it.value());
+    }
+    return m_query->exec();
+}
+
+bool CDatabase::updateRecord(const QString &tableName, const QHash<QString, QVariant> &info, const QString &params, const QVariantHash &bindings)
 {
     m_lastQuery = QString("UPDATE %1 SET ").arg(tableName);
 
@@ -380,6 +396,10 @@ bool CDatabase::updateRecord(const QString &tableName, const QHash<QString, QVar
 
     for (auto fieldName : info.keys())
         m_query->bindValue(":" + fieldName, info.value(fieldName, QVariant()));
+    for (auto it = bindings.constBegin(); it != bindings.constEnd(); ++it)
+    {
+        m_query->bindValue(it.key(), it.value());
+    }
 
     if (m_query->exec())
         return true;
@@ -407,20 +427,20 @@ bool CDatabase::replaceRecord(const QString &tableName, const QHash<QString, QVa
     return false;
 }
 
-bool CDatabase::remove(const QString &tableName, const QString &params)
+bool CDatabase::remove(const QString &tableName, const QString &params, const QVariantHash &bindings)
 {
     m_lastQuery = QString("DELETE FROM %1 %2;").arg(tableName, params);
-    if (m_query->exec(m_lastQuery))
+    if (execPrepared(bindings))
         return true;
     else
         throw CExceptionSql(Q_FUNC_INFO, m_query);
     return false;
 }
 
-bool CDatabase::setDeleted(const QString &tableName, const QString &params)
+bool CDatabase::setDeleted(const QString &tableName, const QString &params, const QVariantHash &bindings)
 {
     m_lastQuery = QString("UPDATE %1 SET deleted = 'true' %2;").arg(tableName, params);
-    if (m_query->exec(m_lastQuery))
+    if (execPrepared(bindings))
         return true;
     else
         throw CExceptionSql(Q_FUNC_INFO, m_query);
@@ -428,13 +448,13 @@ bool CDatabase::setDeleted(const QString &tableName, const QString &params)
 }
 
 
-QList<QSqlRecord> CDatabase::find(const QString &tableName, const QString &fieldName, const QString &params)
+QList<QSqlRecord> CDatabase::find(const QString &tableName, const QString &fieldName, const QString &params, const QVariantHash &bindings)
 {
     QList<QSqlRecord> result;
 
     result.clear();
     m_lastQuery = QString("SELECT %1 FROM %2 %3;").arg(fieldName, tableName, params);
-    if(m_query->exec(m_lastQuery))
+    if(execPrepared(bindings))
     {        
         while(m_query->next())
             result.append(m_query->record());

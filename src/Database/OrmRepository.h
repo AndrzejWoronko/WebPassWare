@@ -4,6 +4,7 @@
 #include "Global.h"
 #include "Database.h"
 #include "OrmObject.h"
+#include "ExceptionSql.h"
 
 #include <memory>
 
@@ -41,9 +42,90 @@ class COrmRepository : public IRepository<ModelName>
         return m_object->getTableName();
     }
 
-    QString idCondition(qint64 id) const
+    // Conditions carry placeholders only; the values go in bindings.
+    QString idCondition() const
     {
-        return QString(" WHERE id_%1 = %2").arg(tableName()).arg(id);
+        return QString(" WHERE id_%1 = :wid").arg(tableName());
+    }
+
+    static QVariantHash idBinding(qint64 id)
+    {
+        QVariantHash bindings;
+        bindings.insert(":wid", id);
+        return bindings;
+    }
+
+    // Column names come from callers (finders, sort order). Only the model's
+    // own columns may reach the SQL text; like SQLite, case is ignored.
+    QString checkedColumn(const QString &name) const
+    {
+        const QString column = name.trimmed();
+        const QString idColumn = QString("id_%1").arg(tableName());
+        if (column.compare(idColumn, Qt::CaseInsensitive) == 0)
+        {
+            return idColumn;
+        }
+        const QMetaObject *meta = m_object->metaObject();
+        // Property 0 is QObject::objectName, not a column.
+        for (int i = 1; i < meta->propertyCount(); i++)
+        {
+            const QString property = QString::fromLatin1(meta->property(i).name());
+            if (column.compare(property, Qt::CaseInsensitive) == 0)
+            {
+                return property;
+            }
+        }
+        throw CExceptionSql(Q_FUNC_INFO, name, QString("Unknown column of %1: %2").arg(tableName(), name));
+    }
+
+    // "col[ ASC|DESC][, ...]" with checked columns, as an ORDER BY clause.
+    QString orderByClause(const QString &orderby) const
+    {
+        if (orderby.trimmed().isEmpty())
+        {
+            return QString();
+        }
+        QStringList terms;
+        const QStringList requested = orderby.split(',');
+        for (const QString &term : requested)
+        {
+            const QStringList parts = term.simplified().split(' ');
+            QString checked = checkedColumn(parts.value(0));
+            if (parts.size() == 2 && (parts.at(1).compare("ASC", Qt::CaseInsensitive) == 0
+                                      || parts.at(1).compare("DESC", Qt::CaseInsensitive) == 0))
+            {
+                checked += " " + parts.at(1).toUpper();
+            }
+            else if (parts.size() != 1)
+            {
+                throw CExceptionSql(Q_FUNC_INFO, orderby, QString("Invalid sort order: %1").arg(orderby));
+            }
+            terms.append(checked);
+        }
+        return " ORDER BY " + terms.join(", ");
+    }
+
+    // "WHERE a = :w0 <joiner> b = :w1 ..." for the given column/value pairs.
+    QString whereClause(const QList<QPair<QString, QVariant>> &conditions, const QString &joiner, QVariantHash &bindings) const
+    {
+        QStringList parts;
+        for (int i = 0; i < conditions.size(); i++)
+        {
+            const QString placeholder = QString(":w%1").arg(i);
+            parts.append(QString("%1 = %2").arg(checkedColumn(conditions.at(i).first), placeholder));
+            bindings.insert(placeholder, conditions.at(i).second);
+        }
+        return " WHERE " + parts.join(" " + joiner + " ");
+    }
+
+    static QList<QPair<QString, QVariant>> pairs(const QHash<QString, QVariant> &params)
+    {
+        QList<QPair<QString, QVariant>> result;
+        for (auto it = params.constBegin(); it != params.constEnd(); ++it)
+        {
+            result.append(qMakePair(it.key(), it.value()));
+        }
+        return result;
     }
 
     QList<ModelName*> toObjects(const QList<QSqlRecord> &records) const
@@ -151,7 +233,7 @@ public:
             return true;
         }
 
-        const bool ret = m_db.updateRecord(tableName(), object->changedValues(), idCondition(object->getId()));
+        const bool ret = m_db.updateRecord(tableName(), object->changedValues(), idCondition(), idBinding(object->getId()));
         if (ret)
         {
             object->clearUpdateList();
@@ -168,7 +250,7 @@ public:
         }
         QHash<QString, QVariant> info;
         info.insert(fieldName, value);
-        if (!m_db.updateRecord(tableName(), info, idCondition(object->getId())))
+        if (!m_db.updateRecord(tableName(), info, idCondition(), idBinding(object->getId())))
         {
             return false;
         }
@@ -179,7 +261,7 @@ public:
     // Deletes the record of \a object; its id becomes -1.
     bool remove(ModelName *object)
     {
-        const bool ret = m_db.remove(tableName(), idCondition(object->getId()));
+        const bool ret = m_db.remove(tableName(), idCondition(), idBinding(object->getId()));
         if (ret)
         {
             object->setId(-1);
@@ -190,7 +272,7 @@ public:
     // Marks the record of \a object deleted; its id becomes -1.
     bool setDeleted(ModelName *object)
     {
-        const bool ret = m_db.setDeleted(tableName(), idCondition(object->getId()));
+        const bool ret = m_db.setDeleted(tableName(), idCondition(), idBinding(object->getId()));
         if (ret)
         {
             object->setId(-1);
@@ -212,7 +294,7 @@ public:
 
     ModelName* find(qint64 id) override final
     {
-        const QList<QSqlRecord> list = m_db.find(tableName(), "*", idCondition(id));
+        const QList<QSqlRecord> list = m_db.find(tableName(), "*", idCondition(), idBinding(id));
         if (list.isEmpty())
         {
             return nullptr;
@@ -222,7 +304,7 @@ public:
 
     QList<ModelName*> findAll(const QString &orderby = QString()) override final
     {
-        return toObjects(m_db.find(tableName(), "*", orderby.isEmpty() ? QString() : " ORDER BY " + orderby));
+        return toObjects(m_db.find(tableName(), "*", orderByClause(orderby)));
     }
 
     ModelName* first() override final
@@ -254,10 +336,9 @@ public:
 
     QList<ModelName*> findBy(const QString &fieldName, const QVariant value, const QString &orderby)
     {
-        QString whereString = " WHERE ";
-        const QString orderString = orderby.isEmpty() ? "" : " ORDER BY " + orderby;
-        whereString += QString(" %1 = '%2' ").arg(fieldName, value.toString());
-        return toObjects(m_db.find(tableName(), "*", whereString + " " + orderString));
+        QVariantHash bindings;
+        const QString where = whereClause({qMakePair(fieldName, value)}, "AND", bindings);
+        return toObjects(m_db.find(tableName(), "*", where + orderByClause(orderby), bindings));
     }
 
     QList<ModelName*> findBy(const QString &fieldName, const QVector<QVariant> &values, const QString &orderby = QString())
@@ -266,15 +347,14 @@ public:
         {
             return QList<ModelName*>();
         }
-
-        QString whereString = " WHERE ";
-        const QString orderString = orderby.isEmpty() ? "" : " ORDER BY " + orderby;
+        QList<QPair<QString, QVariant>> conditions;
         for (const QVariant &value : values)
         {
-            whereString += QString("%1 = '%2' OR ").arg(fieldName).arg(value.toString());
+            conditions.append(qMakePair(fieldName, value));
         }
-        whereString.chop(4);
-        return toObjects(m_db.find(tableName(), "*", whereString + " " + orderString));
+        QVariantHash bindings;
+        const QString where = whereClause(conditions, "OR", bindings);
+        return toObjects(m_db.find(tableName(), "*", where + orderByClause(orderby), bindings));
     }
 
     QList<ModelName*> findByOr(const QHash<QString, QVariant> &params)
@@ -283,14 +363,9 @@ public:
         {
             return QList<ModelName*>();
         }
-
-        QString whereString = "WHERE ";
-        for (auto key : params.keys())
-        {
-            whereString += QString("%1 = '%2' OR ").arg(key).arg(params.value(key).toString());
-        }
-        whereString.chop(4);
-        return toObjects(m_db.find(tableName(), "*", whereString));
+        QVariantHash bindings;
+        const QString where = whereClause(pairs(params), "OR", bindings);
+        return toObjects(m_db.find(tableName(), "*", where, bindings));
     }
 
     QList<ModelName*> findByAnd(const QHash<QString, QVariant> &params) override final
@@ -299,14 +374,9 @@ public:
         {
             return QList<ModelName*>();
         }
-
-        QString whereString = "WHERE ";
-        for (auto key : params.keys())
-        {
-            whereString += QString("%1 = '%2' AND ").arg(key).arg(params.value(key).toString());
-        }
-        whereString.chop(4);
-        return toObjects(m_db.find(tableName(), "*", whereString));
+        QVariantHash bindings;
+        const QString where = whereClause(pairs(params), "AND", bindings);
+        return toObjects(m_db.find(tableName(), "*", where, bindings));
     }
 
     // True if the table has any record.
@@ -317,7 +387,7 @@ public:
 
     bool exists(qint64 id)
     {
-        return !m_db.find(tableName(), "*", idCondition(id)).isEmpty();
+        return !m_db.find(tableName(), "*", idCondition(), idBinding(id)).isEmpty();
     }
 
     qint64 count()

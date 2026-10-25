@@ -29,15 +29,15 @@ virtual bool alterTableAddColumn(const QString &tableName, const PkNames &info) 
 virtual QList<QSqlIndex> getTableIndexes(const QString &tableName) = 0;
 
 virtual qint64 addRecord(const QString &tableName, const QHash<QString, QVariant> &info, qint64 newId, bool force_id) = 0;
-virtual bool updateRecord(const QString &tableName, const QHash<QString, QVariant> &info, const QString &params) = 0;
+virtual bool updateRecord(const QString &tableName, const QHash<QString, QVariant> &info, const QString &params, const QVariantHash &bindings = QVariantHash()) = 0;
 virtual bool replaceRecord(const QString &tableName, const QHash<QString, QVariant> &info) = 0;
 
-virtual QList<QSqlRecord> find(const QString &tableName, const QString &fieldName, const QString &params) = 0;
+virtual QList<QSqlRecord> find(const QString &tableName, const QString &fieldName, const QString &params, const QVariantHash &bindings = QVariantHash()) = 0;
 virtual QSqlRecord first(const QString &tableName, const QString &pkName) = 0;
 virtual QSqlRecord last(const QString &tableName, const QString &pkName) = 0;
 
-virtual bool remove(const QString &tableName, const QString &params) = 0;
-virtual bool setDeleted(const QString &tableName, const QString &params) = 0;
+virtual bool remove(const QString &tableName, const QString &params, const QVariantHash &bindings = QVariantHash()) = 0;
+virtual bool setDeleted(const QString &tableName, const QString &params, const QVariantHash &bindings = QVariantHash()) = 0;
 
 virtual qint64 count(const QString &tableName, const QString &arg) = 0;
 virtual qint64 countBy(const QString &tableName, const QString &params) = 0;
@@ -92,15 +92,15 @@ public:
     virtual QList<QSqlIndex> getTableIndexes(const QString &tableName) override final;
 
     virtual qint64 addRecord(const QString &tableName, const QHash<QString, QVariant> &info, qint64 newId, bool force_id = false) override final;
-    virtual bool updateRecord(const QString &tableName, const QHash<QString, QVariant> &info, const QString &params) override final;
+    virtual bool updateRecord(const QString &tableName, const QHash<QString, QVariant> &info, const QString &params, const QVariantHash &bindings = QVariantHash()) override final;
     virtual bool replaceRecord(const QString &tableName, const QHash<QString, QVariant> &info) override final;
 
-    virtual QList<QSqlRecord> find(const QString &tableName, const QString &fieldName, const QString &params) override final;
+    virtual QList<QSqlRecord> find(const QString &tableName, const QString &fieldName, const QString &params, const QVariantHash &bindings = QVariantHash()) override final;
     virtual QSqlRecord first(const QString &tableName, const QString &pkName) override final;
     virtual QSqlRecord last(const QString &tableName, const QString &pkName) override final;
 
-    virtual bool remove(const QString &tableName, const QString &params) override final;
-    virtual bool setDeleted(const QString &tableName, const QString &params) override final;
+    virtual bool remove(const QString &tableName, const QString &params, const QVariantHash &bindings = QVariantHash()) override final;
+    virtual bool setDeleted(const QString &tableName, const QString &params, const QVariantHash &bindings = QVariantHash()) override final;
 
     virtual qint64 count(const QString &tableName, const QString &arg) override final;
     virtual qint64 countBy(const QString &tableName, const QString &params) override final;
@@ -113,6 +113,8 @@ public:
 private:
 
     static QString getFieldTypeNameSqlite(int t);
+    // Prepares m_lastQuery, binds the values (placeholder -> value) and runs it.
+    bool execPrepared(const QVariantHash &bindings);
 
     bool m_conected;
 

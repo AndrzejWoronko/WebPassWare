@@ -34,6 +34,9 @@ private Q_SLOTS:
     void test_tableDdlIsStable();
     void test_declaredTypeNamesKeepTypedefs();
     void test_busyIndicatorWrapsQueries();
+    void test_findByValueIsBound();
+    void test_findByRejectsUnknownColumn();
+    void test_orderByRejectsUnknownColumn();
 
 private:
     void createTables();
@@ -288,6 +291,57 @@ void Test_Service::test_busyIndicatorWrapsQueries()
 
     QVERIFY(begun > 0);
     QCOMPARE(ended, begun);
+}
+
+void Test_Service::test_findByValueIsBound()
+{
+    PassGroupService service(*m_db);
+    PassGroup group;
+    group.setm_name("Prywatne");
+    QVERIFY(service.addObject(&group) > 0);
+    PassGroup quoted;
+    quoted.setm_name("O'Brien");
+    QVERIFY(service.addObject(&quoted) > 0);
+
+    PassGroupService::OwnedObjectList injected = service.getOwnedObjectsBy("m_name", QVariant("x' OR '1'='1"));
+    QVERIFY(service.getError().isEmpty());
+    QCOMPARE(injected.size(), 0);
+
+    PassGroupService::OwnedObjectList found = service.getOwnedObjectsBy("m_name", QVariant("O'Brien"));
+    QVERIFY(service.getError().isEmpty());
+    QCOMPARE(found.size(), 1);
+    QCOMPARE(found.first()->getm_name(), QString("O'Brien"));
+
+    QHash<QString, QVariant> params;
+    params.insert("m_name", QVariant("O'Brien"));
+    QCOMPARE(service.getOwnedObjectsBy(params).size(), 1);
+}
+
+void Test_Service::test_findByRejectsUnknownColumn()
+{
+    PassGroupService service(*m_db);
+    PassGroup group;
+    group.setm_name("Prywatne");
+    QVERIFY(service.addObject(&group) > 0);
+
+    PassGroupService::OwnedObjectList list = service.getOwnedObjectsBy("m_name = m_name OR 1", QVariant("x"));
+    QCOMPARE(list.size(), 0);
+    QVERIFY(!service.getError().isEmpty());
+}
+
+void Test_Service::test_orderByRejectsUnknownColumn()
+{
+    PassGroupService service(*m_db);
+    PassGroup group;
+    group.setm_name("Prywatne");
+    QVERIFY(service.addObject(&group) > 0);
+
+    QCOMPARE(service.getOwnedObjects(QString("m_name DESC")).size(), 1);
+    QVERIFY(service.getError().isEmpty());
+
+    QCOMPARE(service.getOwnedObjects(QString("m_name; DROP TABLE pass_group")).size(), 0);
+    QVERIFY(!service.getError().isEmpty());
+    QVERIFY(m_db->checkTableInDatabase("pass_group"));
 }
 
 QTEST_MAIN(Test_Service)
