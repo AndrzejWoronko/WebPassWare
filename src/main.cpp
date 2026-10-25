@@ -9,6 +9,8 @@
 #include "WebPassWareMainWindow.h"
 #include "Database.h"
 #include "ModelTableCheck.h"
+#include "PassEntryService.h"
+#include "PassGroupService.h"
 #include "BusyIndicator.h"
 
 // Projekty wzorcowe
@@ -90,7 +92,10 @@ int main(int argc, char **argv)
               ModelTableCheck::checkAllTables();
             }
        }
-    w = new CWebPassWareMainWindow();
+    // Created here and handed to the window: it must not outlive them.
+    PassEntryService passEntryService;
+    PassGroupService passGroupService;
+    w = new CWebPassWareMainWindow(&passEntryService, &passGroupService);
     //w->centerAndResize();
     //w->restoreDialogState();
     w->show();

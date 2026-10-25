@@ -2,14 +2,9 @@
 #include "PassGroupService.h"
 #include "MessageBox.h"
 
-PassGroupDialogController::PassGroupDialogController(QWidget *parent) :
-    PassGroupDialogController(&PassGroupService::getInstance(), parent)
-{
-}
-
 PassGroupDialogController::PassGroupDialogController(PassGroupService *passGroupService, QWidget *parent) :
     CAbstractFormDialogController(new PassGroupDialog(parent), parent),
-    m_passGroupService(passGroupService ? passGroupService : &PassGroupService::getInstance())
+    m_passGroupService(passGroupService)
 {
     if (m_dialog)
     {

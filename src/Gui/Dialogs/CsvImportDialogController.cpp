@@ -3,14 +3,9 @@
 #include "PassEntryService.h"
 #include "MessageBox.h"
 
-CCsvImportDialogController::CCsvImportDialogController(QWidget *parent) :
-    CCsvImportDialogController(&PassEntryService::getInstance(), parent)
-{
-}
-
 CCsvImportDialogController::CCsvImportDialogController(PassEntryService *passEntryService, QWidget *parent) :
     QWidget(parent),
-    m_passEntryService(passEntryService ? passEntryService : &PassEntryService::getInstance())
+    m_passEntryService(passEntryService)
 {
     m_model = nullptr;
     m_import = nullptr;

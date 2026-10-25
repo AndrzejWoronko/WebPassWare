@@ -20,7 +20,6 @@ class CCsvImportDialogController : public QWidget, public CAbstractDialogStateMa
     ADD_QSMART_UNIQUE_PTR(QSettings, m_settings, getDataImportSettings)
 
 public:
-    CCsvImportDialogController(QWidget *parent = nullptr);
     CCsvImportDialogController(PassEntryService *passEntryService, QWidget *parent = nullptr);
     ~CCsvImportDialogController();
 

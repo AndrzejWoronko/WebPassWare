@@ -6,7 +6,7 @@
 #include "OrmService.h"
 #include "PassGroup.h"
 
-class PassGroupService : public COrmService<PassGroup>, public Singleton<PassGroupService>
+class PassGroupService : public COrmService<PassGroup>
 {
 public:
     PassGroupService() = default;

@@ -6,7 +6,7 @@
 #include "OrmService.h"
 #include "PassEntry.h"
 
-class PassEntryService : public COrmService<PassEntry>, public Singleton<PassEntryService>
+class PassEntryService : public COrmService<PassEntry>
 {
 public:
     PassEntryService() = default;

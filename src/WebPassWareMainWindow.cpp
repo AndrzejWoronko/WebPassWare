@@ -22,19 +22,14 @@
 #include "ToolButton.h"
 #include "AutoType.h"
 
-CWebPassWareMainWindow::CWebPassWareMainWindow(QWidget *parent)
-    : CWebPassWareMainWindow(&PassEntryService::getInstance(), &PassGroupService::getInstance(), parent)
-{
-}
-
 CWebPassWareMainWindow::CWebPassWareMainWindow(PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent)
     : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
     , m_headerContextMenu(nullptr)
     , m_timer(new QTimer(this))
     , m_visible_passwords(false)
     , m_visible_passwords_action(nullptr)
-    , m_passEntryService(passEntryService ? passEntryService : &PassEntryService::getInstance())
-    , m_passGroupService(passGroupService ? passGroupService : &PassGroupService::getInstance())
+    , m_passEntryService(passEntryService)
+    , m_passGroupService(passGroupService)
     , m_pass_group_model(nullptr)
     , m_pass_entry_model(nullptr)
     , m_pass_group_proxy_model(nullptr)

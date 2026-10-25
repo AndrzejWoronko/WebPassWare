@@ -13,7 +13,6 @@ class PassGroupDialogController : public CAbstractFormDialogController
 
 public:
 
-    explicit PassGroupDialogController(QWidget *parent = nullptr);
     PassGroupDialogController(PassGroupService *passGroupService, QWidget *parent = nullptr);
     ~PassGroupDialogController();
 

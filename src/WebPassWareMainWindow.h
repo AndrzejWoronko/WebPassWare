@@ -43,7 +43,6 @@ class CWebPassWareMainWindow : public CAbstractMainWindow
     ADD_PTR_PROPERTY(QTimer, m_timer, getTimer)
 
 public:
-    explicit CWebPassWareMainWindow(QWidget *parent = nullptr);
     CWebPassWareMainWindow(PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent = nullptr);
     ~CWebPassWareMainWindow();
 
