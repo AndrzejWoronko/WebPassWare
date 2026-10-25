@@ -15,8 +15,9 @@ class CLogger : public QTextStream
 private:
     QFile m_file;
     QString m_fileName;
-    bool m_month;
-    bool m_screen;
+    // The file-name constructor did not set m_month.
+    bool m_month = false;
+    bool m_screen = true;
     void mkDirIfNotExist();  //tworzenie katalogu jeżeli nie istnieje
     void setFile(void);
 public:    
