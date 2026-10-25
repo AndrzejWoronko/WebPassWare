@@ -4,6 +4,8 @@
 #include <QDir>
 #include <QFile>
 #include <QUuid>
+#include <QSettings>
+#include <QCryptographicHash>
 
 #include <memory>
 
@@ -37,6 +39,8 @@ private Q_SLOTS:
     void test_findByValueIsBound();
     void test_findByRejectsUnknownColumn();
     void test_orderByRejectsUnknownColumn();
+    void test_databasePasswordIsSalted();
+    void test_databasePasswordUpgradesLegacyHash();
 
 private:
     void createTables();
@@ -58,6 +62,8 @@ void Test_Service::initTestCase()
     const QString dataPath = QDir::temp().filePath(QString("webpassware-service-test-data-%1").arg(QUuid::createUuid().toString(QUuid::Id128)));
     QDir().mkpath(dataPath);
     qputenv("XDG_DATA_HOME", QFile::encodeName(dataPath));
+    // The master password lives in the settings file; keep it away from the user's.
+    qputenv("XDG_CONFIG_HOME", QFile::encodeName(dataPath + "/config"));
 
     m_db = std::make_unique<CDatabase>();
     m_db->setEchoQuery(false);
@@ -342,6 +348,31 @@ void Test_Service::test_orderByRejectsUnknownColumn()
     QCOMPARE(service.getOwnedObjects(QString("m_name; DROP TABLE pass_group")).size(), 0);
     QVERIFY(!service.getError().isEmpty());
     QVERIFY(m_db->checkTableInDatabase("pass_group"));
+}
+
+void Test_Service::test_databasePasswordIsSalted()
+{
+    QSettings().remove(DATABASE_SETTING_PASSWORD);
+    QVERIFY(!m_db->hasDatabasePassword());
+
+    m_db->setDatabasePassword("nowe");
+    QVERIFY(m_db->hasDatabasePassword());
+    QVERIFY(QSettings().value(DATABASE_SETTING_PASSWORD).toString().startsWith("pbkdf2-sha256$"));
+    QVERIFY(m_db->checkDatabasePassword("nowe"));
+    QVERIFY(!m_db->checkDatabasePassword("stare"));
+}
+
+void Test_Service::test_databasePasswordUpgradesLegacyHash()
+{
+    const QString legacy = QString::fromLatin1(QCryptographicHash::hash("stare", QCryptographicHash::Md5).toHex());
+    QSettings().setValue(DATABASE_SETTING_PASSWORD, legacy);
+
+    QVERIFY(!m_db->checkDatabasePassword("zle"));
+    QCOMPARE(QSettings().value(DATABASE_SETTING_PASSWORD).toString(), legacy);
+
+    QVERIFY(m_db->checkDatabasePassword("stare"));
+    QVERIFY(QSettings().value(DATABASE_SETTING_PASSWORD).toString().startsWith("pbkdf2-sha256$"));
+    QVERIFY(m_db->checkDatabasePassword("stare"));
 }
 
 QTEST_MAIN(Test_Service)

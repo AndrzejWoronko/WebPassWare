@@ -16,6 +16,7 @@ wpw_add_test(tst_legacydb SOURCES LegacyDb_test/test_legacydb.cpp LIBS wpw_core)
 wpw_add_test(tst_csv SOURCES Csv_test/test_csv.cpp LIBS wpw_core)
 wpw_add_test(tst_masterpassword SOURCES MasterPassword_test/test_masterpassword.cpp LIBS wpw_core)
 wpw_add_test(tst_forms SOURCES Forms_test/test_forms.cpp LIBS wpw_gui)
+wpw_add_test(tst_logindialog SOURCES LoginDialog_test/test_logindialog.cpp LIBS wpw_gui)
 wpw_add_test(tst_maintenancetool SOURCES MaintenanceTool_test/test_maintenancetool.cpp LIBS wpw_gui)
 
 if(UNIX AND NOT APPLE)

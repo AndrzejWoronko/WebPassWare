@@ -4,7 +4,7 @@
 #include "MessageBox.h"
 
 CLoginDialog::CLoginDialog(CDatabase &db, const QString &title, const QString &iconName, QWidget *parent) :
-    CDialog(parent), CAbstractDialogStateManager(), m_db(db)
+    CDialog(parent), CAbstractDialogStateManager(), m_db(db), m_firstRun(!db.hasDatabasePassword())
 {
     if (!iconName.isEmpty())
     {
@@ -14,7 +14,7 @@ CLoginDialog::CLoginDialog(CDatabase &db, const QString &title, const QString &i
             this->setWindowIcon(QIcon::fromTheme(iconName));
     }
     this->setModal(true);
-    this->setWindowTitle(title);
+    this->setWindowTitle(m_firstRun ? tr("Ustaw hasło główne") : title);
     this->centerWindow();
     this->setMinimumSize(SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_WIDTH).toInt(), SETT.getValue(SETTINGS_GUI_LOGIN_DIALOG_MIN_HEIGHT).toInt());
 
@@ -45,6 +45,10 @@ void CLoginDialog::addFieldsAndComponents()
     m_headerLayout->addWidget(m_company_label.get(), 1, 1, 1, 2);
 
     CForm::setComponents(m_bodyLayout.get(), m_passwd.get(), m_passwd->getLabel(), 0);
+    if (m_firstRun)
+    {
+        CForm::setComponents(m_bodyLayout.get(), m_passwd2.get(), m_passwd2->getLabel(), 1);
+    }
 
     //m_footerLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
     m_footerLayout->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
@@ -63,6 +67,11 @@ void CLoginDialog::addFields()
 //Fields
     m_passwd = QSharedPointer<CFormTextField>(new CFormTextField(QString("m_passwd"), tr("Hasło do bazy"), "", 32));
     m_passwd->setPasswdEcho();
+    if (m_firstRun)
+    {
+        m_passwd2 = QSharedPointer<CFormTextField>(new CFormTextField(QString("m_passwd2"), tr("Powtórz hasło"), "", 32));
+        m_passwd2->setPasswdEcho();
+    }
 //Przyciski
     m_buttonBox = QSharedPointer<CButtonBoxOk>(new CButtonBoxOk(this));
 //Labele
@@ -89,16 +98,26 @@ void CLoginDialog::saveDialogState()
 
 void CLoginDialog::accept()
 {
-    //Passwd check;
-    QString check_passwd =  QCryptographicHash::hash(this->getPasswd()->text().toLatin1(), QCryptographicHash::Md5).toHex();
-    QString hash_passwd = m_db.getDatabaseHashPassword();
+    const QString passwd = this->getPasswd()->text();
 
-    if (hash_passwd.isEmpty())
+    if (m_firstRun)
     {
-        CMessageBox::OkDialogInformation(tr("Ustaw hasło do bazy danych.\nMenu->Ustawienia->Opcje programu->Daza danych"), this);
+        if (passwd.isEmpty())
+        {
+            CMessageBox::OkDialogWarning(tr("Hasło nie może być puste !!!"), this);
+            return;
+        }
+        if (passwd != m_passwd2->text())
+        {
+            CMessageBox::OkDialogWarning(tr("Hasła nie są jednakowe !!!"), this);
+            return;
+        }
+        m_db.setDatabasePassword(passwd);
         CDialog::accept();
+        return;
     }
-    else if (check_passwd ==  hash_passwd)
+
+    if (m_db.checkDatabasePassword(passwd))
     {
         CDialog::accept();
     }
@@ -106,5 +125,4 @@ void CLoginDialog::accept()
     {
         CMessageBox::OkDialogInformation(tr("Niepoprawne hasło !!!"), this);
     }
-    return;
 }

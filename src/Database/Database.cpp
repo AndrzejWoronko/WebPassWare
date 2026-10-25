@@ -1,5 +1,6 @@
 #include "Database.h"
 #include <QSettings>
+#include "MasterPassword.h"
 #include "ExceptionSql.h"
 
 CDatabase::CDatabase(const QString &database_name): m_base_name(database_name)
@@ -26,22 +27,30 @@ CDatabase::~CDatabase()
     m_db.removeDatabase(QLatin1String(DB_CONNECTION_NAME));
 }
 
-QString CDatabase::getDatabaseHashPassword()
+bool CDatabase::hasDatabasePassword()
 {
     // The application's settings file (organisation and name are set by
     // CApplication before the database is used).
-    return QSettings().value(DATABASE_SETTING_PASSWORD).toString();
+    return !QSettings().value(DATABASE_SETTING_PASSWORD).toString().isEmpty();
+}
+
+bool CDatabase::checkDatabasePassword(const QString &passwd)
+{
+    const QString stored = QSettings().value(DATABASE_SETTING_PASSWORD).toString();
+    if (!wpw::MasterPassword::verify(passwd, stored))
+    {
+        return false;
+    }
+    if (wpw::MasterPassword::needsRehash(stored))
+    {
+        setDatabasePassword(passwd);
+    }
+    return true;
 }
 
 void CDatabase::setDatabasePassword(const QString &passwd)
 {
-    QString hash_passwd = QCryptographicHash::hash(passwd.toLatin1(), QCryptographicHash::Md5).toHex();
-    QSettings().setValue(DATABASE_SETTING_PASSWORD, hash_passwd);
-}
-
-void CDatabase::setDatabaseHashPassword(const QString &passwd)
-{
-    QSettings().setValue(DATABASE_SETTING_PASSWORD, passwd);
+    QSettings().setValue(DATABASE_SETTING_PASSWORD, wpw::MasterPassword::hash(passwd));
 }
 
 void CDatabase::initConnection()

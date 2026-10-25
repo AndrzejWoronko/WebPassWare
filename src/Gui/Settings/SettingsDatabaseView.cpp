@@ -20,7 +20,10 @@ void SettingsDatabaseView::addFields()
     addField(m_base_name);
     m_base_full_path = new CFormTextField(QString("m_base_full_path"), tr("Ścieżka do bazy danych"), m_db.getBaseNameFullPath(), 100, true);
     addField(m_base_full_path);
-    m_base_passwd1 = new CFormTextField(QString("m_base_passwd1"), tr("Hasło bazy danych"), "", 100);
+    m_base_passwd_current = new CFormTextField(QString("m_base_passwd_current"), tr("Obecne hasło"), "", 100);
+    m_base_passwd_current->setPasswdEcho();
+    addField(m_base_passwd_current);
+    m_base_passwd1 = new CFormTextField(QString("m_base_passwd1"), tr("Nowe hasło bazy danych"), "", 100);
     m_base_passwd1->setPasswdEcho();
     addField(m_base_passwd1);
     m_base_passwd2 = new CFormTextField(QString("m_base_passwd2"), tr("Powtorz hasło bazy danych"), "", 100);
@@ -37,8 +40,9 @@ void SettingsDatabaseView::addComponents()
     CForm::setComponents(connectionGridLayout, m_base_type, m_base_type->getLabel(), 1, 1, 1, 1);
     CForm::setComponents(connectionGridLayout, m_base_name, m_base_name->getLabel(), 2, 1, 1, 1);
     CForm::setComponents(connectionGridLayout, m_base_full_path, m_base_full_path->getLabel(), 3, 1, 1, 2);
-    CForm::setComponents(connectionGridLayout, m_base_passwd1, m_base_passwd1->getLabel(), 4, 1, 1, 1);
-    CForm::setComponents(connectionGridLayout, m_base_passwd2, m_base_passwd2->getLabel(), 5, 1, 1, 1);
-    CForm::setComponents(getFormLayout(), m_connection_group_box, QString(""), 0, 1, 5, 3);
+    CForm::setComponents(connectionGridLayout, m_base_passwd_current, m_base_passwd_current->getLabel(), 4, 1, 1, 1);
+    CForm::setComponents(connectionGridLayout, m_base_passwd1, m_base_passwd1->getLabel(), 5, 1, 1, 1);
+    CForm::setComponents(connectionGridLayout, m_base_passwd2, m_base_passwd2->getLabel(), 6, 1, 1, 1);
+    CForm::setComponents(getFormLayout(), m_connection_group_box, QString(""), 0, 1, 6, 3);
     setWidgetWidget();
 }

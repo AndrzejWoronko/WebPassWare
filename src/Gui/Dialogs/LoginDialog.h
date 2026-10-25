@@ -15,6 +15,8 @@ class CLoginDialog : public CDialog, public CAbstractDialogStateManager
      Q_OBJECT
 
      ADD_QSMART_SHARED_PTR(CFormTextField, m_passwd, getPasswd)
+     // Only on the first run, to confirm the new master password.
+     ADD_QSMART_SHARED_PTR(CFormTextField, m_passwd2, getPasswd2)
      ADD_QSMART_SHARED_PTR(CLabel, m_icon_label, getIconLabel)
      ADD_QSMART_SHARED_PTR(CLabel, m_company_label, getCompanyLabel)
      ADD_QSMART_SHARED_PTR(CLabel, m_version_label, getVersionLabel)
@@ -38,6 +40,8 @@ private:
      QSharedPointer<CHBoxLayout> m_footerLayout;
      CVBoxLayout *m_VLayoutDialog;  //Do dialogu
      CDatabase &m_db;
+     // No master password yet: the dialog sets one instead of checking it.
+     bool m_firstRun;
 
 private slots:
 

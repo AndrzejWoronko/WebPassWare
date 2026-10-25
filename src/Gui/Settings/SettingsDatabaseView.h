@@ -15,6 +15,7 @@ class SettingsDatabaseView : public CAbstractSettingsItemView
     ADD_PTR_PROPERTY(CFormTextField, m_base_type, getBaseType)
     ADD_PTR_PROPERTY(CFormTextField, m_base_name, getBaseName)
     ADD_PTR_PROPERTY(CFormTextField, m_base_full_path, getBaseFullPath)
+    ADD_PTR_PROPERTY(CFormTextField, m_base_passwd_current, getBasePasswdCurrent)
     ADD_PTR_PROPERTY(CFormTextField, m_base_passwd1, getBasePasswd1)
     ADD_PTR_PROPERTY(CFormTextField, m_base_passwd2, getBasePasswd2)
 

@@ -63,8 +63,12 @@ public:
     CDatabase(const QString &database_name = QString(DB_NAME));
     ~CDatabase();
 
-    QString getDatabaseHashPassword();
-    void setDatabaseHashPassword(const QString &hash_passwd);
+    // The master password (salted hash in the settings file, see
+    // wpw::MasterPassword).
+    bool hasDatabasePassword();
+    // True if \a passwd is the master password; an old MD5 hash is replaced
+    // by the new form after a successful check.
+    bool checkDatabasePassword(const QString &passwd);
     void setDatabasePassword(const QString &passwd);
 
     void initConnection();
