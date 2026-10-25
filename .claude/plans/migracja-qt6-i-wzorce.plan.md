@@ -473,6 +473,7 @@ Etap B: 8–12 MD (B3 i B5 największe).
   wyrównania padał losowo, po poprawce 0/40).
 - 2026-10-25: B2 zrobione poza loggerami i `CAutoType::instance` (B7): `SETT`
   (`c477f12`), `APPI` (`fb10ca5`), `STYLE` (`54321af`). Loggery `LOG_APP`/`LOG_SQL`
-  zostają jako świadomy wyjątek (opisany w CLAUDE.md). ctest 11/11.
+  zostają jako świadomy wyjątek (opisany w CLAUDE.md). ctest 11/11. Kopia bazy przed
+  migracją (`<plik>.bak-v<wersja>`) dodana.
   Dalej: B5 (okno główne), B6 (formularze), B7 (auto-type, ustawienia, CSV, stan,
   tłumaczenia).
