@@ -12,9 +12,9 @@
 #include "Style.h"
 
 #include <memory>
+#include <vector>
 
 
-typedef QHash<QString, QTranslator*> Translators;
 
 class CDatabase;
 
@@ -25,6 +25,7 @@ class CApplication : public QApplication
     QPalette m_system_palette;
     bool m_no_ask_exit;
     std::unique_ptr<CStyle> m_style;
+    std::vector<std::unique_ptr<QTranslator>> m_translators;
 
     void loadPalette(QColor baseColor, QColor textColor, QColor highlightColor, QColor disabledText = QColor(Qt::gray));
 

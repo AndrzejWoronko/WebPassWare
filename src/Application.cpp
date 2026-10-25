@@ -85,33 +85,33 @@ void CApplication::initApplication(int & argc, char **argv)
      DEBUG_WITH_LINE << "Path to translations: " << QLibraryInfo::path(QLibraryInfo::TranslationsPath) << ", " << translationPath;
      DEBUG_WITH_LINE << "Locale name: " << QLocale::system().name();
 
-     QString translationName = QLocale(QLocale::system().language()).name();
-     DEBUG_WITH_LINE <<  "Language: " << QLocale(QLocale::system().language()).name();
+     // Qt's own texts (dialog buttons) in the language of the user interface,
+     // which is the default locale set above, not the system one.
+     QString translationName = QLocale().name();
+     DEBUG_WITH_LINE <<  "Language: " << translationName;
 
      for (auto tr_name : std::as_const(tr_module_list))
      {
-         QTranslator qtTranslator;
+         // Kept as a member: a destroyed translator removes itself again.
+         auto qtTranslator = std::make_unique<QTranslator>();
          QString tr_filename = tr_name + translationName;
          DEBUG_WITH_LINE <<  "Tanslate filename: " << tr_filename;
 
-         if (qtTranslator.load(tr_filename , QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+         if (qtTranslator->load(tr_filename , QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
          {
              DEBUG_WITH_LINE << "Translation load sucess from path: " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
-             this->installTranslator(&qtTranslator);
+         }
+         else if (qtTranslator->load(tr_filename, translationPath))
+         {
+             DEBUG_WITH_LINE << "Translation load sucess from path: " << translationPath;
          }
          else
          {
-             if (qtTranslator.load(tr_filename, translationPath))
-             {
-                 DEBUG_WITH_LINE << "Translation load sucess from path: " << translationPath;
-                 this->installTranslator(&qtTranslator);
-             }
-             else
-             {
-                 if(qtTranslator.isEmpty())
-                     DEBUG_WITH_LINE << "Nie można załadować tłumaczenia Qt; część będzie po angielsku!";
-             }
+             DEBUG_WITH_LINE << "Nie można załadować tłumaczenia Qt; część będzie po angielsku!";
+             continue;
          }
+         this->installTranslator(qtTranslator.get());
+         m_translators.push_back(std::move(qtTranslator));
      }
      Qt::LayoutDirection layoutDirection = QLocale(QLocale::system().language()).textDirection();
      this->setLayoutDirection(layoutDirection);

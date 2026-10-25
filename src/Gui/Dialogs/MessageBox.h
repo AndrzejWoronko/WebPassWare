@@ -40,7 +40,6 @@ public:
     static void AboutQtDialog(QWidget  *parent = nullptr, const QString & title = QString(QObject::tr("Informacje o QT")));
 
   private:
-    static void translateButtons(QMessageBox &messageBox);
 };
 
 #endif // CMESSAGEBOX_H

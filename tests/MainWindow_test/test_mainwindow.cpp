@@ -37,6 +37,7 @@ private Q_SLOTS:
     void cleanup();
     void cleanupTestCase();
     void test_noNullActions();
+    void test_qtTextsArePolish();
     void test_shortcutsAreUnique();
     void test_insertOpensOneDialog();
     void test_deletedGroupLeavesList();
@@ -310,6 +311,12 @@ void Test_MainWindow::test_editDialogShowsEntryGroup()
     autoClose();
     action("ACTION_EDIT_PASS_ENTRY")->trigger();
     QCOMPARE(shownGroup, QString("Cel"));
+}
+
+void Test_MainWindow::test_qtTextsArePolish()
+{
+    // Qt's own texts (dialog buttons) follow the Polish user interface.
+    QCOMPARE(QCoreApplication::translate("QPlatformTheme", "&Yes"), QString("&Tak"));
 }
 
 int main(int argc, char **argv)
