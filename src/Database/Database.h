@@ -30,7 +30,6 @@ virtual QList<QSqlIndex> getTableIndexes(const QString &tableName) = 0;
 
 virtual qint64 addRecord(const QString &tableName, const QHash<QString, QVariant> &info, qint64 newId, bool force_id) = 0;
 virtual bool updateRecord(const QString &tableName, const QHash<QString, QVariant> &info, const QString &params, const QVariantHash &bindings = QVariantHash()) = 0;
-virtual bool replaceRecord(const QString &tableName, const QHash<QString, QVariant> &info) = 0;
 
 virtual QList<QSqlRecord> find(const QString &tableName, const QString &fieldName, const QString &params, const QVariantHash &bindings = QVariantHash()) = 0;
 virtual QSqlRecord first(const QString &tableName, const QString &pkName) = 0;
@@ -42,9 +41,6 @@ virtual bool setDeleted(const QString &tableName, const QString &params, const Q
 virtual qint64 count(const QString &tableName, const QString &arg) = 0;
 virtual qint64 countBy(const QString &tableName, const QString &params) = 0;
 
-virtual bool beginTransaction(void) = 0;
-virtual bool commitTransaction(void) = 0;
-virtual bool rollbackTransaction(void) = 0;
 
 };
 
@@ -97,7 +93,6 @@ public:
 
     virtual qint64 addRecord(const QString &tableName, const QHash<QString, QVariant> &info, qint64 newId, bool force_id = false) override final;
     virtual bool updateRecord(const QString &tableName, const QHash<QString, QVariant> &info, const QString &params, const QVariantHash &bindings = QVariantHash()) override final;
-    virtual bool replaceRecord(const QString &tableName, const QHash<QString, QVariant> &info) override final;
 
     virtual QList<QSqlRecord> find(const QString &tableName, const QString &fieldName, const QString &params, const QVariantHash &bindings = QVariantHash()) override final;
     virtual QSqlRecord first(const QString &tableName, const QString &pkName) override final;
@@ -109,9 +104,6 @@ public:
     virtual qint64 count(const QString &tableName, const QString &arg) override final;
     virtual qint64 countBy(const QString &tableName, const QString &params) override final;
 
-    virtual bool beginTransaction(void) override final;
-    virtual bool commitTransaction(void) override final;
-    virtual bool rollbackTransaction(void) override final;
 
 
 private:

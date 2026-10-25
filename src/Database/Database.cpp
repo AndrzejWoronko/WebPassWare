@@ -417,25 +417,6 @@ bool CDatabase::updateRecord(const QString &tableName, const QHash<QString, QVar
     return false;
 }
 
-bool CDatabase::replaceRecord(const QString &tableName, const QHash<QString, QVariant> &info)
-{
-    m_lastQuery = QString("REPLACE %1 SET ").arg(tableName);
-
-    for (auto fieldName : info.keys())
-        m_lastQuery += QString("%1 = :%1, ").arg(fieldName);
-    m_lastQuery.chop(2);
-    m_query->prepare(m_lastQuery);
-
-    for (auto fieldName : info.keys())
-        m_query->bindValue(":" + fieldName, info.value(fieldName, QVariant()));
-
-    if (m_query->exec())
-        return true;
-    else
-        throw CExceptionSql(Q_FUNC_INFO, m_query);
-    return false;
-}
-
 bool CDatabase::remove(const QString &tableName, const QString &params, const QVariantHash &bindings)
 {
     m_lastQuery = QString("DELETE FROM %1 %2;").arg(tableName, params);
@@ -535,35 +516,3 @@ qint64 CDatabase::countBy(const QString &tableName, const QString &params)
     return -1;
 }
 
-bool CDatabase::beginTransaction(void)
-{
-    if (m_query->exec(QString("BEGIN EXCLUSIVE TRANSACTION;")))
-        return true;
-    else
-    {
-        //Jeżeli już jest rozpoczęta transkacja to nie wyrzucamy wyjątku bo commit będzie w innym miejscu
-        if (m_query->lastError().nativeErrorCode().toInt() == 1)
-            return true;
-        else
-            throw CExceptionSql(Q_FUNC_INFO, m_query);
-    }
-    return false;
-}
-
-bool CDatabase::commitTransaction(void)
-{
-    if (m_query->exec(QString("COMMIT;")))
-        return true;
-    else
-        throw CExceptionSql(Q_FUNC_INFO, m_query);
-    return false;
-}
-
-bool CDatabase::rollbackTransaction(void)
-{
-    if (m_query->exec(QString("ROLLBACK;")))
-        return true;
-    else
-        throw CExceptionSql(Q_FUNC_INFO, m_query);
-    return false;
-}

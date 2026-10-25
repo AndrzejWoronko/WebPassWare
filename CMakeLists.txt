@@ -89,6 +89,8 @@ qt_add_library(wpw_core STATIC
     src/Database/SqlModel.h
     src/Database/SqlQuery.cpp
     src/Database/SqlQuery.h
+    src/Database/TransactionGuard.cpp
+    src/Database/TransactionGuard.h
     src/Models/ModelTableCheck.cpp
     src/Models/ModelTableCheck.h
     src/Models/PassEntry.cpp
