@@ -441,3 +441,6 @@ Etap B: 8–12 MD (B3 i B5 największe).
   `maintenancetool` z Qt IFW; bez niego pokazuje „Brak aktualizacji” (wpis w `TODO`).
 - 2026-10-25: A4 zrobione: README (budowa, testy, paczki), CLAUDE.md (Build/Tests),
   `TODO` z odłożonymi decyzjami. **Etap A zakończony.**
+- 2026-10-25: B1 zrobione (`2768ea0`): `wpw_core` (Qt Core + Sql) / `wpw_gui` /
+  `webpassware`; kursor przez `wpw::BusyIndicator`, hasło główne przez `QSettings`;
+  testy bazy pod `QCoreApplication` (ldd: tylko Core, Sql, Test); ctest 6/6.
