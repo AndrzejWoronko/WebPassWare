@@ -12,9 +12,10 @@ namespace wpw::Schema {
 // Schema.cpp for every change of the stored data.
 constexpr int kVersion = 1;
 
-// Brings the database to kVersion: creates missing tables, columns and
-// indexes, then runs the migrations, each in its own transaction. Run at
-// every start. Fails (and changes nothing) for a file of a newer version.
+// Brings the database to kVersion: copies a file with data to
+// <file>.bak-v<old version>, creates missing tables, columns and indexes,
+// then runs the migrations, each in its own transaction. Run at every start.
+// Fails (and changes nothing) for a file of a newer version.
 bool upgrade(CDatabase &db, QString *error);
 
 int version(CDatabase &db);

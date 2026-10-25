@@ -29,6 +29,7 @@ private Q_SLOTS:
     void test_upgradeIsIdempotent();
     void test_newerDatabaseIsRefused();
     void test_softDeleteWritesOne();
+    void test_backupBeforeMigration();
 
 private:
     // Opens a fresh copy of the legacy fixture, or an empty file.
@@ -54,6 +55,7 @@ void Test_Schema::cleanup()
 {
     m_db.reset();
     QFile::remove(m_path);
+    QFile::remove(m_path + ".bak-v0");
 }
 
 void Test_Schema::open(bool legacy)
@@ -162,6 +164,23 @@ void Test_Schema::test_softDeleteWritesOne()
     QVERIFY(groups.deleteObject(id));
     QCOMPARE(rawValue(QString("SELECT typeof(deleted) || ':' || deleted FROM pass_group WHERE id_pass_group = %1").arg(id)).toString(),
              QString("integer:1"));
+}
+
+void Test_Schema::test_backupBeforeMigration()
+{
+    open(false);
+    QString error;
+    QVERIFY(wpw::Schema::upgrade(*m_db, &error));
+    // A new, empty file has nothing worth a copy.
+    QVERIFY(!QFile::exists(m_path + ".bak-v0"));
+
+    open(true);
+    QVERIFY2(wpw::Schema::upgrade(*m_db, &error), qPrintable(error));
+    QFile backup(m_path + ".bak-v0");
+    QVERIFY(backup.open(QIODevice::ReadOnly));
+    QFile fixture(QString(FIXTURES_DIR) + "/legacy_qt5.db");
+    QVERIFY(fixture.open(QIODevice::ReadOnly));
+    QVERIFY(backup.readAll() == fixture.readAll());
 }
 
 QTEST_GUILESS_MAIN(Test_Schema)

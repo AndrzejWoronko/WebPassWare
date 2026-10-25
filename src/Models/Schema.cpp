@@ -1,6 +1,7 @@
 #include "Schema.h"
 
 #include <QCoreApplication>
+#include <QFile>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QStringList>
@@ -69,6 +70,18 @@ bool upgrade(CDatabase &db, QString *error)
     if (current == kVersion)
     {
         return true;
+    }
+
+    // A file with data is copied before it is changed (once per version):
+    // <file>.bak-v<old version>. Without the copy nothing is migrated.
+    if (!db.getDb().tables().isEmpty())
+    {
+        const QString backup = QString("%1.bak-v%2").arg(db.getBaseNameFullPath()).arg(current);
+        if (!QFile::exists(backup) && !QFile::copy(db.getBaseNameFullPath(), backup))
+        {
+            setError(error, QCoreApplication::translate("Schema", "Nie można zapisać kopii bazy danych %1.").arg(backup));
+            return false;
+        }
     }
 
     // Tables, columns and indexes the models describe (an empty file gets
