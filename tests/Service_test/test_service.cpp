@@ -27,6 +27,7 @@ private Q_SLOTS:
     void test_passGroupCrud();
     void test_passEntryCrud();
     void test_errorPathSetsError();
+    void test_tableDdlIsStable();
 
 private:
     void createTables();
@@ -224,6 +225,29 @@ void Test_Service::test_errorPathSetsError()
     list = service.getObjects();
     QVERIFY(service.getError().isEmpty());
     CLEAR_PTR_LIST_TEST(list)
+}
+
+// The table definitions come from Q_PROPERTY type names; pin them so a Qt
+// upgrade that changes typeName() cannot alter the schema unnoticed.
+void Test_Service::test_tableDdlIsStable()
+{
+    QSqlQuery query(DB.getDb());
+    QVERIFY(query.exec(QString("SELECT name, sql FROM sqlite_master WHERE tbl_name IN ('pass_entry', 'pass_group') ORDER BY name;")));
+    QStringList ddl;
+    while (query.next())
+    {
+        ddl << query.value(0).toString() + QString(": ") + query.value(1).toString();
+    }
+    const QString expected =
+        QString("pass_entry: CREATE TABLE pass_entry( id_pass_entry INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                "deleted BOOL NOT NULL DEFAULT FALSE, timestp TIMESTAMP NOT NULL, "
+                "m_title VARCHAR(255) NOT NULL DEFAULT '' , m_user VARCHAR(52) NOT NULL DEFAULT '', "
+                "m_pass VARCHAR(52) NOT NULL DEFAULT '', m_web_url VARCHAR(255) NOT NULL DEFAULT '' , "
+                "m_desc VARCHAR(255) NOT NULL DEFAULT '' , m_id_pass_group BIGINT NOT NULL DEFAULT 0 )\n"
+                "pass_group: CREATE TABLE pass_group( id_pass_group INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                "deleted BOOL NOT NULL DEFAULT FALSE, timestp TIMESTAMP NOT NULL, "
+                "m_name VARCHAR(52) NOT NULL DEFAULT '')");
+    QCOMPARE(ddl.join(QString("\n")), expected);
 }
 
 QTEST_MAIN(Test_Service)

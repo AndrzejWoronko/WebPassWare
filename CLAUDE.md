@@ -17,10 +17,16 @@ Build outputs: `bin/` (executable `webpassware`). Version is defined in `include
 
 ## Tests
 
-Three standalone Qt Test projects, **not** built by the main .pro: `tests/ORM_test`
-(ORM on its own models), `tests/Service_test` (real Database, Models and services),
-`tests/AutoType_test` (auto-type sequence parsing; needs X11/Xtst). `tests/TestSupport/`
-holds `ApplicationSettingsStub.cpp`.
+Standalone Qt Test projects, **not** built by the main .pro (each: `qmake && make && ./test_xxx`):
+
+- `tests/ORM_test`: ORM on its own models.
+- `tests/Service_test`: real Database, Models and services; pins the table DDL.
+- `tests/LegacyDb_test`: reads `tests/fixtures/legacy_qt5.db` (written by the Qt 5 build).
+- `tests/Csv_test`: CSV export bytes and import per encoding.
+- `tests/Forms_test`: form field `isDirty()` (run with `QT_QPA_PLATFORM=offscreen`).
+- `tests/AutoType_test`: auto-type sequence parsing; needs X11/Xtst.
+
+`tests/TestSupport/` holds `ApplicationSettingsStub.cpp`.
 
 ```bash
 cd tests/ORM_test
