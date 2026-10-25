@@ -10,7 +10,6 @@
 #include "Global.h"
 #include "ApplicationSettings.h"
 
-#define APPI CApplication::getInstance()
 
 typedef QHash<QString, QTranslator*> Translators;
 
@@ -26,7 +25,6 @@ class CApplication : public QApplication
     void loadPalette(QColor baseColor, QColor textColor, QColor highlightColor, QColor disabledText = QColor(Qt::gray));
 
 protected:
-    static CApplication* m_instance;
 
 public:
     enum EColorScheme
@@ -43,7 +41,6 @@ public:
 
     CApplication(int & argc, char **argv);
     ~CApplication();
-    static CApplication *getInstance();
 
     void initApplication(int & argc, char **argv);
     bool notify(QObject * receiver, QEvent * event);

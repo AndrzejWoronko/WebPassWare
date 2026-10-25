@@ -12,7 +12,6 @@ CCsvImportDialogController::CCsvImportDialogController(PassEntryService *passEnt
     m_import = nullptr;
 
     m_dialog = QSharedPointer<CCsvImportDialog>(new CCsvImportDialog());
-    //APPI->setAppInformation();
     m_settings.reset(new QSettings());
     m_settings->beginGroup("ImportCsvData");
 

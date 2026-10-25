@@ -10,6 +10,7 @@
 #include "SettingsLookController.h"
 #include "SettingsDatabaseViewController.h"
 
+class CApplication;
 class CDatabase;
 
 class SettingsWidget : public QWidget
@@ -29,7 +30,7 @@ class SettingsWidget : public QWidget
     void setConnections();
 
 public:
-    explicit SettingsWidget(CDatabase &db, QWidget *parent = nullptr);
+    SettingsWidget(CApplication &app, CDatabase &db, QWidget *parent = nullptr);
     ~SettingsWidget();
 
     /**
@@ -41,6 +42,7 @@ public:
     void createListWidget();
 
 private:
+    CApplication &m_app;
     CDatabase &m_db;
 };
 

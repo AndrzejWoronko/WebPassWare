@@ -1,7 +1,7 @@
 #include "SettingsLookController.h"
 #include "Application.h"
 
-SettingsLookController::SettingsLookController(QWidget *parent) : CAbstractSettingsItemController(parent)
+SettingsLookController::SettingsLookController(CApplication &app, QWidget *parent) : CAbstractSettingsItemController(parent)
 {
     m_view = new SettingsLookView(this);
 
@@ -14,9 +14,9 @@ SettingsLookController::SettingsLookController(QWidget *parent) : CAbstractSetti
         v->getStyleTheme()->setValueList(CStyle::availableStyles());
 
         getValuesFromSettings();
-        connect(v->getFontEdit(), &CFontEdit::fontChanged, APPI, &CApplication::updateFont);
-        connect(v->getColorSchema(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), APPI,  &CApplication::updatePalette);
-        connect(v->getStyleTheme(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), APPI,  &CApplication::updateStyleSheet);
+        connect(v->getFontEdit(), &CFontEdit::fontChanged, &app, &CApplication::updateFont);
+        connect(v->getColorSchema(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), &app,  &CApplication::updatePalette);
+        connect(v->getStyleTheme(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), &app,  &CApplication::updateStyleSheet);
         connect(v->getFontEdit(), &CFontEdit::fontChanged, this, &SettingsLookController::enableButtons);
         connect(v->getColorSchema(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), this, &SettingsLookController::enableButtons);
         connect(v->getStyleTheme(), qOverload<int>(&CFormSimpleIndexChoiceField::currentIndexChanged), this, &SettingsLookController::enableButtons);

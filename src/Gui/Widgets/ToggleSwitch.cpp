@@ -90,7 +90,7 @@ void CToggleSwitch::paintEvent(QPaintEvent *)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    QPalette palete = APPI->palette();
+    QPalette palete = QApplication::palette();
 
     // Another advantage of QStyle: custom widgets can share code
     // with it (here just the color repository, but we could share more code

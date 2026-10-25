@@ -7,7 +7,6 @@ CCsvExportDialogController::CCsvExportDialogController(CSqlModel *model, QWidget
     QWidget(parent), m_model(model)
 {
     m_dialog = QSharedPointer<CCsvExportDialog>(new CCsvExportDialog());
-    //APPI->setAppInformation();
     m_settings.reset(new QSettings());
     m_settings->beginGroup("ExportCsvData");
     restoreLastState();

@@ -1,6 +1,6 @@
 #include "SettingsWidget.h"
 
-SettingsWidget::SettingsWidget(CDatabase &db, QWidget *parent) : QWidget (parent), m_db(db)
+SettingsWidget::SettingsWidget(CApplication &app, CDatabase &db, QWidget *parent) : QWidget (parent), m_app(app), m_db(db)
 {
     setGraphicElements();
     setGraphicSettings();
@@ -22,7 +22,7 @@ void SettingsWidget::setGraphicElements(QWidget *parent)
 {
     m_splitter = new CSplitter(QString("SettingsSplitter"), Qt::Horizontal, this);
 
-    m_look_widget = new SettingsLookController(parent);
+    m_look_widget = new SettingsLookController(m_app, parent);
     m_database_widget = new SettingsDatabaseViewController(m_db, parent);
     this->setLayout(m_mainLayout = new CVBoxLayout());
     createListWidget();

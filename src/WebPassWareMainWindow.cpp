@@ -22,12 +22,13 @@
 #include "ToolButton.h"
 #include "AutoType.h"
 
-CWebPassWareMainWindow::CWebPassWareMainWindow(CDatabase &db, PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent)
+CWebPassWareMainWindow::CWebPassWareMainWindow(CApplication &app, CDatabase &db, PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent)
     : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
     , m_headerContextMenu(nullptr)
     , m_timer(new QTimer(this))
     , m_visible_passwords(false)
     , m_visible_passwords_action(nullptr)
+    , m_app(app)
     , m_db(db)
     , m_passEntryService(passEntryService)
     , m_passGroupService(passGroupService)
@@ -40,7 +41,7 @@ CWebPassWareMainWindow::CWebPassWareMainWindow(CDatabase &db, PassEntryService *
 //Ustawienie fontu dla całej aplikacji
     QFont f;
     if (f.fromString(CApplicationSettings().getValue(SETTINGS_GUI_FONT).toString()))
-        APPI->setFont(f);
+        QApplication::setFont(f);
 
     setAdditionalWidgets();
     m_dataTable->setFocus();
@@ -734,7 +735,7 @@ void CWebPassWareMainWindow::on_ACTION_GENERATOR_DIALOG_triggered()
 
 void CWebPassWareMainWindow::on_ACTION_SETTINGS_DIALOG_triggered(void)
 {
-    auto sw = new SettingsWidget(m_db, this);
+    auto sw = new SettingsWidget(m_app, m_db, this);
     auto dialog = new SettingsDialog(sw, this);
     dialog->exec();
     dialog->close();

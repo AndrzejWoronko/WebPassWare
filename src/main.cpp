@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     // Created here and handed to the window: it must not outlive them.
     PassEntryService passEntryService(database);
     PassGroupService passGroupService(database);
-    w = new CWebPassWareMainWindow(database, &passEntryService, &passGroupService);
+    w = new CWebPassWareMainWindow(*a, database, &passEntryService, &passGroupService);
     //w->centerAndResize();
     //w->restoreDialogState();
     w->show();

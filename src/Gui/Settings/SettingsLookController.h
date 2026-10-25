@@ -5,12 +5,15 @@
 #include "AbstractSettingsItemController.h"
 #include "SettingsLookView.h"
 
+class CApplication;
+
 class SettingsLookController : public CAbstractSettingsItemController
 {
     Q_OBJECT
 
 public:
-    SettingsLookController(QWidget *parent = nullptr);
+    // Font, colours and style apply to \a app at once.
+    explicit SettingsLookController(CApplication &app, QWidget *parent = nullptr);
 
     virtual void checkChanges();
 

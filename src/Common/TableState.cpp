@@ -2,7 +2,6 @@
 
 CTableState::CTableState()
 {
-    //APPI->setAppInformation();
     m_settings.reset(new QSettings());
     m_settings->beginGroup("TableStates");
 }

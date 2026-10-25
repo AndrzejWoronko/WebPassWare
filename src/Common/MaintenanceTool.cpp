@@ -74,7 +74,7 @@ void CMaintenanceTool::startMaintenanceTool(StartMode mode)
     {
         args.append("--start-updater");
         QProcess::startDetached(path, args);
-        APPI->closeAllWindows(); // Close the application
+        QApplication::closeAllWindows(); // Close the application
     }
 }
 

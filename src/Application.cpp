@@ -8,14 +8,11 @@
 #include "Style.h"
 #include "MessageBox.h"
 
-CApplication* CApplication::m_instance = nullptr;
 
 CApplication::CApplication(int & argc, char **argv) :
     QApplication(argc, argv), m_no_ask_exit(false)
 {
-    Q_ASSERT(m_instance == nullptr);
 
-    m_instance = this;
 
     m_system_palette = this->palette();
 
@@ -28,11 +25,6 @@ CApplication::CApplication(int & argc, char **argv) :
 
 CApplication::~CApplication()
 {
-}
-
-CApplication* CApplication::getInstance()
-{
-    return m_instance;
 }
 
 bool CApplication::notify(QObject * receiver, QEvent * event)
