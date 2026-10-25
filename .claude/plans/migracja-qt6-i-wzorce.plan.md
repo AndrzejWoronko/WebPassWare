@@ -397,3 +397,16 @@ Etap B: 8–12 MD (B3 i B5 największe).
   `test_service` 7/7, `test_autotype` 11/11 (z init/cleanup).
 - 2026-10-25: A0.1 sekcje Engineering rules / Style / Git dopisane do CLAUDE.md;
   wklejona wersja z IpcFirmwareTool usunięta (decyzja użytkownika).
+- 2026-10-25: A0.3 testy charakteryzujące (Qt 5.15, wszystkie zielone):
+  - `test_service` +1 (8/8): DDL `pass_entry`/`pass_group` znak w znak;
+  - `tests/LegacyDb_test` (5/5) na fiksturze `tests/fixtures/legacy_qt5.db`
+    (schemat z `ModelTableCheck`, `deleted` = `'true'` albo `0`);
+  - `tests/Csv_test` (11/11): bajty eksportu i import dla ISO-8859-2,
+    Windows-1250, UTF-8. **Odkrycie:** „DOS/OS2-852” nigdy nie działało — Qt 5
+    nie zna tej nazwy, plik powstaje w UTF-8 (test to utrwala; w A2 decyzja:
+    prawdziwe CP852 przez `QStringDecoder("IBM852")` albo usunięcie z listy);
+  - `tests/Forms_test` (5/5): `isDirty()` po odtworzeniu wartości z QSettings
+    (stringi) jest `false`; pole wyboru z wartością startową `0` jest „brudne”
+    od początku (zastane zachowanie);
+  - przy okazji: warstwa SQL wymaga `QApplication` (`CSqlQuery::setSqlCursor`
+    ustawia kursor), bez niej crash — do rozdzielenia w B1.
