@@ -422,3 +422,15 @@ Etap B: 8–12 MD (B3 i B5 największe).
   SQL), `safe_delete`/`CLEAR_PTR_LIST` w `do {} while (0)`, `removeOne` w
   `updateProperty`. Testy: `test_service` 9/9, `test_legacydb` 6/6 (+ wyrównanie
   kolumn liczbowych). Narrowing `qsizetype` przeniesiony do A2.
+- 2026-10-25: A2 zrobione (`fd2c54a`): CMake + Qt 6.12, `scripts/build.sh`, ctest 6/6
+  zielone, czysty build bez ostrzeżeń deprecated (zostały zastane `-Wunused-parameter`
+  w `AutoType.cpp:216`). Pliki qmake usunięte. Ustalenia:
+  - makra Xlib (`#define Bool int`) psuły wspólny `mocs_compilation.cpp`; moc klasy
+    `CAutoTypePlatformLinux` dołączony w jej `.cpp` (docelowo nagłówek bez X11, B7);
+  - platforma offscreen ma `QX11Application` z pustym `display()`; konstruktor
+    platformy linuksowej to sprawdza (wcześniej crash przy starcie bez X11);
+  - ICU w Qt 6.12 zna ISO-8859-2, Windows-1250 i `IBM852`/`cp852`, nie zna
+    „DOS/OS2-852” (fallback UTF-8 jak w Qt 5); kompilator Qt 6 nie zgłosił narrowingu
+    `qsizetype` przy `-Wall -Wextra`, więc rzutowań nie dodano;
+  - test dymny: program startuje offscreen na kopii `legacy_qt5.db` (izolowany HOME).
+  - Skrypty `scripts/{linux,macosx,windows}` i `installer/` są nadal qmake/Qt 5 → A3.
