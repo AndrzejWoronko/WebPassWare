@@ -12,7 +12,6 @@
 #include <QDate>
 #include <QList>
 
-#include <bits/stdc++.h>
 #include <memory.h>
 
 #include "Tools.h"
