@@ -449,3 +449,10 @@ Etap B: 8–12 MD (B3 i B5 największe).
   Następny symbol: `DB` — 33 użycia w szablonie `COrmObject` (Active Record woła
   `DB.*` w każdej metodzie), więc jego usunięcie to przebudowa ORM (repozytorium
   trzyma `CDatabase&`), do uzgodnienia przed realizacją.
+- 2026-10-25: decyzje użytkownika: pełne repozytorium zamiast singletonu `DB`;
+  akcja aktualizacji tylko z maintenancetool (`4219607`); prawdziwe CP852 (`246529d`).
+- 2026-10-25: B2/B3 repozytorium (`f35c12e`): SQL w `COrmRepository(CDatabase&)`,
+  modele bez SQL, `CDatabase` z `main.cpp`, makro `DB` usunięte. ctest 7/7 (orm 23,
+  service 10, legacydb 6); test dymny: świeża baza z `-c` (schemat bez zmian) i stara
+  baza. Zostało w B2: `SETT`, `APPI`, `STYLE`, `LOG_*`, `CAutoType::instance`; w B3:
+  prepared statements, typy SQLite, `deleted` 0/1, `TransactionGuard`, migracje.
