@@ -14,7 +14,9 @@ class CAbstractFormDialogController : public QWidget, public CAbstractDialogStat
 
 public:
     CAbstractFormDialogController(CAbstractFormDialog *dialog, QWidget *parent = nullptr);
-    ~CAbstractFormDialogController() {};
+    // Owns the dialog and the validator (the dialog has a widget parent only
+    // for placement; without this every opened form stayed in memory).
+    ~CAbstractFormDialogController();
 
     virtual void restoreDialogState();
     virtual void saveDialogState();

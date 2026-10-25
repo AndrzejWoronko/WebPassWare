@@ -5,6 +5,13 @@ CAbstractFormDialogController::CAbstractFormDialogController(CAbstractFormDialog
     QWidget(parent), CAbstractDialogStateManager()
 {
     m_dialog = dialog;
+    m_validator = nullptr;
+}
+
+CAbstractFormDialogController::~CAbstractFormDialogController()
+{
+    safe_delete(m_validator);
+    safe_delete(m_dialog);
 }
 
 //Zapisanie i odtworzenie układu graficznego dialogu

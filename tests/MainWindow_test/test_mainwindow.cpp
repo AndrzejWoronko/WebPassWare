@@ -37,6 +37,7 @@ private Q_SLOTS:
     void test_shortcutsAreUnique();
     void test_insertOpensOneDialog();
     void test_deletedGroupLeavesList();
+    void test_formDialogsDoNotPileUp();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -199,6 +200,16 @@ void Test_MainWindow::test_deletedGroupLeavesList()
     autoClose(QMessageBox::Yes);
     action("ACTION_DEL_PASS_GROUP")->trigger();
     QCOMPARE(tree->model()->rowCount(), before - 1);
+}
+
+void Test_MainWindow::test_formDialogsDoNotPileUp()
+{
+    autoClose();
+    action("ACTION_ADD_PASS_GROUP")->trigger();
+    action("ACTION_ADD_PASS_GROUP")->trigger();
+    action("ACTION_ADD_PASS_ENTRY")->trigger();
+    QCOMPARE(m_closed.count(), 3);
+    QCOMPARE(m_window->findChildren<QDialog *>().size(), 0);
 }
 
 int main(int argc, char **argv)
