@@ -101,6 +101,8 @@ qt_add_library(wpw_core STATIC
     src/Models/PassGroup.h
     src/Models/PassGroupService.cpp
     src/Models/PassGroupService.h
+    src/Models/Schema.cpp
+    src/Models/Schema.h
     src/Security/MasterPassword.cpp
     src/Security/MasterPassword.h
 )

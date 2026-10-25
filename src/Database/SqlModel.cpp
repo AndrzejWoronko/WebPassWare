@@ -108,7 +108,7 @@ void CSqlModel::refresh()
                 query.setForwardOnly(false);
 
                 QString select_query = m_selectQuery;                
-                select_query += QString(" WHERE deleted=false ");
+                select_query += QString(" WHERE deleted = 0 ");
 
                 if (!m_where.isEmpty())
                     select_query += QString(" AND %1 " ).arg(m_where);

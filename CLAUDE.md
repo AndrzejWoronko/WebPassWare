@@ -40,6 +40,9 @@ Qt Test, one executable per unit, registered in `tests/CMakeLists.txt` via
   table DDL and the declared ORM type names.
 - `tst_legacydb` (`tests/LegacyDb_test`): reads `tests/fixtures/legacy_qt5.db`,
   written by the Qt 5 build.
+- `tst_schema` (`tests/Schema_test`): `wpw::Schema::upgrade` from an empty file, from the
+  legacy file, twice, and refusing a newer file.
+- `tst_transactionguard` (`tests/TransactionGuard_test`): commit, rollback, nesting.
 - `tst_csv` (`tests/Csv_test`): CSV export bytes and import per encoding.
 - `tst_masterpassword` (`tests/MasterPassword_test`): PBKDF2 hash, old MD5 form.
 - `tst_logindialog` (`tests/LoginDialog_test`): first-run setup, login, MD5 upgrade.
@@ -80,7 +83,10 @@ which `main.cpp` sets to the busy mouse cursor.
 **Models** (`src/Models/`):
 - `PassEntry` / `PassGroup` — domain models (`class PassEntry : public COrmObject<PassEntry>` with `ORM_PROPERTY` fields named `m_xxx`).
 - `PassEntryService` / `PassGroupService` — matching service classes.
-- `ModelTableCheck` — schema verification.
+- `ModelTableCheck` — creates missing tables, columns and indexes from the models.
+- `wpw::Schema` (`Schema.h`) — `kVersion` in `PRAGMA user_version` (Qt 5 files have 0) and
+  the append-only migrations; `upgrade()` runs at every start (`main.cpp`). `-c` re-runs
+  `ModelTableCheck` by hand.
 
 **View/Controller layer** (`src/Gui/`):
 - Base classes: `AbstractFormDialog` + `AbstractFormDialogController`, `AbstractMainWindow`.

@@ -9,6 +9,8 @@
 #include "WebPassWareMainWindow.h"
 #include "Database.h"
 #include "ModelTableCheck.h"
+#include "Schema.h"
+#include "MessageBox.h"
 #include "PassEntryService.h"
 #include "PassGroupService.h"
 #include "BusyIndicator.h"
@@ -88,6 +90,14 @@ int main(int argc, char **argv)
  // sprawdzenie czy jest katalog instalacji jeżeli nie ma to ustawia na bieżący
 
      a->processEvents();
+
+    // Every start: tables for a new file, migrations for an older one.
+    QString schemaError;
+    if (!wpw::Schema::upgrade(database, &schemaError))
+       {
+         CMessageBox::OkDialogCritical(schemaError);
+         return RET_ERROR;
+       }
     if (check_tables)
        {
          //Sprawdzenie/założenie tabel

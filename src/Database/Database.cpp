@@ -429,7 +429,7 @@ bool CDatabase::remove(const QString &tableName, const QString &params, const QV
 
 bool CDatabase::setDeleted(const QString &tableName, const QString &params, const QVariantHash &bindings)
 {
-    m_lastQuery = QString("UPDATE %1 SET deleted = 'true' %2;").arg(tableName, params);
+    m_lastQuery = QString("UPDATE %1 SET deleted = 1 %2;").arg(tableName, params);
     if (execPrepared(bindings))
         return true;
     else
