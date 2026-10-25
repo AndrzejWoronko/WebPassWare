@@ -5,8 +5,6 @@
 - Skrypty do budowania relase - OK (scripts/build.sh, scripts/build-deb.sh)
 - Skrypty do budowania instalatora - OK dla Debiana (CPack DEB); Windows/macOS: archiwa przenośne, niesprawdzone na sprzęcie
 - Skrypty do budowania github
-- Aktualizacja przez internet: CMaintenanceTool uruchamia maintenancetool z Qt Installer Framework,
-  którego paczka DEB nie ma; teraz brak narzędzia daje komunikat "Brak aktualizacji". Do decyzji:
-  ukryć akcję bez maintenancetool, usunąć funkcję albo wrócić do instalatora Qt IFW
+- Aktualizacja przez internet: akcja widoczna tylko z maintenancetool (Qt IFW) obok programu; w paczce DEB aktualizacje przez apt - OK
 - Kodowanie "DOS/OS2-852" w CSV: prawdziwe CP852 ("IBM852" w ICU) - OK
 - Szyfrowanie haseł wpisów w bazie (osobny plan)

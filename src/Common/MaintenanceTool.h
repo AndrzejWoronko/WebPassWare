@@ -72,6 +72,11 @@ class CMaintenanceTool : public QObject
 public:
     explicit CMaintenanceTool(QObject *parent = 0);
 
+    // The Qt Installer Framework maintenancetool next to the program.
+    static QString toolPath();
+    // False without that tool (the Debian package): no update check then.
+    static bool isAvailable();
+
     enum ProcessState
     {
         NotRunning,

@@ -161,6 +161,8 @@ void CWebPassWareMainWindow::setActions(void)
     m_actions.insert(actionDataCheck->getActionName(), actionDataCheck);
 
     CAction *actionCheckUpdates = new CAction(tr("Sprawdź aktualizacje"), ICON("Available-updates"), tr("Sprawdź aktualizacje"), QString(""), QString("ACTION_CHECK_UPDATES"), this);
+    // Without the installer's maintenancetool (Debian package) updates come from the package manager.
+    actionCheckUpdates->setVisible(CMaintenanceTool::isAvailable());
     m_actions.insert(actionCheckUpdates->getActionName(), actionCheckUpdates);
 }
 

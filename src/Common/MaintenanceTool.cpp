@@ -1,4 +1,5 @@
 #include "MaintenanceTool.h"
+#include <QFileInfo>
 #include "ApplicationSettings.h"
 #include "Application.h"
 //#include "MessageBox.h"
@@ -20,10 +21,9 @@ void CMaintenanceTool::startUpdate()
     startMaintenanceTool(CMaintenanceTool::Updater);
 }
 
-void CMaintenanceTool::startMaintenanceTool(StartMode mode)
+QString CMaintenanceTool::toolPath()
 {
     QString toolName;
-    QString path;
 #if defined(Q_OS_WIN)
     toolName = QString("maintenancetool.exe");
 #elif defined(Q_OS_MAC)
@@ -31,9 +31,18 @@ void CMaintenanceTool::startMaintenanceTool(StartMode mode)
 #else
     toolName = QString("maintenancetool");
 #endif
+    return QDir(QDir::currentPath()).absoluteFilePath(toolName);
+}
 
+bool CMaintenanceTool::isAvailable()
+{
+    const QFileInfo tool(toolPath());
+    return tool.isFile() && tool.isExecutable();
+}
 
-    path = QDir(QDir::currentPath()).absoluteFilePath(toolName);
+void CMaintenanceTool::startMaintenanceTool(StartMode mode)
+{
+    const QString path = toolPath();
     DEBUG_WITH_LINE << "Installer program: " << path;
 
     QStringList args;

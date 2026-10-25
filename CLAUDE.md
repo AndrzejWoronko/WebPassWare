@@ -42,6 +42,7 @@ Qt Test, one executable per unit, registered in `tests/CMakeLists.txt` via
   written by the Qt 5 build.
 - `tst_csv` (`tests/Csv_test`): CSV export bytes and import per encoding.
 - `tst_forms` (`tests/Forms_test`): form field `isDirty()`.
+- `tst_maintenancetool` (`tests/MaintenanceTool_test`): update tool availability.
 - `tst_autotype` (`tests/AutoType_test`): auto-type sequence parsing.
 
 
