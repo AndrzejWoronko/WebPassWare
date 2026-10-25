@@ -35,6 +35,7 @@ private Q_SLOTS:
     void cleanupTestCase();
     void test_noNullActions();
     void test_shortcutsAreUnique();
+    void test_insertOpensOneDialog();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -176,6 +177,17 @@ void Test_MainWindow::test_shortcutsAreUnique()
         QVERIFY2(!owners.contains(keys), qPrintable(QString("%1 on %2 and %3").arg(keys, owners.value(keys), a->objectName())));
         owners.insert(keys, a->objectName());
     }
+}
+
+void Test_MainWindow::test_insertOpensOneDialog()
+{
+    auto *table = m_window->findChild<CTableView *>();
+    table->setFocus();
+    autoClose();
+    QTest::keyClick(table, Qt::Key_Insert);
+    QTRY_VERIFY(QApplication::activeModalWidget() == nullptr);
+    QTest::qWait(200);
+    QCOMPARE(m_closed.count(QString("PassEntryDialog")), 1);
 }
 
 int main(int argc, char **argv)
