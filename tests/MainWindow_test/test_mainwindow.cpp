@@ -3,6 +3,7 @@
 #include <QtTest>
 #include <QAbstractButton>
 #include <QClipboard>
+#include <QComboBox>
 #include <QDialog>
 #include <QMessageBox>
 #include <QTemporaryDir>
@@ -14,6 +15,7 @@
 
 #include "Application.h"
 #include "Database.h"
+#include "FormSimpleIndexChoiceField.h"
 #include "PassEntryService.h"
 #include "PassGroupService.h"
 #include "Schema.h"
@@ -42,6 +44,7 @@ private Q_SLOTS:
     void test_viewsFollowServiceChanges();
     void test_copyToClipboard();
     void test_deleteEntry();
+    void test_editDialogShowsEntryGroup();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -58,6 +61,8 @@ private:
     QTimer m_closer;
     QStringList m_closed;
     QMessageBox::StandardButton m_answer = QMessageBox::No;
+    // Called with each modal widget before it is closed.
+    std::function<void(QWidget *)> m_inspect;
 };
 
 void Test_MainWindow::initTestCase()
@@ -79,6 +84,10 @@ void Test_MainWindow::initTestCase()
             return;
         }
         m_closed.append(QString::fromLatin1(modal->metaObject()->className()));
+        if (m_inspect)
+        {
+            m_inspect(modal);
+        }
         if (auto *box = qobject_cast<QMessageBox *>(modal))
         {
             QAbstractButton *button = box->button(m_answer);
@@ -118,6 +127,7 @@ void Test_MainWindow::init()
 void Test_MainWindow::cleanup()
 {
     m_closer.stop();
+    m_inspect = nullptr;
     m_window.reset();
     QSqlQuery(m_db->getDb()).exec("DELETE FROM pass_entry");
     QSqlQuery(m_db->getDb()).exec("DELETE FROM pass_group WHERE id_pass_group <> 0");
@@ -264,6 +274,42 @@ void Test_MainWindow::test_deleteEntry()
     action("ACTION_DEL_PASS_ENTRY")->trigger();
     QCOMPARE(m_closed.size(), 1);
     QCOMPARE(table->model()->rowCount(), before - 1);
+}
+
+void Test_MainWindow::test_editDialogShowsEntryGroup()
+{
+    // Ids with a hole: the combo position no longer equals the group id.
+    PassGroup removed;
+    removed.setm_name("Usunięta");
+    QVERIFY(m_groups->addObject(&removed) > 0);
+    PassGroup target;
+    target.setm_name("Cel");
+    QVERIFY(m_groups->addObject(&target) > 0);
+    QVERIFY(m_groups->removeObject(removed.getId()));
+    PassEntry entry;
+    entry.setm_title("W celu");
+    entry.setm_id_pass_group(target.getId());
+    QVERIFY(m_entries->addObject(&entry) > 0);
+
+    auto *table = m_window->findChild<CTableView *>();
+    const QModelIndexList rows = table->model()->match(table->model()->index(0, 0), Qt::DisplayRole, QVariant(entry.getId()), 1, Qt::MatchExactly);
+    QVERIFY(!rows.isEmpty());
+    table->setCurrentIndex(rows.first());
+
+    QString shownGroup;
+    m_inspect = [&shownGroup](QWidget *modal) {
+        const QList<QComboBox *> combos = modal->findChildren<QComboBox *>();
+        for (QComboBox *combo : combos)
+        {
+            if (dynamic_cast<CFormSimpleIndexChoiceField *>(combo))
+            {
+                shownGroup = combo->currentText();
+            }
+        }
+    };
+    autoClose();
+    action("ACTION_EDIT_PASS_ENTRY")->trigger();
+    QCOMPARE(shownGroup, QString("Cel"));
 }
 
 int main(int argc, char **argv)

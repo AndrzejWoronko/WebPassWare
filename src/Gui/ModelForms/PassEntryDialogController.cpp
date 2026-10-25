@@ -19,7 +19,7 @@ PassEntryDialogController::PassEntryDialogController(PassEntryService *passEntry
         CFormSimpleIndexChoiceField *groupField = getFieldAs<CFormSimpleIndexChoiceField>("m_id_pass_group");
         if (groupField)
         {
-            groupField->setValueList(m_passGroupService->getGroupNameList());
+            groupField->setIdChoices(m_passGroupService->getGroupChoices());
         }
         auto dlg = getDialogAs<PassEntryDialog>();
         if (dlg)
@@ -117,14 +117,7 @@ bool PassEntryDialogController::exec(const QString &title)
             CFormSimpleIndexChoiceField *groupField = getFieldAs<CFormSimpleIndexChoiceField>("m_id_pass_group");
             if (groupField)
             {
-                if (!m_passGroupService->getOwnedObject(0).isNull())
-                {
-                    pe.setm_id_pass_group(groupField->getIndexValue());
-                }
-                else
-                {
-                    pe.setm_id_pass_group(groupField->getIndexValue() + 1);
-                }
+                pe.setm_id_pass_group(groupField->getIdValue());
             }
 
             const qint64 newId = m_passEntryService->addObject(&pe); //Zapis do bazy
@@ -184,14 +177,7 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             CFormSimpleIndexChoiceField *groupField = getFieldAs<CFormSimpleIndexChoiceField>("m_id_pass_group");
             if (groupField)
             {
-                if (!m_passGroupService->getOwnedObject(0).isNull())
-                {
-                    groupField->setIndexValue(pe->getm_id_pass_group());
-                }
-                else
-                {
-                    groupField->setIndexValue(pe->getm_id_pass_group() - 1);
-                }
+                groupField->setIdValue(pe->getm_id_pass_group());
 //                if (f)
 //                    f->setValue(pe->getm_id_pass_group());
             }
@@ -217,14 +203,7 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             CFormSimpleIndexChoiceField *groupField = getFieldAs<CFormSimpleIndexChoiceField>("m_id_pass_group");
             if (groupField)
             {
-                if (!m_passGroupService->getOwnedObject(0).isNull())
-                {
-                    pe->setm_id_pass_group(groupField->getIndexValue());
-                }
-                else
-                {
-                    pe->setm_id_pass_group(groupField->getIndexValue() + 1);
-                }
+                pe->setm_id_pass_group(groupField->getIdValue());
             }
             ret = m_passEntryService->editObject(pe.data());
             if (!ret)

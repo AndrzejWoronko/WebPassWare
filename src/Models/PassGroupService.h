@@ -27,6 +27,8 @@ public:
 
     CSqlModel *getSqlModel(void);
     QStringList getGroupNameList(void);
+    // (id, name) of the groups that are not deleted, by id.
+    QList<QPair<qint64, QString>> getGroupChoices(void);
 };
 
 #endif // PASSGROUPSERVICE_H

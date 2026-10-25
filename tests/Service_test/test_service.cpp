@@ -43,6 +43,7 @@ private Q_SLOTS:
     void test_databasePasswordIsSalted();
     void test_failedAddReturnsMinusOne();
     void test_changedSignal();
+    void test_groupChoicesUseIds();
     void test_databasePasswordUpgradesLegacyHash();
 
 private:
@@ -424,6 +425,30 @@ void Test_Service::test_changedSignal()
     PassGroup again;
     QCOMPARE(service.addObject(&again, duplicate.getId()), qint64(-1));
     QCOMPARE(spy.count(), 5);
+}
+
+void Test_Service::test_groupChoicesUseIds()
+{
+    PassGroupService service(*m_db);
+    PassGroup a;
+    a.setm_name("A");
+    const qint64 idA = service.addObject(&a);
+    PassGroup b;
+    b.setm_name("B");
+    const qint64 idB = service.addObject(&b);
+    PassGroup c;
+    c.setm_name("C");
+    const qint64 idC = service.addObject(&c);
+    QVERIFY(idA > 0 && idB > 0 && idC > 0);
+
+    // A hole in the ids (removed) and a soft-deleted group.
+    QVERIFY(service.removeObject(idA));
+    QVERIFY(service.deleteObject(idB));
+
+    const QList<QPair<qint64, QString>> choices = service.getGroupChoices();
+    QCOMPARE(choices.size(), 1);
+    QCOMPARE(choices.first().first, idC);
+    QCOMPARE(choices.first().second, QString("C"));
 }
 
 QTEST_MAIN(Test_Service)

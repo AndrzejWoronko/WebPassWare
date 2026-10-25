@@ -25,3 +25,17 @@ QStringList PassGroupService::getGroupNameList(void)
     }
     return ret_list;
 }
+
+QList<QPair<qint64, QString>> PassGroupService::getGroupChoices(void)
+{
+    QList<QPair<qint64, QString>> choices;
+    const OwnedObjectList groups = this->getOwnedObjects(QString("id_pass_group"));
+    for (const OwnedObject &group : groups)
+    {
+        if (!group->getdeleted())
+        {
+            choices.append(qMakePair(group->getId(), group->getm_name()));
+        }
+    }
+    return choices;
+}
