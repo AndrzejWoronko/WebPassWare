@@ -46,6 +46,8 @@ Qt Test, one executable per unit, registered in `tests/CMakeLists.txt` via
 - `tst_csv` (`tests/Csv_test`): CSV export bytes and import per encoding.
 - `tst_masterpassword` (`tests/MasterPassword_test`): PBKDF2 hash, old MD5 form.
 - `tst_logindialog` (`tests/LoginDialog_test`): first-run setup, login, MD5 upgrade.
+- `tst_mainwindow` (`tests/MainWindow_test`): main window on a temporary database with a real
+  `CApplication` (own `main()`); a timer closes and counts modal dialogs.
 - `tst_forms` (`tests/Forms_test`): form field `isDirty()`.
 - `tst_maintenancetool` (`tests/MaintenanceTool_test`): update tool availability.
 - `tst_autotype` (`tests/AutoType_test`): auto-type sequence parsing.

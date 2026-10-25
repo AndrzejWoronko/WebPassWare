@@ -209,7 +209,6 @@ void CWebPassWareMainWindow::setMenu(void)
     helpMenu = new QMenu(m_menuBar);
     helpMenu->setTitle(tr("&Pomoc"));
     helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT")));
-    helpMenu->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     helpMenu->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
     helpMenu->addAction(m_actions.value(QString("ACTION_CHECK_UPDATES")));
 
@@ -226,7 +225,6 @@ void CWebPassWareMainWindow::setToolBar(void)
     m_toolBar->addAction(m_actions.value(QString("ACTION_ADD_PASS_ENTRY")));
     m_toolBar->addSeparator();
     m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT")));
-    m_toolBar->addAction(m_actions.value(QString("ACTION_VISIT_WEBSITE")));
     m_toolBar->addAction(m_actions.value(QString("ACTION_ABOUT_QT")));
     m_toolBar->addSeparator();
     m_toolBar->addAction(m_actions.value(QString("ACTION_CHECK_UPDATES")));
