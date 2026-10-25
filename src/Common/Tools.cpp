@@ -218,11 +218,14 @@ QString Tools::getTagValue(const QString& src, const QString& key)
 QString Tools::snakeCase(const QString& name)
 {
     QString newName = name;
-    if (newName.indexOf(QRegExp("^[A-Z]+$")) != -1)
+    static const QRegularExpression allUpper("^[A-Z]+$");
+    static const QRegularExpression acronymBeforeWord("([A-Z]+)([A-Z][a-z])");
+    static const QRegularExpression lowerBeforeUpper("([a-z])([A-Z])");
+    if (newName.indexOf(allUpper) != -1)
         return newName.toLower();
 
-    newName = newName.replace(QRegExp("([A-Z]+)([A-Z][a-z])"),"\\1_\\2");
-    newName = newName.replace(QRegExp("([a-z])([A-Z])"), "\\1_\\2");
+    newName = newName.replace(acronymBeforeWord, "\\1_\\2");
+    newName = newName.replace(lowerBeforeUpper, "\\1_\\2");
     return newName.toLower();
 }
 

@@ -1,5 +1,6 @@
 #include "AutoType.h"
 #include <QApplication>
+#include <QRegularExpression>
 
 #include "AutoTypePlatform.h"
 #include "AutoTypePlatformTest.h"
@@ -335,10 +336,11 @@ QList<CAutoTypeAction*> CAutoType::createActionFromTemplate(const QString& tmpl,
 
     // {DELAY=X} sets a persistent delay between subsequent actions,
     // as opposed to {DELAY X} which inserts a single pause.
-    QRegExp setDelayRegEx("delay=(\\d+)", Qt::CaseSensitive, QRegExp::RegExp2);
-    if (setDelayRegEx.exactMatch(tmplName))
+    static const QRegularExpression setDelayRegEx(QRegularExpression::anchoredPattern("delay=(\\d+)"));
+    const QRegularExpressionMatch setDelayMatch = setDelayRegEx.match(tmplName);
+    if (setDelayMatch.hasMatch())
       {
-        int delayMs = setDelayRegEx.cap(1).toInt();
+        int delayMs = setDelayMatch.captured(1).toInt();
         if (delayMs <= 10000)
           {
             list.append(new CAutoTypeSetDelay(delayMs));
@@ -346,11 +348,12 @@ QList<CAutoTypeAction*> CAutoType::createActionFromTemplate(const QString& tmpl,
         return list;
       }
 
-    QRegExp repeatRegEx("(.+) (\\d+)", Qt::CaseSensitive, QRegExp::RegExp2);
-    if (repeatRegEx.exactMatch(tmplName))
+    static const QRegularExpression repeatRegEx(QRegularExpression::anchoredPattern("(.+) (\\d+)"));
+    const QRegularExpressionMatch repeatMatch = repeatRegEx.match(tmplName);
+    if (repeatMatch.hasMatch())
       {
-        tmplName = repeatRegEx.cap(1);
-        num = repeatRegEx.cap(2).toInt();
+        tmplName = repeatMatch.captured(1);
+        num = repeatMatch.captured(2).toInt();
 
         if (num == 0)
           {
@@ -495,9 +498,11 @@ QList<CAutoTypeAction*> CAutoType::createActionFromTemplate(const QString& tmpl,
       }
     else
       {
-        QRegExp fnRegexp("f(\\d+)", Qt::CaseInsensitive, QRegExp::RegExp2);
-        if (fnRegexp.exactMatch(tmplName)) {
-            int fnNo = fnRegexp.cap(1).toInt();
+        static const QRegularExpression fnRegexp(QRegularExpression::anchoredPattern("f(\\d+)"),
+                                                 QRegularExpression::CaseInsensitiveOption);
+        const QRegularExpressionMatch fnMatch = fnRegexp.match(tmplName);
+        if (fnMatch.hasMatch()) {
+            int fnNo = fnMatch.captured(1).toInt();
             if (fnNo >= 1 && fnNo <= 16) {
                 list.append(new CAutoTypeKey(static_cast<Qt::Key>(Qt::Key_F1 - 1 + fnNo)));
             }
