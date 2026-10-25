@@ -1,7 +1,7 @@
 #include "FormSimpleChoiceField.h"
 
 CFormSimpleChoiceField::CFormSimpleChoiceField(const QString &variableName, const QString &label, QVariant value, const QStringList &valueList, QWidget *parent) :
-QComboBox(parent), CFormAbstractField(QVariant::String, variableName, label, value)
+QComboBox(parent), CFormAbstractField(QMetaType::QString, variableName, label, value)
 {
    m_widget = this;
    if (!valueList.isEmpty())

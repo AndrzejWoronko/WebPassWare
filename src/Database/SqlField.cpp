@@ -26,7 +26,7 @@ CSqlField::~CSqlField(void)
 bool CSqlField::isNumericField()
 {
     if ((getTypeName() == QString("Price")) || (getTypeName() == QString("Value")) || (getTypeName() == QString("Percent")) ||
-        (getTypeName() == QString("Indicator")) || (getType() == QVariant::Double) || (getType() == QVariant::Int))
+        (getTypeName() == QString("Indicator")) || (getType() == QMetaType::Double) || (getType() == QMetaType::Int))
         return true;
     else
         return  false;
@@ -34,7 +34,7 @@ bool CSqlField::isNumericField()
 
 bool CSqlField::isDateField()
 {
-    if ((getType() == QVariant::Date) || (getType() == QVariant::DateTime))
+    if ((getType() == QMetaType::QDate) || (getType() == QMetaType::QDateTime))
         return true;
     else
         return  false;
@@ -45,75 +45,75 @@ bool CSqlField::positionLessThan(CSqlField *f1, CSqlField *f2)
     return f1->getPos() < f2->getPos();
 }
 
-QVariant::Type CSqlField::recognizeString2Type(const QString &type)
+QMetaType::Type CSqlField::recognizeString2Type(const QString &type)
 {
   if (type == "string")
-      return QVariant::String;
+      return QMetaType::QString;
   else if (type == "long")
-      return QVariant::Int;
+      return QMetaType::Int;
   else if (type == "int")
-      return QVariant::Int;
+      return QMetaType::Int;
   else if (type == "double")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "date")
-      return QVariant::Date;
+      return QMetaType::QDate;
   else if (type == "data")
-      return QVariant::Date;
+      return QMetaType::QDate;
   else if (type == "ilosc")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "wartosc")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "datetime")
-      return QVariant::DateTime;
+      return QMetaType::QDateTime;
   else if (type == "time")
-      return QVariant::Time;
+      return QMetaType::QTime;
   else if (type == "czas")
-      return QVariant::DateTime;
+      return QMetaType::QDateTime;
   else if (type == "quantity")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "amount")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "bool")
-      return QVariant::Bool;
+      return QMetaType::Bool;
   else if (type == "check")
-      return QVariant::Bool;
+      return QMetaType::Bool;
   else if (type == "Value")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "Price")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "Amount")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "Indicator")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "Percent")
-      return QVariant::Double;
+      return QMetaType::Double;
   else if (type == "Varchar255")
-      return QVariant::String;
+      return QMetaType::QString;
   else if (type == "Color")
-      return QVariant::String;
+      return QMetaType::QString;
   else if (type == "Timestamp")
-      return QVariant::DateTime;
+      return QMetaType::QDateTime;
   else
-      return QVariant::String;
+      return QMetaType::QString;
 }
 
-QString CSqlField::recognizeType2String(QVariant::Type type)
+QString CSqlField::recognizeType2String(QMetaType::Type type)
 {
   switch (type)
   {
-  case QVariant::String:
+  case QMetaType::QString:
       return QString("string");
-  case QVariant::Int:
+  case QMetaType::Int:
       return QString("long");
-  case QVariant::Double:
+  case QMetaType::Double:
       return QString("double");
-  case QVariant::Date:
+  case QMetaType::QDate:
       return QString("data");
-  case QVariant::DateTime:
+  case QMetaType::QDateTime:
       return QString("datetime");
-  case QVariant::Time:
+  case QMetaType::QTime:
       return QString("time");
-  case  QVariant::Bool:
+  case  QMetaType::Bool:
       return QString("bool");
   default: //Domyślny typ to string
       return QString("string");

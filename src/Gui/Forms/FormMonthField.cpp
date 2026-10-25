@@ -1,7 +1,7 @@
 #include "FormMonthField.h"
 
 CFormMonthField::CFormMonthField(const QString &variableName, const QString &label, const QDate &value, bool readOnly, QWidget *parent):
-        CMonthEdit(value, parent), CFormAbstractField(QVariant::Date, variableName, label, value)
+        CMonthEdit(value, parent), CFormAbstractField(QMetaType::QDate, variableName, label, value)
 {
     m_widget = this;
     if (readOnly)
@@ -24,7 +24,7 @@ QVariant CFormMonthField::getValue()
 
 void CFormMonthField::setValue(QVariant value)
 {    
-    if (value.type() == QVariant::Date)
+    if (value.userType() == QMetaType::QDate)
         {        
             QDate d = value.toDate();
             d.setDate(d.year(), d.month(), 1);

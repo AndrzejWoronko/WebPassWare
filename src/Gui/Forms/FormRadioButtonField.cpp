@@ -1,7 +1,7 @@
 #include "FormRadioButtonField.h"
 
 CFormRadioButtonField::CFormRadioButtonField(const QString &variableName, const QString &label, bool value, QWidget *parent) :
-QRadioButton(parent), CFormAbstractField(QVariant::Bool, variableName, label, value)
+QRadioButton(parent), CFormAbstractField(QMetaType::Bool, variableName, label, value)
 {
     m_widget = this;
     this->setChecked(value);

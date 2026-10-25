@@ -20,7 +20,7 @@ class CFormAbstractField
 
   public:
     //type, variable_name, label, value, validator, select_query
-    CFormAbstractField(QVariant::Type type, const QString &variableName, const QString &label, QVariant value);
+    CFormAbstractField(QMetaType::Type type, const QString &variableName, const QString &label, QVariant value);
     virtual ~CFormAbstractField();
 
     virtual QVariant getValue(void) = 0;
@@ -38,7 +38,7 @@ class CFormAbstractField
     virtual void select();
 
   protected:
-    QVariant::Type m_type;
+    QMetaType::Type m_type;
     QString m_variableName;
     QString m_label;
     QVariant m_value;

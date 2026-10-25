@@ -16,7 +16,7 @@
 class CSqlField
 {
     //Typ danych
-    ADD_FIELD(QVariant::Type, m_type, getType, setType)
+    ADD_FIELD(QMetaType::Type, m_type, getType, setType)
     ADD_FIELD(QString, m_typeName, getTypeName, setTypeName)
     //Nazwa kolumny widoku
     ADD_FIELD(QString, m_name, getName, setName)
@@ -45,8 +45,8 @@ public:
     bool isDateField();
     static bool positionLessThan(CSqlField *f1, CSqlField *f2);
 
-    static QVariant::Type recognizeString2Type(const QString &type);
-    static QString recognizeType2String(QVariant::Type type);
+    static QMetaType::Type recognizeString2Type(const QString &type);
+    static QString recognizeType2String(QMetaType::Type type);
 };
 
 //Lista z polami do wyświetlania

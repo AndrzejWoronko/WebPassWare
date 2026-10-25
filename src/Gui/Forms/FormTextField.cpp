@@ -2,7 +2,7 @@
 
 
 CFormTextField::CFormTextField(const QString &variableName, const QString &label, QString value, int length, bool readOnly, QWidget *parent) :
-        CFixedLineEdit(value, length, 1, parent), CFormAbstractField(QVariant::String, variableName, label, value)
+        CFixedLineEdit(value, length, 1, parent), CFormAbstractField(QMetaType::QString, variableName, label, value)
 {
     m_widget = this;
     m_length = length;

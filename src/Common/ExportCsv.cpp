@@ -96,12 +96,12 @@ void CExportCsv::writeLine(QVector<QVariant> data)
 {
     for(int i = 0; i < data.length() - 1; i++)
     {
-        if (data.at(i).type() == QVariant::Double)
+        if (data.at(i).userType() == QMetaType::Double)
         {
             QString s_value = data.at(i).toString().replace(".", m_digitSign);
             *m_out << s_value << m_delimiter << " ";
         }
-        else if (data.at(i).type() == QVariant::String && m_textDelimiter)
+        else if (data.at(i).userType() == QMetaType::QString && m_textDelimiter)
         {
             *m_out  << "\"" << data.at(i).toString().replace("\"","'")  << "\"" << m_delimiter;
         }
@@ -111,12 +111,12 @@ void CExportCsv::writeLine(QVector<QVariant> data)
         }
     }
 
-    if (data.last().type() == QVariant::Double)
+    if (data.last().userType() == QMetaType::Double)
     {
         QString s_value = data.last().toString().replace(".", m_digitSign);
         *m_out << s_value << m_end_of_line;
     }
-    else if (data.last().type() == QVariant::String && m_textDelimiter)
+    else if (data.last().userType() == QMetaType::QString && m_textDelimiter)
     {
         *m_out  << "\"" << data.last().toString().replace("\"","'")  << "\"" << m_end_of_line;
     }

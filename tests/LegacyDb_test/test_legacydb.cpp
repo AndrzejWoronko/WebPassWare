@@ -24,6 +24,7 @@ private Q_SLOTS:
     void test_groups();
     void test_entries();
     void test_listModelsSkipDeletedRows();
+    void test_listModelAlignsNumbersRight();
 
 private:
     QTemporaryDir m_dataDir;
@@ -100,6 +101,21 @@ void Test_LegacyDb::test_listModelsSkipDeletedRows()
     QScopedPointer<CSqlModel> entries(PassEntryService().getSqlModel());
     entries->refresh();
     QCOMPARE(entries->rowCount(), 2);
+}
+
+void Test_LegacyDb::test_listModelAlignsNumbersRight()
+{
+    QScopedPointer<CSqlModel> entries(PassEntryService().getSqlModel());
+    entries->refresh();
+    const int idColumn = entries->record().indexOf("id_pass_entry");
+    const int titleColumn = entries->record().indexOf("m_title");
+    QVERIFY(idColumn >= 0);
+    QVERIFY(titleColumn >= 0);
+
+    const QVariant idAlignment = entries->data(entries->index(0, idColumn), Qt::TextAlignmentRole);
+    const QVariant titleAlignment = entries->data(entries->index(0, titleColumn), Qt::TextAlignmentRole);
+    QCOMPARE(idAlignment.toInt(), int(Qt::AlignRight | Qt::AlignVCenter));
+    QCOMPARE(titleAlignment.toInt(), int(Qt::AlignLeft | Qt::AlignVCenter));
 }
 
 QTEST_MAIN(Test_LegacyDb)

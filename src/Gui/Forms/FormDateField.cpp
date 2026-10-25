@@ -1,7 +1,7 @@
 #include "FormDateField.h"
 
 CFormDateField::CFormDateField(const QString &variableName, const QString &label, const QDate &value, bool readOnly, QWidget *parent):
-        CDateEdit(value, parent), CFormAbstractField(QVariant::Date, variableName, label, value)
+        CDateEdit(value, parent), CFormAbstractField(QMetaType::QDate, variableName, label, value)
 {
     m_widget = this;
     if (readOnly)
@@ -22,7 +22,7 @@ QVariant CFormDateField::getValue()
 
 void CFormDateField::setValue(QVariant value)
 {
-    if (value.type() == QVariant::Date)
+    if (value.userType() == QMetaType::QDate)
         {
             setRawValue(value);
             this->setDate(value.toDate());

@@ -3,7 +3,7 @@
 
 
 CFormDateTimeField::CFormDateTimeField(const QString &variableName, const QString &label, const QDateTime &value, bool readOnly, QWidget *parent):
-        CDateTimeEdit(value, parent), CFormAbstractField(QVariant::DateTime, variableName, label, value)
+        CDateTimeEdit(value, parent), CFormAbstractField(QMetaType::QDateTime, variableName, label, value)
 {
     m_widget = this;
 
@@ -25,12 +25,12 @@ QVariant CFormDateTimeField::getValue()
 
 void CFormDateTimeField::setValue(QVariant value)
 {
-    if (value.type() == QVariant::DateTime)
+    if (value.userType() == QMetaType::QDateTime)
        {
            setRawValue(value);
            this->setDateTime(value.toDateTime());
        }
-    if (value.type() == QVariant::Date)
+    if (value.userType() == QMetaType::QDate)
        {
            setRawValue(value);
            this->setDate(value.toDate());

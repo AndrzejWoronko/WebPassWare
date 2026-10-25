@@ -1,7 +1,7 @@
 #include "FormToggleSwitchField.h"
 
 CFormToggleSwitchField::CFormToggleSwitchField(const QString &variableName, const QString &label, bool value, bool readOnly, QWidget *parent) :
-    CToggleSwitch(parent), CFormAbstractField(QVariant::Bool, variableName, label, value)
+    CToggleSwitch(parent), CFormAbstractField(QMetaType::Bool, variableName, label, value)
 {
     m_widget = this;
     this->setChecked(value);

@@ -52,12 +52,12 @@ QVariant CSqlModel::data(const QModelIndex &index, int role) const
                     if (var.isNull())
                         return Qt::AlignCenter;
                 }
-            QVariant type = QSqlQueryModel::data(index, role).type();
+            int type = QSqlQueryModel::data(index, role).userType();
             QString column_name = this->record().fieldName(index.column());
 
             if (m_fieldsDesc.size() > 0 && m_fieldsDesc.value(column_name))
                 type = m_fieldsDesc.value(column_name)->getType();
-            if (type == QVariant::Int || type == QVariant::Double || m_numericColumns.indexOf(index.column()) != -1)
+            if (type == QMetaType::Int || type == QMetaType::Double || m_numericColumns.indexOf(index.column()) != -1)
               return Qt::AlignRight + Qt::AlignVCenter;
             else
               return Qt::AlignLeft + Qt::AlignVCenter;

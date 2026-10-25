@@ -1,7 +1,7 @@
 #include "FormAbstractField.h"
 
 
-CFormAbstractField::CFormAbstractField(QVariant::Type type, const QString &variableName, const QString &label, QVariant value):
+CFormAbstractField::CFormAbstractField(QMetaType::Type type, const QString &variableName, const QString &label, QVariant value):
                                        m_type(type),
                                        m_variableName(variableName),
                                        m_label(label),

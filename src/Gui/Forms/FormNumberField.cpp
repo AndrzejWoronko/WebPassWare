@@ -9,7 +9,7 @@ UWAGA !!! Dla pola CFormNumberField z uwagi na precyzję nie można uzyskać war
 ***/
 CFormNumberIntField::CFormNumberIntField(const QString &variableName, const QString &label, QVariant value, int minimum, bool readOnly,
                                    const QString &prefix, const QString &suffix, QWidget *parent) :
-        QSpinBox(parent), CFormAbstractField(QVariant::Int, variableName, label, value)
+        QSpinBox(parent), CFormAbstractField(QMetaType::Int, variableName, label, value)
 {
     m_widget = this;
     this->setMinimum(minimum);
@@ -119,7 +119,7 @@ Pole zmienno przecinkowe
 
 CFormNumberField::CFormNumberField(const QString &variableName, const QString &label, QVariant value, int precision, double minimum, bool readOnly,
                                    const QString &prefix, const QString &suffix, QWidget *parent) :
-        QDoubleSpinBox(parent), CFormAbstractField(QVariant::Double, variableName, label, value)
+        QDoubleSpinBox(parent), CFormAbstractField(QMetaType::Double, variableName, label, value)
 {
     m_widget = this;
     if (precision)

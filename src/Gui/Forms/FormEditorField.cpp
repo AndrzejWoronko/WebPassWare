@@ -1,7 +1,7 @@
 #include "FormEditorField.h"
 
 CFormEditorField::CFormEditorField(const QString &variableName, const QString &label, QString value, bool readOnly, QWidget *parent) :
-        QTextEdit(value, parent), CFormAbstractField(QVariant::String, variableName, label, value)
+        QTextEdit(value, parent), CFormAbstractField(QMetaType::QString, variableName, label, value)
 {
     m_widget = this;
     if (readOnly)

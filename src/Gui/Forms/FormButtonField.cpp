@@ -1,7 +1,7 @@
 #include "FormButtonField.h"
 
   CFormButtonField::CFormButtonField(const QString &variableName, const QString &label, QVariant value, QWidget *parent):
-    QPushButton(parent), CFormAbstractField(QVariant::String, variableName, label, value)
+    QPushButton(parent), CFormAbstractField(QMetaType::QString, variableName, label, value)
   {
     m_widget = this;
     setValue(value);

@@ -14,6 +14,7 @@
 Q_PROPERTY(type name READ get##name WRITE set##name) \
     private: \
     type name; \
+    const bool m_declaredType_##name = registerDeclaredTypeName(#name, #type); \
     public: \
     type get##name() const { return name;} \
     void set##name(const type & input_##name)  \
@@ -103,6 +104,21 @@ public:
         m_hasUnsavedChanges = false;
     }
 
+    // Property type names as written in ORM_PROPERTY. The column type depends
+    // on the typedef (Varchar255, Timestamp, Price), and QMetaProperty::typeName()
+    // reports the underlying type instead in Qt 6 (QString, QDateTime, double).
+    static QHash<QString, QString> &declaredTypeNames()
+    {
+        static QHash<QString, QString> names;
+        return names;
+    }
+
+    static bool registerDeclaredTypeName(const char *name, const char *type)
+    {
+        declaredTypeNames().insert(QString::fromLatin1(name), QString::fromLatin1(type));
+        return true;
+    }
+
     void initSqlDescription()
     {
         QString propertyName;
@@ -115,7 +131,7 @@ public:
         for(int i = 1; i < metaObject()->propertyCount(); i++)
         {
             propertyName = QString::fromLatin1(metaObject()->property(i).name());
-            typeName = QString::fromLatin1(metaObject()->property(i).typeName());
+            typeName = declaredTypeNames().value(propertyName, QString::fromLatin1(metaObject()->property(i).typeName()));
             propertyValue = m_tableTypes.value(typeName);
             if (propertyValue.isNull())
                 DEBUG_WITH_LINE << typeName;
@@ -127,34 +143,34 @@ public:
     {
         for(int i = 1; i < metaObject()->propertyCount(); i++)
         {
-            switch (metaObject()->property(i).type())
+            switch (metaObject()->property(i).userType())
             {
-            case QVariant::Time:
+            case QMetaType::QTime:
                 metaObject()->property(i).write(this, QVariant(QTime::currentTime()));
             break;
-            case QVariant::Date:
-            case QVariant::DateTime:            
+            case QMetaType::QDate:
+            case QMetaType::QDateTime:
                 metaObject()->property(i).write(this, QVariant(QDateTime::currentDateTime()));
                 break;
-            case QVariant::Int:
-            case QVariant::UInt:
-            case QVariant::LongLong:
-            case QVariant::ULongLong:
+            case QMetaType::Int:
+            case QMetaType::UInt:
+            case QMetaType::LongLong:
+            case QMetaType::ULongLong:
                 metaObject()->property(i).write(this, QVariant(0));
                 break;
-            case QVariant::Double:
+            case QMetaType::Double:
                 metaObject()->property(i).write(this, QVariant(0.00));
                 break;
-            case QVariant::Char:
-            case QVariant::String:            
-            case QVariant::ByteArray:
+            case QMetaType::QChar:
+            case QMetaType::QString:
+            case QMetaType::QByteArray:
                 metaObject()->property(i).write(this, QVariant(""));
                 break;
-            case QVariant::Bool:
+            case QMetaType::Bool:
                 metaObject()->property(i).write(this, QVariant(false));
                 break;
             default: // Default type int
-                DEBUG_WITH_LINE << "Unknown property name:" << metaObject()->property(i).name() << " type name: " << metaObject()->property(i).typeName() << " variant type: " << metaObject()->property(i).type();
+                DEBUG_WITH_LINE << "Unknown property name:" << metaObject()->property(i).name() << " type name: " << metaObject()->property(i).typeName() << " variant type: " << metaObject()->property(i).userType();
                 metaObject()->property(i).write(this, QVariant(0));
                 break;
             }

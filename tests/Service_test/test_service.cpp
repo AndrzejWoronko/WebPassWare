@@ -28,6 +28,7 @@ private Q_SLOTS:
     void test_passEntryCrud();
     void test_errorPathSetsError();
     void test_tableDdlIsStable();
+    void test_declaredTypeNamesKeepTypedefs();
 
 private:
     void createTables();
@@ -248,6 +249,18 @@ void Test_Service::test_tableDdlIsStable()
                 "deleted BOOL NOT NULL DEFAULT FALSE, timestp TIMESTAMP NOT NULL, "
                 "m_name VARCHAR(52) NOT NULL DEFAULT '')");
     QCOMPARE(ddl.join(QString("\n")), expected);
+}
+
+void Test_Service::test_declaredTypeNamesKeepTypedefs()
+{
+    PassEntry entry;
+
+    const QHash<QString, QString> &names = PassEntry::declaredTypeNames();
+    QCOMPARE(names.value("m_title"), QString("Varchar255"));
+    QCOMPARE(names.value("m_user"), QString("QString"));
+    QCOMPARE(names.value("m_id_pass_group"), QString("qint64"));
+    QCOMPARE(names.value("deleted"), QString("bool"));
+    QCOMPARE(names.value("timestp"), QString("Timestamp"));
 }
 
 QTEST_MAIN(Test_Service)
