@@ -23,8 +23,11 @@ cmake --preset debug && cmake --build --preset debug && ctest --preset debug
   `CURRENT_VERSION.TXT`.
 - Linux links X11 and Xtst (auto-type). Sources of the other platforms are added per
   platform in `CMakeLists.txt`.
-- Platform packaging scripts live in `scripts/{linux,macosx,windows}/`, installer files
-  in `installer/` (still qmake/Qt 5; being moved to CMake).
+- Packaging: `scripts/build-deb.sh` (release + tests + CPack DEB → `build/dist/`; Qt
+  deployed into `/opt/webpassware`, see `cmake/Packaging.cmake`, `packaging/`).
+  `scripts/windows/build-portable.sh` (MinGW, windeployqt) and
+  `scripts/macosx/build-portable.sh` (macdeployqt) build portable archives; they are not
+  tested on hardware.
 
 ## Tests
 

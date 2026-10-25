@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=WebPassWare
+GenericName=Password manager
+GenericName[pl]=Menedżer haseł
+Comment=Keep passwords in groups, generate them and type them into other windows
+Comment[pl]=Hasła w grupach, generator haseł i automatyczne wpisywanie w innych oknach
+Exec=/opt/webpassware/bin/webpassware
+Icon=webpassware
+Terminal=false
+Categories=Utility;Security;

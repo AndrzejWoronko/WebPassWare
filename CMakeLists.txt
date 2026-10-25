@@ -12,6 +12,11 @@ option(WPW_COVERAGE "Instrument the build for gcov/lcov coverage" OFF)
 find_package(Qt6 6.12 REQUIRED COMPONENTS Core Gui Sql Svg Widgets)
 qt_standard_project_setup(REQUIRES 6.12)
 
+# Where the Debian package installs; the program finds the deployed Qt next
+# to it (see cmake/Packaging.cmake).
+set(WPW_PACKAGE_PREFIX /opt/webpassware)
+set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib")
+
 # APP_VERSION (ApplicationSettings.h) expands to this string literal.
 add_compile_definitions(WEBPASSWARE_VERSION_STR="${PROJECT_VERSION}")
 file(WRITE ${CMAKE_SOURCE_DIR}/CURRENT_VERSION.TXT "WEBPASSWARE_VERSION=${PROJECT_VERSION}\n")
@@ -262,6 +267,16 @@ elseif(APPLE)
         src/Common/AutoTypePlatformMacos.h src/Common/AutoTypePlatformMacos.cpp
         src/Common/MacUtils.h src/Common/MacUtils.mm)
     target_link_libraries(webpassware PRIVATE "-framework AppKit")
+    set(wpw_macos_icon ${CMAKE_SOURCE_DIR}/packaging/webpassware.icns)
+    set_source_files_properties(${wpw_macos_icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    target_sources(webpassware PRIVATE ${wpw_macos_icon})
+    set_target_properties(webpassware PROPERTIES
+        MACOSX_BUNDLE_BUNDLE_NAME WebPassWare
+        MACOSX_BUNDLE_GUI_IDENTIFIER pl.com.awsoftware.WebPassWare
+        MACOSX_BUNDLE_ICON_FILE webpassware.icns
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
+        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+        MACOSX_BUNDLE_INFO_STRING AWSoftware)
 else()
     find_package(X11 REQUIRED)
     target_sources(webpassware PRIVATE
@@ -274,4 +289,8 @@ if(WPW_BUILD_TESTS)
     enable_testing()
     find_package(Qt6 6.12 REQUIRED COMPONENTS Test)
     add_subdirectory(tests)
+endif()
+
+if(UNIX AND NOT APPLE)
+    include(cmake/Packaging.cmake)
 endif()
