@@ -67,3 +67,4 @@ Verify:
 - For repeated staged refactors, prefer repository skills over one-off prompting.
 - When refactoring service classes that inherit from `Singleton<T>`, use the `service-singleton-to-static` skill if available.
 - For large refactors, produce a plan first and implement in small reviewable passes.
+- The staged Qt 6 migration and design-pattern refactor in `.claude/plans/migracja-qt6-i-wzorce.plan.md` is an explicitly requested refactor: the "no broad refactors" rule does not block its steps, but each step stays small and reviewable.

@@ -17,7 +17,10 @@ Build outputs: `bin/` (executable `webpassware`). Version is defined in `include
 
 ## Tests
 
-One standalone test project, **not** built by the main .pro:
+Three standalone Qt Test projects, **not** built by the main .pro: `tests/ORM_test`
+(ORM on its own models), `tests/Service_test` (real Database, Models and services),
+`tests/AutoType_test` (auto-type sequence parsing; needs X11/Xtst). `tests/TestSupport/`
+holds `ApplicationSettingsStub.cpp`.
 
 ```bash
 cd tests/ORM_test
@@ -25,6 +28,10 @@ qmake test_orm.pro
 make -j$(nproc)
 ./test_orm
 ```
+
+Migration to Qt 6.12 + CMake and the second design-pattern round:
+`.claude/plans/migracja-qt6-i-wzorce.plan.md` (Polish; update its "Postęp" section
+after each phase). Reference project: `/home/woronek/git/IpcFirmwareTool`.
 
 ## Architecture
 
@@ -77,3 +84,40 @@ make -j$(nproc)
 - Array/vector/index access is bounded.
 - Unsaved-changes flow still works.
 - UI state transitions still make sense.
+
+## Engineering rules
+
+- **TDD**: failing Qt Test first, then the minimal code, then refactor with green
+  tests. Characterization tests before touching legacy behaviour (ORM, forms, CSV).
+- **SOLID** and the patterns in use: Repository (`COrmRepository`), Template Method
+  (`AbstractFormDialog`, settings pages), Strategy (`AutoTypePlatform*`, `ICState`),
+  Factory (auto-type platform, settings pages), Facade (`PasswordVault`), Observer
+  (Qt signals), Command (main window actions), RAII transaction. No patterns
+  "for later" (YAGNI).
+- Dependencies injected through constructors, composed in `main.cpp`; no new
+  global singletons or macros like `DB` / `SETT` / `APPI` (existing ones are being
+  removed).
+- `wpw_core` never links Qt Widgets.
+- SQL only through `prepare` + `bindValue`; identifiers only from `metaObject()`.
+  Schema changes: bump `kSchemaVersion` and add a migration (tested from empty,
+  from N-1 and from the legacy fixture database).
+- Secrets: never log passwords; master password only as salted PBKDF2-SHA256.
+- Coverage target 80%+ for `wpw_core`.
+
+## Style
+
+- C++17, Qt 6 APIs only (function-pointer connects, `QRegularExpression`,
+  `QStringDecoder`, `QMetaType`, range-for instead of `Q_FOREACH`).
+- Existing classes keep the `C` prefix; new classes go to namespace `wpw` without
+  it. Members `m_camelCase`, slots `onXxx`; always braces; `nullptr`.
+- User-visible strings through `tr()` (source strings in Polish). New and changed
+  comments in English and explain why; no references to plan phases in code.
+- Shell scripts: `set -euo pipefail`, usage from the header comment, `die()` helper.
+
+## Git
+
+- Conventional commits (`feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `build:`),
+  description in Polish, one logical change per commit, tests green before
+  committing.
+- Never add `.gitignore` to commits; no `Co-Authored-By:` trailers.
+- `build/`, `bin/`, `.obj/`, `.moc/` and `*.user` stay out of git.
