@@ -59,7 +59,6 @@ qt_add_library(wpw_core STATIC
     src/Common/CsvModel.h
     src/Common/ExportCsv.cpp
     src/Common/ExportCsv.h
-    src/Common/GenericFactory.h
     src/Common/Global.h
     src/Common/ImportCsv.cpp
     src/Common/ImportCsv.h

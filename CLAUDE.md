@@ -108,7 +108,7 @@ which `main.cpp` sets to the busy mouse cursor.
   `AutoTypePlatform{Linux,Macos,Windows,Test}`. Without an X11 display the Linux
   platform is unavailable instead of crashing.
 - `PasswordGenerator`, `ImportCsv`/`ExportCsv`/`CsvModel`, `Logger`, `Tools`, `MaintenanceTool` (internet update).
-- `Singleton.h`, `GenericFactory.h`.
+- `Singleton.h` (only for the file loggers).
 - `Global.h` — getter/setter boilerplate macros (`ADD_FIELD`, `ADD_PTR_PROPERTY`, `ADD_PTR`, smart-pointer variants) and `safe_delete`/`qobject_safe_delete`.
 
 ## Coding rules (from AGENTS.md)
