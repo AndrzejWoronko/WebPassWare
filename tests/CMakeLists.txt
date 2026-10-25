@@ -14,6 +14,7 @@ wpw_add_test(tst_orm SOURCES ORM_test/test_orm.cpp LIBS wpw_core)
 wpw_add_test(tst_service SOURCES Service_test/test_service.cpp LIBS wpw_core)
 wpw_add_test(tst_legacydb SOURCES LegacyDb_test/test_legacydb.cpp LIBS wpw_core)
 wpw_add_test(tst_csv SOURCES Csv_test/test_csv.cpp LIBS wpw_core)
+wpw_add_test(tst_masterpassword SOURCES MasterPassword_test/test_masterpassword.cpp LIBS wpw_core)
 wpw_add_test(tst_forms SOURCES Forms_test/test_forms.cpp LIBS wpw_gui)
 wpw_add_test(tst_maintenancetool SOURCES MaintenanceTool_test/test_maintenancetool.cpp LIBS wpw_gui)
 

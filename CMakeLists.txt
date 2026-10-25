@@ -9,7 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 option(WPW_BUILD_TESTS "Build the unit tests" ON)
 option(WPW_COVERAGE "Instrument the build for gcov/lcov coverage" OFF)
 
-find_package(Qt6 6.12 REQUIRED COMPONENTS Core Gui Sql Svg Widgets)
+find_package(Qt6 6.12 REQUIRED COMPONENTS Core Gui Network Sql Svg Widgets)
 qt_standard_project_setup(REQUIRES 6.12)
 
 # Where the Debian package installs; the program finds the deployed Qt next
@@ -37,6 +37,7 @@ set(WPW_CORE_INCLUDE_DIRS
     ${CMAKE_SOURCE_DIR}/src/Common
     ${CMAKE_SOURCE_DIR}/src/Database
     ${CMAKE_SOURCE_DIR}/src/Models
+    ${CMAKE_SOURCE_DIR}/src/Security
 )
 set(WPW_GUI_INCLUDE_DIRS
     ${CMAKE_SOURCE_DIR}/src/Gui
@@ -98,9 +99,12 @@ qt_add_library(wpw_core STATIC
     src/Models/PassGroup.h
     src/Models/PassGroupService.cpp
     src/Models/PassGroupService.h
+    src/Security/MasterPassword.cpp
+    src/Security/MasterPassword.h
 )
 target_include_directories(wpw_core PUBLIC ${WPW_CORE_INCLUDE_DIRS})
-target_link_libraries(wpw_core PUBLIC Qt6::Core Qt6::Sql)
+# Network only for QPasswordDigestor (PBKDF2).
+target_link_libraries(wpw_core PUBLIC Qt6::Core Qt6::Network Qt6::Sql)
 if(WIN32)
     target_link_libraries(wpw_core PUBLIC psapi)
 endif()
