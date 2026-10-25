@@ -557,6 +557,10 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_GROUP_triggered()
             }
             if (m_pass_group_model)
             {
+                m_pass_group_model->refresh();
+            }
+            if (m_pass_entry_model)
+            {
                 m_pass_entry_model->refresh();
             }
         }

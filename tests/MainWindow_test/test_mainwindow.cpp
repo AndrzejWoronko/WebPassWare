@@ -36,6 +36,7 @@ private Q_SLOTS:
     void test_noNullActions();
     void test_shortcutsAreUnique();
     void test_insertOpensOneDialog();
+    void test_deletedGroupLeavesList();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -188,6 +189,16 @@ void Test_MainWindow::test_insertOpensOneDialog()
     QTRY_VERIFY(QApplication::activeModalWidget() == nullptr);
     QTest::qWait(200);
     QCOMPARE(m_closed.count(QString("PassEntryDialog")), 1);
+}
+
+void Test_MainWindow::test_deletedGroupLeavesList()
+{
+    auto *tree = m_window->findChild<QTreeView *>();
+    const int before = tree->model()->rowCount();
+    QVERIFY(selectGroup("Bank"));
+    autoClose(QMessageBox::Yes);
+    action("ACTION_DEL_PASS_GROUP")->trigger();
+    QCOMPARE(tree->model()->rowCount(), before - 1);
 }
 
 int main(int argc, char **argv)
