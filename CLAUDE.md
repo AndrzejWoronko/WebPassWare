@@ -94,7 +94,8 @@ which `main.cpp` sets to the busy mouse cursor.
 - `src/Gui/Dialogs/` — app dialogs (`LoginDialog`, `PasswordGenerateDialog`, `CsvImportDialog`/`CsvExportDialog` + controllers, `AboutDialog`, `AbstractCloseDialog`).
 - `src/Gui/Settings/` — settings views with controllers (`AbstractSettingsItemView`/`Controller`, `SettingsDialog`).
 - `src/Gui/Widgets/` — custom widgets (`TableView`, `ToggleSwitch`, `PasswordGeneratorWidget`, `Button`, `DelayEditLine`, …). Prefer these over raw Qt widgets.
-- `CApplication` (`src/Application.h`, Singleton via `APPI` macro) — `QApplication` subclass.
+- `CApplication` (`src/Application.h`) — `QApplication` subclass; owns the `CStyle`,
+  shows the login dialog (`run(CDatabase&)`).
 - `CWebPassWareMainWindow` (`src/WebPassWareMainWindow.h`) — main window.
 
 ### Common utilities (`src/Common/`)
@@ -134,9 +135,12 @@ which `main.cpp` sets to the busy mouse cursor.
   Factory (auto-type platform, settings pages), Facade (`PasswordVault`), Observer
   (Qt signals), Command (main window actions), RAII transaction. No patterns
   "for later" (YAGNI).
-- Dependencies injected through constructors, composed in `main.cpp`; no new
-  global singletons or macros like `DB` / `SETT` / `APPI` (existing ones are being
-  removed).
+- Dependencies injected through constructors, composed in `main.cpp` (`CApplication`,
+  `CDatabase`, the services); no global singletons or macros like the former `DB` /
+  `SETT` / `APPI` / `STYLE`. Settings: create a `CApplicationSettings` (plain
+  `QSettings`) where needed. Deliberate exceptions: the file loggers
+  (`LOG_APP` / `LOG_SQL`, `CAppLogger` / `CSqlLogger`) and, until it is reworked,
+  `CAutoType::instance()`.
 - `wpw_core` never links Qt Widgets.
 - SQL only through `prepare` + `bindValue`; identifiers only from `metaObject()`.
   Schema changes: bump `kSchemaVersion` and add a migration (tested from empty,

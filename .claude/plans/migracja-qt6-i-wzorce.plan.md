@@ -464,3 +464,15 @@ Etap B: 8–12 MD (B3 i B5 największe).
   (`2bc7e55`..`cf756b9`). ctest 9/9 (nowe: tst_masterpassword, tst_logindialog).
   Dalej: reszta B3 (typy SQLite, `deleted` 0/1, migracje `user_version`,
   `TransactionGuard`, import CSV w transakcji), potem reszta B2 i B5–B7.
+- 2026-10-25: B3 zrobione: `wpw::TransactionGuard` (`49b0f67`), import CSV w jednej
+  transakcji (`05771e0`), `addObject` zwraca -1 po błędzie (`edaf80e`), wersja schematu
+  `PRAGMA user_version` + migracja 1 (`deleted` 'true' → 1) przy każdym starcie
+  (`309b853`). **Odstępstwo od planu:** bez przepisywania typów kolumn na nazwy SQLite —
+  powinowactwo typów SQLite jest już właściwe, a przebudowa tabel to ryzyko bez zysku.
+  Przy okazji: niezainicjalizowany `m_hideNulls` w `CSqlModel` (`25f414c`; test
+  wyrównania padał losowo, po poprawce 0/40).
+- 2026-10-25: B2 zrobione poza loggerami i `CAutoType::instance` (B7): `SETT`
+  (`c477f12`), `APPI` (`fb10ca5`), `STYLE` (`54321af`). Loggery `LOG_APP`/`LOG_SQL`
+  zostają jako świadomy wyjątek (opisany w CLAUDE.md). ctest 11/11.
+  Dalej: B5 (okno główne), B6 (formularze), B7 (auto-type, ustawienia, CSV, stan,
+  tłumaczenia).
