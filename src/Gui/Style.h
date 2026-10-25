@@ -5,12 +5,10 @@
 #include <QApplication>
 #include <QIcon>
 #include <QStyle>
-#include "Singleton.h"
 #include "ApplicationSettings.h"
 
-#define STYLE CStyle::getInstance()
 
-class CStyle : public Singleton<CStyle>
+class CStyle
 {
 
 public:

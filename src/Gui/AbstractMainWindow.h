@@ -14,7 +14,7 @@
 #include "Splitter.h"
 
 
-class CAbstractMainWindow : public QMainWindow, public CAbstractDialogStateManager,  public Singleton<CAbstractMainWindow>
+class CAbstractMainWindow : public QMainWindow, public CAbstractDialogStateManager
 {
     Q_OBJECT
 

@@ -78,7 +78,6 @@ int main(int argc, char **argv)
        {
          return RET_OK;
        }
-     CStyle::getInstance().setApplicationStyle(a);
 /*
 #if QT_VERSION >= 0x040400
   // This is the correct place for this call but on versions less

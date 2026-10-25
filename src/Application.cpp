@@ -120,7 +120,9 @@ void CApplication::initApplication(int & argc, char **argv)
      //Ładowanie Splash screen jakby był
 
       //Ustawienie stylu
-      STYLE.setApplicationStyle(this);
+      // Created here: it reads the settings, which need the identity set above.
+      m_style = std::make_unique<CStyle>();
+      m_style->setApplicationStyle(this);
 //Dodanie ścieżek do bibliotek
       this->addLibraryPath("./");
       this->addLibraryPath("./lib/");
@@ -315,7 +317,7 @@ void CApplication::updateFont(const QFont &font)
 
 void CApplication::updateStyleSheet(int style)
 {
-    STYLE.changeApplicationStyle(static_cast<CStyle::StyleSheet>(style));
-    STYLE.setApplicationStyle(this);
+    m_style->changeApplicationStyle(static_cast<CStyle::StyleSheet>(style));
+    m_style->setApplicationStyle(this);
     updateAllWidgets();
 }
