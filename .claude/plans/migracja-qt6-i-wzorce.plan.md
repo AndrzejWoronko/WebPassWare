@@ -150,12 +150,13 @@ tests/CMakeLists.txt   wpw_add_test(); tst_*.cpp linkują wpw_core / wpw_gui (be
 Po jednym commicie `refactor:` na temat:
 - `QRegExp` → `QRegularExpression` (`AutoType.cpp`, `Tools.cpp`);
 - `Q_FOREACH` i `CLEAR_PTR_LIST` → range-for;
-- `QVariant::type()`/`QVariant::Type` → `userType()`/`QMetaType::Type`, w tym klucz
-  DDL z `QMetaProperty::userType()` + mapa po `QMetaType`, nie po nazwie typu;
+- `QVariant::type()`/`QVariant::Type` → `userType()`/`QMetaType::Type`. Klucz DDL to
+  typ zapisany w `ORM_PROPERTY` (`#type`, rejestr `declaredTypeNames()`), bo typedef
+  (`Varchar255`) ma ten sam `QMetaType` co `QString`, a Qt 6 zwraca w `typeName()`
+  typ bazowy;
 - `QPalette::Background` → `Window`, `Q_ENUMS` → `Q_ENUM`;
 - `Global.h`: usunąć `<bits/stdc++.h>` i redefinicję `NULL`, a w `safe_delete` dodać
   `do {} while (0)`;
-- jawne `static_cast<int>` przy narrowing `qsizetype`;
 - strażnik `indexOf != -1` w `OrmObject.h:760`.
 
 ### A2. Przejście na CMake + Qt 6.12 (jeden commit `build:` / `feat:`, kompiluje się i testy zielone)
@@ -179,7 +180,9 @@ Po jednym commicie `refactor:` na temat:
   - `QLibraryInfo::location` → `path`, `QMouseEvent::pos` → `position().toPoint()`,
     `fromUtf16` → `fromWCharArray`;
   - pełne typy lub `Q_DECLARE_OPAQUE_POINTER` dla właściwości z `ADD_PTR_PROPERTY`;
-  - porównania `QVariant` w testach z jawną konwersją.
+  - porównania `QVariant` w testach z jawną konwersją;
+  - jawne `static_cast<int>` przy narrowing `qsizetype` tam, gdzie kompilator Qt 6
+    to zgłosi (w Qt 5 `size()` zwraca `int`).
 - Testy: `tests/CMakeLists.txt` z `wpw_add_test`. Trzy istniejące projekty stają się
   `tst_orm`, `tst_service` i `tst_autotype`. `ApplicationSettingsStub.cpp` zostaje,
   a `QT += script` znika.
@@ -410,3 +413,12 @@ Etap B: 8–12 MD (B3 i B5 największe).
     od początku (zastane zachowanie);
   - przy okazji: warstwa SQL wymaga `QApplication` (`CSqlQuery::setSqlCursor`
     ustawia kursor), bez niej crash — do rozdzielenia w B1.
+- 2026-10-25: A1 zrobione (qmake/Qt 5.15, po każdym kroku pełny build i 6 projektów
+  testowych zielone, 0 ostrzeżeń deprecated): C++17, `QRegularExpression`, range-for
+  zamiast `Q_FOREACH` (`std::as_const` dla nazwanych kontenerów), `QMetaType`
+  zamiast `QVariant::Type` + rejestr typów `ORM_PROPERTY` (test
+  `test_declaredTypeNamesKeepTypedefs`), `Q_ENUM`, `QPalette::Window`, `Global.h` bez
+  `<bits/stdc++.h>` i redefinicji `NULL` (`NULL` → `nullptr`, 114 miejsc, bez literałów
+  SQL), `safe_delete`/`CLEAR_PTR_LIST` w `do {} while (0)`, `removeOne` w
+  `updateProperty`. Testy: `test_service` 9/9, `test_legacydb` 6/6 (+ wyrównanie
+  kolumn liczbowych). Narrowing `qsizetype` przeniesiony do A2.
