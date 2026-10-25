@@ -10,14 +10,14 @@ include(GNUInstallDirs)
 install(TARGETS webpassware RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # Only the plugins the program uses: X11 (xcb), SQLite, SVG icons, input
-# methods. Of Qt's own translations the program needs only the Polish qtbase
+# methods. No TLS: Qt Network is linked only for PBKDF2 (QPasswordDigestor). Of Qt's own translations the program needs only the Polish qtbase
 # catalogue (dialog buttons), loaded from <prefix>/translations.
 qt_generate_deploy_app_script(
     TARGET webpassware
     OUTPUT_SCRIPT wpw_deploy
     NO_TRANSLATIONS
     EXCLUDE_PLUGIN_TYPES
-        qmltooling egldeviceintegrations generic networkinformation vectorimageformats
+        qmltooling egldeviceintegrations generic networkinformation tls vectorimageformats
         wayland-decoration-client wayland-graphics-integration-client wayland-shell-integration
     EXCLUDE_PLUGINS
         qsqlibase qsqlmimer qsqlmysql qsqloci qsqlodbc qsqlpsql qpdf qtvirtualkeyboardplugin
