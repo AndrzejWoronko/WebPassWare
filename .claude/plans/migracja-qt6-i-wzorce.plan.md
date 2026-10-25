@@ -444,3 +444,8 @@ Etap B: 8–12 MD (B3 i B5 największe).
 - 2026-10-25: B1 zrobione (`2768ea0`): `wpw_core` (Qt Core + Sql) / `wpw_gui` /
   `webpassware`; kursor przez `wpw::BusyIndicator`, hasło główne przez `QSettings`;
   testy bazy pod `QCoreApplication` (ldd: tylko Core, Sql, Test); ctest 6/6.
+- 2026-10-25: B2 krok 1 (`cf61e06`): `PassEntryService`/`PassGroupService` bez `Singleton`,
+  tworzone w `main.cpp`; konstruktory z fallbackiem `getInstance()` usunięte.
+  Następny symbol: `DB` — 33 użycia w szablonie `COrmObject` (Active Record woła
+  `DB.*` w każdej metodzie), więc jego usunięcie to przebudowa ORM (repozytorium
+  trzyma `CDatabase&`), do uzgodnienia przed realizacją.
