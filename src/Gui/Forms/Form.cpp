@@ -11,8 +11,8 @@ CForm::CForm(QWidget *parent) : QWidget(parent)
 
 CForm::~CForm()
 {    
-    safe_delete(m_dialog)
-    safe_delete(m_grid)
+    safe_delete(m_dialog);
+    safe_delete(m_grid);
 }
 
 bool CForm::isDirty()

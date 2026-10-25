@@ -8,7 +8,7 @@ SettingsLookView::SettingsLookView(QWidget *parent) : CAbstractSettingsItemView(
 
 SettingsLookView::~SettingsLookView()
 {
-    safe_delete(m_font_edit)
+    safe_delete(m_font_edit);
 }
 
 void SettingsLookView::addFields()

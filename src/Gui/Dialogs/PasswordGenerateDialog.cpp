@@ -8,7 +8,7 @@ CPasswordGenerateDialog::CPasswordGenerateDialog(QWidget *parent) : CAbstractClo
 
 CPasswordGenerateDialog::~CPasswordGenerateDialog()
 {
-    safe_delete(m_pass_gen_widget)
+    safe_delete(m_pass_gen_widget);
 }
 
 void CPasswordGenerateDialog::addFields()

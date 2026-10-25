@@ -95,6 +95,6 @@ int main(int argc, char **argv)
     LOG_APP << QObject::tr("Uruchomienie programu");
     //w1.show();
     a->exec();
-    safe_delete(w)
+    safe_delete(w);
     return RET_OK;
 }

@@ -26,19 +26,26 @@
  */
 
 
+// do/while so that "if (x) safe_delete(p); else ..." keeps its meaning.
 #define safe_delete(var) \
-    if (var) \
+    do \
     { \
-        delete var; \
-        var = nullptr; \
-    }
+        if (var) \
+        { \
+            delete var; \
+            var = nullptr; \
+        } \
+    } while (0)
 
 #define qobject_safe_delete(var) \
-    if (var) \
+    do \
     { \
-        var->deleteLater(); \
-        var = nullptr; \
-    }
+        if (var) \
+        { \
+            var->deleteLater(); \
+            var = nullptr; \
+        } \
+    } while (0)
 
 #define ADD_FIELD_QVARIANT_PROPERTY(field, getField, setField) \
               private: \
@@ -144,9 +151,14 @@
 
 
 #define CLEAR_PTR_LIST(list) \
-    for (auto ptr : std::as_const(list)) \
-              safe_delete(ptr);\
-              list.clear();
+    do \
+    { \
+        for (auto ptr : std::as_const(list)) \
+        { \
+            safe_delete(ptr); \
+        } \
+        list.clear(); \
+    } while (0)
 
 constexpr int RET_OK = 0;
 constexpr int RET_ERROR = -1;

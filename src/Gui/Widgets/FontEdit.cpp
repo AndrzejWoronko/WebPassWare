@@ -21,9 +21,9 @@ CFontEdit::CFontEdit(QWidget *parent) : QWidget(parent)
 
 CFontEdit::~CFontEdit()
     {
-        safe_delete(m_layout)
-        safe_delete(m_label)
-        safe_delete(m_button)
+        safe_delete(m_layout);
+        safe_delete(m_label);
+        safe_delete(m_button);
     }
 
 QFont CFontEdit::getFont() const

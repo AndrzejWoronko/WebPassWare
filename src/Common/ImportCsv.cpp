@@ -15,12 +15,12 @@ CImportCsv::CImportCsv(const QString &fileName, const QChar &delimeter, const QS
 
 CImportCsv::~CImportCsv()
 {
-    safe_delete(m_in)
+    safe_delete(m_in);
     if (m_file)
         {
             if (m_file->isOpen())
                 m_file->close();
-            safe_delete(m_file)
+            safe_delete(m_file);
         }
 }
 

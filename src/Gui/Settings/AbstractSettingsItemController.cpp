@@ -7,7 +7,7 @@ CAbstractSettingsItemController::CAbstractSettingsItemController(QWidget *parent
 
 CAbstractSettingsItemController::~CAbstractSettingsItemController()
 {
-    safe_delete(m_view)
+    safe_delete(m_view);
 }
 
 void CAbstractSettingsItemController::enableButtons(void)

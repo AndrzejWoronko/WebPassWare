@@ -52,8 +52,8 @@ CAutoType::CAutoType(QObject* parent, bool test)
 
 CAutoType::~CAutoType()
 {
-   safe_delete(m_platform_intrerface)
-   safe_delete(m_executor)
+   safe_delete(m_platform_intrerface);
+   safe_delete(m_executor);
 }
 
 
@@ -135,7 +135,7 @@ void CAutoType::performAutoType(const Entry* entry, QWidget* hideWindow, const Q
         action->accept(m_executor);
         Tools::wait(m_executor->delay());
       }
-    CLEAR_PTR_LIST(actions)
+    CLEAR_PTR_LIST(actions);
     m_inAutoType = false;
 }
 

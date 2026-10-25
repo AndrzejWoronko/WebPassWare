@@ -16,7 +16,7 @@ CDatabase::CDatabase(const QString &database_name): m_base_name(database_name)
 
 CDatabase::~CDatabase()
 {
-    safe_delete(m_query)
+    safe_delete(m_query);
     if (m_db.isOpen())
        {
           DEBUG_WITH_LINE << "Database close connection" << Qt::endl;

@@ -9,13 +9,13 @@ SettingsWidget::SettingsWidget(QWidget *parent) : QWidget (parent)
 
 SettingsWidget::~SettingsWidget()
 {
-    safe_delete(m_look_widget)
-    safe_delete(m_database_widget)
+    safe_delete(m_look_widget);
+    safe_delete(m_database_widget);
 
-    safe_delete(m_list)
-    safe_delete(m_layout)
-    safe_delete(m_splitter)
-    safe_delete(m_mainLayout)
+    safe_delete(m_list);
+    safe_delete(m_layout);
+    safe_delete(m_splitter);
+    safe_delete(m_mainLayout);
 }
 
 void SettingsWidget::setGraphicElements(QWidget *parent)

@@ -53,7 +53,7 @@ CWebPassWareMainWindow::CWebPassWareMainWindow(PassEntryService *passEntryServic
 
 CWebPassWareMainWindow::~CWebPassWareMainWindow()
 {
-    safe_delete(m_headerContextMenu)
+    safe_delete(m_headerContextMenu);
     //safe_delete(m_pass_group_proxy_model)
     //safe_delete(m_pass_entry_proxy_model)
     //safe_delete(m_pass_group_model)
@@ -375,7 +375,7 @@ void CWebPassWareMainWindow::initContextMenu()
                         if (d)
                             {
                                 m_dataTable->setItemDelegateForColumn(column, nullptr);
-                                safe_delete(d)
+                                safe_delete(d);
                             }
                     }
                 }
@@ -527,7 +527,7 @@ void CWebPassWareMainWindow::on_ACTION_ADD_PASS_GROUP_triggered()
         if (m_pass_group_model)
             m_pass_group_model->refresh();
     }
-    safe_delete(dialog_ctrl)
+    safe_delete(dialog_ctrl);
 }
 
 void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered()
@@ -541,7 +541,7 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_GROUP_triggered()
         if (m_pass_group_model)
             m_pass_group_model->refresh();
     }
-    safe_delete(dialog_ctrl)
+    safe_delete(dialog_ctrl);
 }
 
 void CWebPassWareMainWindow::on_ACTION_DEL_PASS_GROUP_triggered()
@@ -589,7 +589,7 @@ void CWebPassWareMainWindow::on_ACTION_ADD_PASS_ENTRY_triggered()
                    m_dataTable->resizeColumnsToContents();
                 }
        }
-    safe_delete(dialog_ctrl)
+    safe_delete(dialog_ctrl);
 }
 
 void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered()
@@ -606,7 +606,7 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered()
                    m_dataTable->resizeColumnsToContents();
                }
        }
-    safe_delete(dialog_ctrl)
+    safe_delete(dialog_ctrl);
 }
 
 void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
@@ -742,7 +742,7 @@ void CWebPassWareMainWindow::on_ACTION_SETTINGS_DIALOG_triggered(void)
     auto dialog = new SettingsDialog(sw, this);
     dialog->exec();
     dialog->close();
-    safe_delete(dialog)
+    safe_delete(dialog);
 }
 
 void CWebPassWareMainWindow::on_ACTION_DATA_EXPORT_DIALOG_triggered()
@@ -750,7 +750,7 @@ void CWebPassWareMainWindow::on_ACTION_DATA_EXPORT_DIALOG_triggered()
     auto dialog = new CCsvExportDialogController(m_pass_entry_model.get(), this);
     dialog->getDialog()->exec();
     dialog->getDialog()->close();
-    safe_delete(dialog)
+    safe_delete(dialog);
 }
 
 void CWebPassWareMainWindow::on_ACTION_DATA_IMPORT_DIALOG_triggered()
@@ -758,7 +758,7 @@ void CWebPassWareMainWindow::on_ACTION_DATA_IMPORT_DIALOG_triggered()
     auto dialog = new CCsvImportDialogController(m_passEntryService, this);
     dialog->getDialog()->exec();
     dialog->getDialog()->close();
-    safe_delete(dialog)
+    safe_delete(dialog);
     m_pass_entry_model->refresh();
 }
 
@@ -807,7 +807,7 @@ void CWebPassWareMainWindow::on_ACTION_CLIPBOARD_triggered(void)
        if (m_pass_group_model)
             m_pass_group_model->refresh();
     }
-    safe_delete(dialog_ctrl)
+    safe_delete(dialog_ctrl);
     this->showMinimized();
     //clipboard_ptr->clear();
     /*

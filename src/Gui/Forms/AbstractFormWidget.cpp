@@ -16,7 +16,7 @@ CAbstractFormWidget::CAbstractFormWidget(QWidget *parent)
 
 CAbstractFormWidget::~CAbstractFormWidget()
 {
-    safe_delete(m_formLayout)
+    safe_delete(m_formLayout);
 }
 
 void CAbstractFormWidget::addFieldsAndComponents()

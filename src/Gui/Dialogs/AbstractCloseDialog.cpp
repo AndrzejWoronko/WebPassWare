@@ -13,7 +13,7 @@ CAbstractCloseDialog::CAbstractCloseDialog(const QString &dialogName, QWidget *p
 CAbstractCloseDialog::~CAbstractCloseDialog()
 {
     saveDialogState();
-    safe_delete(m_formLayout)
+    safe_delete(m_formLayout);
     //safe_delete(m_widget)
     DEBUG_WITH_LINE << "~dtor ";
 }

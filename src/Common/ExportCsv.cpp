@@ -20,12 +20,12 @@ CExportCsv::CExportCsv(const QString &fileName, const QChar &delimeter, const QS
 
 CExportCsv::~CExportCsv()
 {
-    safe_delete(m_out)
+    safe_delete(m_out);
     if (m_file)
     {
         if (m_file->isOpen())
             m_file->close();
-        safe_delete(m_file)
+        safe_delete(m_file);
     }
 }
 

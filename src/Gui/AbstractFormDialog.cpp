@@ -11,8 +11,8 @@ CAbstractFormDialog::CAbstractFormDialog(const QString &dialog_name, QWidget *pa
 
 CAbstractFormDialog::~CAbstractFormDialog()
 {
-    safe_delete(m_formLayout)
-    safe_delete(m_widget)
+    safe_delete(m_formLayout);
+    safe_delete(m_widget);
 }
 
 void CAbstractFormDialog::addFieldsAndComponents()

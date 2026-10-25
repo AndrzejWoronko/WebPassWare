@@ -27,9 +27,9 @@ CAbstractSettingsItemView::CAbstractSettingsItemView(const QString &title, QWidg
 
 CAbstractSettingsItemView::~CAbstractSettingsItemView()
 {
-    safe_delete(m_title_label)
-    safe_delete(m_formLayout)
-    safe_delete(m_widget)
+    safe_delete(m_title_label);
+    safe_delete(m_formLayout);
+    safe_delete(m_widget);
     //safe_delete(m_scrollArea)
 }
 
