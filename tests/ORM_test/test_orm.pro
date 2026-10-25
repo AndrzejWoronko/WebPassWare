@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 QT += core gui testlib network sql xml script svg
-CONFIG += qt mmx sse stl exceptions warn_on
+CONFIG += qt mmx sse stl exceptions warn_on c++17
 
 //QT       += sql testlib
 //QT       -= gui

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 QT += core gui testlib widgets
-CONFIG += qt console
+CONFIG += qt console c++17
 CONFIG -= app_bundle
 
 TARGET = test_autotype

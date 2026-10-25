@@ -1,5 +1,5 @@
 QT += core gui testlib sql widgets
-CONFIG += qt mmx sse stl exceptions warn_on
+CONFIG += qt mmx sse stl exceptions warn_on c++17
 
 TARGET = test_legacydb
 CONFIG += console

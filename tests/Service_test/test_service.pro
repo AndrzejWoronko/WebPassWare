@@ -1,5 +1,5 @@
 QT += core gui testlib network sql xml script svg widgets
-CONFIG += qt mmx sse stl exceptions warn_on
+CONFIG += qt mmx sse stl exceptions warn_on c++17
 
 TARGET = test_service
 CONFIG += console

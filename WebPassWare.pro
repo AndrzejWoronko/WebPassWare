@@ -263,7 +263,7 @@ unix:!macx {
     LIBS += -lX11 -lXtst
 }
 
-QMAKE_CXXFLAGS += -Wall -Wextra -std=c++14
+QMAKE_CXXFLAGS += -Wall -Wextra -std=c++17
 
 QMAKE_LFLAGS_RPATH += \
 
