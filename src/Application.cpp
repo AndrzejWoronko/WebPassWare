@@ -11,7 +11,7 @@
 CApplication* CApplication::m_instance = nullptr;
 
 CApplication::CApplication(int & argc, char **argv) :
-    QApplication(argc, argv), m_nologin(false), m_no_ask_exit(false)
+    QApplication(argc, argv), m_no_ask_exit(false)
 {
     Q_ASSERT(m_instance == nullptr);
 
@@ -23,18 +23,6 @@ CApplication::CApplication(int & argc, char **argv) :
     this->setAppInformation();
     this->initAppRegisterMetaType();
 
-    if (argc > 1)
-        {
-            for(int i = 1; i < argc; i++)
-                {
-                    QString arg = QString(argv[i]);
-                    if (arg == "-l")
-                        {
-                            m_nologin = true;
-                            m_no_ask_exit = true;
-                        }
-                }
-        }
     //this->run();
 }
 
@@ -164,9 +152,6 @@ void CApplication::setAppInformation()
 int CApplication::run(CDatabase &db)
 {
     int ret = RET_OK;
-
-    if (m_nologin)
-        return ret;
 
     CLoginDialog login_dialog(db, tr("Logowanie ..."), ICON("Lock"));
     if (login_dialog.exec() == QDialog::Rejected)

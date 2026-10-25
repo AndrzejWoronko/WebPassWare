@@ -21,7 +21,6 @@ class CApplication : public QApplication
     Q_OBJECT    
 
     QPalette m_system_palette;
-    bool m_nologin;
     bool m_no_ask_exit;
 
     void loadPalette(QColor baseColor, QColor textColor, QColor highlightColor, QColor disabledText = QColor(Qt::gray));
