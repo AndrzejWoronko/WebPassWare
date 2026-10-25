@@ -773,7 +773,7 @@ public:
             if(DB.updateRecord(m_tableName, info, getIdCondition(m_id)))
             {
                 setProperty(qPrintable(fieldName), value);
-                m_propertiesForUpdate.removeAt(m_propertiesForUpdate.indexOf(fieldName));
+                m_propertiesForUpdate.removeOne(fieldName);
                 ret = true;
             }
         }
