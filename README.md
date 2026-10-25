@@ -16,3 +16,32 @@ Additionally, it has an internet update.
 
 ## Entry add/edit
 ![image](https://github.com/AndrzejWoronko/WebPassWare/blob/master/screenshots/Entry_edit.png)
+
+# Build
+
+Qt 6.12, CMake 3.21+, Ninja and a C++17 compiler. On Linux auto-type also needs the
+X11 and XTest development files (`sudo apt install libx11-dev libxtst-dev`).
+
+```bash
+scripts/build.sh                  # debug: configure, build, run the tests
+scripts/build.sh release --clean
+scripts/build.sh --qt ~/Qt/6.12.0/gcc_64   # another Qt installation
+```
+
+The program is `build/<preset>/webpassware`. The presets in `CMakePresets.json` expect
+Qt in `/opt/Qt/6.12.0/gcc_64` and Ninja in `/opt/Qt/Tools/Ninja/ninja`.
+
+# Tests
+
+```bash
+ctest --preset debug
+```
+
+The tests run offscreen; `tst_autotype` needs an X11 display.
+
+# Packages
+
+- Debian/Ubuntu: `scripts/build-deb.sh` builds `build/dist/webpassware_<version>_amd64.deb`
+  with Qt included (installed into `/opt/webpassware`, command `webpassware`).
+- Windows: `scripts/windows/build-portable.sh` (Git Bash, Qt for MinGW, windeployqt).
+- macOS: `scripts/macosx/build-portable.sh` (macdeployqt).

@@ -434,3 +434,10 @@ Etap B: 8–12 MD (B3 i B5 największe).
     `qsizetype` przy `-Wall -Wextra`, więc rzutowań nie dodano;
   - test dymny: program startuje offscreen na kopii `legacy_qt5.db` (izolowany HOME).
   - Skrypty `scripts/{linux,macosx,windows}` i `installer/` są nadal qmake/Qt 5 → A3.
+- 2026-10-25: A3 zrobione (`aa227fc`): CPack DEB (`scripts/build-deb.sh`, paczka 28 MB,
+  71 MB po rozpakowaniu, Qt + qtbase_pl.qm w `/opt/webpassware`), skrypty przenośne
+  Windows/macOS na CMake (niesprawdzone), Qt IFW i stare skrypty usunięte.
+  **Skutek do decyzji:** „Aktualizacja przez internet” (`CMaintenanceTool`) wymaga
+  `maintenancetool` z Qt IFW; bez niego pokazuje „Brak aktualizacji” (wpis w `TODO`).
+- 2026-10-25: A4 zrobione: README (budowa, testy, paczki), CLAUDE.md (Build/Tests),
+  `TODO` z odłożonymi decyzjami. **Etap A zakończony.**
