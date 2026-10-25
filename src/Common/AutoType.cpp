@@ -20,30 +20,15 @@
 
 #endif
 
-CAutoType* CAutoType::m_instance = nullptr;
-
-CAutoType::CAutoType(QObject* parent, bool test)
+CAutoType::CAutoType(std::unique_ptr<CAutoTypePlatform> platform, QObject* parent)
     : QObject(parent)
     , m_inAutoType(false)
     , m_currentGlobalKey(static_cast<Qt::Key>(0))
     , m_currentGlobalModifiers(QFlag(0))
-    , m_platform_intrerface(nullptr)
+    , m_platform_intrerface(std::move(platform))
     , m_executor(nullptr)
     , m_windowFromGlobal(0)
 {
-    if (test)
-      m_platform_intrerface = new CAutoTypePlatformTest(this);
-    else
-      {
-#ifdef Q_OS_WIN  //Windows
-      m_platform_intrerface = new CAutoTypePlatformWindows(this);
-#elif defined(Q_OS_MACOS) //Macos
-      m_platform_intrerface = new CAutoTypePlatformMacos(this);
-#else            //Linux
-      m_platform_intrerface = new CAutoTypePlatformLinux(this);
-#endif
-      }
-
     if (m_platform_intrerface)
       {
         m_executor = m_platform_intrerface->createExecutor();
@@ -52,26 +37,20 @@ CAutoType::CAutoType(QObject* parent, bool test)
 
 CAutoType::~CAutoType()
 {
-   safe_delete(m_platform_intrerface);
+   // The executor uses the platform.
    safe_delete(m_executor);
+   m_platform_intrerface.reset();
 }
 
-
-CAutoType* CAutoType::instance()
+std::unique_ptr<CAutoTypePlatform> CAutoType::createPlatform()
 {
-    if (!m_instance)
-      {
-        m_instance = new CAutoType(qApp);
-      }
-
-    return m_instance;
-}
-
-void CAutoType::createTestInstance()
-{
-    Q_ASSERT(!m_instance);
-
-    m_instance = new CAutoType(qApp, true);
+#ifdef Q_OS_WIN  //Windows
+    return std::make_unique<CAutoTypePlatformWindows>();
+#elif defined(Q_OS_MACOS) //Macos
+    return std::make_unique<CAutoTypePlatformMacos>();
+#else            //Linux
+    return std::make_unique<CAutoTypePlatformLinux>();
+#endif
 }
 
 QStringList CAutoType::windowTitles()
@@ -210,7 +189,7 @@ void CAutoType::unloadPlugin()
 
     if (m_platform_intrerface) {
         m_platform_intrerface->unload();
-        m_platform_intrerface = nullptr;
+        m_platform_intrerface.reset();
     }
 }
 

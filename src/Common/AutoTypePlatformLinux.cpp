@@ -60,6 +60,11 @@ CAutoTypePlatformLinux::CAutoTypePlatformLinux(QObject *parent) : QObject(parent
   updateKeymap();
 }
 
+CAutoTypePlatformLinux::~CAutoTypePlatformLinux()
+{
+  unload();
+}
+
 bool CAutoTypePlatformLinux::isAvailable()
 {
   int ignore;

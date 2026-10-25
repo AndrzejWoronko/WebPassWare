@@ -14,6 +14,8 @@
 #include <memory>
 
 #include "Application.h"
+#include "AutoType.h"
+#include "AutoTypePlatformTest.h"
 #include "Database.h"
 #include "FormSimpleIndexChoiceField.h"
 #include "PassEntryService.h"
@@ -58,6 +60,7 @@ private:
     std::unique_ptr<CDatabase> m_db;
     std::unique_ptr<PassEntryService> m_entries;
     std::unique_ptr<PassGroupService> m_groups;
+    std::unique_ptr<CAutoType> m_autoType;
     std::unique_ptr<CWebPassWareMainWindow> m_window;
     QTimer m_closer;
     QStringList m_closed;
@@ -75,6 +78,7 @@ void Test_MainWindow::initTestCase()
     QString error;
     QVERIFY2(wpw::Schema::upgrade(*m_db, &error), qPrintable(error));
     m_entries = std::make_unique<PassEntryService>(*m_db);
+    m_autoType = std::make_unique<CAutoType>(std::make_unique<CAutoTypePlatformTest>());
     m_groups = std::make_unique<PassGroupService>(*m_db);
 
     m_closer.setInterval(20);
@@ -119,7 +123,7 @@ void Test_MainWindow::init()
     entry.setm_id_pass_group(group.getId());
     QVERIFY(m_entries->addObject(&entry) > 0);
 
-    m_window = std::make_unique<CWebPassWareMainWindow>(m_app, *m_db, m_entries.get(), m_groups.get());
+    m_window = std::make_unique<CWebPassWareMainWindow>(m_app, *m_db, m_entries.get(), m_groups.get(), *m_autoType);
     m_window->show();
     QVERIFY(QTest::qWaitForWindowExposed(m_window.get()));
     m_closed.clear();

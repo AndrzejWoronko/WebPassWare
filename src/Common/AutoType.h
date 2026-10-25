@@ -7,6 +7,8 @@
 #include "Global.h"
 #include "AutoTypePlatform.h"
 
+#include <memory>
+
 class CAutoTypeAction;
 class CAutoTypeExecutor;
 
@@ -32,8 +34,13 @@ public:
           return false;
     }
 
-    static CAutoType* instance();
-    static void createTestInstance();
+    // Types into other windows through \a platform (Strategy); main.cpp
+    // creates the one for this system with createPlatform(), tests pass
+    // CAutoTypePlatformTest.
+    explicit CAutoType(std::unique_ptr<CAutoTypePlatform> platform, QObject* parent = nullptr);
+    ~CAutoType();
+    // The platform of this system (Factory Method).
+    static std::unique_ptr<CAutoTypePlatform> createPlatform();
 
 public Q_SLOTS:
     void performGlobalAutoType(const QList<Entry*>& entryList);
@@ -47,8 +54,6 @@ private Q_SLOTS:
     void unloadPlugin();
 
 private:
-    explicit CAutoType(QObject* parent = nullptr, bool test = false);
-    ~CAutoType();
     void loadPlugin(const QString& pluginPath);
     bool parseActions(const QString& sequence, const Entry* entry, QList<CAutoTypeAction*>& actions);
     QList<CAutoTypeAction*> createActionFromTemplate(const QString& tmpl, const Entry* entry);
@@ -58,16 +63,11 @@ private:
     Qt::Key m_currentGlobalKey;
     Qt::KeyboardModifiers m_currentGlobalModifiers;
 
-    CAutoTypePlatform* m_platform_intrerface;
+    std::unique_ptr<CAutoTypePlatform> m_platform_intrerface;
     CAutoTypeExecutor* m_executor;
     WId m_windowFromGlobal;
-    static CAutoType* m_instance;
 
     Q_DISABLE_COPY(CAutoType)
 };
-
-inline CAutoType* autoType() {
-    return CAutoType::instance();
-}
 
 #endif // CAUTOTYPE_H

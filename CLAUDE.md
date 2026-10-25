@@ -103,7 +103,10 @@ which `main.cpp` sets to the busy mouse cursor.
 
 ### Common utilities (`src/Common/`)
 - State persistence: `AbstractDialogStateManager`, `AbstractTableStateManager`, `AbstractSplitterStateManager`, `AbstractTabMainWindowStateManager` + corresponding `*State` classes.
-- Auto-type subsystem: `AutoType`, `AutoTypeAction`, `AutoTypePlatform{Linux,Macos,Windows,Test}`.
+- Auto-type subsystem: `CAutoType` (created in `main.cpp` with `CAutoType::createPlatform()`,
+  passed to the main window; tests inject `CAutoTypePlatformTest`), `AutoTypeAction`,
+  `AutoTypePlatform{Linux,Macos,Windows,Test}`. Without an X11 display the Linux
+  platform is unavailable instead of crashing.
 - `PasswordGenerator`, `ImportCsv`/`ExportCsv`/`CsvModel`, `Logger`, `Tools`, `MaintenanceTool` (internet update).
 - `Singleton.h`, `GenericFactory.h`.
 - `Global.h` — getter/setter boilerplate macros (`ADD_FIELD`, `ADD_PTR_PROPERTY`, `ADD_PTR`, smart-pointer variants) and `safe_delete`/`qobject_safe_delete`.
@@ -141,9 +144,8 @@ which `main.cpp` sets to the busy mouse cursor.
 - Dependencies injected through constructors, composed in `main.cpp` (`CApplication`,
   `CDatabase`, the services); no global singletons or macros like the former `DB` /
   `SETT` / `APPI` / `STYLE`. Settings: create a `CApplicationSettings` (plain
-  `QSettings`) where needed. Deliberate exceptions: the file loggers
-  (`LOG_APP` / `LOG_SQL`, `CAppLogger` / `CSqlLogger`) and, until it is reworked,
-  `CAutoType::instance()`.
+  `QSettings`) where needed. Deliberate exception: the file loggers
+  (`LOG_APP` / `LOG_SQL`, `CAppLogger` / `CSqlLogger`).
 - `wpw_core` never links Qt Widgets.
 - SQL only through `prepare` + `bindValue`; identifiers only from `metaObject()`.
   Schema changes: bump `kSchemaVersion` and add a migration (tested from empty,

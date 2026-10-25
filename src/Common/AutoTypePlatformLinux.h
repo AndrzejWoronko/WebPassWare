@@ -23,6 +23,8 @@ class CAutoTypePlatformLinux : public QObject, public CAutoTypePlatform
 
 public:
     CAutoTypePlatformLinux(QObject *parent = nullptr);
+    // Closes the X11 connection unless unload() already did.
+    ~CAutoTypePlatformLinux() override;
     bool isAvailable() override;
     void unload() override;
     QStringList windowTitles() override;

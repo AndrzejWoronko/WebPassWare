@@ -17,6 +17,7 @@
 #include "PassEntryService.h"
 
 class CApplication;
+class CAutoType;
 class CDatabase;
 class PassGroupService;
 
@@ -45,7 +46,8 @@ class CWebPassWareMainWindow : public CAbstractMainWindow
     ADD_PTR_PROPERTY(QTimer, m_timer, getTimer)
 
 public:
-    CWebPassWareMainWindow(CApplication &app, CDatabase &db, PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent = nullptr);
+    CWebPassWareMainWindow(CApplication &app, CDatabase &db, PassEntryService *passEntryService, PassGroupService *passGroupService,
+                           CAutoType &autoType, QWidget *parent = nullptr);
     ~CWebPassWareMainWindow();
 
 private:
@@ -54,6 +56,7 @@ private:
     CAction *m_visible_passwords_action;
     CApplication &m_app;
     CDatabase &m_db;
+    CAutoType &m_autoType;
     PassEntryService *m_passEntryService;
     PassGroupService *m_passGroupService;
 

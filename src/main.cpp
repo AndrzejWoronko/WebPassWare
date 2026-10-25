@@ -9,6 +9,7 @@
 #include "WebPassWareMainWindow.h"
 #include "Database.h"
 #include "ModelTableCheck.h"
+#include "AutoType.h"
 #include "Schema.h"
 #include "MessageBox.h"
 #include "PassEntryService.h"
@@ -108,7 +109,8 @@ int main(int argc, char **argv)
     // Created here and handed to the window: it must not outlive them.
     PassEntryService passEntryService(database);
     PassGroupService passGroupService(database);
-    w = new CWebPassWareMainWindow(*a, database, &passEntryService, &passGroupService);
+    CAutoType autoType(CAutoType::createPlatform());
+    w = new CWebPassWareMainWindow(*a, database, &passEntryService, &passGroupService, autoType);
     //w->centerAndResize();
     //w->restoreDialogState();
     w->show();

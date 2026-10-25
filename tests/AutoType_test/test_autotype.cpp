@@ -1,5 +1,7 @@
 #include <QtTest>
 
+#include <memory>
+
 #include "AutoType.h"
 #include "AutoTypePlatformTest.h"
 
@@ -8,7 +10,8 @@ class Test_AutoType : public QObject
     Q_OBJECT
 
 private:
-    CAutoTypePlatformTest* m_platform;
+    CAutoTypePlatformTest* m_platform = nullptr;
+    std::unique_ptr<CAutoType> m_autoType;
 
 private slots:
     void initTestCase();
@@ -27,9 +30,9 @@ private slots:
 
 void Test_AutoType::initTestCase()
 {
-    CAutoType::createTestInstance();
-    m_platform = CAutoType::instance()->findChild<CAutoTypePlatformTest*>();
-    QVERIFY(m_platform != nullptr);
+    auto platform = std::make_unique<CAutoTypePlatformTest>();
+    m_platform = platform.get();
+    m_autoType = std::make_unique<CAutoType>(std::move(platform));
 }
 
 void Test_AutoType::init()
@@ -40,7 +43,7 @@ void Test_AutoType::init()
 void Test_AutoType::test_usernameAndPassword()
 {
     Entry entry("alice", "s3cr3t");
-    CAutoType::instance()->performAutoType(&entry);
+    m_autoType->performAutoType(&entry);
 
     QString expected = "alice" + m_platform->keyToString(Qt::Key_Tab)
                       + "s3cr3t" + m_platform->keyToString(Qt::Key_Enter);
@@ -50,7 +53,7 @@ void Test_AutoType::test_usernameAndPassword()
 void Test_AutoType::test_usernameOnly()
 {
     Entry entry("alice", "");
-    CAutoType::instance()->performAutoType(&entry);
+    m_autoType->performAutoType(&entry);
 
     QString expected = "alice" + m_platform->keyToString(Qt::Key_Enter);
     QCOMPARE(m_platform->actionChars(), expected);
@@ -59,7 +62,7 @@ void Test_AutoType::test_usernameOnly()
 void Test_AutoType::test_passwordOnly()
 {
     Entry entry("", "s3cr3t");
-    CAutoType::instance()->performAutoType(&entry);
+    m_autoType->performAutoType(&entry);
 
     QString expected = "s3cr3t" + m_platform->keyToString(Qt::Key_Enter);
     QCOMPARE(m_platform->actionChars(), expected);
@@ -68,7 +71,7 @@ void Test_AutoType::test_passwordOnly()
 void Test_AutoType::test_emptyEntry()
 {
     Entry entry("", "");
-    CAutoType::instance()->performAutoType(&entry);
+    m_autoType->performAutoType(&entry);
 
     QCOMPARE(m_platform->actionCount(), 0);
 }
@@ -76,7 +79,7 @@ void Test_AutoType::test_emptyEntry()
 void Test_AutoType::test_repeatedKey()
 {
     Entry entry("alice", "s3cr3t");
-    CAutoType::instance()->performAutoType(&entry, nullptr, "{TAB 3}");
+    m_autoType->performAutoType(&entry, nullptr, "{TAB 3}");
 
     QString expected = m_platform->keyToString(Qt::Key_Tab).repeated(3);
     QCOMPARE(m_platform->actionChars(), expected);
@@ -85,7 +88,7 @@ void Test_AutoType::test_repeatedKey()
 void Test_AutoType::test_functionKey()
 {
     Entry entry("alice", "s3cr3t");
-    CAutoType::instance()->performAutoType(&entry, nullptr, "{F5}");
+    m_autoType->performAutoType(&entry, nullptr, "{F5}");
 
     QCOMPARE(m_platform->actionChars(), m_platform->keyToString(Qt::Key_F5));
 }
@@ -93,7 +96,7 @@ void Test_AutoType::test_functionKey()
 void Test_AutoType::test_delay()
 {
     Entry entry("alice", "s3cr3t");
-    CAutoType::instance()->performAutoType(&entry, nullptr, "a{DELAY 10}b");
+    m_autoType->performAutoType(&entry, nullptr, "a{DELAY 10}b");
 
     QCOMPARE(m_platform->actionChars(), QString("ab"));
 }
@@ -101,7 +104,7 @@ void Test_AutoType::test_delay()
 void Test_AutoType::test_escapeBraces()
 {
     Entry entry("alice", "s3cr3t");
-    CAutoType::instance()->performAutoType(&entry, nullptr, "{{}a{}}b");
+    m_autoType->performAutoType(&entry, nullptr, "{{}a{}}b");
 
     QCOMPARE(m_platform->actionChars(), QString("{a}b"));
 }
@@ -109,7 +112,7 @@ void Test_AutoType::test_escapeBraces()
 void Test_AutoType::test_setDelay()
 {
     Entry entry("alice", "s3cr3t");
-    CAutoType::instance()->performAutoType(&entry, nullptr, "{DELAY=0}ab");
+    m_autoType->performAutoType(&entry, nullptr, "{DELAY=0}ab");
 
     QCOMPARE(m_platform->actionChars(), QString("ab"));
 }

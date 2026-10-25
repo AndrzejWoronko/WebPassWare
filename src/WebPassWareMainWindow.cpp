@@ -22,7 +22,8 @@
 #include "ToolButton.h"
 #include "AutoType.h"
 
-CWebPassWareMainWindow::CWebPassWareMainWindow(CApplication &app, CDatabase &db, PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent)
+CWebPassWareMainWindow::CWebPassWareMainWindow(CApplication &app, CDatabase &db, PassEntryService *passEntryService, PassGroupService *passGroupService,
+                                               CAutoType &autoType, QWidget *parent)
     : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
     , m_headerContextMenu(nullptr)
     , m_timer(new QTimer(this))
@@ -30,6 +31,7 @@ CWebPassWareMainWindow::CWebPassWareMainWindow(CApplication &app, CDatabase &db,
     , m_visible_passwords_action(nullptr)
     , m_app(app)
     , m_db(db)
+    , m_autoType(autoType)
     , m_passEntryService(passEntryService)
     , m_passGroupService(passGroupService)
     , m_pass_group_model(nullptr)
@@ -141,7 +143,7 @@ void CWebPassWareMainWindow::setActions(void)
     m_actions.insert(action_CopyPassEntryPassword->getActionName(), action_CopyPassEntryPassword);
 
     CAction *action_AutoTypePassEntry = new CAction(tr("Auto-Type"), ICON("Lightning"), tr("Automatyczne wpisanie danych logowania"), QString("Ctrl+Shift+V"), QString("ACTION_AUTOTYPE_PASS_ENTRY"), this);
-    action_AutoTypePassEntry->setEnabled(autoType()->isAvailable());
+    action_AutoTypePassEntry->setEnabled(m_autoType.isAvailable());
     m_actions.insert(action_AutoTypePassEntry->getActionName(), action_AutoTypePassEntry);
 
     CAction *action_RefreshAll = new CAction(tr("Odświeżenie danych"), ICON("Refresh"), tr("Odświeżenie danych"), QString(""), QString("ACTION_REFRESH_ALL"), this);
@@ -638,7 +640,7 @@ void CWebPassWareMainWindow::on_ACTION_AUTOTYPE_PASS_ENTRY_triggered()
     if (!pe.isNull())
     {
         Entry entry(pe->getm_user(), pe->getm_pass());
-        autoType()->performAutoType(&entry, this);
+        m_autoType.performAutoType(&entry, this);
     }
     DEBUG_WITH_LINE << "AUTOTYPE PASS ENTRY";
 }
