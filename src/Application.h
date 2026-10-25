@@ -14,6 +14,8 @@
 
 typedef QHash<QString, QTranslator*> Translators;
 
+class CDatabase;
+
 class CApplication : public QApplication
 {
     Q_OBJECT    
@@ -54,7 +56,7 @@ public:
 
     static QString iconName(void);
 
-    int run();
+    int run(CDatabase &db);
 
 //Ustawienia kolorów
 

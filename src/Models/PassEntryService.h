@@ -9,7 +9,7 @@
 class PassEntryService : public COrmService<PassEntry>
 {
 public:
-    PassEntryService() = default;
+    explicit PassEntryService(CDatabase &db) : COrmService(db) {}
     ~PassEntryService() = default;
 
     CSqlModel *getSqlModel(void);

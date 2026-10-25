@@ -17,6 +17,6 @@ CSqlModel *PassEntryService::getSqlModel(void)
     list.insert("m_desc", new CSqlField(QString("string"), QObject::tr("Opis"), QObject::tr("Opis" ), list.count()));
 
     QString query = CSqlModel::getSelectQueryStringFromFieldsDescList(list, QString("pass_entry"));
-    std::unique_ptr<CSqlModel> sql_model(new CSqlModel(query, QString("pass_entry"), list));
+    std::unique_ptr<CSqlModel> sql_model(new CSqlModel(m_db, query, QString("pass_entry"), list));
     return sql_model.release();
 }

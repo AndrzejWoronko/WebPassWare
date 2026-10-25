@@ -11,7 +11,7 @@ class SettingsDatabaseViewController : public CAbstractSettingsItemController
     Q_OBJECT
 
 public:
-    SettingsDatabaseViewController(QWidget *parent = nullptr);
+    explicit SettingsDatabaseViewController(CDatabase &db, QWidget *parent = nullptr);
 
     virtual void checkChanges();
 
@@ -20,6 +20,8 @@ public slots:
     void getValuesFromSettings(void);
     void setValuesToSettings(void);
 
+private:
+    CDatabase &m_db;
 };
 
 #endif // SETTINGSDATABASEVIEWCONTROLLER_H

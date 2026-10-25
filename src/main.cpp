@@ -68,7 +68,11 @@ int main(int argc, char **argv)
     DEBUG_WITH_LINE << "Plik aplikacji: " << QCoreApplication::applicationFilePath();
     DEBUG_WITH_LINE << "Katalog blibliotek: " << QCoreApplication::libraryPaths();
 
-    if (a->run() == RET_ERROR)
+    // The program's single database connection; everything that needs it gets
+    // it from here and must not outlive it.
+    CDatabase database;
+
+    if (a->run(database) == RET_ERROR)
        {
          return RET_OK;
        }
@@ -87,15 +91,15 @@ int main(int argc, char **argv)
     if (check_tables)
        {
          //Sprawdzenie/założenie tabel
-         if (DB.isConnected())
+         if (database.isConnected())
             {
-              ModelTableCheck::checkAllTables();
+              ModelTableCheck::checkAllTables(database);
             }
        }
     // Created here and handed to the window: it must not outlive them.
-    PassEntryService passEntryService;
-    PassGroupService passGroupService;
-    w = new CWebPassWareMainWindow(&passEntryService, &passGroupService);
+    PassEntryService passEntryService(database);
+    PassGroupService passGroupService(database);
+    w = new CWebPassWareMainWindow(database, &passEntryService, &passGroupService);
     //w->centerAndResize();
     //w->restoreDialogState();
     w->show();

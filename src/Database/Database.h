@@ -123,9 +123,5 @@ private:
 };
 
 
-using SingletonDatabase = SingletonHolder<CDatabase>;
-
-#define DB SingletonDatabase::getInstance()
-
 
 #endif // DATABASE_H

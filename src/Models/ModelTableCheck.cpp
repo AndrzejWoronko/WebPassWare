@@ -8,17 +8,18 @@ ModelTableCheck::ModelTableCheck()
 
 }
 
-void ModelTableCheck::checkAllTables()
+void ModelTableCheck::checkAllTables(CDatabase &db)
 {
-    PassGroup pg;
-    checkOneTable(&pg);
-    if (pg.count() == 0 || !pg.exists(0))
+    COrmRepository<PassGroup> groups(db);
+    checkOneTable(groups);
+    if (groups.count() == 0 || !groups.exists(0))
        {
-          DB.resetAutoIncrement(pg.getTableName(), 0);
+          PassGroup pg;
+          db.resetAutoIncrement(pg.getTableName(), 0);
           pg.setId(0);
           pg.setm_name(QObject::tr("Wszystkie grupy"));
-          pg.save(0, QString(), true);
+          groups.save(&pg, 0, true);
        }
-    PassEntry pe;
-    checkOneTable(&pe);
+    COrmRepository<PassEntry> entries(db);
+    checkOneTable(entries);
 }

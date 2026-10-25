@@ -22,12 +22,13 @@
 #include "ToolButton.h"
 #include "AutoType.h"
 
-CWebPassWareMainWindow::CWebPassWareMainWindow(PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent)
+CWebPassWareMainWindow::CWebPassWareMainWindow(CDatabase &db, PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent)
     : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
     , m_headerContextMenu(nullptr)
     , m_timer(new QTimer(this))
     , m_visible_passwords(false)
     , m_visible_passwords_action(nullptr)
+    , m_db(db)
     , m_passEntryService(passEntryService)
     , m_passGroupService(passGroupService)
     , m_pass_group_model(nullptr)
@@ -735,7 +736,7 @@ void CWebPassWareMainWindow::on_ACTION_GENERATOR_DIALOG_triggered()
 
 void CWebPassWareMainWindow::on_ACTION_SETTINGS_DIALOG_triggered(void)
 {
-    auto sw = new SettingsWidget(this);
+    auto sw = new SettingsWidget(m_db, this);
     auto dialog = new SettingsDialog(sw, this);
     dialog->exec();
     dialog->close();
@@ -762,7 +763,7 @@ void CWebPassWareMainWindow::on_ACTION_DATA_IMPORT_DIALOG_triggered()
 void CWebPassWareMainWindow::on_ACTION_DATA_CHECK_triggered()
 {
     if (CMessageBox::YesNoDialog(tr("Czy sprawdzić dane ?"), this) == QMessageBox::Yes)
-        ModelTableCheck::checkAllTables();
+        ModelTableCheck::checkAllTables(m_db);
 }
 
 void CWebPassWareMainWindow::on_ACTION_CHECK_UPDATES_triggered(void)

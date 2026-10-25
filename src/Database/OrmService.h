@@ -13,6 +13,9 @@ public:
     using OwnedObject = QSharedPointer<ModelName>;
     using OwnedObjectList = QList<OwnedObject>;
 
+protected:
+    CDatabase &m_db;
+
 private:
     std::unique_ptr<IRepository<ModelName>> m_repository;
     qint64 m_insertedId;
@@ -30,10 +33,10 @@ private:
     }
 
 public:
-    COrmService()
+    explicit COrmService(CDatabase &db) : m_db(db)
     {
         m_insertedId = -1;
-        m_repository = std::make_unique<COrmRepository<ModelName>>();
+        m_repository = std::make_unique<COrmRepository<ModelName>>(db);
         m_service = std::make_unique<CService>();
     }
 

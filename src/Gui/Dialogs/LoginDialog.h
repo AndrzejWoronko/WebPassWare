@@ -8,6 +8,8 @@
 #include "Label.h"
 #include "AbstractDialogStateManager.h"
 
+class CDatabase;
+
 class CLoginDialog : public CDialog, public CAbstractDialogStateManager
 {
      Q_OBJECT
@@ -21,7 +23,7 @@ class CLoginDialog : public CDialog, public CAbstractDialogStateManager
     */
      ADD_QSMART_SHARED_PTR(CButtonBoxOk, m_buttonBox, getButtonBox)
 public:
-     CLoginDialog(const QString &title = QString(), const QString &iconName = QString(), QWidget *parent = nullptr);
+     explicit CLoginDialog(CDatabase &db, const QString &title = QString(), const QString &iconName = QString(), QWidget *parent = nullptr);
      ~CLoginDialog();
 
      virtual void restoreDialogState() override final;
@@ -35,6 +37,7 @@ private:
      QSharedPointer<CFormLayout> m_bodyLayout;
      QSharedPointer<CHBoxLayout> m_footerLayout;
      CVBoxLayout *m_VLayoutDialog;  //Do dialogu
+     CDatabase &m_db;
 
 private slots:
 

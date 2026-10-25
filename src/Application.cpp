@@ -161,14 +161,14 @@ void CApplication::setAppInformation()
 #endif
 }
 
-int CApplication::run()
+int CApplication::run(CDatabase &db)
 {
     int ret = RET_OK;
 
     if (m_nologin)
         return ret;
 
-    CLoginDialog login_dialog(tr("Logowanie ..."), ICON("Lock"));
+    CLoginDialog login_dialog(db, tr("Logowanie ..."), ICON("Lock"));
     if (login_dialog.exec() == QDialog::Rejected)
         {
              ret = RET_ERROR;

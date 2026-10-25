@@ -6,6 +6,8 @@
 #include <QSqlRecord>
 #include "SqlField.h"
 
+class CDatabase;
+
 class CSqlModel : public QSqlQueryModel
 {    
     Q_OBJECT
@@ -16,7 +18,7 @@ class CSqlModel : public QSqlQueryModel
     void initSqlModel();
 
 public:
-    CSqlModel(const QString &selectQuery, const QString &table_name = QString() , const SqlFieldsDesc &list = SqlFieldsDesc(), QVariantHash data = QVariantHash(), QObject *parent = nullptr);
+    CSqlModel(CDatabase &db, const QString &selectQuery, const QString &table_name = QString() , const SqlFieldsDesc &list = SqlFieldsDesc(), QVariantHash data = QVariantHash(), QObject *parent = nullptr);
     ~CSqlModel() { DEBUG_WITH_LINE << "~dtor ";}
 
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
@@ -35,6 +37,7 @@ public:
     QVector<QVariant> toVariantRowHeader();
 private:
 
+    CDatabase &m_db;
     int m_primaryKeyIdx;
     bool m_hasDeleteDateField;
     bool m_hideNulls;

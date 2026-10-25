@@ -1,8 +1,8 @@
 #include "SettingsDatabaseView.h"
 #include "Database.h"
 
-SettingsDatabaseView::SettingsDatabaseView(QWidget *parent) :
-    CAbstractSettingsItemView(tr("Ustawienia bazy danych"), parent)
+SettingsDatabaseView::SettingsDatabaseView(CDatabase &db, QWidget *parent) :
+    CAbstractSettingsItemView(tr("Ustawienia bazy danych"), parent), m_db(db)
 {
     addFieldsAndComponents();
 }
@@ -14,11 +14,11 @@ SettingsDatabaseView::~SettingsDatabaseView()
 
 void SettingsDatabaseView::addFields()
 {
-    m_base_type = new CFormTextField(QString("m_base_type"), tr("Typ bazy danych"), DB.getDb().driverName(), 100, true);
+    m_base_type = new CFormTextField(QString("m_base_type"), tr("Typ bazy danych"), m_db.getDb().driverName(), 100, true);
     addField(m_base_type);
-    m_base_name = new CFormTextField(QString("m_base_name"), tr("Plik bazy danych"), DB.getBaseName(), 100, true);
+    m_base_name = new CFormTextField(QString("m_base_name"), tr("Plik bazy danych"), m_db.getBaseName(), 100, true);
     addField(m_base_name);
-    m_base_full_path = new CFormTextField(QString("m_base_full_path"), tr("Ścieżka do bazy danych"), DB.getBaseNameFullPath(), 100, true);
+    m_base_full_path = new CFormTextField(QString("m_base_full_path"), tr("Ścieżka do bazy danych"), m_db.getBaseNameFullPath(), 100, true);
     addField(m_base_full_path);
     m_base_passwd1 = new CFormTextField(QString("m_base_passwd1"), tr("Hasło bazy danych"), "", 100);
     m_base_passwd1->setPasswdEcho();

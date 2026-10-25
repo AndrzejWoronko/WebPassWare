@@ -2,7 +2,7 @@
 #define MODELTABLECHECK_H
 
 #include "Global.h"
-#include "OrmObject.h"
+#include "OrmRepository.h"
 #include "ExceptionSql.h"
 
 class ModelTableCheck
@@ -12,46 +12,47 @@ public:
     ModelTableCheck();
 
     //Sprawdzenie wszystkich tabel
-    static void checkAllTables();
+    static void checkAllTables(CDatabase &db);
 
     template<class T>
-    static void checkOneTable(COrmObject<T> *ormobj)
+    static void checkOneTable(COrmRepository<T> &repo)
     {
         bool isChangeOccured = false;
+        T *ormobj = repo.prototype();
 
-        if (!DB.checkTableInDatabase(ormobj->getTableName()))
+        if (!repo.database().checkTableInDatabase(ormobj->getTableName()))
         {
             try
             {
-                ormobj->createTable();
+                repo.createTable();
             }
             catch (CExceptionSql &e)
             {
-                DB.showErrorInfo(e);
+                CDatabase::showErrorInfo(e);
             }
             try
             {
-                ormobj->createIndexes();
+                repo.createIndexes();
             }
             catch (CExceptionSql &e)
             {
-                DB.showErrorInfo(e);
+                CDatabase::showErrorInfo(e);
             }
             try
             {
-                ormobj->createUniqueIndexes();
+                repo.createUniqueIndexes();
             }
             catch (CExceptionSql &e)
             {
-                DB.showErrorInfo(e);
+                CDatabase::showErrorInfo(e);
             }
         }
-        if (!DB.checkTableInDatabase(ormobj->getTableName()))
+        if (!repo.database().checkTableInDatabase(ormobj->getTableName()))
         {
             DEBUG_WITH_LINE << "Table error :" << ormobj->getTableName();
         }
         //Sprawdzenie kolumn
-        QSqlRecord cols = DB.getTableFields(ormobj->getTableName());
+        QSqlRecord cols = repo.database().getTableFields(ormobj->getTableName());
 
         for(int i = 1; i < ormobj->metaObject()->propertyCount(); i++)
         {
@@ -61,11 +62,11 @@ public:
             {
                 try
                 {
-                    ormobj->alterTableAddColumn(propertyName);
+                    repo.alterTableAddColumn(propertyName);
                 }
                 catch (CExceptionSql &e)
                 {
-                    DB.showErrorInfo(e);
+                    CDatabase::showErrorInfo(e);
                 }
                 isChangeOccured = true;
             }
@@ -73,7 +74,7 @@ public:
         //Sprawdzenie indeksów
         //Sprawdzamy czy indeksy getUniqueIndexFields i  getIndexFields są w ormobj->getTableIndexes()
 
-        QHash <QString, QString> table_index_list = ormobj->getTableIndexesNames();
+        QHash <QString, QString> table_index_list = repo.getTableIndexesNames();
 
         for (auto idxName : ormobj->getIndexFields().keys())
         {
@@ -99,27 +100,27 @@ public:
         {
             try
             {
-                ormobj->dropIndexes();
+                repo.dropIndexes();
             }
             catch (CExceptionSql &e)
             {
-                DB.showErrorInfo(e);
+                CDatabase::showErrorInfo(e);
             }
             try
             {
-                ormobj->createIndexes();
+                repo.createIndexes();
             }
             catch (CExceptionSql &e)
             {
-                DB.showErrorInfo(e);
+                CDatabase::showErrorInfo(e);
             }
             try
             {
-                ormobj->createUniqueIndexes();
+                repo.createUniqueIndexes();
             }
             catch (CExceptionSql &e)
             {
-                DB.showErrorInfo(e);
+                CDatabase::showErrorInfo(e);
             }
         }
     }

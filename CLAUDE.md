@@ -61,9 +61,18 @@ which `main.cpp` sets to the busy mouse cursor.
 ### Three-layer pattern
 
 **ORM layer** (`src/Database/`):
-- `COrmObject<ModelName>` (`OrmObject.h`) — CRTP base for all domain models. Fields declared with `ORM_PROPERTY(type, name)` macro (uses `Q_PROPERTY` internally); every model inherits `deleted` and `timestp` properties. Table name is derived from `metaObject()->className()`.
-- `COrmService<ModelName>` (`OrmService.h`) — inherits `COrmObject<ModelName>`; service base for domain entities.
-- `CDatabase` (`Database.h/.cpp`) — wraps `QSqlDatabase`, **SQLite only** (`QSQLITE` driver).
+- `COrmObject<ModelName>` (`OrmObject.h`) — CRTP base for all domain models: data and
+  table description only, no SQL. Fields declared with `ORM_PROPERTY(type, name)`
+  (`Q_PROPERTY` plus the declared type name for the column type); every model inherits
+  `deleted` and `timestp`. Table name is derived from `metaObject()->className()`.
+- `COrmRepository<ModelName>` (`OrmRepository.h`) — the table in a `CDatabase&`: schema
+  (create/alter/indexes/drop), save/update/updateProperty, finders, remove/setDeleted,
+  count. Implements `IRepository<ModelName>`, which the services use.
+- `COrmService<ModelName>` (`OrmService.h`) — service base: catches `CExceptionSql`, keeps
+  the error text, offers `Owned*` (QSharedPointer) finders; built on a repository.
+- `CDatabase` (`Database.h/.cpp`) — wraps `QSqlDatabase`, **SQLite only** (`QSQLITE`
+  driver). One instance, created in `main.cpp` and passed by reference (services,
+  `CSqlModel`, `ModelTableCheck`, login dialog, database settings page).
 - Support classes: `SqlField`, `SqlModel`, `SqlQuery`, `CException`/`CExceptionSql`.
 
 **Models** (`src/Models/`):

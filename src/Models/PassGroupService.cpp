@@ -11,7 +11,7 @@ CSqlModel* PassGroupService::getSqlModel(void)
     list.insert("m_name", new CSqlField(QString("string"), QObject::tr("Nazwa grupy"), QObject::tr("Nazwa grupy"), list.count()));
 
     QString query = CSqlModel::getSelectQueryStringFromFieldsDescList(list, QString("pass_group"));
-    std::unique_ptr<CSqlModel> sql_model(new CSqlModel(query, QString("pass_group"), list));
+    std::unique_ptr<CSqlModel> sql_model(new CSqlModel(m_db, query, QString("pass_group"), list));
     return sql_model.release();
 }
 

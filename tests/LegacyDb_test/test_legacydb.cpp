@@ -6,6 +6,8 @@
 #include <QStandardPaths>
 #include <QTemporaryDir>
 
+#include <memory>
+
 #include "Database.h"
 #include "PassEntryService.h"
 #include "PassGroupService.h"
@@ -28,6 +30,7 @@ private Q_SLOTS:
 
 private:
     QTemporaryDir m_dataDir;
+    std::unique_ptr<CDatabase> m_db;
 };
 
 void Test_LegacyDb::initTestCase()
@@ -35,24 +38,25 @@ void Test_LegacyDb::initTestCase()
     QVERIFY(m_dataDir.isValid());
     qputenv("XDG_DATA_HOME", QFile::encodeName(m_dataDir.path()));
 
-    // The database file must be in place before the first use of DB opens it.
+    // The database file must be in place before CDatabase opens it.
     const QString dir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
     QVERIFY(QDir().mkpath(dir));
     const QString target = QDir(dir).filePath(DB_NAME);
     QVERIFY(QFile::copy(QString(FIXTURES_DIR) + "/legacy_qt5.db", target));
     QVERIFY(QFile::setPermissions(target, QFile::ReadOwner | QFile::WriteOwner));
 
-    DB.setEchoQuery(false);
-    DB.setLogQuery(false);
-    DB.setEchoError(false);
-    DB.setLogError(false);
-    QVERIFY(DB.isConnected());
-    QCOMPARE(DB.getBaseNameFullPath(), target);
+    m_db = std::make_unique<CDatabase>();
+    m_db->setEchoQuery(false);
+    m_db->setLogQuery(false);
+    m_db->setEchoError(false);
+    m_db->setLogError(false);
+    QVERIFY(m_db->isConnected());
+    QCOMPARE(m_db->getBaseNameFullPath(), target);
 }
 
 void Test_LegacyDb::test_groups()
 {
-    PassGroupService service;
+    PassGroupService service(*m_db);
 
     PassGroupService::OwnedObjectList groups = service.getOwnedObjects(QString("id_pass_group"));
     QCOMPARE(groups.size(), 3);
@@ -71,7 +75,7 @@ void Test_LegacyDb::test_groups()
 
 void Test_LegacyDb::test_entries()
 {
-    PassEntryService service;
+    PassEntryService service(*m_db);
 
     PassEntryService::OwnedObject entry = service.getOwnedObject(1);
     QVERIFY(!entry.isNull());
@@ -94,18 +98,18 @@ void Test_LegacyDb::test_entries()
 
 void Test_LegacyDb::test_listModelsSkipDeletedRows()
 {
-    QScopedPointer<CSqlModel> groups(PassGroupService().getSqlModel());
+    QScopedPointer<CSqlModel> groups(PassGroupService(*m_db).getSqlModel());
     groups->refresh();
     QCOMPARE(groups->rowCount(), 2);
 
-    QScopedPointer<CSqlModel> entries(PassEntryService().getSqlModel());
+    QScopedPointer<CSqlModel> entries(PassEntryService(*m_db).getSqlModel());
     entries->refresh();
     QCOMPARE(entries->rowCount(), 2);
 }
 
 void Test_LegacyDb::test_listModelAlignsNumbersRight()
 {
-    QScopedPointer<CSqlModel> entries(PassEntryService().getSqlModel());
+    QScopedPointer<CSqlModel> entries(PassEntryService(*m_db).getSqlModel());
     entries->refresh();
     const int idColumn = entries->record().indexOf("id_pass_entry");
     const int titleColumn = entries->record().indexOf("m_title");

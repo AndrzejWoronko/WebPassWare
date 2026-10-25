@@ -125,7 +125,7 @@ public:
         QString typeName;
         QString propertyValue;
 
-        DB.fillTableTypes(m_tableTypes);
+        CDatabase::fillTableTypes(m_tableTypes);
 
         //Loop from 1 to skip objectName
         for(int i = 1; i < metaObject()->propertyCount(); i++)
@@ -202,144 +202,6 @@ public:
     }
 
     /*!
-       Creates table associated with model.
-      Returns true if table created, otherwise return false.
-    */
-    bool createTable()
-    {        
-        bool ret = false;        
-        try
-        {
-            ret = DB.createTable(m_tableName, m_sqlDescriptions);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    bool alterTableAddColumn(const QString &name)
-    {     
-        bool ret = false;        
-        PkNames field = getColumnFromModel(name);
-        try
-        {
-            ret =  DB.alterTableAddColumn(m_tableName, field);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    /*!
-       Creates indexes to table associated with model.
-
-    Returns true if table created, otherwise return false.
-                                       */
-    bool createIndexes()
-    {        
-        bool ret = false;        
-        try
-        {
-           ret =  DB.createTableIndexes(m_tableName, m_indexFields, false);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    bool createUniqueIndexes()
-    {        
-        bool ret = false;        
-        try
-        {
-            ret =  DB.createTableIndexes(m_tableName, m_uniqueIndexFields, true);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    bool dropTable() const
-    {        
-        //return CDatabase::adapter->dropTable(m_tableName);        
-        bool ret = false;
-        try
-        {
-            ret =  DB.dropTable(m_tableName);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    bool dropIndexes()
-    {        
-        bool ret = false;       
-        try
-        {
-            ret = DB.dropTableIndexes(m_tableName, m_indexFields);
-            ret = DB.dropTableIndexes(m_tableName, m_uniqueIndexFields);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    bool beginTransaction()
-    {
-        bool ret = false;
-        try
-        {
-            ret =  DB.beginTransaction();
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    bool commitTransaction()
-    {
-        bool ret = false;
-        try
-        {
-            ret =  DB.commitTransaction();
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    bool rollbackTransaction()
-    {
-        bool ret = false;
-        try
-        {
-            ret = DB.rollbackTransaction();
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    /*!
        Sets new id.
     */
     void setId(qint64 newId)
@@ -379,104 +241,6 @@ public:
         this->settimestp(newTimeStp);
     }
 
-    /*!
-       Creates new record in table. Read all meta-property from model that have be changed and save their into table.
-       Returns true if success, otherwise return false.
-    */
-
-    bool save(qint64 newId = 0, const QString &tableName = QString(), bool force_id = false)
-    {
-        qint64 id = -1;
-        QHash<QString, QVariant> info;
-        QString propertyName;
-        QVariant propertyValue;
-        setObjectValues();
-        updateUnsavedAllFields();
-        for(int i = 0; i < m_propertiesForUpdate.size(); i++)
-        {
-            propertyName = m_propertiesForUpdate.value(i);
-
-            if (propertyName == "timestp")
-                propertyValue = this->gettimestp();
-            else if (propertyName == "deleted")
-                propertyValue = this->getdeleted();
-            else
-                propertyValue = property(qPrintable(propertyName));
-            info.insert(propertyName, propertyValue);
-        }
-
-        if (tableName.isEmpty())
-            setTableName();
-        else
-            setTableName(tableName);
-        try
-        {
-            id = DB.addRecord(m_tableName, info, newId, force_id);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        m_id = id;
-        if(m_id >= 0)
-        {
-            clearUpdateList();
-        }
-        return (m_id >= 0);
-    }
-
-    /*!
-       Updates existing record in table with object's \a id.
-       Returns true if success, otherwise return false.
-   */
-    bool update(const QString &tableName = QString())
-    {
-        QHash<QString, QVariant> info;
-        QString propertyName;
-        QVariant propertyValue;
-
-        if(m_id < 0)
-            return false;
-        if(m_propertiesForUpdate.isEmpty())
-            return true;
-
-        for(int i = 0; i < m_propertiesForUpdate.size(); i++)
-        {
-            propertyName = m_propertiesForUpdate.value(i);
-
-            if (propertyName == "timestp")
-                propertyValue = this->gettimestp();
-            else if (propertyName == "deleted")
-                propertyValue = this->getdeleted();
-            else
-                propertyValue = property(qPrintable(propertyName));
-            info.insert(propertyName, propertyValue);
-        }
-        if (tableName.isEmpty())
-            setTableName();
-        else
-            setTableName(tableName);
-
-        bool ret = false;
-        try
-        {
-            ret = DB.updateRecord(m_tableName, info, getIdCondition(m_id));
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        if (ret)
-            clearUpdateList();
-        return ret;
-    }
-
-    QString getIdCondition(qint64 id)
-    {        
-        QString where = QString(" WHERE id_%1 = %2").arg(m_tableName).arg(id);
-        return where;
-    }
-
     virtual QString toString()
     {       
         QString str;        
@@ -487,406 +251,6 @@ public:
             str.append(QString("    ") + metaObject()->property(i).name() +
                        QString(" : ") + property(metaObject()->property(i).name()).toString() + '\n');
         return str;
-    }
-
-    /*!
-       Finds object by \a id.
-       Returns pointer to found model or 0 if no object found.
-    */
-    ModelName* find(qint64 id)
-    {        
-        QList<QSqlRecord> list;
-        list.clear();
-        try
-        {
-            list = DB.find(m_tableName, "*", getIdCondition(id));
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        if(list.isEmpty())
-            return 0;
-        else
-            return translateRecToObj<ModelName>(list.first());
-    }
-
-    void findThis(qint64 id)
-    {        
-        QList<QSqlRecord> list;
-        list.clear();
-        try
-        {
-            list = DB.find(m_tableName, "*",  getIdCondition(id));
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        if(!list.isEmpty())
-            translateRecToThisObj(list.first());
-    }
-
-    /*!
-       Finds all records in table.
-       Returns list of found objects.
-    */
-    QList<ModelName*> findAll(const QString &orderby = QString())
-    {        
-        QList<QSqlRecord> list;
-        QString orderString = " ORDER BY ";        
-        list.clear();
-        try
-        {
-            list = DB.find(m_tableName, "*", orderby.isEmpty() ? QString() : orderString + orderby);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        QList<ModelName*> returnList;
-        returnList.clear();
-        for(int i = 0; i < list.size(); i++)
-            returnList.append(translateRecToObj<ModelName>(list.value(i)));
-        return returnList;
-    }
-
-    /*!
-       Finds first object in table.
-       Returns pointer to found model or 0 if no object found.
-    */
-    ModelName* first()
-    {       
-        QString pkName = QString("id_%1").arg(m_tableName);
-        QSqlRecord record;
-        record.clear();
-        try
-        {
-            record = DB.first(m_tableName, pkName);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        if(record.isNull(QString("id_%1").arg(m_tableName)))
-            return 0;
-        else
-            return translateRecToObj<ModelName>(record);
-    }
-    /*!
-       Finds last object in table.
-       Returns pointer to found model or 0 if no object found.
-    */
-    ModelName* last()
-    {        
-        QString pkName = QString("id_%1").arg(m_tableName);
-        QSqlRecord record;
-        record.clear();
-        try
-        {
-            record = DB.last(m_tableName, pkName);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        if(record.isNull(QString("id_%1").arg(m_tableName)))
-            return 0;
-        else
-            return translateRecToObj<ModelName>(record);
-    }
-
-    /*!
-       Finds object by many fields and values.
-       \a params - QHash<fieldName, value>, of which will be searched.
-        Returns list of found objects.
-    */
-    /*!
-       Finds objects by some field and value.
-       Returns list of found objects.
-    */
-    QList<ModelName*> findBy(const QString &fieldName, const QVariant value, const QString &orderby = QString())
-    {        
-        QList<QSqlRecord> list;
-        QString whereString = " WHERE ";
-        QString orderString = orderby.isEmpty() ? "" : " ORDER BY " + orderby;
-
-        whereString += QString(" %1 = '%2' ").arg(fieldName, value.toString());
-        list.clear();
-        try
-        {
-            list = DB.find(m_tableName, "*",  whereString + " " + orderString);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        QList<ModelName*> returnList;
-        returnList.clear();
-        for(int i = 0; i < list.size(); i++)
-            returnList.append(translateRecToObj<ModelName>(list.value(i)));
-        return returnList;
-    }
-    /*!
-       Finds objects by vector of values.
-       Returns list of found objects.
-    */
-    QList<ModelName*> findBy(const QString &fieldName, const QVector<QVariant> &values, const QString &orderby = QString())
-    {        
-        QList<ModelName*> returnList;
-        QString whereString = " WHERE ";
-        QString orderString = orderby.isEmpty() ? "" : " ORDER BY " + orderby;
-
-        returnList.clear();
-        if(values.isEmpty())
-            return returnList;
-
-        for (auto value : std::as_const(values))
-            whereString += QString("%1 = '%2' OR ")
-                               .arg(fieldName)
-                               .arg(value.toString());
-        whereString.chop(4);        
-
-        QList<QSqlRecord> list;
-        list.clear();
-        try
-        {
-            list = DB.find(m_tableName, "*", whereString + " " + orderString);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        for(int i = 0; i < list.size(); i++)
-            returnList.append(translateRecToObj<ModelName>(list.value(i)));
-        return returnList;
-    }
-
-    QList<ModelName*> findByOr(const QHash<QString, QVariant> &params)
-    {        
-        QList<ModelName*> returnList;
-        returnList.clear();
-        if(params.isEmpty())
-            return returnList;
-
-        QString whereString = "WHERE ";
-        for (auto key : params.keys())
-            whereString += QString("%1 = '%2' OR ")
-                               .arg(key)
-                               .arg(params.value(key).toString());
-        whereString.chop(4);        
-        QList<QSqlRecord> list;
-        list.clear();
-        try
-        {
-            list = DB.find(m_tableName, "*", whereString);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        for(int i = 0; i < list.size(); i++)
-            returnList.append(translateRecToObj<ModelName>(list.value(i)));
-        return returnList;
-    }
-    /*!
-       Finds object by many fields and values.
-       \a params - QHash<fieldName, value>, direct will be searched.
-        Returns list of found objects.
-     */
-    QList<ModelName*> findByAnd(const QHash<QString, QVariant> &params)
-    {        
-        QList<ModelName*> returnList;
-        returnList.clear();
-        if(params.isEmpty())
-            return returnList;
-
-        QString whereString = "WHERE ";
-        for (auto key : params.keys())
-            whereString += QString("%1 = '%2' AND ")
-                               .arg(key)
-                               .arg(params.value(key).toString());
-        whereString.chop(4);        
-        QList<QSqlRecord> list;
-        list.clear();
-        try
-        {
-            list = DB.find(m_tableName, "*", whereString);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        for(int i = 0; i < list.size(); i++)
-            returnList.append(translateRecToObj<ModelName>(list.value(i)));
-        return returnList;
-    }
-
-    /*!
-       Returns true if table is empty, otherwise return false.
-     */
-    bool existsTable()
-    {        
-        bool ret = true;        
-        try
-        {
-            ret = !DB.find(m_tableName, "*", "").isEmpty();
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-    /*!
-       Returns true if object with given \a id exist, otherwise return false.
-     */
-
-    bool exists(qint64 id)
-    {        
-        bool ret = false;        
-        try
-        {
-            ret = !DB.find(m_tableName, "*", getIdCondition(id)).isEmpty();
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    /*!
-       Immediately updates object field in table.
-
-       Returns true if property updated, otherwise return false.
-     */
-    bool updateProperty(const QString &fieldName, QVariant value)
-    {
-        if(m_id < 0)
-            return false;
-        QHash<QString, QVariant> info;
-        info.insert(fieldName, value);        
-        bool ret = false;
-        try
-        {
-            if(DB.updateRecord(m_tableName, info, getIdCondition(m_id)))
-            {
-                setProperty(qPrintable(fieldName), value);
-                m_propertiesForUpdate.removeOne(fieldName);
-                ret = true;
-            }
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-
-    }
-    /*!
-       Removes table's record with object's id.
-
-       Returns true if success, otherwise return false.
-     */
-    bool remove()
-    {        
-        bool ret = false;        
-        try
-        {
-           ret = DB.remove(m_tableName, getIdCondition(m_id));
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        if (ret)
-            m_id = -1;
-
-        return ret;
-    }
-
-    bool setDeleted()
-    {        
-        bool ret = false;        
-        try
-        {
-            ret = DB.setDeleted(m_tableName, getIdCondition(m_id));
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        if (ret)
-            m_id = -1;
-
-        return ret;
-    }
-
-    /*!
-       Removes all records from table.
-
-       Returns true is success, otherwise return false.
-     */
-    bool removeAll() const
-    {        
-        bool ret = false;
-        try
-        {
-          ret = DB.remove(m_tableName, "");
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    bool deleteAll() const
-    {        
-        bool ret = false;
-        try
-        {
-            ret = DB.setDeleted(m_tableName, "");
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-
-    /*!
-       Returns number of objects in table.
-     */
-    qint64 count() const
-    {        
-        qint64 ret = -1;
-        try
-        {
-            ret =  DB.count(m_tableName, "*");
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
-    }
-    /*!
-       Returns number of not null fields with given \a fieldName column.
-     */
-    qint64 count(const QString &fieldName) const
-    {
-        qint64 ret = -1;
-        try
-        {
-            ret =  DB.count(m_tableName, fieldName);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return ret;
     }
 
     PkNames getColumnFromModel(const QString &name)
@@ -915,32 +279,6 @@ public:
         return m_uniqueIndexFields;
     }
 
-    QList<QSqlIndex> getTableIndexes()
-    {        
-        QList<QSqlIndex> list;
-        list.clear();
-        try
-        {
-            list =  DB.getTableIndexes(m_tableName);
-        }
-        catch (CExceptionSql &e)
-        {
-            throw e;
-        }
-        return list;
-    }
-
-    QHash <QString, QString> getTableIndexesNames()
-    {        
-        QHash <QString, QString> result;
-        QList<QSqlIndex> idx_list = DB.getTableIndexes(m_tableName);
-        for (auto idx : std::as_const(idx_list))
-        {
-            result.insert(idx.cursorName(), idx.name());
-        }
-        return result;
-    }
-
 protected:
     bool m_hasUnsavedChanges;
     QStringList m_propertiesForUpdate;
@@ -951,8 +289,55 @@ protected:
     QHash <QString, QString> m_indexFields;
     QHash <QString, QString> m_uniqueIndexFields;
 
+public:
+    QList<PkNames> getSqlDescriptions() const
+    {
+        return m_sqlDescriptions;
+    }
+
+    QStringList getPropertiesForUpdate() const
+    {
+        return m_propertiesForUpdate;
+    }
+
+    // Column values of the properties changed since the last save or load.
+    QHash<QString, QVariant> changedValues()
+    {
+        QHash<QString, QVariant> info;
+        for (const QString &propertyName : std::as_const(m_propertiesForUpdate))
+        {
+            QVariant propertyValue;
+            if (propertyName == "timestp")
+                propertyValue = this->gettimestp();
+            else if (propertyName == "deleted")
+                propertyValue = this->getdeleted();
+            else
+                propertyValue = property(qPrintable(propertyName));
+            info.insert(propertyName, propertyValue);
+        }
+        return info;
+    }
+
+    // After an INSERT: the new id, nothing left to save.
+    void markSaved(qint64 newId)
+    {
+        m_id = newId;
+        if (m_id >= 0)
+        {
+            clearUpdateList();
+        }
+    }
+
+    // After UPDATE of one column: the property holds the stored value.
+    void markPropertyStored(const QString &fieldName, const QVariant &value)
+    {
+        setProperty(qPrintable(fieldName), value);
+        m_propertiesForUpdate.removeOne(fieldName);
+    }
+
+    // Builds a new object from a table record; the caller owns it.
     template<class T>
-    T* translateRecToObj(const QSqlRecord &record) const
+    static T* translateRecToObj(const QSqlRecord &record)
     {
         T *result = new T;
         QString currentFieldName;        
@@ -974,27 +359,6 @@ protected:
         result->clearUpdateList();
         return result;
     }
-
-    void translateRecToThisObj(const QSqlRecord &record)
-    {
-        QString currentFieldName;
-        QString tableName = this->getTableName();
-
-        for(int i = 1; i < this->metaObject()->propertyCount(); i++)
-        {
-            currentFieldName = QString(this->metaObject()->property(i).name());
-            if(record.contains(currentFieldName))
-                this->metaObject()->property(i).write(this, record.value(currentFieldName));
-            else if(record.contains(currentFieldName.toLower()))
-                this->metaObject()->property(i).write(this, record.value(currentFieldName.toLower()));
-        }
-        this->setId(record.value(QString("id_%1").arg(tableName)).toLongLong());
-        //BASIC REC INFO
-        this->set_deleted(record.value("deleted").toBool());
-        this->set_timestp(record.value("timestp").toDateTime());
-        this->clearUpdateList();
-    }
-
 };
 
 #endif // CORMOBJECT_H

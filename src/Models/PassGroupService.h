@@ -9,7 +9,7 @@
 class PassGroupService : public COrmService<PassGroup>
 {
 public:
-    PassGroupService() = default;
+    explicit PassGroupService(CDatabase &db) : COrmService(db) {}
     ~PassGroupService() = default;
 
     CSqlModel *getSqlModel(void);

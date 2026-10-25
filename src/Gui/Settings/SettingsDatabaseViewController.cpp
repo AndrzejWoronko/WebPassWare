@@ -3,9 +3,10 @@
 #include "MessageBox.h"
 #include "Database.h"
 
-SettingsDatabaseViewController::SettingsDatabaseViewController(QWidget *parent) : CAbstractSettingsItemController(parent)
+SettingsDatabaseViewController::SettingsDatabaseViewController(CDatabase &db, QWidget *parent) :
+    CAbstractSettingsItemController(parent), m_db(db)
 {
-    m_view = new SettingsDatabaseView(this);
+    m_view = new SettingsDatabaseView(m_db, this);
 
     connect(m_view, &SettingsDatabaseView::changesWereMade, this, &SettingsDatabaseViewController::enableButtons);
     SettingsDatabaseView* v = dynamic_cast<SettingsDatabaseView*>(m_view);
@@ -24,7 +25,7 @@ SettingsDatabaseViewController::SettingsDatabaseViewController(QWidget *parent) 
 void SettingsDatabaseViewController::getValuesFromSettings(void)
 {
     CFormAbstractField *f = nullptr;
-    QString passwd = DB.getDatabaseHashPassword();
+    QString passwd = m_db.getDatabaseHashPassword();
 
     f = m_view->getFields().value("m_base_passwd1");
     if (f)
@@ -50,7 +51,7 @@ void SettingsDatabaseViewController::setValuesToSettings(void)
     if (passwd1 == passwd2)
        {
            //Zapisz hasło do bazy
-           DB.setDatabasePassword(passwd1);
+           m_db.setDatabasePassword(passwd1);
            this->disableButtons();
            CMessageBox::OkDialogInformation(tr("Hasła do bazy danych zostało zmienione !!!"), m_view);
        }

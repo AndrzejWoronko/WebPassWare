@@ -6,6 +6,8 @@
 #include "AbstractSettingsItemView.h"
 #include <QGroupBox>
 
+class CDatabase;
+
 class SettingsDatabaseView : public CAbstractSettingsItemView
 {
     Q_OBJECT
@@ -19,7 +21,7 @@ class SettingsDatabaseView : public CAbstractSettingsItemView
     ADD_PTR_PROPERTY(QGroupBox, m_connection_group_box, getConnectionGroupBox)
 public:
 
-     SettingsDatabaseView(QWidget *parent = nullptr);
+     explicit SettingsDatabaseView(CDatabase &db, QWidget *parent = nullptr);
     ~SettingsDatabaseView();
 
     //Funkcja twprząca pola i dodająca pola do listy
@@ -27,6 +29,9 @@ public:
 
     //Funkcja umieszczająca pola na formatce
     virtual void addComponents();
+
+private:
+    CDatabase &m_db;
 };
 
 #endif // SETTINGSDATABASEVIEW_H

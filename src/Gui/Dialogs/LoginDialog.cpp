@@ -3,7 +3,8 @@
 #include "Database.h"
 #include "MessageBox.h"
 
-CLoginDialog::CLoginDialog(const QString &title, const QString &iconName, QWidget *parent) : CDialog(parent), CAbstractDialogStateManager()
+CLoginDialog::CLoginDialog(CDatabase &db, const QString &title, const QString &iconName, QWidget *parent) :
+    CDialog(parent), CAbstractDialogStateManager(), m_db(db)
 {
     if (!iconName.isEmpty())
     {
@@ -90,7 +91,7 @@ void CLoginDialog::accept()
 {
     //Passwd check;
     QString check_passwd =  QCryptographicHash::hash(this->getPasswd()->text().toLatin1(), QCryptographicHash::Md5).toHex();
-    QString hash_passwd = DB.getDatabaseHashPassword();
+    QString hash_passwd = m_db.getDatabaseHashPassword();
 
     if (hash_passwd.isEmpty())
     {

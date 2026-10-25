@@ -5,8 +5,11 @@
 #include <QFile>
 #include <QUuid>
 
+#include <memory>
+
 #include "BusyIndicator.h"
 #include "Database.h"
+#include "OrmRepository.h"
 #include "ExceptionSql.h"
 #include "PassEntryService.h"
 #include "PassGroupService.h"
@@ -14,14 +17,6 @@
 #define CLEAR_PTR_LIST_TEST(list) \
     for (int i = 0; i < list.size(); i++) \
         delete list.takeAt(i);
-
-// QSqlDatabase::exec() is deprecated in Qt 6.
-static QSqlQuery execSql(const QString &sql)
-{
-    QSqlQuery query(DB.getDb());
-    query.exec(sql);
-    return query;
-}
 
 class Test_Service : public QObject
 {
@@ -43,6 +38,16 @@ private Q_SLOTS:
 private:
     void createTables();
     void clearTables();
+
+    // QSqlDatabase::exec() is deprecated in Qt 6.
+    QSqlQuery execSql(const QString &sql)
+    {
+        QSqlQuery query(m_db->getDb());
+        query.exec(sql);
+        return query;
+    }
+
+    std::unique_ptr<CDatabase> m_db;
 };
 
 void Test_Service::initTestCase()
@@ -51,20 +56,21 @@ void Test_Service::initTestCase()
     QDir().mkpath(dataPath);
     qputenv("XDG_DATA_HOME", QFile::encodeName(dataPath));
 
-    SingletonDatabase::getInstance();
-    DB.setEchoQuery(false);
-    DB.setLogQuery(false);
-    DB.setEchoError(false);
-    DB.setLogError(false);
-    DB.setQueryLog();
+    m_db = std::make_unique<CDatabase>();
+    m_db->setEchoQuery(false);
+    m_db->setLogQuery(false);
+    m_db->setEchoError(false);
+    m_db->setLogError(false);
+    m_db->setQueryLog();
 
     createTables();
 }
 
 void Test_Service::cleanupTestCase()
 {
-    QFile file(DB.getBaseNameFullPath());
-    file.remove();
+    const QString path = m_db->getBaseNameFullPath();
+    m_db.reset();
+    QFile::remove(path);
 }
 
 void Test_Service::cleanup()
@@ -74,11 +80,8 @@ void Test_Service::cleanup()
 
 void Test_Service::createTables()
 {
-    PassGroup passGroup;
-    PassEntry passEntry;
-
-    QVERIFY(passGroup.createTable());
-    QVERIFY(passEntry.createTable());
+    QVERIFY(COrmRepository<PassGroup>(*m_db).createTable());
+    QVERIFY(COrmRepository<PassEntry>(*m_db).createTable());
 }
 
 void Test_Service::clearTables()
@@ -89,7 +92,7 @@ void Test_Service::clearTables()
 
 void Test_Service::test_servicePrototypeObject()
 {
-    PassGroupService service;
+    PassGroupService service(*m_db);
 
     QVERIFY(service.getObject() != nullptr);
     QCOMPARE(service.getObject()->getTableName(), QString("pass_group"));
@@ -97,7 +100,7 @@ void Test_Service::test_servicePrototypeObject()
 
 void Test_Service::test_ownedFinderApi()
 {
-    PassGroupService groupService;
+    PassGroupService groupService(*m_db);
     PassGroup group;
     group.setm_name("Loginy");
     const qint64 groupId = groupService.addObject(&group);
@@ -111,7 +114,7 @@ void Test_Service::test_ownedFinderApi()
     QCOMPARE(ownedGroups.size(), 1);
     QCOMPARE(ownedGroups.first()->getId(), groupId);
 
-    PassEntryService entryService;
+    PassEntryService entryService(*m_db);
     PassEntry entry;
     entry.setm_title("Email");
     entry.setm_user("user@example.com");
@@ -139,7 +142,7 @@ void Test_Service::test_ownedFinderApi()
 
 void Test_Service::test_passGroupCrud()
 {
-    PassGroupService service;
+    PassGroupService service(*m_db);
     PassGroup group;
     group.setm_name("Prywatne");
 
@@ -175,13 +178,13 @@ void Test_Service::test_passGroupCrud()
 
 void Test_Service::test_passEntryCrud()
 {
-    PassGroupService groupService;
+    PassGroupService groupService(*m_db);
     PassGroup group;
     group.setm_name("Loginy");
     const qint64 groupId = groupService.addObject(&group);
     QVERIFY(groupId > 0);
 
-    PassEntryService service;
+    PassEntryService service(*m_db);
     PassEntry entry;
     entry.setm_title("Email");
     entry.setm_user("user@example.com");
@@ -226,7 +229,7 @@ void Test_Service::test_passEntryCrud()
 
 void Test_Service::test_errorPathSetsError()
 {
-    PassEntryService service;
+    PassEntryService service(*m_db);
 
     QList<PassEntry*> list = service.getObjectsBy("missing_column", QVariant("value"));
     QCOMPARE(list.size(), 0);
@@ -242,7 +245,7 @@ void Test_Service::test_errorPathSetsError()
 // upgrade that changes typeName() cannot alter the schema unnoticed.
 void Test_Service::test_tableDdlIsStable()
 {
-    QSqlQuery query(DB.getDb());
+    QSqlQuery query(m_db->getDb());
     QVERIFY(query.exec(QString("SELECT name, sql FROM sqlite_master WHERE tbl_name IN ('pass_entry', 'pass_group') ORDER BY name;")));
     QStringList ddl;
     while (query.next())
@@ -279,7 +282,7 @@ void Test_Service::test_busyIndicatorWrapsQueries()
     int ended = 0;
     wpw::BusyIndicator::setHooks([&begun]() { ++begun; }, [&ended]() { ++ended; });
 
-    PassGroupService service;
+    PassGroupService service(*m_db);
     PassGroupService::OwnedObjectList groups = service.getOwnedObjects(QString("id_pass_group"));
     wpw::BusyIndicator::setHooks(nullptr, nullptr);
 

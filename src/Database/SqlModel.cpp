@@ -2,7 +2,8 @@
 #include "BusyIndicator.h"
 #include "Database.h"
 
-CSqlModel::CSqlModel(const QString &selectQuery, const QString &table_name, const SqlFieldsDesc &list, QVariantHash data, QObject *parent) : QSqlQueryModel(parent)
+CSqlModel::CSqlModel(CDatabase &db, const QString &selectQuery, const QString &table_name, const SqlFieldsDesc &list, QVariantHash data, QObject *parent) :
+    QSqlQueryModel(parent), m_db(db)
 {
     initSqlModel();
     m_selectQuery = selectQuery;
@@ -96,10 +97,10 @@ void CSqlModel::refresh()
 {
       wpw::BusyIndicator::Scope busy;
         {
-          if (DB.isConnected())
+          if (m_db.isConnected())
              {
-                CSqlQuery query(DB.getDb());
-                query.setLogFromDB(DB.getEchoError(),DB.getLogError(),DB.getEchoError(), DB.getLogQuery());
+                CSqlQuery query(m_db.getDb());
+                query.setLogFromDB(m_db.getEchoError(), m_db.getLogError(), m_db.getEchoError(), m_db.getLogQuery());
                 query.setForwardOnly(false);
 
                 QString select_query = m_selectQuery;                
@@ -117,7 +118,7 @@ void CSqlModel::refresh()
                 DEBUG_WITH_LINE << query.lastQuery();
 
 //                beginResetModel();  //Uwaga bardzo ważne. bez tego nie wywołuje się data i headerData
-                QSqlQueryModel::setQuery(query.lastQuery(), DB.getDb());
+                QSqlQueryModel::setQuery(query.lastQuery(), m_db.getDb());
                 if (this->lastError().isValid())
                     DEBUG_WITH_LINE <<  this->lastError();
                 else
