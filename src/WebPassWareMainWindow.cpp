@@ -159,7 +159,7 @@ void CWebPassWareMainWindow::setActions(void)
     CAction *actionImportDialog = new CAction(tr("Import danych"), ICON("Import-csv"), tr("Import danych"), QString(""), QString("ACTION_DATA_IMPORT_DIALOG") ,this);
     m_actions.insert(actionImportDialog->getActionName(), actionImportDialog);
 
-    CAction *actionDataCheck = new CAction(tr("Sprawdzenie danych"), ICON("Checked"), tr("Export danych"), QString(""), QString("ACTION_DATA_CHECK") ,this);
+    CAction *actionDataCheck = new CAction(tr("Sprawdzenie danych"), ICON("Checked"), tr("Sprawdzenie danych"), QString(""), QString("ACTION_DATA_CHECK") ,this);
     m_actions.insert(actionDataCheck->getActionName(), actionDataCheck);
 
     CAction *actionCheckUpdates = new CAction(tr("Sprawdź aktualizacje"), ICON("Available-updates"), tr("Sprawdź aktualizacje"), QString(""), QString("ACTION_CHECK_UPDATES"), this);
@@ -417,7 +417,7 @@ qint64 CWebPassWareMainWindow::getCurrentPassEntryId()
     if (sourceIndex.isValid())
     {
         QModelIndex idx;
-        if (m_pass_group_model)
+        if (m_pass_entry_model)
         {
             int column = m_pass_entry_model->columnIndex("id_pass_entry");
             idx = m_pass_entry_model->index(sourceIndex.row(), column);
