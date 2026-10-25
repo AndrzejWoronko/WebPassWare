@@ -44,7 +44,8 @@ bool CAbstractFormDialogController::isChangesOccured()
     {
         if (field && field->isDirty())
         {
-            DEBUG_WITH_LINE << "Field: " << field->getVariableName() <<  " value: " << field->getValue() << "start value: " << field->getStartValue();
+            // Name only: the values include passwords.
+            DEBUG_WITH_LINE << "Changed field: " << field->getVariableName();
             return true;
         }
     }

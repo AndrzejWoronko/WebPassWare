@@ -667,7 +667,6 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_PASSWORD_triggered()
             mimeData->setText(text);
             mimeData->setData("text/csv", text.toUtf8());
             QApplication::clipboard()->setMimeData(mimeData);
-            DEBUG_WITH_LINE << text;
         }
     }
     DEBUG_WITH_LINE << "COPY PASS ENTRY PASSWORD";
@@ -696,7 +695,6 @@ void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_USER_triggered()
             mimeData->setText(text);
             mimeData->setData("text/csv", text.toUtf8());
             QApplication::clipboard()->setMimeData(mimeData);
-            DEBUG_WITH_LINE << text;
         }
     }
     DEBUG_WITH_LINE << "COPY PASS ENTRY USER";
@@ -791,7 +789,8 @@ void CWebPassWareMainWindow::on_ACTION_CLIPBOARD_triggered(void)
 
     QString clip_text = clipboard_ptr->text();
 
-    DEBUG_WITH_LINE << "TEXT FROM CLIPBOARD" << clip_text;
+    // Never log the clipboard: it usually holds a password.
+    DEBUG_WITH_LINE << "TEXT FROM CLIPBOARD";
     this->activateWindow();
     this->showMaximized();
     this->setFocus();
