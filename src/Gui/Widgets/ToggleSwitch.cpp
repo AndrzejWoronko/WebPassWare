@@ -111,7 +111,7 @@ void CToggleSwitch::paintEvent(QPaintEvent *)
         painter.setPen(palete.color(QPalette::Button) /*ColorRepository::buttonOutlineColor()*/);
 
     if (m_checked)
-        painter.setBrush(palete.color(QPalette::Background) /*ColorRepository::baseBackground()*/);
+        painter.setBrush(palete.color(QPalette::Window) /*ColorRepository::baseBackground()*/);
     const qreal radius = height() / 2;
     painter.drawRoundedRect(QRectF(rect()).adjusted(0.5, 0.5, -0.5, -0.5), radius, radius);
 
@@ -127,7 +127,7 @@ void CToggleSwitch::paintEvent(QPaintEvent *)
         //painter.setPen(QColor(Qt::green));
         //painter.setBrush(QColor(Qt::green));
     } else {
-        painter.setBrush(palete.color(QPalette::Background) /*ColorRepository::baseBackground()*/);
+        painter.setBrush(palete.color(QPalette::Window) /*ColorRepository::baseBackground()*/);
     }
     painter.drawEllipse(valueRect);
 }

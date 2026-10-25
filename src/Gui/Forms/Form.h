@@ -30,8 +30,6 @@ class CForm : public QWidget
 {
     Q_OBJECT
 
-    Q_ENUMS(FormMode)
-
     ADD_PTR(CDialog, m_dialog, getDialog)
 
   public:
@@ -42,6 +40,7 @@ class CForm : public QWidget
        New,
        Edit
     };
+    Q_ENUM(FormMode)
 
 
     explicit CForm(QWidget *parent = NULL);

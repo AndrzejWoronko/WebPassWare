@@ -38,7 +38,7 @@ public:
       ColorMaroon,
     };
 
-    Q_ENUMS(EColorScheme)
+    Q_ENUM(EColorScheme)
 
     CApplication(int & argc, char **argv);
     ~CApplication();

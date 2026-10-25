@@ -65,9 +65,6 @@ class CMaintenanceTool : public QObject
 {
     Q_OBJECT
 
-    Q_ENUMS(ProcessState)
-    Q_ENUMS(StartMode)
-
     Q_PROPERTY(ProcessState m_state READ state NOTIFY stateChanged)
     Q_PROPERTY(bool m_hasUpdate READ hasUpdate NOTIFY hasUpdateChanged)
     Q_PROPERTY(QString m_updateDetails READ updateDetails NOTIFY updateDetailsChanged)
@@ -85,6 +82,8 @@ public:
         CheckUpdate,
         Updater
     };
+    Q_ENUM(ProcessState)
+    Q_ENUM(StartMode)
 
     ProcessState state() const;
     bool hasUpdate() const;

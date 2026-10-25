@@ -24,7 +24,6 @@ public:
         DARKORANGE
     };
 
-    Q_ENUMS(StyleSheet)
 
     enum IconAttributes
     {
@@ -45,7 +44,6 @@ public:
         DISK,        
         SAVE
     };
-    Q_ENUMS(IconAttributes)
 
 private:
 
