@@ -34,6 +34,7 @@ private Q_SLOTS:
     void cleanup();
     void cleanupTestCase();
     void test_noNullActions();
+    void test_shortcutsAreUnique();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -159,6 +160,22 @@ void Test_MainWindow::test_noNullActions()
 {
     // Construction in init() would have failed on the warning.
     QVERIFY(action("ACTION_EXIT"));
+}
+
+void Test_MainWindow::test_shortcutsAreUnique()
+{
+    QHash<QString, QString> owners;
+    const QList<QAction *> actions = m_window->findChildren<QAction *>();
+    for (QAction *a : actions)
+    {
+        const QString keys = a->shortcut().toString();
+        if (keys.isEmpty())
+        {
+            continue;
+        }
+        QVERIFY2(!owners.contains(keys), qPrintable(QString("%1 on %2 and %3").arg(keys, owners.value(keys), a->objectName())));
+        owners.insert(keys, a->objectName());
+    }
 }
 
 int main(int argc, char **argv)
