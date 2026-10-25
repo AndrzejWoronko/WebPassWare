@@ -40,6 +40,7 @@ private Q_SLOTS:
     void test_findByRejectsUnknownColumn();
     void test_orderByRejectsUnknownColumn();
     void test_databasePasswordIsSalted();
+    void test_failedAddReturnsMinusOne();
     void test_databasePasswordUpgradesLegacyHash();
 
 private:
@@ -373,6 +374,22 @@ void Test_Service::test_databasePasswordUpgradesLegacyHash()
     QVERIFY(m_db->checkDatabasePassword("stare"));
     QVERIFY(QSettings().value(DATABASE_SETTING_PASSWORD).toString().startsWith("pbkdf2-sha256$"));
     QVERIFY(m_db->checkDatabasePassword("stare"));
+}
+
+void Test_Service::test_failedAddReturnsMinusOne()
+{
+    PassGroupService service(*m_db);
+    PassGroup first;
+    first.setm_name("Pierwsza");
+    const qint64 id = service.addObject(&first);
+    QVERIFY(id > 0);
+
+    // The same forced id again: the INSERT fails on the primary key.
+    PassGroup duplicate;
+    duplicate.setm_name("Druga");
+    QCOMPARE(service.addObject(&duplicate, id), qint64(-1));
+    QVERIFY(!service.getError().isEmpty());
+    QCOMPARE(service.getInsertedId(), qint64(-1));
 }
 
 QTEST_MAIN(Test_Service)

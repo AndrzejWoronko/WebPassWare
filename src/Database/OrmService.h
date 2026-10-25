@@ -55,6 +55,12 @@ public:
         return m_insertedId;
     }
 
+    // For work that spans several calls, e.g. one transaction for an import.
+    CDatabase &database()
+    {
+        return m_db;
+    }
+
     QList<ModelName*> getObjects(const QString &orderby = QString())
     {
         QList<ModelName*> list;
@@ -163,6 +169,7 @@ public:
     qint64 addObject(ModelName *o, qint64 newId = 0)
     {
         m_service->clearError();
+        m_insertedId = -1;
         try
         {
             m_insertedId = m_repository->add(o, newId);
