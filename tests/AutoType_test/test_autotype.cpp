@@ -26,6 +26,7 @@ private slots:
     void test_delay();
     void test_escapeBraces();
     void test_setDelay();
+    void test_syntaxErrorTypesNothing();
 };
 
 void Test_AutoType::initTestCase()
@@ -115,6 +116,13 @@ void Test_AutoType::test_setDelay()
     m_autoType->performAutoType(&entry, nullptr, "{DELAY=0}ab");
 
     QCOMPARE(m_platform->actionChars(), QString("ab"));
+}
+
+void Test_AutoType::test_syntaxErrorTypesNothing()
+{
+    Entry entry("alice", "secret");
+    m_autoType->performAutoType(&entry, nullptr, "ab}c");
+    QCOMPARE(m_platform->actionChars(), QString());
 }
 
 QTEST_MAIN(Test_AutoType)

@@ -85,6 +85,8 @@ void CAutoType::performAutoType(const Entry* entry, QWidget* hideWindow, const Q
 
     if (!parseActions(sequence, entry, actions))
       {
+        // The actions parsed before the syntax error.
+        CLEAR_PTR_LIST(actions);
         m_inAutoType = false; // TODO: make this automatic
         return;
       }
