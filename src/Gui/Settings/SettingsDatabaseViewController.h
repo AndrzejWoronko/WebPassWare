@@ -11,7 +11,7 @@ class SettingsDatabaseViewController : public CAbstractSettingsItemController
     Q_OBJECT
 
 public:
-    SettingsDatabaseViewController(QWidget *parent = NULL);
+    SettingsDatabaseViewController(QWidget *parent = nullptr);
 
     virtual void checkChanges();
 

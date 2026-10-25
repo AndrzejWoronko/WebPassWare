@@ -9,7 +9,7 @@ class CAutoTypePlatformTest : public QObject, public CAutoTypePlatform
   Q_OBJECT
 
 public:
-  CAutoTypePlatformTest(QObject *parent = NULL);
+  CAutoTypePlatformTest(QObject *parent = nullptr);
 
   QString keyToString(Qt::Key key);
 

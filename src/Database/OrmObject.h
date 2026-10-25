@@ -44,7 +44,7 @@ class COrmObject : public QObject
 public:
     qint64 m_id;  // Object id
 
-    explicit COrmObject(QObject *parent = NULL) : QObject(parent)
+    explicit COrmObject(QObject *parent = nullptr) : QObject(parent)
     {
         m_id = -1;
         clearUpdateList();

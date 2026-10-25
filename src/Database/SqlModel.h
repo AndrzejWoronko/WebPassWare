@@ -16,7 +16,7 @@ class CSqlModel : public QSqlQueryModel
     void initSqlModel();
 
 public:
-    CSqlModel(const QString &selectQuery, const QString &table_name = QString() , const SqlFieldsDesc &list = SqlFieldsDesc(), QVariantHash data = QVariantHash(), QObject *parent = NULL);
+    CSqlModel(const QString &selectQuery, const QString &table_name = QString() , const SqlFieldsDesc &list = SqlFieldsDesc(), QVariantHash data = QVariantHash(), QObject *parent = nullptr);
     ~CSqlModel() { DEBUG_WITH_LINE << "~dtor ";}
 
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;

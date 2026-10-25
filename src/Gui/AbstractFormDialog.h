@@ -18,7 +18,7 @@ class CAbstractFormDialog : public CDialog
 
     public:
 
-    explicit CAbstractFormDialog(const QString &dialog_name, QWidget *parent = NULL);
+    explicit CAbstractFormDialog(const QString &dialog_name, QWidget *parent = nullptr);
     ~CAbstractFormDialog();
 
     void addFieldsAndComponents();

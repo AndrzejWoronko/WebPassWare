@@ -41,8 +41,8 @@ int main(int argc, char **argv)
 //    else
 //        QDir::setCurrent("./");
 
-    CApplication *a = NULL;
-    CWebPassWareMainWindow *w = NULL;
+    CApplication *a = nullptr;
+    CWebPassWareMainWindow *w = nullptr;
 
     a = new CApplication(argc, argv);
 

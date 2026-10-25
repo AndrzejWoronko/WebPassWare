@@ -9,7 +9,7 @@ class PasswordFormatDelegate : public QStyledItemDelegate
 {
 
 public:
-    PasswordFormatDelegate(QObject *parent = NULL);
+    PasswordFormatDelegate(QObject *parent = nullptr);
     virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 };

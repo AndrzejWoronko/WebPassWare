@@ -16,7 +16,7 @@ class CAbstractSettingsItemView : public QWidget
     ADD_PTR_PROPERTY(QScrollArea, m_scrollArea, getScrollArea) //Scrollarea
 
 public:
-     explicit CAbstractSettingsItemView(const QString &title = QString(), QWidget *parent = NULL);
+     explicit CAbstractSettingsItemView(const QString &title = QString(), QWidget *parent = nullptr);
     ~CAbstractSettingsItemView();
 
     void addFieldsAndComponents();

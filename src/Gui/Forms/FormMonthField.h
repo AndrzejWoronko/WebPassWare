@@ -10,7 +10,7 @@ class CFormMonthField : public CMonthEdit, public CFormAbstractField
 {
 
   public:
-    CFormMonthField(const QString &variableName, const QString &label, const QDate &value, bool readOnly = false, QWidget *parent = NULL);
+    CFormMonthField(const QString &variableName, const QString &label, const QDate &value, bool readOnly = false, QWidget *parent = nullptr);
     ~CFormMonthField();
 
     QVariant getValue();

@@ -21,7 +21,7 @@ class CLoginDialog : public CDialog, public CAbstractDialogStateManager
     */
      ADD_QSMART_SHARED_PTR(CButtonBoxOk, m_buttonBox, getButtonBox)
 public:
-     CLoginDialog(const QString &title = QString(), const QString &iconName = QString(), QWidget *parent = NULL);
+     CLoginDialog(const QString &title = QString(), const QString &iconName = QString(), QWidget *parent = nullptr);
      ~CLoginDialog();
 
      virtual void restoreDialogState() override final;

@@ -10,8 +10,8 @@ class CDateEdit : public QDateEdit
 {
     Q_OBJECT
 public:
-    CDateEdit(QWidget  *parent = NULL);
-    CDateEdit(const QDate &date = QDate::currentDate(), QWidget  *parent = NULL);
+    CDateEdit(QWidget  *parent = nullptr);
+    CDateEdit(const QDate &date = QDate::currentDate(), QWidget  *parent = nullptr);
 };
 
 
@@ -19,16 +19,16 @@ class CDateTimeEdit : public QDateTimeEdit
 {
     Q_OBJECT
 public:
-    CDateTimeEdit(QWidget  *parent = NULL);
-    CDateTimeEdit(const QDateTime &date = QDateTime::currentDateTime(), QWidget  *parent = NULL);
+    CDateTimeEdit(QWidget  *parent = nullptr);
+    CDateTimeEdit(const QDateTime &date = QDateTime::currentDateTime(), QWidget  *parent = nullptr);
 };
 
 class CMonthEdit : public CDateEdit
 {
     Q_OBJECT
 public:
-    CMonthEdit(QWidget  *parent = NULL);
-    CMonthEdit(const QDate &date = QDate::currentDate(), QWidget  *parent = NULL);
+    CMonthEdit(QWidget  *parent = nullptr);
+    CMonthEdit(const QDate &date = QDate::currentDate(), QWidget  *parent = nullptr);
 
 signals:
     void monthChanged(const QDate &);

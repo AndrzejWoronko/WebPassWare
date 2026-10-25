@@ -19,8 +19,8 @@ class CSplitter : public QSplitter
     ADD_QSMART_UNIQUE_PTR(ICState, m_splitter_interf, getSplitterInterf)
 
 public:
-    explicit CSplitter(const QString &splitterName, Qt::Orientation orientation, QWidget *parent = NULL);
-    explicit CSplitter(Qt::Orientation orientation, QWidget *parent = NULL);
+    explicit CSplitter(const QString &splitterName, Qt::Orientation orientation, QWidget *parent = nullptr);
+    explicit CSplitter(Qt::Orientation orientation, QWidget *parent = nullptr);
     ~CSplitter();
 
     void restoreSplitterState();

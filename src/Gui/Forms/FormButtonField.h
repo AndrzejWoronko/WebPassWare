@@ -10,7 +10,7 @@ class CFormButtonField : public QPushButton, public CFormAbstractField
     Q_OBJECT
   public:
 
-    CFormButtonField(const QString &variableName, const QString &label, QVariant value, QWidget *parent = NULL);
+    CFormButtonField(const QString &variableName, const QString &label, QVariant value, QWidget *parent = nullptr);
     ~CFormButtonField();
 
     virtual QVariant getValue();    

@@ -11,7 +11,7 @@ class CPasswordGenerateDialog : public CAbstractCloseDialog
 
 public:
 
-    CPasswordGenerateDialog(QWidget *parent = NULL);
+    CPasswordGenerateDialog(QWidget *parent = nullptr);
     ~CPasswordGenerateDialog();
 
     //Funkcja tworząca pola

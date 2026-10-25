@@ -18,7 +18,7 @@ private:
     void setOptions();
 
 public:
-    CToolButton(CButtonPrivate structure, QWidget *parent = NULL, QSize iconSize = QSize());
+    CToolButton(CButtonPrivate structure, QWidget *parent = nullptr, QSize iconSize = QSize());
     void setIconPolicy(const QString &iconName, QSize iconSize = QSize());
     void setIconFromTheme(const QString &iconName);
     void setTopBottomLayout();

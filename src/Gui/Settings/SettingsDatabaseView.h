@@ -19,7 +19,7 @@ class SettingsDatabaseView : public CAbstractSettingsItemView
     ADD_PTR_PROPERTY(QGroupBox, m_connection_group_box, getConnectionGroupBox)
 public:
 
-     SettingsDatabaseView(QWidget *parent = NULL);
+     SettingsDatabaseView(QWidget *parent = nullptr);
     ~SettingsDatabaseView();
 
     //Funkcja twprząca pola i dodająca pola do listy

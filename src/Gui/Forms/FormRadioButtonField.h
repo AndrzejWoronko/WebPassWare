@@ -9,7 +9,7 @@ class CFormRadioButtonField : public QRadioButton, public CFormAbstractField
 {
 
   public:
-    CFormRadioButtonField(const QString &variableName, const QString &label, bool value, QWidget *parent = NULL);
+    CFormRadioButtonField(const QString &variableName, const QString &label, bool value, QWidget *parent = nullptr);
     ~CFormRadioButtonField();
 
     QVariant getValue();    

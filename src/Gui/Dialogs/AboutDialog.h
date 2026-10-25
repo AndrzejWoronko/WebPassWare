@@ -23,7 +23,7 @@ class CAboutDialog : public CAbstractCloseDialog
 
 public:
 
-    CAboutDialog(QWidget *parent = NULL);
+    CAboutDialog(QWidget *parent = nullptr);
     ~CAboutDialog() = default;
     //Funkcja tworząca pola
     virtual void addFields() override final;

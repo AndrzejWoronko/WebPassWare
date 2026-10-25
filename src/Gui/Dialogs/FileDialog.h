@@ -20,7 +20,7 @@ class CFileDialog : public QFileDialog
 {
   Q_OBJECT
 public:
-  explicit CFileDialog(QWidget *parent = NULL);
+  explicit CFileDialog(QWidget *parent = nullptr);
 
   static QString getOpenFileName(QWidget *parent, const QString &title, const QString &dir, const QString &filter = QString(""), Options options = Options(), bool absolutePath = false, const QString &name = QString());
 

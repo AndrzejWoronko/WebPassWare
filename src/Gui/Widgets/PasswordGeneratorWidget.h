@@ -39,7 +39,7 @@ class CPasswordGeneratorWidget : public QWidget
    ADD_PTR_PROPERTY(CButton, m_generateButton, getGenerateButton)
 
 public:
-    explicit CPasswordGeneratorWidget(QWidget* parent = NULL);
+    explicit CPasswordGeneratorWidget(QWidget* parent = nullptr);
     ~CPasswordGeneratorWidget();
     void loadSettings();
     void reset();

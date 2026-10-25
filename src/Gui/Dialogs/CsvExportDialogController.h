@@ -15,7 +15,7 @@ class CCsvExportDialogController : public QWidget, public CAbstractDialogStateMa
     ADD_QSMART_UNIQUE_PTR(QSettings, m_settings, getDataExportSettings)
 
 public:
-    CCsvExportDialogController(CSqlModel *model, QWidget *parent = NULL);
+    CCsvExportDialogController(CSqlModel *model, QWidget *parent = nullptr);
     ~CCsvExportDialogController();
 
     virtual void restoreDialogState() override final;

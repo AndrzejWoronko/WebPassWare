@@ -3,8 +3,8 @@
 CFormValidator::CFormValidator(FormFieldHashList fields)
 {     
    m_fields = fields;
-   m_validateCallback = NULL;
-   m_validateEmpty = NULL;
+   m_validateCallback = nullptr;
+   m_validateEmpty = nullptr;
 }
 
 CFormValidator::~CFormValidator()

@@ -11,7 +11,7 @@ class CFormNumberIntField : public QSpinBox, public CFormAbstractField
     Q_OBJECT
 
 public:
-    CFormNumberIntField(const QString &variableName, const QString &label, QVariant value, int minimum = 0, bool readOnly = false, const QString &prefix = QString(), const QString &suffix = QString(), QWidget *parent = NULL);
+    CFormNumberIntField(const QString &variableName, const QString &label, QVariant value, int minimum = 0, bool readOnly = false, const QString &prefix = QString(), const QString &suffix = QString(), QWidget *parent = nullptr);
     ~CFormNumberIntField();
 
     QVariant getValue();
@@ -43,7 +43,7 @@ class CFormNumberField : public QDoubleSpinBox, public CFormAbstractField
     Q_OBJECT
 
 public:
-    CFormNumberField(const QString &variableName, const QString &label, QVariant value, int precision = 0, double minimum = 0, bool readOnly = false, const QString &prefix = QString(), const QString &suffix = QString(), QWidget *parent = NULL);
+    CFormNumberField(const QString &variableName, const QString &label, QVariant value, int precision = 0, double minimum = 0, bool readOnly = false, const QString &prefix = QString(), const QString &suffix = QString(), QWidget *parent = nullptr);
     ~CFormNumberField();
 
     QVariant getValue();    
@@ -77,7 +77,7 @@ class CFormPriceField: public CFormNumberField
     Q_OBJECT
 
 public:
-    CFormPriceField(const QString &variableName, const QString &label, QVariant value, bool readOnly = false, QWidget *parent = NULL);
+    CFormPriceField(const QString &variableName, const QString &label, QVariant value, bool readOnly = false, QWidget *parent = nullptr);
 };
 
 class CFormValueField: public CFormNumberField
@@ -85,7 +85,7 @@ class CFormValueField: public CFormNumberField
     Q_OBJECT
 
 public:
-       CFormValueField(const QString &variableName, const QString &label, QVariant value, bool readOnly = false, QWidget *parent = NULL);
+       CFormValueField(const QString &variableName, const QString &label, QVariant value, bool readOnly = false, QWidget *parent = nullptr);
 };
 
 class CFormPercentField: public CFormNumberField
@@ -93,7 +93,7 @@ class CFormPercentField: public CFormNumberField
     Q_OBJECT
 
 public:
-       CFormPercentField(const QString &variableName, const QString &label, QVariant value, bool readOnly = false, QWidget *parent = NULL);
+       CFormPercentField(const QString &variableName, const QString &label, QVariant value, bool readOnly = false, QWidget *parent = nullptr);
 };
 
 class CFormIndicatorField: public CFormNumberField
@@ -101,7 +101,7 @@ class CFormIndicatorField: public CFormNumberField
     Q_OBJECT
 
 public:
-       CFormIndicatorField(const QString &variableName, const QString &label, QVariant value, bool readOnly = false, QWidget *parent = NULL);
+       CFormIndicatorField(const QString &variableName, const QString &label, QVariant value, bool readOnly = false, QWidget *parent = nullptr);
 };
 
 #endif // FORMNUMBERFIELD_H

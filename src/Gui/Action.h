@@ -17,12 +17,12 @@ class CAction : public QAction
       ADD_FIELD(QString, m_iconName, getIconName, setIconName)
 
     public:
-      CAction(QObject *parent = NULL);
-      CAction(const QString &text, const QString &shortCut = QString(), const QString &name = QString(), QObject *parent = NULL);
+      CAction(QObject *parent = nullptr);
+      CAction(const QString &text, const QString &shortCut = QString(), const QString &name = QString(), QObject *parent = nullptr);
       CAction(const QString &text, const QString &iconName = QString(), const QString &shortCut = QString(),
-              const QString &name = QString(), QObject *parent = NULL);
+              const QString &name = QString(), QObject *parent = nullptr);
       CAction(const QString &text, const QString &iconName = QString(), const QString &iconText = QString(),
-              const QString &shortCut = QString(), const QString &name = QString(), QObject *parent = NULL);
+              const QString &shortCut = QString(), const QString &name = QString(), QObject *parent = nullptr);
 
       QString getActionIcon();
     private:

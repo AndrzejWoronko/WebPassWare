@@ -9,7 +9,7 @@ class CFormCheckField : public QCheckBox, public CFormAbstractField
 {
 
   public:
-    CFormCheckField(const QString &variableName, const QString &label, bool value, bool readOnly = false, QWidget *parent = NULL);
+    CFormCheckField(const QString &variableName, const QString &label, bool value, bool readOnly = false, QWidget *parent = nullptr);
     ~CFormCheckField();
 
     QVariant getValue();    

@@ -12,8 +12,8 @@ class CDialog : public QDialog
 {
   Q_OBJECT
 public:
-  CDialog(QWidget *parent = NULL, Qt::WindowFlags f = Qt::WindowFlags());
-  CDialog(int dx, int dy, QWidget *parent = NULL, Qt::WindowFlags f = Qt::WindowFlags());
+  CDialog(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+  CDialog(int dx, int dy, QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 protected:
   void centerWindow();
 

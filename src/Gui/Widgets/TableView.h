@@ -14,7 +14,7 @@ class CTableView :public QTableView
     Q_OBJECT
 
 public:
-    CTableView( QWidget  *parent = NULL);
+    CTableView( QWidget  *parent = nullptr);
     ~CTableView();
 
     bool eventFilter(QObject *obj, QEvent *e);

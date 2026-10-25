@@ -223,10 +223,5 @@ Q_DECLARE_METATYPE(SqlValue)
 #define BZERO_PTR(a) memset(a, 0, sizeof(*a));
 #define BZERO_REF(a) memset(&a, 0, sizeof(a));
 
-#ifdef NULL
-#undef NULL
-#define NULL nullptr
-#endif
-
 #endif // GLOBAL_H
 

@@ -10,7 +10,7 @@ class CTabWidget : public QTabWidget
 
     Q_OBJECT
 public:
-    explicit CTabWidget(QWidget *parent = NULL);
+    explicit CTabWidget(QWidget *parent = nullptr);
     ~CTabWidget();
     int addTabWidget(QWidget *w, const QString &label = QString(), const QString &iconName = QString());
     void insertTabWidget(int index, QWidget *w, const QString &label = QString(), const QString &iconName = QString());

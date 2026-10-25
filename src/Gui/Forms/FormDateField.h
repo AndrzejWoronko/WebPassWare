@@ -11,7 +11,7 @@ class CFormDateField : public CDateEdit, public CFormAbstractField
 {
 
   public:
-    CFormDateField(const QString &variableName, const QString &label, const QDate &value, bool readOnly = false, QWidget *parent = NULL);
+    CFormDateField(const QString &variableName, const QString &label, const QDate &value, bool readOnly = false, QWidget *parent = nullptr);
     ~CFormDateField();
 
     QVariant getValue();    

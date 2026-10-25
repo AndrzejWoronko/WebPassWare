@@ -19,7 +19,7 @@ class PassEntryDialog : public CAbstractFormDialog
     ADD_PTR_PROPERTY(CPasswordGeneratorWidget, m_pass_gen_widget, getPassGenWidget)
 
 public:
-    explicit PassEntryDialog(QWidget *parent = NULL);    
+    explicit PassEntryDialog(QWidget *parent = nullptr);    
 
     virtual void addFields();
     virtual void addComponents();

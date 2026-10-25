@@ -17,9 +17,9 @@ class CCsvModel : public IQAbstractTableModel
     ADD_QSMART_SHARED_PTR(CImportCsv, m_importCsv, getImportCsv)
 
   public:
-    CCsvModel(const QString &fileName, QObject *parent = NULL);
-      CCsvModel(QSharedPointer<CImportCsv> impotCsv, QObject *parent = NULL);
-    CCsvModel(const QString &fileName, const QChar &delimeter = QChar(';'), const QString &codecName = QString("iso8859-2"), const QChar & digitSign = QChar('.'), bool isTitle = true, QObject *parent = NULL);
+    CCsvModel(const QString &fileName, QObject *parent = nullptr);
+      CCsvModel(QSharedPointer<CImportCsv> impotCsv, QObject *parent = nullptr);
+    CCsvModel(const QString &fileName, const QChar &delimeter = QChar(';'), const QString &codecName = QString("iso8859-2"), const QChar & digitSign = QChar('.'), bool isTitle = true, QObject *parent = nullptr);
     ~CCsvModel();
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;

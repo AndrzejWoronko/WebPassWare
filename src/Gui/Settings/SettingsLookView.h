@@ -25,7 +25,7 @@ class SettingsLookView : public CAbstractSettingsItemView
     ADD_PTR_PROPERTY(CFormNumberField, m_login_dialog_min_width, getLoginDialogMinWidth)
 
 public:
-     SettingsLookView(QWidget *parent = NULL);
+     SettingsLookView(QWidget *parent = nullptr);
     ~SettingsLookView();
 
     //Funkcja twprząca pola i dodająca pola do listy

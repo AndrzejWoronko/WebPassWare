@@ -38,7 +38,7 @@ class CCsvImportDialog : public CDialog
 
 public:
 
-    CCsvImportDialog(QWidget *parent = NULL);
+    CCsvImportDialog(QWidget *parent = nullptr);
 
 private:
     void addFields();

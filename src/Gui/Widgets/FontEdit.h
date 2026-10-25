@@ -18,7 +18,7 @@ class CFontEdit : public QWidget
     ADD_PTR_PROPERTY(QToolButton, m_button, getButton)
 
 public:
-    explicit CFontEdit(QWidget *parent = NULL);
+    explicit CFontEdit(QWidget *parent = nullptr);
     ~CFontEdit();
     QFont getFont() const;
     void setToolTip(const QString &text);

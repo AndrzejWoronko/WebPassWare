@@ -12,7 +12,7 @@ Q_OBJECT
     ADD_PTR_PRO(QPushButton, m_cancel_button, getCancelButton)
     ADD_PTR_PRO(QPushButton, m_save_button, getSaveButton)
 public:
-    CButtonBox(QWidget *parent = NULL);
+    CButtonBox(QWidget *parent = nullptr);
 };
 
 class CButtonBoxSave : public CButtonBox
@@ -20,7 +20,7 @@ class CButtonBoxSave : public CButtonBox
 Q_OBJECT
 
 public:
-    CButtonBoxSave(QWidget *parent = NULL);
+    CButtonBoxSave(QWidget *parent = nullptr);
 };
 
 class CButtonBoxChoice : public CButtonBox
@@ -28,7 +28,7 @@ class CButtonBoxChoice : public CButtonBox
 Q_OBJECT
 
 public:
-    CButtonBoxChoice(QWidget *parent = NULL);
+    CButtonBoxChoice(QWidget *parent = nullptr);
 };
 
 class CButtonBoxExport : public CButtonBox
@@ -36,7 +36,7 @@ class CButtonBoxExport : public CButtonBox
 Q_OBJECT
 
 public:
-    CButtonBoxExport(QWidget *parent = NULL);
+    CButtonBoxExport(QWidget *parent = nullptr);
 };
 
 class CButtonBoxOk : public CButtonBox
@@ -44,7 +44,7 @@ class CButtonBoxOk : public CButtonBox
 Q_OBJECT
 
 public:
-    CButtonBoxOk(QWidget *parent = NULL);
+    CButtonBoxOk(QWidget *parent = nullptr);
 };
 
 class CButtonBoxApplyRestore : public CButtonBox
@@ -54,7 +54,7 @@ Q_OBJECT
     ADD_PTR_PRO(QPushButton, m_restore_button, getRestoreButton)
 
 public:
-    CButtonBoxApplyRestore(QWidget *parent = NULL);    
+    CButtonBoxApplyRestore(QWidget *parent = nullptr);    
 
 };
 
@@ -66,7 +66,7 @@ Q_OBJECT
     ADD_PTR_PRO(QPushButton, m_close_button, getCloseButton)
 
 public:
-    CButtonBoxClose(QWidget *parent = NULL);   
+    CButtonBoxClose(QWidget *parent = nullptr);   
 
 };
 

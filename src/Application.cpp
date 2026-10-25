@@ -8,12 +8,12 @@
 #include "Style.h"
 #include "MessageBox.h"
 
-CApplication* CApplication::m_instance = NULL;
+CApplication* CApplication::m_instance = nullptr;
 
 CApplication::CApplication(int & argc, char **argv) :
     QApplication(argc, argv), m_nologin(false), m_no_ask_exit(false)
 {
-    Q_ASSERT(m_instance == NULL);
+    Q_ASSERT(m_instance == nullptr);
 
     m_instance = this;
 

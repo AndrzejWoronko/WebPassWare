@@ -12,7 +12,7 @@ class PassGroupDialog : public CAbstractFormDialog
     ADD_PTR_PROPERTY(CFormTextField, m_name, getName)
 
 public:
-    explicit PassGroupDialog(QWidget *parent = NULL);
+    explicit PassGroupDialog(QWidget *parent = nullptr);
 
     virtual void addFields();
     virtual void addComponents();

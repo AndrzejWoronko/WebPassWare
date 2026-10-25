@@ -15,7 +15,7 @@ private:
       ADD_PTR_PRO(CAbstractSettingsItemView, m_view, getView)
 
 public:
-    explicit CAbstractSettingsItemController(QWidget *parent = NULL);
+    explicit CAbstractSettingsItemController(QWidget *parent = nullptr);
     ~CAbstractSettingsItemController();
 
 public slots:

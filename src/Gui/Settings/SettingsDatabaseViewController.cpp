@@ -23,7 +23,7 @@ SettingsDatabaseViewController::SettingsDatabaseViewController(QWidget *parent) 
 
 void SettingsDatabaseViewController::getValuesFromSettings(void)
 {
-    CFormAbstractField *f = NULL;
+    CFormAbstractField *f = nullptr;
     QString passwd = DB.getDatabaseHashPassword();
 
     f = m_view->getFields().value("m_base_passwd1");
@@ -37,7 +37,7 @@ void SettingsDatabaseViewController::getValuesFromSettings(void)
 
 void SettingsDatabaseViewController::setValuesToSettings(void)
 {
-    CFormAbstractField *f = NULL;
+    CFormAbstractField *f = nullptr;
     QString passwd1, passwd2;
 
     f = m_view->getFields().value("m_base_passwd1");

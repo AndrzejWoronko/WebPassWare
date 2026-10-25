@@ -2,7 +2,7 @@
 
 CAbstractSettingsItemController::CAbstractSettingsItemController(QWidget *parent) : QWidget(parent)
 {
-    m_view = NULL;
+    m_view = nullptr;
 }
 
 CAbstractSettingsItemController::~CAbstractSettingsItemController()

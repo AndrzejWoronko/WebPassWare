@@ -10,7 +10,7 @@ class CFormSimpleChoiceField : public QComboBox, public CFormAbstractField
 
 public:
 
-    CFormSimpleChoiceField(const QString &variableName, const QString &label, QVariant value, const QStringList &valueList = QStringList(), QWidget *parent = NULL);
+    CFormSimpleChoiceField(const QString &variableName, const QString &label, QVariant value, const QStringList &valueList = QStringList(), QWidget *parent = nullptr);
 
     virtual QVariant getValue();    
     virtual void setValue(QVariant value);

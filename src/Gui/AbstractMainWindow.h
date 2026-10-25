@@ -27,7 +27,7 @@ class CAbstractMainWindow : public QMainWindow, public CAbstractDialogStateManag
 
 public:
 
-    CAbstractMainWindow(const QString &name, QWidget *parent = NULL);
+    CAbstractMainWindow(const QString &name, QWidget *parent = nullptr);
     ~CAbstractMainWindow();
 
     void centerAndResize();

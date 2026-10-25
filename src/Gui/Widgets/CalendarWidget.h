@@ -7,7 +7,7 @@ class CCalendarWidget : public QCalendarWidget
 {
     Q_OBJECT
 public:
-    CCalendarWidget(QWidget  *parent = NULL);
+    CCalendarWidget(QWidget  *parent = nullptr);
 };
 
 #endif // CCALENDARWIDGET_H

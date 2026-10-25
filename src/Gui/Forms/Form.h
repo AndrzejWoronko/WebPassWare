@@ -43,7 +43,7 @@ class CForm : public QWidget
     Q_ENUM(FormMode)
 
 
-    explicit CForm(QWidget *parent = NULL);
+    explicit CForm(QWidget *parent = nullptr);
      ~CForm();
 
     /**

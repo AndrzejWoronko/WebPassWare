@@ -18,7 +18,7 @@ class CAbstractFormWidget : public QWidget
 public:
 
     CAbstractFormWidget();
-    explicit CAbstractFormWidget(QWidget *parent = NULL);
+    explicit CAbstractFormWidget(QWidget *parent = nullptr);
     ~CAbstractFormWidget();
 
     void addFieldsAndComponents();

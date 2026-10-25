@@ -16,7 +16,7 @@ class CAutoTypePlatformMacos : public QObject, public CAutoTypePlatform
     Q_OBJECT
 
 public:
-    CAutoTypePlatformMacos(QObject *parent = NULL);
+    CAutoTypePlatformMacos(QObject *parent = nullptr);
 
     bool isAvailable() override;
     QStringList windowTitles() override;

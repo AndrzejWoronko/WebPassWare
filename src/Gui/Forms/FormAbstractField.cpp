@@ -9,7 +9,7 @@ CFormAbstractField::CFormAbstractField(QMetaType::Type type, const QString &vari
 {
     if (!m_label.isEmpty() && m_label.at(m_label.length() - 1) != ':')
         m_label.append(":");    
-    m_widget = NULL;
+    m_widget = nullptr;
     m_startValue = value;
 }
 

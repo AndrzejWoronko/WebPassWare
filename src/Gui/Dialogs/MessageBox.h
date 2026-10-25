@@ -25,19 +25,19 @@ public:
     static const StandardButton Ok = QMessageBox::Ok;
     static const StandardButton NoButton = QMessageBox::NoButton;
 
-    static void OkDialogCritical(const QString & text, QWidget  *parent = NULL,
+    static void OkDialogCritical(const QString & text, QWidget  *parent = nullptr,
                                  const QString & title = QString(QObject::tr("Błąd krytyczny")));
-    static void OkDialogInformation(const QString & text,QWidget  *parent = NULL,
+    static void OkDialogInformation(const QString & text,QWidget  *parent = nullptr,
                                     const QString & title = QString(QObject::tr("Informacja")));
-    static void OkDialogWarning(const QString & text, QWidget  *parent = NULL,
+    static void OkDialogWarning(const QString & text, QWidget  *parent = nullptr,
                                 const QString & title = QString(QObject::tr("Uwaga !!!")));
-    static StandardButton YesNoDialog(const QString & text, QWidget  *parent = NULL,
+    static StandardButton YesNoDialog(const QString & text, QWidget  *parent = nullptr,
                                       const QString & title = QString(QObject::tr("Pytanie")));
-    static StandardButton NoYesDialog(const QString & text, QWidget  *parent = NULL,
+    static StandardButton NoYesDialog(const QString & text, QWidget  *parent = nullptr,
                                       const QString & title = QString(QObject::tr("Pytanie")));
-    static void AboutDialog(const QString & text, QWidget  *parent = NULL,
+    static void AboutDialog(const QString & text, QWidget  *parent = nullptr,
                             const QString & title = QString(QObject::tr("O programie")));
-    static void AboutQtDialog(QWidget  *parent = NULL, const QString & title = QString(QObject::tr("Informacje o QT")));
+    static void AboutQtDialog(QWidget  *parent = nullptr, const QString & title = QString(QObject::tr("Informacje o QT")));
 
   private:
     static void translateButtons(QMessageBox &messageBox);

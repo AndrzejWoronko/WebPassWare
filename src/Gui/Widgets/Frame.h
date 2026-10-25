@@ -7,7 +7,7 @@
 class CFrame : public QFrame
 {
 public:
-    CFrame(QWidget *parent = NULL, Qt::WindowFlags f = Qt::WindowFlags());
+    CFrame(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
 };
 
@@ -15,14 +15,14 @@ public:
 class CHLine : public QFrame
 {
 public:
-    CHLine(QWidget *parent = NULL, Qt::WindowFlags f = Qt::WindowFlags());
+    CHLine(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     ~CHLine() { DEBUG_WITH_LINE << "~dtor "; }
 };
 
 class CVLine : public QFrame
 {
 public:
-    CVLine(QWidget *parent = NULL, Qt::WindowFlags f = Qt::WindowFlags());
+    CVLine(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     ~CVLine() { DEBUG_WITH_LINE << "~dtor "; }
 };
 

@@ -14,7 +14,7 @@ class CDelayEditLine : public QLineEdit
     QScopedPointer<QTimer> m_typingTimer;
 
 public:
-    CDelayEditLine(QWidget *parent = NULL);
+    CDelayEditLine(QWidget *parent = nullptr);
     ~CDelayEditLine() = default;
 
 signals:

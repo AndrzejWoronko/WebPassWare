@@ -17,7 +17,7 @@ class SettingsDialog : public CDialog, public CAbstractDialogStateManager
                 ADD_PTR_PROPERTY(CButtonBoxClose, m_buttonBox, getButtonBox)
 
         public:
-                 explicit SettingsDialog(QWidget *w, QWidget *parent = NULL);
+                 explicit SettingsDialog(QWidget *w, QWidget *parent = nullptr);
     ~SettingsDialog();
 
     void addFieldsAndComponents();

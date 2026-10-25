@@ -374,7 +374,7 @@ void CWebPassWareMainWindow::initContextMenu()
                         auto d = m_dataTable->itemDelegateForColumn(column);
                         if (d)
                             {
-                                m_dataTable->setItemDelegateForColumn(column, NULL);
+                                m_dataTable->setItemDelegateForColumn(column, nullptr);
                                 safe_delete(d)
                             }
                     }

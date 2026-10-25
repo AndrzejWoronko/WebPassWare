@@ -9,8 +9,8 @@ class CListWidgetItem : public QListWidgetItem
     ADD_FIELD(QString, m_actionName, getActionName, setActionName)
 
 public:
-    explicit CListWidgetItem(QListWidget *parent = NULL);
-    explicit CListWidgetItem(const QString &text, QListWidget *parent = NULL);
+    explicit CListWidgetItem(QListWidget *parent = nullptr);
+    explicit CListWidgetItem(const QString &text, QListWidget *parent = nullptr);
 };
 
 #endif // CLISTWIDGETITEM_H

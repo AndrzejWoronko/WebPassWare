@@ -15,8 +15,8 @@ public:
     Q_PROPERTY(int m_maxVisibleChars READ getMaxVisibleChars WRITE setMaxVisibleChars)
 
    public:
-       CFixedLineEdit(const QString &text, QWidget *parent = NULL);
-       CFixedLineEdit(const QString &text, int max, int min = 1, QWidget *parent = NULL);
+       CFixedLineEdit(const QString &text, QWidget *parent = nullptr);
+       CFixedLineEdit(const QString &text, int max, int min = 1, QWidget *parent = nullptr);
 
        int  getMinVisibleChars() const;
        int  getMaxVisibleChars() const;

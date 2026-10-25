@@ -13,7 +13,7 @@ class CAbstractFormDialogController : public QWidget, public CAbstractDialogStat
    Q_OBJECT
 
 public:
-    CAbstractFormDialogController(CAbstractFormDialog *dialog, QWidget *parent = NULL);
+    CAbstractFormDialogController(CAbstractFormDialog *dialog, QWidget *parent = nullptr);
     ~CAbstractFormDialogController() {};
 
     virtual void restoreDialogState();

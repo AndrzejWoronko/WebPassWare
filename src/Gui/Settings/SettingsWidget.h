@@ -22,12 +22,12 @@ class SettingsWidget : public QWidget
     ADD_PTR_PROPERTY(CVBoxLayout, m_mainLayout, getMainLayout)
     ADD_PTR_PROPERTY(CSplitter, m_splitter, getSplitter)
 
-    void setGraphicElements(QWidget *parent = NULL);
+    void setGraphicElements(QWidget *parent = nullptr);
     void setGraphicSettings();
     void setConnections();
 
 public:
-    explicit SettingsWidget(QWidget *parent = NULL);
+    explicit SettingsWidget(QWidget *parent = nullptr);
     ~SettingsWidget();
 
     /**

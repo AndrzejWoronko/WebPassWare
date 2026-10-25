@@ -35,7 +35,7 @@ private:
     void setOptions();
 
 public:
-    CButton(CButtonPrivate structure, QWidget *parent = NULL, QSize iconSize = QSize());
+    CButton(CButtonPrivate structure, QWidget *parent = nullptr, QSize iconSize = QSize());
     void setIconPolicy(const QString &iconName, QSize iconSize = QSize());
     void setIconFromTheme(const QString &iconName);
     QString getText(void);

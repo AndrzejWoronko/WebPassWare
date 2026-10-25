@@ -18,7 +18,7 @@ class CAutoTypePlatformWindows : public QObject, public CAutoTypePlatform
     Q_OBJECT
 
 public:
-    CAutoTypePlatformWindows(QObject *parent = NULL);
+    CAutoTypePlatformWindows(QObject *parent = nullptr);
     bool isAvailable() override;
     QStringList windowTitles() override;
     WId activeWindow() override;

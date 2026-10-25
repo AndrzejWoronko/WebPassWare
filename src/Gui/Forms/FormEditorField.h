@@ -12,7 +12,7 @@ class CFormEditorField : public QTextEdit, public CFormAbstractField
 {
     Q_OBJECT
   public:
-    CFormEditorField(const QString &variableName, const QString &label, QString value, bool readOnly = false, QWidget *parent = NULL);
+    CFormEditorField(const QString &variableName, const QString &label, QString value, bool readOnly = false, QWidget *parent = nullptr);
     ~CFormEditorField();
 
     QVariant getValue();    

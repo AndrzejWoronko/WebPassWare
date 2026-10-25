@@ -25,7 +25,7 @@ class CCsvExportDialog : public CDialog
 
 public:
 
-    CCsvExportDialog(QWidget *parent = NULL);
+    CCsvExportDialog(QWidget *parent = nullptr);
     ~CCsvExportDialog() {};
 
 private:

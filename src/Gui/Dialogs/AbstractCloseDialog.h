@@ -29,7 +29,7 @@ class CAbstractCloseDialog : public CDialog, public ICCloseDialog, public CAbstr
 
 public:
 
-    explicit CAbstractCloseDialog(const QString &dialogName, QWidget *parent = NULL);
+    explicit CAbstractCloseDialog(const QString &dialogName, QWidget *parent = nullptr);
     ~CAbstractCloseDialog();
 
     void addFieldsAndComponents();

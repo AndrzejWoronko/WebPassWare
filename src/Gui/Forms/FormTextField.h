@@ -11,7 +11,7 @@ class CFormTextField : public CFixedLineEdit, public CFormAbstractField
 {
     Q_OBJECT
 public:
-    CFormTextField(const QString &variableName, const QString &label, QString value, int lenght = 255, bool readOnly = false, QWidget *parent = NULL);
+    CFormTextField(const QString &variableName, const QString &label, QString value, int lenght = 255, bool readOnly = false, QWidget *parent = nullptr);
     ~CFormTextField();
 
     QVariant getValue();    

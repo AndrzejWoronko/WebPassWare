@@ -10,7 +10,7 @@ class SettingsLookController : public CAbstractSettingsItemController
     Q_OBJECT
 
 public:
-    SettingsLookController(QWidget *parent = NULL);
+    SettingsLookController(QWidget *parent = nullptr);
 
     virtual void checkChanges();
 
