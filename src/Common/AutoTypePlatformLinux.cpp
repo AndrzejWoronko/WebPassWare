@@ -5,7 +5,7 @@
 
 #include "X11Funcs.h"
 
-#include <QX11Info>
+#include <QGuiApplication>
 #include <X11/XKBlib.h>
 #include <X11/Xutil.h>
 #include <X11/extensions/XTest.h>
@@ -21,9 +21,21 @@ static const QPair<KeySym, KeySym> deadMap[] = {
 
 CAutoTypePlatformLinux::CAutoTypePlatformLinux(QObject *parent) : QObject(parent)
 {
-  // Qt handles XCB slightly differently so we open our own connection
-  m_dpy = XOpenDisplay(XDisplayString(QX11Info::display()));
-  m_rootWindow = QX11Info::appRootWindow();
+  m_xkb = nullptr;
+  m_loaded = false;
+  m_rootWindow = 0;
+
+  // Qt handles XCB slightly differently so we open our own connection. Without
+  // the X11 platform (Wayland, offscreen) there is no display to type into.
+  // The offscreen platform offers the interface too, with a null display.
+  auto *x11App = qGuiApp ? qGuiApp->nativeInterface<QNativeInterface::QX11Application>() : nullptr;
+  Display *qtDisplay = x11App ? x11App->display() : nullptr;
+  m_dpy = qtDisplay ? XOpenDisplay(XDisplayString(qtDisplay)) : nullptr;
+  if (!m_dpy) {
+      qWarning("Auto-type: no X11 display, auto-type disabled.");
+      return;
+  }
+  m_rootWindow = DefaultRootWindow(m_dpy);
 
   m_atomWmState = XInternAtom(m_dpy, "WM_STATE", True);
   m_atomWmName = XInternAtom(m_dpy, "WM_NAME", True);
@@ -43,8 +55,6 @@ CAutoTypePlatformLinux::CAutoTypePlatformLinux(QObject *parent) : QObject(parent
   m_classBlacklist << "xfdesktop"
                    << "xfce4-panel"; // Xfce 4
 
-  m_xkb = nullptr;
-
   m_loaded = true;
 
   updateKeymap();
@@ -53,6 +63,10 @@ CAutoTypePlatformLinux::CAutoTypePlatformLinux(QObject *parent) : QObject(parent
 bool CAutoTypePlatformLinux::isAvailable()
 {
   int ignore;
+
+  if (!m_dpy) {
+      return false;
+  }
 
   if (!XQueryExtension(m_dpy, "XInputExtension", &ignore, &ignore, &ignore)) {
       return false;
@@ -74,8 +88,10 @@ void CAutoTypePlatformLinux::unload()
       m_xkb = nullptr;
   }
 
-  XCloseDisplay(m_dpy);
-  m_dpy = nullptr;
+  if (m_dpy) {
+      XCloseDisplay(m_dpy);
+      m_dpy = nullptr;
+  }
 
   m_loaded = false;
 }
@@ -582,7 +598,8 @@ bool CAutoTypePlatformLinux::raiseWindow(WId window)
     event.xclient.message_type = m_atomNetActiveWindow;
     event.xclient.format = 32;
     event.xclient.data.l[0] = 1; // FromApplication
-    event.xclient.data.l[1] = QX11Info::appUserTime();
+    // Qt 6 no longer exposes the X server time of the last user event.
+    event.xclient.data.l[1] = CurrentTime;
     QWidget* activeWindow = QApplication::activeWindow();
     if (activeWindow) {
         event.xclient.data.l[2] = activeWindow->internalWinId();
@@ -611,5 +628,9 @@ void CAutoTypeExecturorLinux::execKey(CAutoTypeKey* action)
 {
   m_platform->sendKey(qtToNativeKeyCode(action->m_key));
 }
+
+// Xlib defines macros such as Bool and None. Compiling the moc code here keeps
+// them out of the shared moc translation unit, where they break other classes.
+#include "moc_AutoTypePlatformLinux.cpp"
 
 #endif

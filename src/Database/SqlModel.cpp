@@ -58,9 +58,9 @@ QVariant CSqlModel::data(const QModelIndex &index, int role) const
             if (m_fieldsDesc.size() > 0 && m_fieldsDesc.value(column_name))
                 type = m_fieldsDesc.value(column_name)->getType();
             if (type == QMetaType::Int || type == QMetaType::Double || m_numericColumns.indexOf(index.column()) != -1)
-              return Qt::AlignRight + Qt::AlignVCenter;
+              return int(Qt::AlignRight | Qt::AlignVCenter);
             else
-              return Qt::AlignLeft + Qt::AlignVCenter;
+              return int(Qt::AlignLeft | Qt::AlignVCenter);
           }
     return QVariant();
 }

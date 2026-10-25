@@ -1,5 +1,7 @@
 #include "PassEntryService.h"
 
+#include <memory>
+
 CSqlModel *PassEntryService::getSqlModel(void)
 {    
     SqlFieldsDesc list;
@@ -15,6 +17,6 @@ CSqlModel *PassEntryService::getSqlModel(void)
     list.insert("m_desc", new CSqlField(QString("string"), QObject::tr("Opis"), QObject::tr("Opis" ), list.count()));
 
     QString query = CSqlModel::getSelectQueryStringFromFieldsDescList(list, QString("pass_entry"));
-    QScopedPointer<CSqlModel> sql_model(new CSqlModel(query, QString("pass_entry"), list));
-    return sql_model.take();
+    std::unique_ptr<CSqlModel> sql_model(new CSqlModel(query, QString("pass_entry"), list));
+    return sql_model.release();
 }

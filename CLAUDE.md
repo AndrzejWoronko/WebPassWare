@@ -6,34 +6,43 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Build
 
-Qt 5 (modules: core, gui, sql, svg), C++14, qmake.
+Qt 6.12 (Core, Gui, Sql, Svg, Widgets; Test for the tests), C++17, CMake with presets
+and Ninja (`CMakePresets.json`: `debug`, `release`, `coverage`).
 
 ```bash
-qmake WebPassWare.pro
-make -j$(nproc)
+scripts/build.sh                  # debug: configure + build + ctest
+scripts/build.sh release --clean
+cmake --preset debug && cmake --build --preset debug && ctest --preset debug
 ```
 
-Build outputs: `bin/` (executable `webpassware`). Version is defined in `includes.pri` (`WEBPASSWARE_VERSION_*`), which also regenerates `CURRENT_VERSION.TXT` on every qmake run. Platform packaging scripts live in `scripts/{linux,macosx,windows}/`, installer files in `installer/`.
+- Qt from `/opt/Qt/6.12.0/gcc_64`, Ninja from `/opt/Qt/Tools/Ninja/ninja` (both in
+  `CMakePresets.json`; `scripts/build.sh --qt DIR` overrides). Never build against the
+  system Qt.
+- Output: `build/<preset>/webpassware`. The version is `project(VERSION)` in
+  `CMakeLists.txt` (define `WEBPASSWARE_VERSION_STR`); configuring also writes
+  `CURRENT_VERSION.TXT`.
+- Linux links X11 and Xtst (auto-type). Sources of the other platforms are added per
+  platform in `CMakeLists.txt`.
+- Platform packaging scripts live in `scripts/{linux,macosx,windows}/`, installer files
+  in `installer/` (still qmake/Qt 5; being moved to CMake).
 
 ## Tests
 
-Standalone Qt Test projects, **not** built by the main .pro (each: `qmake && make && ./test_xxx`):
+Qt Test, one executable per unit, registered in `tests/CMakeLists.txt` via
+`wpw_add_test` (each test compiles the sources it needs). `ctest` runs them offscreen;
+`tst_autotype` needs X11 (`QT_QPA_PLATFORM=xcb`).
 
-- `tests/ORM_test`: ORM on its own models.
-- `tests/Service_test`: real Database, Models and services; pins the table DDL.
-- `tests/LegacyDb_test`: reads `tests/fixtures/legacy_qt5.db` (written by the Qt 5 build).
-- `tests/Csv_test`: CSV export bytes and import per encoding.
-- `tests/Forms_test`: form field `isDirty()` (run with `QT_QPA_PLATFORM=offscreen`).
-- `tests/AutoType_test`: auto-type sequence parsing; needs X11/Xtst.
+- `tst_orm` (`tests/ORM_test`): ORM on its own models.
+- `tst_service` (`tests/Service_test`): real Database, Models and services; pins the
+  table DDL and the declared ORM type names.
+- `tst_legacydb` (`tests/LegacyDb_test`): reads `tests/fixtures/legacy_qt5.db`,
+  written by the Qt 5 build.
+- `tst_csv` (`tests/Csv_test`): CSV export bytes and import per encoding.
+- `tst_forms` (`tests/Forms_test`): form field `isDirty()`.
+- `tst_autotype` (`tests/AutoType_test`): auto-type sequence parsing.
 
-`tests/TestSupport/` holds `ApplicationSettingsStub.cpp`.
-
-```bash
-cd tests/ORM_test
-qmake test_orm.pro
-make -j$(nproc)
-./test_orm
-```
+`tests/TestSupport/` holds `ApplicationSettingsStub.cpp`. The SQL layer sets a busy
+cursor, so database tests need a `QApplication`.
 
 Migration to Qt 6.12 + CMake and the second design-pattern round:
 `.claude/plans/migracja-qt6-i-wzorce.plan.md` (Polish; update its "Postęp" section

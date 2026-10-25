@@ -36,6 +36,7 @@ private:
     int getFieldNrByName(const QString &fieldName);
     void headerToString(void);
 
+    QString m_content;
     QTextStream *m_in;
     QChar m_delimiter;
     QChar m_digitSign;

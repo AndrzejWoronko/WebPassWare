@@ -106,7 +106,7 @@ QVector<PasswordGroup> CPasswordGenerator::passwordGroups() const
             { // "l"
                 continue;
             }
-            group.append(i);
+            group.append(QChar(i));
         }
 
         passwordGroups.append(group);
@@ -121,7 +121,7 @@ QVector<PasswordGroup> CPasswordGenerator::passwordGroups() const
             { // "I" and "O"
                 continue;
             }
-            group.append(i);
+            group.append(QChar(i));
         }
         passwordGroups.append(group);
     }
@@ -135,7 +135,7 @@ QVector<PasswordGroup> CPasswordGenerator::passwordGroups() const
             { // "0" and "1"
                 continue;
             }
-            group.append(i);
+            group.append(QChar(i));
         }
 
         passwordGroups.append(group);
@@ -146,17 +146,17 @@ QVector<PasswordGroup> CPasswordGenerator::passwordGroups() const
 
         for (int i = 33; i <= 47; i++)
         {
-            group.append(i);
+            group.append(QChar(i));
         }
 
         for (int i = 58; i <= 64; i++)
         {
-            group.append(i);
+            group.append(QChar(i));
         }
 
         for (int i = 91; i <= 96; i++)
         {
-            group.append(i);
+            group.append(QChar(i));
         }
 
         for (int i = 123; i <= 126; i++)
@@ -165,7 +165,7 @@ QVector<PasswordGroup> CPasswordGenerator::passwordGroups() const
             { // "|"
                 continue;
             }
-            group.append(i);
+            group.append(QChar(i));
         }
 
         passwordGroups.append(group);

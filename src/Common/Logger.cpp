@@ -56,7 +56,10 @@ CLogger::~CLogger()
 void CLogger::setFile(void)
 {
     m_file.setFileName(m_fileName);
-    m_file.open(QFile::WriteOnly | QFile::Append);
+    if (!m_file.open(QFile::WriteOnly | QFile::Append))
+    {
+        qWarning() << "Cannot open log file" << m_fileName << ":" << m_file.errorString();
+    }
     this->setDevice(&m_file);
 }
 

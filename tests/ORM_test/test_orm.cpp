@@ -15,6 +15,27 @@
 #include "SqlQuery.cpp"
 #include "OrmObject.h"
 
+// QSqlDatabase::exec() is deprecated in Qt 6.
+static QSqlQuery execSql(const QString &sql)
+{
+    QSqlQuery query(DB.getDb());
+    query.exec(sql);
+    return query;
+}
+
+// SQLite hands back its own storage type (bool as 0/1, a QChar column as
+// QString). Qt 5 compared QVariants of different types by converting them;
+// Qt 6 does not, and has no QString -> QChar conversion, hence the fallback.
+static bool sameStoredValue(const QVariant &stored, const QVariant &expected)
+{
+    QVariant converted = stored;
+    if (converted.convert(expected.metaType()))
+    {
+        return converted == expected;
+    }
+    return stored.toString() == expected.toString();
+}
+
 #define CLEAR_LIST \
     for(int i = 0; i < list.size(); i++) \
         delete list.takeAt(i);
@@ -163,7 +184,7 @@ void Test_ORMObject::test_save()
     MyModel model;
     QTime time = QTime::currentTime();
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     model.setnameBool(true);
     model.setnameBlob(QByteArray(10000, '1'));
     model.setnameChar('A');
@@ -177,7 +198,7 @@ void Test_ORMObject::test_save()
     model.setnameUint(60000);
     model.setnameUlonglong(123456789123456789);
     QCOMPARE(model.save(), true);
-    QSqlQuery query = DB.getDb().exec(QString("SELECT * FROM %1;").arg(model.getTableName()));
+    QSqlQuery query = execSql(QString("SELECT * FROM %1;").arg(model.getTableName()));
     if (query.lastError().isValid())
         {
             DEBUG_WITH_LINE << "Error: " << QString("SELECT * FROM %1;").arg(model.getTableName()) <<" : " << query.lastError().databaseText();
@@ -197,9 +218,13 @@ void Test_ORMObject::test_save()
         else if (query.record().fieldName(i) == QString("deleted"))
             QCOMPARE(query.value(i), model.getdeleted());
         else if (query.record().fieldName(i) == QString("timestp"))
-            QCOMPARE(query.value(i), model.gettimestp());
+            QCOMPARE(query.value(i).toDateTime(), model.gettimestp());
         else
-            QCOMPARE(query.value(i), model.property(query.record().fieldName(i).toLocal8Bit().constData()));
+        {
+            const QVariant expected = model.property(query.record().fieldName(i).toLocal8Bit().constData());
+            QVERIFY2(sameStoredValue(query.value(i), expected),
+                     qPrintable(query.record().fieldName(i) + ": " + query.value(i).toString() + " != " + expected.toString()));
+        }
     }
 }
 
@@ -207,7 +232,7 @@ void Test_ORMObject::test_update()
 {
     MyModel model, model2;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     model2.setnameInt(10);
     QCOMPARE(model2.update(), false);
     QCOMPARE(model.findAll().isEmpty(), true);
@@ -225,7 +250,7 @@ void Test_ORMObject::test_find()
     MyModel model;
     MyModel *pointer;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QCOMPARE(model.getId(), -1);    
     QCOMPARE(model.save(), true);
     int id = model.getId();
@@ -234,7 +259,7 @@ void Test_ORMObject::test_find()
     delete pointer;
     QVERIFY(model.find(13423) == 0);
     QCOMPARE(model.getId(), id);
-    QSqlQuery query = DB.getDb().exec(QString("SELECT * FROM %1 WHERE id_%1 = %2;").arg(model.getTableName()).arg(id));
+    QSqlQuery query = execSql(QString("SELECT * FROM %1 WHERE id_%1 = %2;").arg(model.getTableName()).arg(id));
     query.next();
     for(int i = 0; i < query.record().count(); i++)
     {
@@ -247,9 +272,13 @@ void Test_ORMObject::test_find()
         else if (query.record().fieldName(i) == QString("deleted"))
             QCOMPARE(query.value(i), model.getdeleted());
         else if (query.record().fieldName(i) == QString("timestp"))
-            QCOMPARE(query.value(i), model.gettimestp());
+            QCOMPARE(query.value(i).toDateTime(), model.gettimestp());
         else
-            QCOMPARE(query.value(i), model.property(query.record().fieldName(i).toLocal8Bit().constData()));
+        {
+            const QVariant expected = model.property(query.record().fieldName(i).toLocal8Bit().constData());
+            QVERIFY2(sameStoredValue(query.value(i), expected),
+                     qPrintable(query.record().fieldName(i) + ": " + query.value(i).toString() + " != " + expected.toString()));
+        }
     }
 }
 
@@ -257,7 +286,7 @@ void Test_ORMObject::test_findAll()
 {
     MyModel model, model1, model2, model3, resultModel;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QCOMPARE(resultModel.findAll().isEmpty(), true);
     model.setnameInt(1);
     model.setnameString("a");
@@ -290,7 +319,7 @@ void Test_ORMObject::test_findByValue()
 {
     MyModel model;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     model.setnameInt(15);
     model.setnameString("a");
     model.save();
@@ -321,7 +350,7 @@ void Test_ORMObject::test_findByValues()
 {
     MyModel model1, model2, model3, resultModel;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model1.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model1.getTableName()));
     model1.setnameInt(10);
     model2.setnameInt(11);
     model3.setnameInt(12);
@@ -362,7 +391,7 @@ void Test_ORMObject::test_findByParams()
 
     DB.dropTable(model.getTableName());
     model.createTable();
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     model.setnameString("Hello");
     model2.setnameInt(3);
     model3.setnamedouble(1.23);
@@ -402,7 +431,7 @@ void Test_ORMObject::test_updateProperty()
 {
     MyModel model, model2;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     model.setnameInt(10);
     model.save();
     QCOMPARE(model.updateProperty("nameString", "Hello"), true);
@@ -415,11 +444,11 @@ void Test_ORMObject::test_exists()
 {
     MyModel model;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QCOMPARE(model.existsTable(), false);
     model.save();
     QCOMPARE(model.existsTable(), true);
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QCOMPARE(model.existsTable(), false);
 }
 
@@ -427,7 +456,7 @@ void Test_ORMObject::test_existsById()
 {
     MyModel model;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QCOMPARE(model.exists(1), false);
     QCOMPARE(model.exists(model.getId()), false);
     model.save();
@@ -441,7 +470,7 @@ void Test_ORMObject::test_remove()
 {
     MyModel model, model2, model3, resultModel;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     model.save();
     model2.save();
     model3.save();
@@ -467,7 +496,7 @@ void Test_ORMObject::test_removeBy()
 {
     MyModel model1, model2, model3, resultModel;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model1.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model1.getTableName()));
     model1.setnameInt(10);
     model1.setnameString("foo");
     model2.setnameInt(15);
@@ -484,7 +513,7 @@ void Test_ORMObject::test_removeAll()
 {
     MyModel model1, model2, model3;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model1.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model1.getTableName()));
     model1.save();
     model2.save();
     model3.save();
@@ -499,7 +528,7 @@ void Test_ORMObject::test_count()
 {
     MyModel model, model2, model3;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QCOMPARE(model.count(), 0);
     model.save();
     QCOMPARE(model.count(), 1);
@@ -516,7 +545,7 @@ void Test_ORMObject::test_countByFieldName()
 {
     MyModel model1, model2, model3;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model1.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model1.getTableName()));
     QCOMPARE(model2.count("nameint"), 0);
     model1.setnameInt(1);
     model2.setnameInt(1);
@@ -536,11 +565,11 @@ void Test_ORMObject::test_first()
 {
     MyModel model, model2, model3;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QCOMPARE(model.save(), true);
     QCOMPARE(model2.save(), true);
     QCOMPARE(model3.first()->getId(), model.getId());
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QVERIFY(model.first() == 0);
 }
 
@@ -548,11 +577,11 @@ void Test_ORMObject::test_last()
 {
     MyModel model, model2, model3;
 
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QCOMPARE(model.save(), true);
     QCOMPARE(model2.save(), true);
     QCOMPARE(model3.last()->getId(), model2.getId());
-    DB.getDb().exec(QString("DELETE FROM %1;").arg(model.getTableName()));
+    execSql(QString("DELETE FROM %1;").arg(model.getTableName()));
     QVERIFY(model.last() == 0);
 }
 

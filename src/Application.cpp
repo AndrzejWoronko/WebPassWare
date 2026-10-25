@@ -102,7 +102,7 @@ void CApplication::initApplication(int & argc, char **argv)
 
      translationPath.append("/translations");
 
-     DEBUG_WITH_LINE << "Path to translations: " << QLibraryInfo::location(QLibraryInfo::TranslationsPath) << ", " << translationPath;
+     DEBUG_WITH_LINE << "Path to translations: " << QLibraryInfo::path(QLibraryInfo::TranslationsPath) << ", " << translationPath;
      DEBUG_WITH_LINE << "Locale name: " << QLocale::system().name();
 
      QString translationName = QLocale(QLocale::system().language()).name();
@@ -114,9 +114,9 @@ void CApplication::initApplication(int & argc, char **argv)
          QString tr_filename = tr_name + translationName;
          DEBUG_WITH_LINE <<  "Tanslate filename: " << tr_filename;
 
-         if (qtTranslator.load(tr_filename , QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+         if (qtTranslator.load(tr_filename , QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
          {
-             DEBUG_WITH_LINE << "Translation load sucess from path: " << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+             DEBUG_WITH_LINE << "Translation load sucess from path: " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
              this->installTranslator(&qtTranslator);
          }
          else

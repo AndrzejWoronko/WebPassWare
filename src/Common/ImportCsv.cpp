@@ -1,14 +1,28 @@
 #include "ImportCsv.h"
 
+#include <QStringDecoder>
+
+// QTextStream in Qt 6 only knows the Unicode encodings and Latin-1, so the
+// file is decoded as a whole (ICU covers ISO-8859-2 and Windows-1250). An
+// unknown name falls back to UTF-8, as the Qt 5 stream kept its default codec.
+static QString decodeCsv(const QByteArray &bytes, const QString &codecName)
+{
+    QStringDecoder decoder(codecName.toLatin1().constData());
+    if (!decoder.isValid())
+    {
+        decoder = QStringDecoder(QStringConverter::Utf8);
+    }
+    return decoder.decode(bytes);
+}
+
 CImportCsv::CImportCsv(const QString &fileName, const QChar &delimeter, const QString &codecName, const QChar & digitSign, bool isTitle)
 {
     m_fileName  = fileName;
     m_file = new QFile(m_fileName);
-    m_in = new QTextStream(m_file);
+    m_in = new QTextStream(&m_content, QIODevice::ReadOnly);
     m_codecName = codecName;
     m_delimiter = delimeter;
     m_digitSign = digitSign;
-    m_in->setCodec(m_codecName.toLatin1());
     m_rowCount = 0;
     m_isTitle = isTitle;
 }
@@ -32,7 +46,6 @@ void CImportCsv::setDelimeter(const QChar &delimeter)
 void CImportCsv::setCodec( const QString &codecName)
 {
     m_codecName = codecName;
-    m_in->setCodec(m_codecName.toLatin1());
 }
 
 void CImportCsv::setDigitSign( const QChar &digitSign)
@@ -77,6 +90,8 @@ bool CImportCsv::openFile()
         DEBUG_WITH_LINE << "Can`t open file: " << m_fileName;
         return false;
     }
+    m_content = decodeCsv(m_file->readAll(), m_codecName);
+    m_in->setString(&m_content, QIODevice::ReadOnly);
     //m_in = new QTextStream(m_file);
     //m_in->setCodec("UTF-8");
     if (m_isTitle)

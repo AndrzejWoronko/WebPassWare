@@ -33,6 +33,7 @@ public:
 
 private:
 
+    QString m_buffer;
     QTextStream *m_out;
     QChar m_delimiter;
     QChar m_digitSign;

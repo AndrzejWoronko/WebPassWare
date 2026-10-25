@@ -1,0 +1,41 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "debug",
+            "displayName": "Debug (Qt 6.12, Ninja)",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_PREFIX_PATH": "/opt/Qt/6.12.0/gcc_64",
+                "CMAKE_MAKE_PROGRAM": "/opt/Qt/Tools/Ninja/ninja",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "release",
+            "inherits": "debug",
+            "displayName": "Release (Qt 6.12, Ninja)",
+            "binaryDir": "${sourceDir}/build/release",
+            "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+        },
+        {
+            "name": "coverage",
+            "inherits": "debug",
+            "displayName": "Coverage (gcov)",
+            "binaryDir": "${sourceDir}/build/coverage",
+            "cacheVariables": { "WPW_COVERAGE": "ON" }
+        }
+    ],
+    "buildPresets": [
+        { "name": "debug", "configurePreset": "debug" },
+        { "name": "release", "configurePreset": "release" },
+        { "name": "coverage", "configurePreset": "coverage" }
+    ],
+    "testPresets": [
+        { "name": "debug", "configurePreset": "debug", "output": { "outputOnFailure": true } },
+        { "name": "release", "configurePreset": "release", "output": { "outputOnFailure": true } },
+        { "name": "coverage", "configurePreset": "coverage", "output": { "outputOnFailure": true } }
+    ]
+}

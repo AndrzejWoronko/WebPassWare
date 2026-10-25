@@ -14,6 +14,14 @@
     for (int i = 0; i < list.size(); i++) \
         delete list.takeAt(i);
 
+// QSqlDatabase::exec() is deprecated in Qt 6.
+static QSqlQuery execSql(const QString &sql)
+{
+    QSqlQuery query(DB.getDb());
+    query.exec(sql);
+    return query;
+}
+
 class Test_Service : public QObject
 {
     Q_OBJECT
@@ -73,8 +81,8 @@ void Test_Service::createTables()
 
 void Test_Service::clearTables()
 {
-    DB.getDb().exec(QString("DELETE FROM pass_entry;"));
-    DB.getDb().exec(QString("DELETE FROM pass_group;"));
+    execSql(QString("DELETE FROM pass_entry;"));
+    execSql(QString("DELETE FROM pass_group;"));
 }
 
 void Test_Service::test_servicePrototypeObject()

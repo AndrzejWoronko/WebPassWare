@@ -1,5 +1,20 @@
 #include "ExportCsv.h"
 
+#include <QStringEncoder>
+
+// QTextStream in Qt 6 only knows the Unicode encodings and Latin-1, so the
+// text is collected in a string and encoded when the file is finished. An
+// unknown name falls back to UTF-8, as the Qt 5 stream kept its default codec.
+static QByteArray encodeCsv(const QString &text, const QString &codecName)
+{
+    QStringEncoder encoder(codecName.toLatin1().constData());
+    if (!encoder.isValid())
+    {
+        encoder = QStringEncoder(QStringConverter::Utf8);
+    }
+    return encoder.encode(text);
+}
+
 CExportCsv::CExportCsv(const QString &fileName, const QChar &delimeter, const QString &codecName,
                        const QChar & digitSign, bool isTitle, bool textDelimiter, bool todos)
 {
@@ -7,12 +22,11 @@ CExportCsv::CExportCsv(const QString &fileName, const QChar &delimeter, const QS
 
     m_file = new QFile(m_fileName);
     m_open = m_file->open(QIODevice::WriteOnly | QIODevice::Text);
-    m_out = new QTextStream(m_file);
+    m_out = new QTextStream(&m_buffer, QIODevice::WriteOnly);
     m_codecName = codecName;
     m_delimiter = delimeter;
     m_digitSign = digitSign;
     m_textDelimiter = textDelimiter;
-    m_out->setCodec(m_codecName.toLatin1());
     m_todos = todos;
     m_end_of_line = m_todos ? QString("\r\n") : QString("\n");
     m_isTitle = isTitle;
@@ -20,6 +34,11 @@ CExportCsv::CExportCsv(const QString &fileName, const QChar &delimeter, const QS
 
 CExportCsv::~CExportCsv()
 {
+    m_out->flush();
+    if (m_open)
+    {
+        m_file->write(encodeCsv(m_buffer, m_codecName));
+    }
     safe_delete(m_out);
     if (m_file)
     {
@@ -42,7 +61,6 @@ void CExportCsv::setTextDelimiter(bool textDelimiter)
 void CExportCsv::setCodec( const QString &codecName)
 {
     m_codecName = codecName;
-    m_out->setCodec(m_codecName.toLatin1());
 }
 
 void CExportCsv::setDigitSign( const QChar &digitSign)
