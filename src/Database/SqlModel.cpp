@@ -17,6 +17,10 @@ void CSqlModel::initSqlModel()
 {
     m_hasDeleteDateField = false;
     m_primaryKeyIdx = 0;
+    // Was left uninitialised: data() then hid or centred values at random.
+    m_hideNulls = false;
+    m_sortKeyColumn = -1;
+    m_sortOrder = Qt::AscendingOrder;
 }
 
 QVariant CSqlModel::data(const QModelIndex &index, int role) const
