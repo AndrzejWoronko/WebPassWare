@@ -124,7 +124,7 @@ void CAutoType::performAutoType(const Entry* entry, QWidget* hideWindow, const Q
 
     Tools::wait(10);
 
-    Q_FOREACH(auto action, actions)
+    for (auto action : std::as_const(actions))
       {
         if (m_platform_intrerface->activeWindow() != window)
           {
@@ -157,7 +157,7 @@ void CAutoType::performGlobalAutoType(const QList<Entry*>& entryList)
 
     QHash<Entry*, QString> sequenceHash;
 
-    Q_FOREACH(auto entry, entryList)
+    for (auto entry : std::as_const(entryList))
       {
           QString sequence = this->autoTypeSequence(entry);
           if (!sequence.isEmpty())
@@ -176,7 +176,7 @@ void CAutoType::performGlobalAutoType(const QList<Entry*>& entryList)
         else
           {
             m_windowFromGlobal = m_platform_intrerface->activeWindow();
-            Q_FOREACH(auto entry, entryList)
+            for (auto entry : std::as_const(entryList))
               {
                 performAutoTypeFromGlobal(entry, sequenceHash.value(entry));
               }
@@ -274,7 +274,7 @@ bool CAutoType::parseActions(const QString& sequence, const Entry* entry, QList<
     QString tmpl;
     bool inTmpl = false;
 
-    Q_FOREACH(auto ch, sequence)
+    for (auto ch : std::as_const(sequence))
       {
         if (inTmpl)
           {
@@ -536,7 +536,7 @@ QList<CAutoTypeAction*> CAutoType::createActionFromTemplate(const QString& tmpl,
 
     if (placeholder != resolved) //Nastąpiła zamiana
       {
-        Q_FOREACH(auto ch, resolved)
+        for (auto ch : std::as_const(resolved))
           {
             if (ch == '\n')
               {

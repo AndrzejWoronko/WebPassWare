@@ -55,7 +55,7 @@ void CMessageBox::AboutQtDialog( QWidget * parent, const QString & title)
 
 void CMessageBox::translateButtons(QMessageBox &messageBox)
 {
-  Q_FOREACH(auto button, messageBox.buttons())
+  for (auto button : messageBox.buttons())
   {
     if (button->text() == QLatin1String("&Yes"))
       button->setText(QObject::tr("&Yes"));

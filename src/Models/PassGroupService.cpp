@@ -17,7 +17,7 @@ QStringList PassGroupService::getGroupNameList(void)
 {
     OwnedObjectList list = this->getOwnedObjects(QString("id_pass_group"));
     QStringList ret_list;
-    Q_FOREACH(auto pg, list)
+    for (auto pg : std::as_const(list))
     {
         ret_list.append(pg->getm_name());
     }

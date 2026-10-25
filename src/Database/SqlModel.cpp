@@ -110,7 +110,7 @@ void CSqlModel::refresh()
                     select_query += QString(" AND %1 " ).arg(m_where);
 
                 query.prepare(select_query);
-                Q_FOREACH (auto variable, m_dataHash.keys())
+                for (auto variable : m_dataHash.keys())
                     {
                         QVariant value = m_dataHash.value(variable);
                         query.bindValue(variable, value);
@@ -137,7 +137,7 @@ void CSqlModel::refresh()
 
 QString CSqlModel::getFieldNameByColumn(int column)
 {
-    Q_FOREACH(auto field, m_fieldsDesc)
+    for (auto field : std::as_const(m_fieldsDesc))
     {
         if (field->getPos() == column)
             return m_fieldsDesc.key(field);
@@ -166,7 +166,7 @@ QString CSqlModel::getSelectQueryStringFromFieldsDescList(SqlFieldsDesc fieldsDe
     QList<CSqlField*> list = fieldsDesc.values(); //Lista pól
    //Posortowna lista po pozycji
     std::sort(list.begin(), list.end(), CSqlField::positionLessThan);
-    Q_FOREACH(auto f, list)
+    for (auto f : std::as_const(list))
         {
             column = fieldsDesc.key(f);
             if (f->getSqlDescription().isEmpty())

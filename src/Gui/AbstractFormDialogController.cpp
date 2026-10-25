@@ -40,7 +40,7 @@ CAbstractFormDialog *CAbstractFormDialogController::getDialog()
 
 bool CAbstractFormDialogController::isChangesOccured()
 {
-    Q_FOREACH(auto field, m_dialog->getFields().values())
+    for (auto field : m_dialog->getFields().values())
     {
         if (field && field->isDirty())
         {
@@ -106,7 +106,7 @@ void CAbstractFormDialogController::checkChanges()
 QJsonObject CAbstractFormDialogController::toJson()
 {
     QJsonObject jo;
-    Q_FOREACH(auto key, m_dialog->getFields().keys())
+    for (auto key : m_dialog->getFields().keys())
     {
         if (m_dialog->getFields().value(key))
             jo.insert(key, QJsonValue::fromVariant(m_dialog->getFields().value(key)->getValue()));

@@ -63,7 +63,7 @@ QStringList CCsvExportDialog::getFileCodecs(void)
 /*  QStringList l;
 
     QList<QByteArray> list =  QTextCodec::availableCodecs();
-    Q_FOREACH (auto codec, list)
+    for (auto codec : std::as_const(list))
         {
             l.append(QString(codec));
         }

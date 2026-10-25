@@ -145,7 +145,7 @@
 
 
 #define CLEAR_PTR_LIST(list) \
-    Q_FOREACH(auto ptr, list) \
+    for (auto ptr : std::as_const(list)) \
               safe_delete(ptr);\
               list.clear();
 

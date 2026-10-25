@@ -22,9 +22,9 @@ QString CPasswordGenerator::generatePassword() const
     const QVector<PasswordGroup> groups = passwordGroups();
 
     QVector<QChar> passwordChars;
-    Q_FOREACH(auto group, groups)
+    for (auto group : std::as_const(groups))
     {
-        Q_FOREACH(auto ch, group)
+        for (auto ch : std::as_const(group))
         {
             passwordChars.append(ch);
         }

@@ -126,7 +126,7 @@ void CMaintenanceTool::processFinished(int exitCode, QProcess::ExitStatus exitSt
 
         lines = stdOutStr.split("\n");
 
-        Q_FOREACH(auto line, lines)
+        for (auto line : std::as_const(lines))
         {
             if(line.startsWith("<updates>"))
             {
@@ -175,7 +175,7 @@ void CMaintenanceTool::processFinished(int exitCode, QProcess::ExitStatus exitSt
         QStringList lines;
         bool enabled = false;
         lines = stdOutStr.split("\n");
-        Q_FOREACH(auto line, lines)
+        for (auto line : std::as_const(lines))
         {
             if(line.startsWith("<updates>"))
             {

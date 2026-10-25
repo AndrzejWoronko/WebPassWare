@@ -75,7 +75,7 @@ public:
 
         QHash <QString, QString> table_index_list = ormobj->getTableIndexesNames();
 
-        Q_FOREACH( auto idxName, ormobj->getIndexFields().keys())
+        for (auto idxName : ormobj->getIndexFields().keys())
         {
             QString idxFullName = QString("%1_%2_idx").arg(ormobj->getTableName()).arg(idxName);
             if (!table_index_list.contains(idxFullName))
@@ -85,7 +85,7 @@ public:
             }
         }
 
-        Q_FOREACH( auto idxName, ormobj->getUniqueIndexFields().keys())
+        for (auto idxName : ormobj->getUniqueIndexFields().keys())
         {
             QString idxFullName = QString("%1_%2_idx").arg(ormobj->getTableName()).arg(idxName);
             if (!table_index_list.contains(idxFullName))

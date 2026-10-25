@@ -49,7 +49,7 @@ void CImportCsv::readHeader(void)
 
 void CImportCsv::headerToString(void)
 {
-    Q_FOREACH(auto s, m_title)
+    for (auto s : std::as_const(m_title))
     {
         DEBUG_WITH_LINE << s << " ";
     }

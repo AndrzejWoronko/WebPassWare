@@ -21,7 +21,7 @@ private:
     OwnedObjectList takeOwnership(QList<ModelName*> objects)
     {
         OwnedObjectList ownedObjects;
-        Q_FOREACH(ModelName *object, objects)
+        for (ModelName *object : std::as_const(objects))
         {
             ownedObjects.append(OwnedObject(object));
         }

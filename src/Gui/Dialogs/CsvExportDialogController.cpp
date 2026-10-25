@@ -78,7 +78,7 @@ bool CCsvExportDialogController::wrtite2Csv(const QString &fileName, const QChar
          QVector<QVariant> header = m_model->toVariantRowHeader();
          QList< QVector<QVariant> > data =  m_model->toVariantRowListData();
          eCsv->writeLine(header);
-         Q_FOREACH(auto row, data)
+         for (auto row : std::as_const(data))
          {
              eCsv->writeLine(row);
          }

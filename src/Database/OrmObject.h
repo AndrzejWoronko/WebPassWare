@@ -625,7 +625,7 @@ public:
         if(values.isEmpty())
             return returnList;
 
-        Q_FOREACH(auto value, values)
+        for (auto value : std::as_const(values))
             whereString += QString("%1 = '%2' OR ")
                                .arg(fieldName)
                                .arg(value.toString());
@@ -654,7 +654,7 @@ public:
             return returnList;
 
         QString whereString = "WHERE ";
-        Q_FOREACH(auto key, params.keys())
+        for (auto key : params.keys())
             whereString += QString("%1 = '%2' OR ")
                                .arg(key)
                                .arg(params.value(key).toString());
@@ -686,7 +686,7 @@ public:
             return returnList;
 
         QString whereString = "WHERE ";
-        Q_FOREACH(auto key, params.keys())
+        for (auto key : params.keys())
             whereString += QString("%1 = '%2' AND ")
                                .arg(key)
                                .arg(params.value(key).toString());
@@ -878,7 +878,7 @@ public:
         PkNames field;
         field.first = QString("");
         field.second = QString("");
-        Q_FOREACH (auto f, m_sqlDescriptions)
+        for (auto f : std::as_const(m_sqlDescriptions))
         {
             if (f.first == name)
             {
@@ -918,7 +918,7 @@ public:
     {        
         QHash <QString, QString> result;
         QList<QSqlIndex> idx_list = DB.getTableIndexes(m_tableName);
-        Q_FOREACH(auto idx, idx_list)
+        for (auto idx : std::as_const(idx_list))
         {
             result.insert(idx.cursorName(), idx.name());
         }

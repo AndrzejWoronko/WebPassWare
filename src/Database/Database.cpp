@@ -183,7 +183,7 @@ bool CDatabase::createTable(const QString &tableName, const QList <PkNames> &inf
 {
     m_lastQuery = QString("CREATE TABLE %1( id_%2 INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL, ").arg(tableName, tableName);
 
-    Q_FOREACH(auto field, info)
+    for (auto field : std::as_const(info))
         m_lastQuery += QString("%1 %2, ").arg(field.first, field.second);
 
     m_lastQuery.chop(2);
@@ -226,7 +226,7 @@ QList<QSqlIndex> CDatabase::getTableIndexes(const QString &tableName)
         throw CExceptionSql(Q_FUNC_INFO, m_query);
     }
 
-    Q_FOREACH(auto i, recs)
+    for (auto i : std::as_const(recs))
     {
         m_lastQuery = QString("PRAGMA index_info(%1);").arg(i.value("name").toString());
         if(m_query->exec(m_lastQuery))
@@ -252,7 +252,7 @@ bool CDatabase::createTableIndexes(const QString &tableName, const QHash<QString
 {
     bool ret = true;
 
-    Q_FOREACH(auto name, info.keys())
+    for (auto name : info.keys())
     {
         m_lastQuery = QString("");
         if (unique)
@@ -274,7 +274,7 @@ bool CDatabase::dropTableIndexes(const QString &tableName, const QHash<QString, 
 {
     bool ret = true;
 
-    Q_FOREACH(auto name, info.keys())
+    for (auto name : info.keys())
     {
         m_lastQuery = QString("");
         m_lastQuery += QString(" DROP INDEX IF EXISTS %1_%2_idx; ").arg(tableName, name);
@@ -330,7 +330,7 @@ qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVari
 
         m_lastQuery = QString("INSERT INTO %1(%2) VALUES(%3);");
 
-        Q_FOREACH(auto key, info.keys())
+        for (auto key : info.keys())
         {
             fields += key + ", ";
             values += ":" + key + ", ";
@@ -349,7 +349,7 @@ qint64 CDatabase::addRecord(const QString &tableName, const QHash<QString, QVari
             m_query->bindValue(":" + key, id);
         }
         //Rest of values
-        Q_FOREACH(auto key, info.keys())
+        for (auto key : info.keys())
             m_query->bindValue(":" + key, info.value(key, QVariant()));
 
         if(m_query->exec())
@@ -370,13 +370,13 @@ bool CDatabase::updateRecord(const QString &tableName, const QHash<QString, QVar
 {
     m_lastQuery = QString("UPDATE %1 SET ").arg(tableName);
 
-    Q_FOREACH(auto fieldName, info.keys())
+    for (auto fieldName : info.keys())
         m_lastQuery += QString("%1 = :%1, ").arg(fieldName);
     m_lastQuery.chop(2);
     m_lastQuery += QString(" %1").arg(params);
     m_query->prepare(m_lastQuery);
 
-    Q_FOREACH(auto fieldName, info.keys())
+    for (auto fieldName : info.keys())
         m_query->bindValue(":" + fieldName, info.value(fieldName, QVariant()));
 
     if (m_query->exec())
@@ -390,12 +390,12 @@ bool CDatabase::replaceRecord(const QString &tableName, const QHash<QString, QVa
 {
     m_lastQuery = QString("REPLACE %1 SET ").arg(tableName);
 
-    Q_FOREACH(auto fieldName , info.keys())
+    for (auto fieldName : info.keys())
         m_lastQuery += QString("%1 = :%1, ").arg(fieldName);
     m_lastQuery.chop(2);
     m_query->prepare(m_lastQuery);
 
-    Q_FOREACH(auto fieldName, info.keys())
+    for (auto fieldName : info.keys())
         m_query->bindValue(":" + fieldName, info.value(fieldName, QVariant()));
 
     if (m_query->exec())

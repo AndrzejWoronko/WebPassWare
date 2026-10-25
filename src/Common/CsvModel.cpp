@@ -94,7 +94,7 @@ void CCsvModel::readFile()
                 list_raw.clear();
                 list.clear();
                 list_raw = m_importCsv->getBuff();
-                Q_FOREACH(auto s, list_raw)
+                for (auto s : std::as_const(list_raw))
                     list.append(s.trimmed());
                 m_table.append(list);
                 if (m_columns < list.count())

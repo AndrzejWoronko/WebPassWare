@@ -108,7 +108,7 @@ void CApplication::initApplication(int & argc, char **argv)
      QString translationName = QLocale(QLocale::system().language()).name();
      DEBUG_WITH_LINE <<  "Language: " << QLocale(QLocale::system().language()).name();
 
-     Q_FOREACH(auto tr_name, tr_module_list)
+     for (auto tr_name : std::as_const(tr_module_list))
      {
          QTranslator qtTranslator;
          QString tr_filename = tr_name + translationName;
@@ -314,7 +314,7 @@ void CApplication::updateAllWidgets()
     QFont font = this->font();
     QString style = this->styleSheet();
 
-    Q_FOREACH(auto *widget, this->allWidgets())
+    for (auto *widget : this->allWidgets())
     {
         widget->setPalette(palette);
         widget->setFont(font);

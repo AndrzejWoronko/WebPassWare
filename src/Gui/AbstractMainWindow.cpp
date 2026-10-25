@@ -60,7 +60,7 @@ void CAbstractMainWindow::setAdditionalWidgets()
     setMenu();
 
 //Dodanie z listy menu do menuBar
-    Q_FOREACH(auto m, this->m_menus)
+    for (auto m : std::as_const(this->m_menus))
         m_menuBar->addAction(m->menuAction());
 
     setToolBar();
