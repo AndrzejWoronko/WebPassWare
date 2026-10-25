@@ -592,20 +592,10 @@ void CWebPassWareMainWindow::on_ACTION_EDIT_PASS_ENTRY_triggered()
 
 void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
 {
-    qint64 id = getCurrentPassEntryId();
-    if (id > 0)
+    PassEntryService::OwnedObject pe = selectedEntry();
+    if (!pe.isNull())
        {
-            PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
-            if (pe.isNull())
-            {
-                QString error = m_passEntryService->getError();
-                if (error.isEmpty())
-                {
-                    error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
-                }
-                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
-                return;
-            }
+            const qint64 id = pe->getId();
             {
                 QString question = tr("Czy chcesz skasować wpis o id: %1 %2?").arg(id).arg(pe->getm_title());
                 if (CMessageBox::YesNoDialog(question, m_dataTable) == CMessageBox::Yes)
@@ -624,81 +614,31 @@ void CWebPassWareMainWindow::on_ACTION_DEL_PASS_ENTRY_triggered()
 
 void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_PASSWORD_triggered()
 {
-    qint64 id = getCurrentPassEntryId();
-    if (id > 0)
+    PassEntryService::OwnedObject pe = selectedEntry();
+    if (!pe.isNull())
     {
-        PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
-        if (pe.isNull())
-        {
-            QString error = m_passEntryService->getError();
-            if (error.isEmpty())
-            {
-                error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
-            }
-            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
-            return;
-        }
-        if (!pe.isNull())
-        {
-            QString text = pe->getm_pass();
-            QMimeData *mimeData = new QMimeData();
-            mimeData->setText(text);
-            mimeData->setData("text/csv", text.toUtf8());
-            QApplication::clipboard()->setMimeData(mimeData);
-        }
+        copyToClipboard(pe->getm_pass());
     }
     DEBUG_WITH_LINE << "COPY PASS ENTRY PASSWORD";
 }
 
 void CWebPassWareMainWindow::on_ACTION_COPY_PASS_ENTRY_USER_triggered()
 {
-    qint64 id = getCurrentPassEntryId();
-    if (id > 0)
+    PassEntryService::OwnedObject pe = selectedEntry();
+    if (!pe.isNull())
     {
-        PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
-        if (pe.isNull())
-        {
-            QString error = m_passEntryService->getError();
-            if (error.isEmpty())
-            {
-                error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
-            }
-            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
-            return;
-        }
-        if (!pe.isNull())
-        {
-            QString text = pe->getm_user();
-            QMimeData *mimeData = new QMimeData();
-            mimeData->setText(text);
-            mimeData->setData("text/csv", text.toUtf8());
-            QApplication::clipboard()->setMimeData(mimeData);
-        }
+        copyToClipboard(pe->getm_user());
     }
     DEBUG_WITH_LINE << "COPY PASS ENTRY USER";
 }
 
 void CWebPassWareMainWindow::on_ACTION_AUTOTYPE_PASS_ENTRY_triggered()
 {
-    qint64 id = getCurrentPassEntryId();
-    if (id > 0)
+    PassEntryService::OwnedObject pe = selectedEntry();
+    if (!pe.isNull())
     {
-        PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
-        if (pe.isNull())
-        {
-            QString error = m_passEntryService->getError();
-            if (error.isEmpty())
-            {
-                error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
-            }
-            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
-            return;
-        }
-        if (!pe.isNull())
-        {
-            Entry entry(pe->getm_user(), pe->getm_pass());
-            autoType()->performAutoType(&entry, this);
-        }
+        Entry entry(pe->getm_user(), pe->getm_pass());
+        autoType()->performAutoType(&entry, this);
     }
     DEBUG_WITH_LINE << "AUTOTYPE PASS ENTRY";
 }
@@ -808,4 +748,32 @@ void CWebPassWareMainWindow::onGroupsChanged()
     }
     // The entry list shows the group names.
     onEntriesChanged();
+}
+
+PassEntryService::OwnedObject CWebPassWareMainWindow::selectedEntry()
+{
+    const qint64 id = getCurrentPassEntryId();
+    if (id <= 0)
+    {
+        return PassEntryService::OwnedObject();
+    }
+    PassEntryService::OwnedObject pe = m_passEntryService->getOwnedObject(id);
+    if (pe.isNull())
+    {
+        QString error = m_passEntryService->getError();
+        if (error.isEmpty())
+        {
+            error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
+        }
+        CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
+    }
+    return pe;
+}
+
+void CWebPassWareMainWindow::copyToClipboard(const QString &text)
+{
+    QMimeData *mimeData = new QMimeData();
+    mimeData->setText(text);
+    mimeData->setData("text/csv", text.toUtf8());
+    QApplication::clipboard()->setMimeData(mimeData);
 }

@@ -14,10 +14,10 @@
 #include "TableView.h"
 #include "DelayEditLine.h"
 #include "SqlModel.h"
+#include "PassEntryService.h"
 
 class CApplication;
 class CDatabase;
-class PassEntryService;
 class PassGroupService;
 
 class CWebPassWareMainWindow : public CAbstractMainWindow
@@ -62,6 +62,11 @@ private:
 
     QSharedPointer<QSortFilterProxyModel> m_pass_group_proxy_model;
     QSharedPointer<QSortFilterProxyModel> m_pass_entry_proxy_model;
+
+    // The entry selected in the table; null without a selection, or after a
+    // warning when it cannot be loaded.
+    PassEntryService::OwnedObject selectedEntry();
+    void copyToClipboard(const QString &text);
 
     virtual void setInterface(void);
     virtual void setMenu(void);

@@ -2,6 +2,7 @@
 #include <QString>
 #include <QtTest>
 #include <QAbstractButton>
+#include <QClipboard>
 #include <QDialog>
 #include <QMessageBox>
 #include <QTemporaryDir>
@@ -39,6 +40,8 @@ private Q_SLOTS:
     void test_deletedGroupLeavesList();
     void test_formDialogsDoNotPileUp();
     void test_viewsFollowServiceChanges();
+    void test_copyToClipboard();
+    void test_deleteEntry();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -229,6 +232,38 @@ void Test_MainWindow::test_viewsFollowServiceChanges()
     group.setm_name("Nowa");
     QVERIFY(m_groups->addObject(&group) > 0);
     QCOMPARE(tree->model()->rowCount(), groups + 1);
+}
+
+void Test_MainWindow::test_copyToClipboard()
+{
+    auto *table = m_window->findChild<CTableView *>();
+    QVERIFY(table->model()->rowCount() > 0);
+    table->setCurrentIndex(table->model()->index(0, 0));
+
+    action("ACTION_COPY_PASS_ENTRY_PASSWORD")->trigger();
+    QCOMPARE(QApplication::clipboard()->text(), QString("sekret"));
+    action("ACTION_COPY_PASS_ENTRY_USER")->trigger();
+    QCOMPARE(QApplication::clipboard()->text(), QString("jan"));
+
+    // Nothing selected: nothing copied, no message.
+    QApplication::clipboard()->setText("bez zmian");
+    table->setCurrentIndex(QModelIndex());
+    autoClose();
+    action("ACTION_COPY_PASS_ENTRY_PASSWORD")->trigger();
+    QCOMPARE(QApplication::clipboard()->text(), QString("bez zmian"));
+    QVERIFY(m_closed.isEmpty());
+}
+
+void Test_MainWindow::test_deleteEntry()
+{
+    auto *table = m_window->findChild<CTableView *>();
+    const int before = table->model()->rowCount();
+    QVERIFY(before > 0);
+    table->setCurrentIndex(table->model()->index(0, 0));
+    autoClose(QMessageBox::Yes);
+    action("ACTION_DEL_PASS_ENTRY")->trigger();
+    QCOMPARE(m_closed.size(), 1);
+    QCOMPARE(table->model()->rowCount(), before - 1);
 }
 
 int main(int argc, char **argv)
