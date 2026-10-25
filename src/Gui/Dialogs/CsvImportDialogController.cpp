@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "PassEntryService.h"
 #include "MessageBox.h"
+#include "TransactionGuard.h"
 
 CCsvImportDialogController::CCsvImportDialogController(PassEntryService *passEntryService, QWidget *parent) :
     QWidget(parent),
@@ -247,6 +248,15 @@ void CCsvImportDialogController::onAccept()
        {
         if (m_model)
            {
+               // All rows or none: a half-imported file is hard to clean up.
+               wpw::TransactionGuard tx(m_passEntryService->database().getDb());
+               if (!tx.isActive())
+               {
+                   CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd importu !!!"), tr("Opis błędu"), tx.error()), this);
+                   return;
+               }
+               int failedRows = 0;
+               QString firstError;
                for (int r = 0; r < m_model->rowCount(); r++)
                {
                   PassEntry pe;
@@ -258,9 +268,24 @@ void CCsvImportDialogController::onAccept()
 
                   if (m_passEntryService->addObject(&pe) < 0)
                   {
-                      CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
+                      if (failedRows == 0)
+                      {
+                          firstError = tr("Wiersz %1: %2").arg(r + 1).arg(m_passEntryService->getError());
+                      }
+                      failedRows++;
                   }
                 }
+               if (failedRows > 0)
+               {
+                   CMessageBox::OkDialogWarning(QString("%1\n%2\n%3").arg(tr("Import przerwany, nie zapisano żadnego rekordu !!!"),
+                                                                            tr("Błędne wiersze: %1").arg(failedRows), firstError), this);
+                   return;
+               }
+               if (!tx.commit())
+               {
+                   CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd importu !!!"), tr("Opis błędu"), tx.error()), this);
+                   return;
+               }
                m_dialog->accept();
            }
         else
