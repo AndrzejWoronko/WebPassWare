@@ -1,4 +1,6 @@
 #include <QApplication>
+
+#include <memory>
 #include <QCoreApplication>
 #include <QDir>
 #include <QString>
@@ -47,10 +49,11 @@ int main(int argc, char **argv)
 //    else
 //        QDir::setCurrent("./");
 
-    CApplication *a = nullptr;
+    // Declared first: destroyed after everything below that needs it.
+    std::unique_ptr<CApplication> a;
     CWebPassWareMainWindow *w = nullptr;
 
-    a = new CApplication(argc, argv);
+    a = std::make_unique<CApplication>(argc, argv);
     wpw::BusyIndicator::setHooks([]() { QApplication::setOverrideCursor(QCursor(Qt::BusyCursor)); },
                                  []() { QApplication::restoreOverrideCursor(); });
 
@@ -77,7 +80,8 @@ int main(int argc, char **argv)
 
     if (a->run(database) == RET_ERROR)
        {
-         return RET_OK;
+         // Login cancelled or failed.
+         return 1;
        }
 /*
 #if QT_VERSION >= 0x040400
@@ -96,7 +100,7 @@ int main(int argc, char **argv)
     if (!wpw::Schema::upgrade(database, &schemaError))
        {
          CMessageBox::OkDialogCritical(schemaError);
-         return RET_ERROR;
+         return 1;
        }
     if (check_tables)
        {
@@ -117,7 +121,7 @@ int main(int argc, char **argv)
 
     LOG_APP << QObject::tr("Uruchomienie programu");
     //w1.show();
-    a->exec();
+    const int exitCode = a->exec();
     safe_delete(w);
-    return RET_OK;
+    return exitCode;
 }
