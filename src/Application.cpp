@@ -16,8 +16,8 @@ CApplication::CApplication(int & argc, char **argv) :
 
     m_system_palette = this->palette();
 
-    this->initApplication(argc, argv);
     this->setAppInformation();
+    this->initApplication(argc, argv);
     this->initAppRegisterMetaType();
 
     //this->run();

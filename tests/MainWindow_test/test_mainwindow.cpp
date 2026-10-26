@@ -22,7 +22,17 @@
 #include "PassGroupService.h"
 #include "Schema.h"
 #include "TableView.h"
+#include "TestSupport/TestEnvironment.h"
 #include "WebPassWareMainWindow.h"
+
+static QString settingsOrganization()
+{
+#ifdef Q_OS_DARWIN
+    return QString(APP_ORGANIZATIO_DOMAIN);
+#else
+    return QString(APP_ORGANIZATION_NAME);
+#endif
+}
 
 // Main window offscreen on a temporary database. Modal dialogs and message
 // boxes are closed by a timer that counts them.
@@ -31,7 +41,7 @@ class Test_MainWindow : public QObject
     Q_OBJECT
 
 public:
-    explicit Test_MainWindow(CApplication &app) : m_app(app) {}
+    Test_MainWindow(CApplication &app, const TestEnvironment &environment) : m_app(app), m_environment(environment) {}
 
 private Q_SLOTS:
     void initTestCase();
@@ -39,6 +49,8 @@ private Q_SLOTS:
     void cleanup();
     void cleanupTestCase();
     void test_noNullActions();
+    void test_storageIsIsolated();
+    void test_savedThemeIsRestoredAtStartup();
     void test_qtTextsArePolish();
     void test_shortcutsAreUnique();
     void test_insertOpensOneDialog();
@@ -56,7 +68,7 @@ private:
     bool selectGroup(const QString &name);
 
     CApplication &m_app;
-    QTemporaryDir m_dir;
+    const TestEnvironment &m_environment;
     std::unique_ptr<CDatabase> m_db;
     std::unique_ptr<PassEntryService> m_entries;
     std::unique_ptr<PassGroupService> m_groups;
@@ -71,10 +83,14 @@ private:
 
 void Test_MainWindow::initTestCase()
 {
-    QVERIFY(m_dir.isValid());
-    m_db = std::make_unique<CDatabase>();
+    QVERIFY(m_environment.isValid());
+    m_db = std::make_unique<CDatabase>(m_environment.databaseName());
+    QVERIFY(m_environment.ownsDatabasePath(m_db->getBaseNameFullPath()));
     m_db->setEchoQuery(false);
     m_db->setLogQuery(false);
+    m_db->setEchoError(false);
+    m_db->setLogError(false);
+    m_db->setQueryLog();
     QString error;
     QVERIFY2(wpw::Schema::upgrade(*m_db, &error), qPrintable(error));
     m_entries = std::make_unique<PassEntryService>(*m_db);
@@ -134,6 +150,7 @@ void Test_MainWindow::cleanup()
     m_closer.stop();
     m_inspect = nullptr;
     m_window.reset();
+    QVERIFY(m_db && m_environment.ownsDatabasePath(m_db->getBaseNameFullPath()));
     QSqlQuery(m_db->getDb()).exec("DELETE FROM pass_entry");
     QSqlQuery(m_db->getDb()).exec("DELETE FROM pass_group WHERE id_pass_group <> 0");
 }
@@ -143,6 +160,26 @@ void Test_MainWindow::cleanupTestCase()
     m_entries.reset();
     m_groups.reset();
     m_db.reset();
+    QVERIFY(QFile::remove(m_environment.databasePath()));
+}
+
+void Test_MainWindow::test_storageIsIsolated()
+{
+    QVERIFY(QStandardPaths::isTestModeEnabled());
+    QVERIFY(m_environment.ownsDatabasePath(m_db->getBaseNameFullPath()));
+    QVERIFY(m_db->getBaseName() != QString(DB_NAME));
+    QCOMPARE(QSettings().format(), QSettings::IniFormat);
+    QCOMPARE(QDir(m_environment.settingsPath()).relativeFilePath(QSettings().fileName()),
+             QString("%1/%2.ini").arg(settingsOrganization(), APP_NAME));
+}
+
+void Test_MainWindow::test_savedThemeIsRestoredAtStartup()
+{
+    QFile theme(QString("%1/dark").arg(STYLE_PATH));
+    QVERIFY(theme.open(QIODevice::ReadOnly));
+    const QString expected = QString::fromUtf8(theme.readAll());
+    QVERIFY(!expected.isEmpty());
+    QCOMPARE(m_app.styleSheet(), expected);
 }
 
 void Test_MainWindow::autoClose(QMessageBox::StandardButton answer)
@@ -325,12 +362,23 @@ void Test_MainWindow::test_qtTextsArePolish()
 
 int main(int argc, char **argv)
 {
-    // Settings and database stay in a temporary directory.
-    QTemporaryDir home;
-    qputenv("XDG_DATA_HOME", QFile::encodeName(home.filePath("data")));
-    qputenv("XDG_CONFIG_HOME", QFile::encodeName(home.filePath("config")));
+    TestEnvironment environment;
+    if (!environment.isValid())
+    {
+        return 1;
+    }
+    // Seed the actual application identity without hiding a missing startup setup.
+    {
+        QSettings settings(QSettings::IniFormat, QSettings::UserScope, settingsOrganization(), APP_NAME);
+        settings.setValue(SETTINGS_GUI_STYLE, int(CStyle::DARK));
+        settings.sync();
+        if (settings.status() != QSettings::NoError)
+        {
+            return 1;
+        }
+    }
     CApplication app(argc, argv);
-    Test_MainWindow test(app);
+    Test_MainWindow test(app, environment);
     return QTest::qExec(&test, argc, argv);
 }
 

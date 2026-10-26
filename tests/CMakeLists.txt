@@ -20,7 +20,7 @@ wpw_add_test(tst_masterpassword SOURCES MasterPassword_test/test_masterpassword.
 wpw_add_test(tst_transactionguard SOURCES TransactionGuard_test/test_transactionguard.cpp LIBS wpw_core)
 wpw_add_test(tst_forms SOURCES Forms_test/test_forms.cpp LIBS wpw_gui)
 wpw_add_test(tst_logindialog SOURCES LoginDialog_test/test_logindialog.cpp LIBS wpw_gui)
-wpw_add_test(tst_mainwindow SOURCES MainWindow_test/test_mainwindow.cpp LIBS wpw_gui)
+wpw_add_test(tst_mainwindow SOURCES MainWindow_test/test_mainwindow.cpp ${PROJECT_SOURCE_DIR}/style.qrc LIBS wpw_gui)
 wpw_add_test(tst_maintenancetool SOURCES MaintenanceTool_test/test_maintenancetool.cpp LIBS wpw_gui)
 
 if(UNIX AND NOT APPLE)
