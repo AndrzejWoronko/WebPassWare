@@ -197,6 +197,8 @@ void CAutoType::unloadPlugin()
 
 bool CAutoType::registerGlobalShortcut(Qt::Key key, Qt::KeyboardModifiers modifiers)
 {
+  Q_UNUSED(key);
+  Q_UNUSED(modifiers);
 /*   compile comment
 
     Q_ASSERT(key);
