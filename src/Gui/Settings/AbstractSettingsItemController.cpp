@@ -1,6 +1,6 @@
 #include "AbstractSettingsItemController.h"
 
-CAbstractSettingsItemController::CAbstractSettingsItemController(QWidget *parent) : QWidget(parent)
+CAbstractSettingsItemController::CAbstractSettingsItemController(QWidget *parent) : QObject(parent)
 {
     m_view = nullptr;
 }

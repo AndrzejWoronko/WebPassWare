@@ -3,7 +3,7 @@
 
 SettingsLookController::SettingsLookController(CApplication &app, QWidget *parent) : CAbstractSettingsItemController(parent)
 {
-    m_view = new SettingsLookView(this);
+    m_view = new SettingsLookView();
 
     connect(m_view, &CAbstractSettingsItemView::changesWereMade, this, &SettingsLookController::enableButtons);
 

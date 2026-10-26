@@ -6,7 +6,7 @@
 SettingsDatabaseViewController::SettingsDatabaseViewController(CDatabase &db, QWidget *parent) :
     CAbstractSettingsItemController(parent), m_db(db)
 {
-    m_view = new SettingsDatabaseView(m_db, this);
+    m_view = new SettingsDatabaseView(m_db);
 
     connect(m_view, &SettingsDatabaseView::changesWereMade, this, &SettingsDatabaseViewController::enableButtons);
     SettingsDatabaseView* v = dynamic_cast<SettingsDatabaseView*>(m_view);

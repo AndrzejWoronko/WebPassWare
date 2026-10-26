@@ -5,7 +5,9 @@
 #include <QWidget>
 #include "AbstractSettingsItemView.h"
 
-class CAbstractSettingsItemController : public QWidget
+// Drives one settings page (m_view, owned and deleted here; the settings
+// widget shows it).
+class CAbstractSettingsItemController : public QObject
 {
     Q_OBJECT
 
