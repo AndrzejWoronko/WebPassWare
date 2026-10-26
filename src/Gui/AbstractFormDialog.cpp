@@ -1,46 +1,14 @@
 #include "AbstractFormDialog.h"
 
 CAbstractFormDialog::CAbstractFormDialog(const QString &dialog_name, QWidget *parent)
-    : CDialog(parent) , m_dialog_name(dialog_name)
+    : CAbstractFieldsDialog(dialog_name, parent), m_buttonBox(nullptr)
 {
-    m_fields.clear();
-    m_VLayoutDialog = new CVBoxLayout(this);
-    m_widget = new QWidget();
-    m_formLayout  = new CGridLayout(m_widget);   
-}
-
-CAbstractFormDialog::~CAbstractFormDialog()
-{
-    safe_delete(m_formLayout);
-    safe_delete(m_widget);
-}
-
-void CAbstractFormDialog::addFieldsAndComponents()
-{
-    addFields();
-    addComponents();
-    createButtons();
-}
-
-void CAbstractFormDialog::setDialogWidget()
-{
-    m_VLayoutDialog->addWidget(m_widget);
-}
-
-void CAbstractFormDialog::setDialogWidget(QTabWidget *tabWidget)
-{
-    m_VLayoutDialog->addWidget(tabWidget);
-}
-
-void CAbstractFormDialog::setDialogWidget(QWidget *widget)
-{
-    m_VLayoutDialog->addWidget(widget);
 }
 
 void CAbstractFormDialog::createButtons()
 {
     m_buttonBox = new CButtonBox(this);
-    m_VLayoutDialog->addWidget(m_buttonBox);
+    dialogLayout()->addWidget(m_buttonBox);
 }
 
 void CAbstractFormDialog::closeEvent(QCloseEvent *event)

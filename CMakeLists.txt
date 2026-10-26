@@ -140,6 +140,8 @@ qt_add_library(wpw_gui STATIC
     src/Common/MaintenanceTool.h
     src/Common/SplitterState.cpp
     src/Common/SplitterState.h
+    src/Gui/AbstractFieldsDialog.cpp
+    src/Gui/AbstractFieldsDialog.h
     src/Gui/AbstractFormDialog.cpp
     src/Gui/AbstractFormDialog.h
     src/Gui/AbstractFormDialogController.cpp

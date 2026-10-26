@@ -2,26 +2,22 @@
 #define CABSTRACTFORMDIALOG_H
 
 #include "Global.h"
-#include "Form.h"
+#include "AbstractFieldsDialog.h"
 
-class CAbstractFormDialog : public CDialog
+// A dialog with editable fields and OK / Cancel; the fields are registered with
+// addField() so the controller can read and validate them.
+class CAbstractFormDialog : public CAbstractFieldsDialog
 {
     Q_OBJECT
 
-    ADD_FIELD(QString, m_dialog_name, getDialogName, setDialogName)
     /**
       ButtonBox zawierające przyciski potwierdzenia bądź zaprzestania dokonywanej operacji
     */
     ADD_PTR_PROPERTY(CButtonBox, m_buttonBox, getButtonBox)
-    ADD_PTR_PROPERTY(CGridLayout, m_formLayout, getFormLayout) //layout widget
-    ADD_PTR_PROPERTY(QWidget, m_widget, getWidget) //Widget do pól
 
     public:
 
     explicit CAbstractFormDialog(const QString &dialog_name, QWidget *parent = nullptr);
-    ~CAbstractFormDialog();
-
-    void addFieldsAndComponents();
 
     void closeEvent(QCloseEvent *event);
 
@@ -29,23 +25,11 @@ class CAbstractFormDialog : public CDialog
 
     void addField(CFormAbstractField *f);
 
-    void setDialogWidget(void);
-    void setDialogWidget(QTabWidget *tabWidget);
-    void setDialogWidget(QWidget *widget);
+protected:
+    void createButtons() override;
 
 private:
-    //FormFieldList m_fields;
     FormFieldHashList m_fields;
-
-    CVBoxLayout *m_VLayoutDialog;  //Do dialogu
-
-    void createButtons();
-
-public:
-
-    //Virtualne funkcje do dodawnia komponentów i pól
-    virtual void addComponents() = 0;
-    virtual void addFields() = 0;
 };
 
 #endif // CABSTRACTFORMDIALOG_H

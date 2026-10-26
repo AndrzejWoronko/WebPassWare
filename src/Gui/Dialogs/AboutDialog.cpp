@@ -18,7 +18,7 @@ void CAboutDialog::addFields()
 
 void CAboutDialog::createTabWidget()
 {
-    m_tabWidget = new QTabWidget(getWidget().get());
+    m_tabWidget = new QTabWidget(getWidget());
     m_tabWidget->addTab(m_tabInfo = new QWidget(), QString(APP_NAME));
     m_tabWidget->addTab(m_tabAuthor = new QWidget(), tr("Autor"));
     m_tabWidget->addTab(m_tabLicense = new QWidget(),tr("Licencje"));
