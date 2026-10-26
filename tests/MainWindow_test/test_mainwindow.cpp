@@ -60,6 +60,7 @@ private Q_SLOTS:
     void test_copyToClipboard();
     void test_deleteEntry();
     void test_editDialogShowsEntryGroup();
+    void test_settingsDialogOpensAndCloses();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -358,6 +359,16 @@ void Test_MainWindow::test_qtTextsArePolish()
 {
     // Qt's own texts (dialog buttons) follow the Polish user interface.
     QCOMPARE(QCoreApplication::translate("QPlatformTheme", "&Yes"), QString("&Tak"));
+}
+
+void Test_MainWindow::test_settingsDialogOpensAndCloses()
+{
+    // The pages belong to their controllers; opening twice must not crash.
+    autoClose();
+    action("ACTION_SETTINGS_DIALOG")->trigger();
+    action("ACTION_SETTINGS_DIALOG")->trigger();
+    QCOMPARE(m_closed.size(), 2);
+    QCOMPARE(m_window->findChildren<QDialog *>().size(), 0);
 }
 
 int main(int argc, char **argv)
