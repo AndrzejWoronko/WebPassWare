@@ -506,8 +506,8 @@ z A2. Kolejność poniżej to proponowana kolejność realizacji.
 
 ### Weryfikacja (wymagana przez plan)
 
-1. Pokrycie `wpw_core` ≥ 80%: `cmake --preset coverage && cmake --build --preset coverage
-   && ctest --preset coverage` + lcov. Jeszcze nie mierzone. Luki uzupełnić testami.
+1. ~~Pokrycie `wpw_core` ≥ 80%~~ — **zrobione 2026-10-26** (`5dcb810`): 86,8% (było 70,0%),
+   `scripts/coverage.py` (gcov bez lcov).
 2. Testy ręczne (użytkownik):
    - start na kopii prawdziwej bazy z wersji Qt 5 (powstaje `WebPassWare.db.bak-v0`,
      migracja 1);
@@ -523,10 +523,8 @@ z A2. Kolejność poniżej to proponowana kolejność realizacji.
 
 ### A2 — drobne porty Qt 6
 
-- `QMouseEvent::pos()` → `position().toPoint()`: `src/Gui/Widgets/TableView.cpp:367`.
-- `QString::fromUtf16(const ushort*)` → `fromWCharArray`:
-  `src/Common/AutoTypePlatformWindows.cpp:252` (kompiluje się tylko na Windows, tutaj nie
-  sprawdzone).
+- ~~`QMouseEvent::pos()` i `QString::fromUtf16`~~ — **zrobione** (`d07bb34`; wersja Windows
+  niesprawdzona kompilacją).
 - Ukrywanie kodowań, których nie da się utworzyć (wszystkie cztery działają w Qt 6.12;
   niski priorytet).
 
@@ -576,3 +574,14 @@ z A2. Kolejność poniżej to proponowana kolejność realizacji.
 ### Poza planem
 
 - Skrypty budowania na GitHubie (`TODO`).
+
+### Zmiany spoza sesji zatwierdzone 2026-10-26
+
+W drzewie roboczym były niezatwierdzone zmiany zrobione poza tą sesją. Na prośbę
+użytkownika zatwierdzone osobno (każdy commit zbudowany, ctest zielony):
+`47395ba` (Q_UNUSED), `917a29e` (puste hasło z Qt 5 wymaga ustawienia), `c442666`
+(bezwzględna ścieżka bazy, `tests/TestSupport/TestEnvironment.h`), `2e4d1aa` (**AUTORCC:
+od A2 ikony i style z `.qrc` nie były wkompilowane w program ani paczkę**), `5220269`
+(tożsamość przed `initApplication`: zapisany motyw nie wracał — błąd z B2), `7c20a41`
+(edycja wpisu z usuniętą grupą zapisywała id -1 — regresja z `76a4182`), `17bace5`
+(licencja MIT w „O programie”). Paczkę DEB trzeba zbudować od nowa (stare bez zasobów).
