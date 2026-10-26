@@ -364,7 +364,7 @@ void CTableView::mousePressEvent(QMouseEvent *event)
 {
     if (event && event->button() == Qt::LeftButton)
     {
-        QModelIndex index = this->indexAt(event->pos());
+        QModelIndex index = this->indexAt(event->position().toPoint());
         if (index.isValid() && index.column() == 0)
            {
                 //DEBUG_WITH_LINE << "Naciśnięto lewy przycisk myszy idx: " << index;

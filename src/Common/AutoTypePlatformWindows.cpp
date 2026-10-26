@@ -249,7 +249,7 @@ QString CAutoTypePlatformWindows::windowTitle(HWND hwnd)
     wchar_t title[MAX_WINDOW_TITLE_LENGTH];
     int count = ::GetWindowTextW(hwnd, title, MAX_WINDOW_TITLE_LENGTH);
 
-    return QString::fromUtf16(reinterpret_cast<const ushort*>(title), count);
+    return QString::fromWCharArray(title, count);
 }
 
 // clang-format off
