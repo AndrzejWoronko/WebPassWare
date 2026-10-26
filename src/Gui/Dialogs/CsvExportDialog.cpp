@@ -1,4 +1,5 @@
 #include "CsvExportDialog.h"
+#include "CsvCodec.h"
 
 CCsvExportDialog::CCsvExportDialog(QWidget *parent) : CDialog(parent)
 {
@@ -27,11 +28,11 @@ void CCsvExportDialog::addFields()
 {
     m_fileNameCsv = new CFormTextField(QString("m_fileNameCsv"), tr("Nazwa pliku"), "", 255);
     addField(m_fileNameCsv);
-    m_digitSign = new CFormSimpleChoiceField(QString("m_digitSign"), tr("Wybierz znak cyfry po przecinku"), 0, getDigitSigns());
+    m_digitSign = new CFormSimpleChoiceField(QString("m_digitSign"), tr("Wybierz znak cyfry po przecinku"), 0, wpw::csvDigitSigns());
     addField(m_digitSign);
-    m_fieldsSeparator = new CFormSimpleChoiceField(QString("m_fieldsSeparator"), tr("Wybierz separator pól"), 0, getFieldsSeparators());
+    m_fieldsSeparator = new CFormSimpleChoiceField(QString("m_fieldsSeparator"), tr("Wybierz separator pól"), 0, wpw::csvSeparatorNames());
     addField(m_fieldsSeparator);
-    m_fileCodec = new CFormSimpleChoiceField(QString("m_fileCodec"), tr("Wybierz kodowanie polskich znaków"), 0, getFileCodecs());
+    m_fileCodec = new CFormSimpleChoiceField(QString("m_fileCodec"), tr("Wybierz kodowanie polskich znaków"), 0, wpw::csvCodecNames());
     addField(m_fileCodec);
 }
 
@@ -52,25 +53,3 @@ void CCsvExportDialog::addButtons()
     m_buttonChioceFileCsv = new CButton(CButtonPrivate(tr("Wybierz plik ..."), tr("Wybierz plik do exportu"), ICON("File")));
 }
 
-QStringList CCsvExportDialog::getDigitSigns(void)
-{
-    return QStringList() << QString(",") << QString(".");
-}
-
-QStringList CCsvExportDialog::getFileCodecs(void)
-{
-  return QStringList() << QString("ISO-8859-2") << QString("Windows-1250") << QString("UTF-8") << QString("DOS/OS2-852");
-/*  QStringList l;
-
-    QList<QByteArray> list =  QTextCodec::availableCodecs();
-    for (auto codec : std::as_const(list))
-        {
-            l.append(QString(codec));
-        }
-    return l;
-*/
-}
-QStringList CCsvExportDialog::getFieldsSeparators(void)
-{
-    return QStringList() << QString("TAB") << QString("|") << QString(";") << QString(",");
-}

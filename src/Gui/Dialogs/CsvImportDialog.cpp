@@ -1,4 +1,5 @@
 #include "CsvImportDialog.h"
+#include "CsvCodec.h"
 
 CCsvImportDialog::CCsvImportDialog(QWidget *parent) : CDialog(parent)
 {
@@ -37,11 +38,11 @@ void CCsvImportDialog::addFields()
     addField(m_fileNameCsv);
     m_isTitle = new CFormCheckField(QString("m_isTitle"), tr("Czy jest tytuł ?"), true);
     addField(m_isTitle);
-    m_digitSign = new CFormSimpleChoiceField(QString("m_digitSign"), tr("Wybierz znak cyfry po przecinku"), 0, getDigitSigns());
+    m_digitSign = new CFormSimpleChoiceField(QString("m_digitSign"), tr("Wybierz znak cyfry po przecinku"), 0, wpw::csvDigitSigns());
     addField(m_digitSign);
-    m_fieldsSeparator = new CFormSimpleChoiceField(QString("m_fieldsSeparator"), tr("Wybierz separator pól"), 0, getFieldsSeparators());
+    m_fieldsSeparator = new CFormSimpleChoiceField(QString("m_fieldsSeparator"), tr("Wybierz separator pól"), 0, wpw::csvSeparatorNames());
     addField(m_fieldsSeparator);
-    m_fileCodec = new CFormSimpleChoiceField(QString("m_fileCodec"), tr("Wybierz kodowanie polskich znaków"), 0, getFileCodecs());
+    m_fileCodec = new CFormSimpleChoiceField(QString("m_fileCodec"), tr("Wybierz kodowanie polskich znaków"), 0, wpw::csvCodecNames());
     addField(m_fileCodec);
     m_fromLine = new CFormNumberField(QString("m_fromLine"), tr("Od linii"), 0);
     addField(m_fromLine);
@@ -95,25 +96,3 @@ void CCsvImportDialog::addComponents()
     m_formLayout_second->addWidget(m_tableView, 6, 0, 4, 4);
 }
 
-QStringList CCsvImportDialog::getDigitSigns()
-{
-    return QStringList() << QString(",") << QString(".");
-}
-
-QStringList CCsvImportDialog::getFileCodecs()
-{
-  return QStringList() << QString("ISO-8859-2") << QString("Windows-1250") << QString("UTF-8") << QString("DOS/OS2-852");
-//  QStringList l;
-
-//    QList<QByteArray> list =  QTextCodec::availableCodecs();
-//    Q_FOREACH (auto codec, list)
-//        {
-//            l.append(QString(codec));
-//        }
-//    return l;
-}
-
-QStringList CCsvImportDialog::getFieldsSeparators()
-{
-    return QStringList() << QString("TAB") << QString("|") << QString(";") << QString(",");
-}

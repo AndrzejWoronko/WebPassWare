@@ -1,4 +1,5 @@
 #include "CsvExportDialogController.h"
+#include "CsvCodec.h"
 #include "MessageBox.h"
 #include "ExportCsv.h"
 #include "Application.h"
@@ -110,9 +111,7 @@ void CCsvExportDialogController::onAccept()
             filename.append(".csv");
         m_dialog->getFileNameCsv()->setValue(filename);
 
-        QChar delimeter;
-        if (m_dialog->getFieldsSeparator()->getValue().toString().length() > 0)
-            delimeter = m_dialog->getFieldsSeparator()->getValue().toString().at(0).toLatin1();
+        const QChar delimeter = wpw::csvSeparator(m_dialog->getFieldsSeparator()->getValue().toString());
         QChar digitSign;
         if (m_dialog->getDigitSign()->getValue().toString().length() >0)
             digitSign = m_dialog->getDigitSign()->getValue().toString().at(0).toLatin1();
@@ -120,8 +119,6 @@ void CCsvExportDialogController::onAccept()
 
         if (codecName.length() > 0  && !delimeter.isNull() && !digitSign.isNull())
            {
-                if (m_dialog->getFieldsSeparator()->getValue().toString() == QString("TAB"))
-                    delimeter = QChar('\t');
 
                 if (wrtite2Csv(filename, delimeter, codecName, digitSign))
                     CMessageBox::OkDialogInformation(tr("Dane zostały pomyślnie zapisane."), m_dialog.get());

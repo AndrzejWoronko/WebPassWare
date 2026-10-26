@@ -6,6 +6,7 @@
 
 #include "ExportCsv.h"
 #include "ImportCsv.h"
+#include "CsvCodec.h"
 
 // Pins the bytes the CSV export writes and what the import reads back for
 // every encoding offered in the dialogs, so the move away from QTextCodec
@@ -23,6 +24,8 @@ private Q_SLOTS:
     void test_importQuotedFields();
     void test_roundTripSpecialCharacters();
     void test_exportVariants();
+    void test_dialogChoices();
+    void test_importStripsUtf8Bom();
 
 private:
     QString writeFile(const QString &name, const QByteArray &bytes);
@@ -189,6 +192,32 @@ void Test_Csv::test_exportVariants()
     QFile second(noTitle);
     QVERIFY(second.open(QIODevice::ReadOnly));
     QCOMPARE(second.readAll(), QByteArray("b\n"));
+}
+
+void Test_Csv::test_dialogChoices()
+{
+    // One list for the import and the export dialog.
+    QCOMPARE(wpw::csvCodecNames(), QStringList() << "ISO-8859-2" << "Windows-1250" << "UTF-8" << "DOS/OS2-852");
+    QCOMPARE(wpw::csvSeparatorNames(), QStringList() << "TAB" << "|" << ";" << ",");
+    QCOMPARE(wpw::csvDigitSigns(), QStringList() << "," << ".");
+    QCOMPARE(wpw::csvSeparator("TAB"), QChar('\t'));
+    QCOMPARE(wpw::csvSeparator(";"), QChar(';'));
+    QVERIFY(wpw::csvSeparator(QString()).isNull());
+}
+
+void Test_Csv::test_importStripsUtf8Bom()
+{
+    // Spreadsheets often save UTF-8 with a byte order mark.
+    const QString path = writeFile("bom.csv", QByteArray("\xEF\xBB\xBFtytul;haslo\nBank;sekret\n"));
+    QVERIFY(!path.isEmpty());
+
+    CImportCsv csv(path, QChar(';'), QString("UTF-8"), QChar(','), true);
+    QVERIFY(csv.openFile());
+    QCOMPARE(csv.getTitle(), QStringList() << "tytul" << "haslo");
+    QCOMPARE(csv.getFieldByName("tytul"), QString());
+    QVERIFY(csv.readLine());
+    QVERIFY(csv.readLine());
+    QCOMPARE(csv.getFieldByName("tytul"), QString("Bank"));
 }
 
 QTEST_MAIN(Test_Csv)

@@ -46,9 +46,6 @@ private:
     void addComponents();
     void addButtons();
 
-    QStringList getDigitSigns(void);
-    QStringList getFileCodecs(void);
-    QStringList getFieldsSeparators(void);
 
     FormFieldHashList m_fields;
 

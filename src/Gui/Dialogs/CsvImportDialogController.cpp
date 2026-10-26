@@ -4,6 +4,7 @@
 #include "PassEntryService.h"
 #include "MessageBox.h"
 #include "TransactionGuard.h"
+#include "CsvCodec.h"
 
 CCsvImportDialogController::CCsvImportDialogController(PassEntryService *passEntryService, QWidget *parent) :
     QWidget(parent),
@@ -114,10 +115,7 @@ void CCsvImportDialogController::onButtonChoiceFileCsv()
             m_import->setCodec(codecName);
             m_import->setDigitSign(digitSign);
             m_import->setIsTitle(isTitle);
-            if (sep == QString("TAB"))
-                m_import->setDelimeter(QChar('\t'));
-            else
-                m_import->setDelimeter(QChar(sep.toLatin1().data()[0]));
+            m_import->setDelimeter(wpw::csvSeparator(sep));
 
             this->refreshModel();
         }
@@ -177,10 +175,7 @@ void CCsvImportDialogController::onFieldsSeparatorChange(const QString &sep)
 {
     if (m_import)
         {
-            if (sep == QString("TAB"))
-                m_import->setDelimeter(QChar('\t'));
-            else
-                m_import->setDelimeter(QChar(sep.toLatin1().data()[0]));
+            m_import->setDelimeter(wpw::csvSeparator(sep));
         }
     refreshModel();
 }
