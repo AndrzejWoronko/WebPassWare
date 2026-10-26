@@ -4,6 +4,9 @@
 
 #include "AutoType.h"
 #include "AutoTypePlatformTest.h"
+#ifdef Q_OS_LINUX
+#include "AutoTypePlatformLinux.h"
+#endif
 
 class Test_AutoType : public QObject
 {
@@ -27,6 +30,7 @@ private slots:
     void test_escapeBraces();
     void test_setDelay();
     void test_syntaxErrorTypesNothing();
+    void test_linuxPlatformOnX11();
 };
 
 void Test_AutoType::initTestCase()
@@ -123,6 +127,26 @@ void Test_AutoType::test_syntaxErrorTypesNothing()
     Entry entry("alice", "secret");
     m_autoType->performAutoType(&entry, nullptr, "ab}c");
     QCOMPARE(m_platform->actionChars(), QString());
+}
+
+void Test_AutoType::test_linuxPlatformOnX11()
+{
+#ifdef Q_OS_LINUX
+    // The real platform on the test's X11 display: no typing, only queries.
+    CAutoTypePlatformLinux platform;
+    if (!platform.isAvailable())
+    {
+        QSKIP("No X11 display with the XTEST extension.");
+    }
+    // Queries over the X11 connection must not crash (BadWindow is trapped).
+    platform.activeWindow();
+    platform.activeWindowTitle();
+    platform.windowTitles();
+    platform.unload();
+    QVERIFY(!platform.isAvailable());
+#else
+    QSKIP("Linux only.");
+#endif
 }
 
 QTEST_MAIN(Test_AutoType)

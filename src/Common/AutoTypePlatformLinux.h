@@ -9,13 +9,22 @@
 
 #ifdef Q_OS_LINUX  //Linux
 
-#include <X11/XKBlib.h>
-
-
 #include "AutoTypePlatform.h"
 #include "AutoTypeAction.h"
 
-#define N_MOD_INDICES (Mod5MapIndex + 1)
+// The X11 types used below, declared exactly as Xlib declares them, so that
+// this header does not bring Xlib and its macros (Bool, None, Status) to every
+// file that includes it, the shared moc file among them.
+typedef struct _XDisplay Display;
+typedef unsigned long Window;
+typedef unsigned long Atom;
+typedef unsigned long KeySym;
+typedef unsigned char KeyCode;
+struct _XkbDesc;
+typedef struct _XkbDesc *XkbDescPtr;
+
+// Mod5MapIndex + 1 (checked in the .cpp).
+#define N_MOD_INDICES 8
 
 class CAutoTypePlatformLinux : public QObject, public CAutoTypePlatform
 {
@@ -58,8 +67,6 @@ private:
     void SendModifiers(unsigned int mask, bool press);
     bool GetKeycode(KeySym keysym, int* keycode, int* group, unsigned int* mask, bool* repeat);
 
-    static int MyErrorHandler(Display* my_dpy, XErrorEvent* event);
-
     Display* m_dpy;
     Window m_rootWindow;
     Atom m_atomWmState;
@@ -85,18 +92,6 @@ private:
     KeyCode m_modifier_keycode[N_MOD_INDICES];
     KeyCode m_remapKeycode;
     bool m_loaded;
-};
-
-class CAutoTypeExecturorLinux : public CAutoTypeExecutor
-{
-public:
-    explicit CAutoTypeExecturorLinux(CAutoTypePlatformLinux* platform);
-
-    void execChar(CAutoTypeChar* action) override;
-    void execKey(CAutoTypeKey* action) override;
-
-private:
-    CAutoTypePlatformLinux* const m_platform;
 };
 
 #endif

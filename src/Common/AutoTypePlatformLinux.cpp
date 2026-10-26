@@ -10,6 +10,23 @@
 #include <X11/Xutil.h>
 #include <X11/extensions/XTest.h>
 
+static_assert(N_MOD_INDICES == Mod5MapIndex + 1, "N_MOD_INDICES must cover the X11 modifier indices");
+
+class CAutoTypeExecturorLinux : public CAutoTypeExecutor
+{
+public:
+    explicit CAutoTypeExecturorLinux(CAutoTypePlatformLinux* platform);
+
+    void execChar(CAutoTypeChar* action) override;
+    void execKey(CAutoTypeKey* action) override;
+
+private:
+    CAutoTypePlatformLinux* const m_platform;
+};
+
+// Ignores BadWindow (windows that vanished while being listed).
+static int MyErrorHandler(Display* my_dpy, XErrorEvent* event);
+
 // map of ASCII non-dead keys to equivalent dead keys that need to be repeated
 static const QPair<KeySym, KeySym> deadMap[] = {
     {XK_acute, XK_dead_acute},
@@ -575,7 +592,7 @@ void CAutoTypePlatformLinux::sendKey(KeySym keysym, unsigned int modifiers)
     }
 }
 
-int CAutoTypePlatformLinux::MyErrorHandler(Display* my_dpy, XErrorEvent* event)
+static int MyErrorHandler(Display* my_dpy, XErrorEvent* event)
 {
     char msg[200];
 
@@ -633,9 +650,5 @@ void CAutoTypeExecturorLinux::execKey(CAutoTypeKey* action)
 {
   m_platform->sendKey(qtToNativeKeyCode(action->m_key));
 }
-
-// Xlib defines macros such as Bool and None. Compiling the moc code here keeps
-// them out of the shared moc translation unit, where they break other classes.
-#include "moc_AutoTypePlatformLinux.cpp"
 
 #endif
