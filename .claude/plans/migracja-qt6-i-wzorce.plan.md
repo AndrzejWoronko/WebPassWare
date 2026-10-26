@@ -516,8 +516,9 @@ z A2. Kolejność poniżej to proponowana kolejność realizacji.
    - dodanie, edycja i usunięcie grupy i wpisu;
    - import i eksport CSV w Windows-1250;
    - auto-type pod X11 do edytora tekstu, start pod Waylandem bez crasha.
-3. Paczka: start GUI z rozpakowanej paczki z wdrożonym Qt (dotąd sprawdzone tylko
-   biblioteki, wtyczki i `--version`).
+3. ~~Paczka: start GUI z rozpakowanej paczki~~ — **zrobione 2026-10-26**: program z paczki
+   (po poprawce AUTORCC) startuje na wdrożonym Qt (xcb) i czeka w oknie logowania;
+   ładuje `qtbase_pl.qm` z paczki.
 4. Windows i macOS: kompilacja (`scripts/windows/build-portable.sh`,
    `scripts/macosx/build-portable.sh`), gdy będzie maszyna lub CI.
 
@@ -525,15 +526,12 @@ z A2. Kolejność poniżej to proponowana kolejność realizacji.
 
 - ~~`QMouseEvent::pos()` i `QString::fromUtf16`~~ — **zrobione** (`d07bb34`; wersja Windows
   niesprawdzona kompilacją).
-- Ukrywanie kodowań, których nie da się utworzyć (wszystkie cztery działają w Qt 6.12;
-  niski priorytet).
+- Ukrywanie kodowań, których nie da się utworzyć — **nie robione**: wszystkie cztery działają
+  w Qt 6.12 (sprawdzone), więc lista nic by nie ukryła.
 
 ### B7 — CSV
 
-- Wspólna lista kodowań i separatorów dla obu dialogów (`getFileCodecs()` skopiowane w
-  `CsvImportDialog.cpp:103` i `CsvExportDialog.cpp:60`), najlepiej obok
-  `wpw::csvCodecName` w `wpw_core`.
-- Test BOM w imporcie UTF-8 (`QStringDecoder` go usuwa, brak testu).
+- ~~Wspólna lista kodowań i separatorów, test BOM~~ — **zrobione** (`226fd1e`).
 
 ### B3/B4 — razem z planem szyfrowania haseł wpisów
 
@@ -543,25 +541,21 @@ z A2. Kolejność poniżej to proponowana kolejność realizacji.
   użyć `getm_pass`/`setm_pass` w GUI) jako seam pod szyfrowanie.
 - Szyfrowanie pól: osobny plan.
 
-### B6 — formularze (strukturalne, bez znanych błędów)
+### B6 — formularze
 
-- Wspólna baza `CAbstractFormDialog` / `CAbstractCloseDialog`.
-- Kontrolery formularzy jako `QObject` zamiast `QWidget` (komunikaty używają dziś
-  kontrolera jako rodzica — przełączyć na okno dialogowe).
-- Wspólne `isEmptyForm` / `validateForm` w `PassEntryDialogController` i
-  `PassGroupDialogController`.
+- ~~Wspólne sprawdzanie wymaganych pól~~ (`ea444ca`), ~~kontrolery jako `QObject`~~
+  (formularze `a7a5fcf`, CSV `2e5cdd4`, strony ustawień `73f0372`), ~~wspólna baza
+  `CAbstractFieldsDialog`~~ (`a1ba295`) — **zrobione**.
 
-### B7 — pozostałe (strukturalne)
+### B7 — pozostałe
 
-- Rejestr stron ustawień `{tytuł, ikona, fabryka strony+kontrolera}` zamiast dopasowania
-  listy i stosu po indeksie (`SettingsWidget.cpp`); kontrolery stron z rodzicem zamiast
-  ręcznego `safe_delete`.
-- `DialogState` / `SplitterState` dostają `QSettings&` z composition root zamiast
-  tworzyć własne `QSettings`.
-- `CMaintenanceTool::checkUpdate` bez `waitForStarted`/`waitForFinished` w wątku GUI
-  (dotyczy tylko instalacji z Qt IFW, w paczce DEB akcja jest ukryta).
-- Nagłówek `AutoTypePlatformLinux.h` bez X11 (pimpl); wtedy zbędne dołączanie
-  `moc_AutoTypePlatformLinux.cpp` w `.cpp`.
+- ~~Rejestr stron ustawień~~ (`943f6af`), ~~sprawdzanie aktualizacji bez blokowania~~
+  (`457f0dc`), ~~nagłówek platformy Linux bez Xlib~~ (`e3d9525`, deklaracje typów X11
+  zamiast pimpl; test na wyświetlaczu X11) — **zrobione**.
+- `DialogState` / `SplitterState` z `QSettings&` z composition root — **świadomie nie
+  robione**: każdy dialog dziedziczy `CAbstractDialogStateManager`, więc trzeba by zmienić
+  konstruktory wszystkich dialogów; zgodnie z decyzją z B2 ustawienia to zwykłe
+  `QSettings` tworzone na miejscu (jak `CApplicationSettings`).
 
 ### Świadomie nie robione (decyzje opisane w „Postęp”)
 
@@ -570,6 +564,11 @@ z A2. Kolejność poniżej to proponowana kolejność realizacji.
 - Przepisanie typów kolumn na nazwy SQLite (B3).
 - Usunięcie `Singleton.h`: zostaje dla loggerów `LOG_APP` / `LOG_SQL` (B2).
 - `qt_add_translations`: tłumaczenia Qt ładowane z `qtbase_pl.qm` (B7).
+
+### Stan po 2026-10-26
+
+Z planu zostają: testy ręczne (pkt 2, użytkownik), kompilacja Windows/macOS (pkt 4),
+punkty B3/B4 do zrobienia razem z planem szyfrowania haseł wpisów. ctest 14/14.
 
 ### Poza planem
 
