@@ -10,7 +10,7 @@
 
 class PassEntryService;
 
-class CCsvImportDialogController : public QWidget, public CAbstractDialogStateManager
+class CCsvImportDialogController : public QObject, public CAbstractDialogStateManager
 {
     Q_OBJECT
 

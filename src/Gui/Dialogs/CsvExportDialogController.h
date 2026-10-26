@@ -7,7 +7,7 @@
 #include "AbstractDialogStateManager.h"
 #include "SqlModel.h"
 
-class CCsvExportDialogController : public QWidget, public CAbstractDialogStateManager
+class CCsvExportDialogController : public QObject, public CAbstractDialogStateManager
 {
     Q_OBJECT
 

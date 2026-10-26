@@ -5,7 +5,7 @@
 #include "Application.h"
 
 CCsvExportDialogController::CCsvExportDialogController(CSqlModel *model, QWidget *parent) :
-    QWidget(parent), m_model(model)
+    QObject(parent), m_model(model)
 {
     m_dialog = QSharedPointer<CCsvExportDialog>(new CCsvExportDialog());
     m_settings.reset(new QSettings());

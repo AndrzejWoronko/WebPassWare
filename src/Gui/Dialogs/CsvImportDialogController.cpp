@@ -7,7 +7,7 @@
 #include "CsvCodec.h"
 
 CCsvImportDialogController::CCsvImportDialogController(PassEntryService *passEntryService, QWidget *parent) :
-    QWidget(parent),
+    QObject(parent),
     m_passEntryService(passEntryService)
 {
     m_model = nullptr;
@@ -134,7 +134,7 @@ void CCsvImportDialogController::onButtonNext()
         changePage(1);
     }
     else
-        CMessageBox::OkDialogInformation(tr("Nie wybrano pliku do importu !!!"), this);
+        CMessageBox::OkDialogInformation(tr("Nie wybrano pliku do importu !!!"), m_dialog.get());
 }
 
 void CCsvImportDialogController::onButtonBack()
@@ -216,27 +216,27 @@ void CCsvImportDialogController::onAccept()
 //Sprawdznie poprawności wybrania kolumn
     if (m_dialog->getTitleChoice()->getValue().toString().contains("BRAK"))
        {
-          CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Tytuł !!!"), this);
+          CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Tytuł !!!"), m_dialog.get());
           return;
        }
     if (m_dialog->getUserChoice()->getValue().toString().contains("BRAK"))
        {
-          CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Użytkownik !!!"), this);
+          CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Użytkownik !!!"), m_dialog.get());
           return;
        }
     if (m_dialog->getPassChoice()->getValue().toString().contains("BRAK"))
        {
-          CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Hasło !!!"), this);
+          CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Hasło !!!"), m_dialog.get());
           return;
        }
     if (m_dialog->getWebChoice()->getValue().toString().contains("BRAK"))
        {
-           CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Strona WWW !!!"), this);
+           CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Strona WWW !!!"), m_dialog.get());
            return;
        }
 //    if (m_dialog->getDescChoice()->getValue().toString().contains("BRAK"))
 //       {
-//           CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Opis !!!"), this);
+//           CMessageBox::OkDialogInformation(tr("Brak przyporządkowania dla pola Opis !!!"), m_dialog.get());
 //           return;
 //       }
     if (filename.length() > 0)
@@ -247,7 +247,7 @@ void CCsvImportDialogController::onAccept()
                wpw::TransactionGuard tx(m_passEntryService->database().getDb());
                if (!tx.isActive())
                {
-                   CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd importu !!!"), tr("Opis błędu"), tx.error()), this);
+                   CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd importu !!!"), tr("Opis błędu"), tx.error()), m_dialog.get());
                    return;
                }
                // One refresh after the commit, none for rows a rollback discards.
@@ -275,12 +275,12 @@ void CCsvImportDialogController::onAccept()
                if (failedRows > 0)
                {
                    CMessageBox::OkDialogWarning(QString("%1\n%2\n%3").arg(tr("Import przerwany, nie zapisano żadnego rekordu !!!"),
-                                                                            tr("Błędne wiersze: %1").arg(failedRows), firstError), this);
+                                                                            tr("Błędne wiersze: %1").arg(failedRows), firstError), m_dialog.get());
                    return;
                }
                if (!tx.commit())
                {
-                   CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd importu !!!"), tr("Opis błędu"), tx.error()), this);
+                   CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd importu !!!"), tr("Opis błędu"), tx.error()), m_dialog.get());
                    return;
                }
                blockChanges.unblock();
@@ -289,12 +289,12 @@ void CCsvImportDialogController::onAccept()
            }
         else
            {
-                CMessageBox::OkDialogInformation(tr("Brak modelu danych do importu !!!"), this);
+                CMessageBox::OkDialogInformation(tr("Brak modelu danych do importu !!!"), m_dialog.get());
            }
        }
     else
        {
-            CMessageBox::OkDialogInformation(tr("Nie wybrano pliku do importu !!!"), this);
+            CMessageBox::OkDialogInformation(tr("Nie wybrano pliku do importu !!!"), m_dialog.get());
        }
 }
 
