@@ -61,6 +61,7 @@ private Q_SLOTS:
     void test_deleteEntry();
     void test_editDialogShowsEntryGroup();
     void test_settingsDialogOpensAndCloses();
+    void test_closeDialogsOpenAndClose();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -367,6 +368,16 @@ void Test_MainWindow::test_settingsDialogOpensAndCloses()
     autoClose();
     action("ACTION_SETTINGS_DIALOG")->trigger();
     action("ACTION_SETTINGS_DIALOG")->trigger();
+    QCOMPARE(m_closed.size(), 2);
+    QCOMPARE(m_window->findChildren<QDialog *>().size(), 0);
+}
+
+void Test_MainWindow::test_closeDialogsOpenAndClose()
+{
+    // About and the password generator are close-only dialogs.
+    autoClose();
+    action("ACTION_ABOUT")->trigger();
+    action("ACTION_GENERATOR_DIALOG")->trigger();
     QCOMPARE(m_closed.size(), 2);
     QCOMPARE(m_window->findChildren<QDialog *>().size(), 0);
 }
