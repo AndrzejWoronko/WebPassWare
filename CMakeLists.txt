@@ -11,6 +11,7 @@ option(WPW_COVERAGE "Instrument the build for gcov/lcov coverage" OFF)
 
 find_package(Qt6 6.12 REQUIRED COMPONENTS Core Gui Network Sql Svg Widgets)
 qt_standard_project_setup(REQUIRES 6.12)
+set(CMAKE_AUTORCC ON)
 
 # Where the Debian package installs; the program finds the deployed Qt next
 # to it (see cmake/Packaging.cmake).
