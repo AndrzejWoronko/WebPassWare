@@ -56,6 +56,7 @@ class CDatabase : public ICDatabase
 
 public:
 
+    // A relative name is stored in AppLocalDataLocation; an absolute path is used directly.
     CDatabase(const QString &database_name = QString(DB_NAME));
     ~CDatabase();
 

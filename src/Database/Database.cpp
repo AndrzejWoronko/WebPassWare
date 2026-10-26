@@ -61,7 +61,9 @@ void CDatabase::setDatabasePassword(const QString &passwd)
 
 void CDatabase::initConnection()
 {
-    QString dir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    m_base_name_full_path = QDir(dataDir).absoluteFilePath(m_base_name);
+    QString dir = QFileInfo(m_base_name_full_path).absolutePath();
     QFileInfo f(dir);
     if (!f.exists())
        {
@@ -70,7 +72,6 @@ void CDatabase::initConnection()
        }
 //    QFileInfo f(CApplicationSettings().fileName());
 //    QString dir = f.absolutePath()
-    m_base_name_full_path =  QString("%1/%2").arg(dir, m_base_name);
     DEBUG_WITH_LINE << "DB file path is: " << m_base_name_full_path;
     m_db.setDatabaseName(m_base_name_full_path);
 
