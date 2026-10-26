@@ -79,7 +79,7 @@ bool PassEntryDialogController::exec(const QString &title)
             const qint64 newId = m_passEntryService->addObject(&pe); //Zapis do bazy
             if (newId < 0)
             {
-                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
+                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), m_dialog);
                 return false;
             }
             return true;
@@ -107,7 +107,7 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             {
                 error = tr("Nie znaleziono rekordu o id: %1.").arg(id);
             }
-            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), this);
+            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania rekordu !!!"), tr("Opis błędu"), error), m_dialog);
             return false;
         }
         //Podtawienie wartości do formatki
@@ -166,7 +166,7 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             ret = m_passEntryService->editObject(pe.data());
             if (!ret)
             {
-                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), this);
+                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji rekordu !!!"), tr("Opis błędu"), m_passEntryService->getError()), m_dialog);
             }
         }
     }

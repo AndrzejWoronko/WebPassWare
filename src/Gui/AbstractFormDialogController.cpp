@@ -2,7 +2,7 @@
 #include "MessageBox.h"
 
 CAbstractFormDialogController::CAbstractFormDialogController(CAbstractFormDialog *dialog, QWidget *parent) :
-    QWidget(parent), CAbstractDialogStateManager()
+    QObject(parent), CAbstractDialogStateManager()
 {
     m_dialog = dialog;
     m_validator = nullptr;

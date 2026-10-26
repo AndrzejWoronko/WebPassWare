@@ -49,7 +49,7 @@ bool PassGroupDialogController::exec(const QString &title)
             const qint64 newId = m_passGroupService->addObject(&pg);
             if (newId < 0)
             {
-                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), this);
+                CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd dodawania grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), m_dialog);
                 return false;
             }
             return true;
@@ -77,7 +77,7 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
             {
                 error = tr("Nie znaleziono grupy o id: %1.").arg(id);
             }
-            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania grupy !!!"), tr("Opis błędu"), error), this);
+            CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd wczytywania grupy !!!"), tr("Opis błędu"), error), m_dialog);
             return false;
         }
         CFormAbstractField *f = m_dialog->getFields().value("m_id");
@@ -94,7 +94,7 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
                ret = m_passGroupService->editObject(pg.data());
                if (!ret)
                {
-                   CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), this);
+                   CMessageBox::OkDialogWarning(QString("%1\n%2: %3").arg(tr("Błąd edycji grupy !!!"), tr("Opis błędu"), m_passGroupService->getError()), m_dialog);
                }
            }
     }

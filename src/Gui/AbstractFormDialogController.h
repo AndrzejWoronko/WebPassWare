@@ -8,7 +8,9 @@
 #include "FormValidator.h"
 #include <QJsonObject>
 
-class CAbstractFormDialogController : public QWidget, public CAbstractDialogStateManager
+// Not a widget itself: it drives m_dialog, which is also the parent of its
+// message boxes.
+class CAbstractFormDialogController : public QObject, public CAbstractDialogStateManager
 {
    Q_OBJECT
 
