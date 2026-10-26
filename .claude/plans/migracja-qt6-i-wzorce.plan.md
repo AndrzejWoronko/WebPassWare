@@ -498,3 +498,81 @@ Etap B: 8–12 MD (B3 i B5 największe).
   (`18fe55a`). **Odłożone:** rejestr stron ustawień (dopasowanie po indeksie działa,
   dwie strony), `MaintenanceTool` bez `waitForFinished` (tylko z instalatorem Qt IFW),
   nagłówek platformy Linux bez X11 (obejście moc działa). ctest 12/12.
+
+## Do zrobienia (stan 2026-10-26)
+
+Przegląd planu z kodem po etapach A i B. Etap A jest zrobiony poza drobnymi portami
+z A2. Kolejność poniżej to proponowana kolejność realizacji.
+
+### Weryfikacja (wymagana przez plan)
+
+1. Pokrycie `wpw_core` ≥ 80%: `cmake --preset coverage && cmake --build --preset coverage
+   && ctest --preset coverage` + lcov. Jeszcze nie mierzone. Luki uzupełnić testami.
+2. Testy ręczne (użytkownik):
+   - start na kopii prawdziwej bazy z wersji Qt 5 (powstaje `WebPassWare.db.bak-v0`,
+     migracja 1);
+   - logowanie starym hasłem (MD5 → PBKDF2), wpisy bez zmian;
+   - pierwsze uruchomienie: ustawienie hasła głównego;
+   - dodanie, edycja i usunięcie grupy i wpisu;
+   - import i eksport CSV w Windows-1250;
+   - auto-type pod X11 do edytora tekstu, start pod Waylandem bez crasha.
+3. Paczka: start GUI z rozpakowanej paczki z wdrożonym Qt (dotąd sprawdzone tylko
+   biblioteki, wtyczki i `--version`).
+4. Windows i macOS: kompilacja (`scripts/windows/build-portable.sh`,
+   `scripts/macosx/build-portable.sh`), gdy będzie maszyna lub CI.
+
+### A2 — drobne porty Qt 6
+
+- `QMouseEvent::pos()` → `position().toPoint()`: `src/Gui/Widgets/TableView.cpp:367`.
+- `QString::fromUtf16(const ushort*)` → `fromWCharArray`:
+  `src/Common/AutoTypePlatformWindows.cpp:252` (kompiluje się tylko na Windows, tutaj nie
+  sprawdzone).
+- Ukrywanie kodowań, których nie da się utworzyć (wszystkie cztery działają w Qt 6.12;
+  niski priorytet).
+
+### B7 — CSV
+
+- Wspólna lista kodowań i separatorów dla obu dialogów (`getFileCodecs()` skopiowane w
+  `CsvImportDialog.cpp:103` i `CsvExportDialog.cpp:60`), najlepiej obok
+  `wpw::csvCodecName` w `wpw_core`.
+- Test BOM w imporcie UTF-8 (`QStringDecoder` go usuwa, brak testu).
+
+### B3/B4 — razem z planem szyfrowania haseł wpisów
+
+- `COrmService` dostaje `IRepository<T>` przez konstruktor zamiast tworzyć
+  `COrmRepository` sam (`src/Database/OrmService.h:39`).
+- Jedno miejsce na odczyt i zapis `m_pass` w repozytorium wpisów (dziś 6 bezpośrednich
+  użyć `getm_pass`/`setm_pass` w GUI) jako seam pod szyfrowanie.
+- Szyfrowanie pól: osobny plan.
+
+### B6 — formularze (strukturalne, bez znanych błędów)
+
+- Wspólna baza `CAbstractFormDialog` / `CAbstractCloseDialog`.
+- Kontrolery formularzy jako `QObject` zamiast `QWidget` (komunikaty używają dziś
+  kontrolera jako rodzica — przełączyć na okno dialogowe).
+- Wspólne `isEmptyForm` / `validateForm` w `PassEntryDialogController` i
+  `PassGroupDialogController`.
+
+### B7 — pozostałe (strukturalne)
+
+- Rejestr stron ustawień `{tytuł, ikona, fabryka strony+kontrolera}` zamiast dopasowania
+  listy i stosu po indeksie (`SettingsWidget.cpp`); kontrolery stron z rodzicem zamiast
+  ręcznego `safe_delete`.
+- `DialogState` / `SplitterState` dostają `QSettings&` z composition root zamiast
+  tworzyć własne `QSettings`.
+- `CMaintenanceTool::checkUpdate` bez `waitForStarted`/`waitForFinished` w wątku GUI
+  (dotyczy tylko instalacji z Qt IFW, w paczce DEB akcja jest ukryta).
+- Nagłówek `AutoTypePlatformLinux.h` bez X11 (pimpl); wtedy zbędne dołączanie
+  `moc_AutoTypePlatformLinux.cpp` w `.cpp`.
+
+### Świadomie nie robione (decyzje opisane w „Postęp”)
+
+- Fasada `PasswordVault` oraz klasy `EntryActions` / `GroupActions` / `ClipboardActions`
+  (B5).
+- Przepisanie typów kolumn na nazwy SQLite (B3).
+- Usunięcie `Singleton.h`: zostaje dla loggerów `LOG_APP` / `LOG_SQL` (B2).
+- `qt_add_translations`: tłumaczenia Qt ładowane z `qtbase_pl.qm` (B7).
+
+### Poza planem
+
+- Skrypty budowania na GitHubie (`TODO`).
