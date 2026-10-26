@@ -53,8 +53,13 @@ Qt Test, one executable per unit, registered in `tests/CMakeLists.txt` via
 - `tst_mainwindow` (`tests/MainWindow_test`): main window on a temporary database with a real
   `CApplication` (own `main()`); a timer closes and counts modal dialogs.
 - `tst_forms` (`tests/Forms_test`): form field `isDirty()`.
+- `tst_passentrydialog` (`tests/PassEntryDialog_test`): entry dialog with a deleted or missing group.
 - `tst_maintenancetool` (`tests/MaintenanceTool_test`): update tool availability.
 - `tst_autotype` (`tests/AutoType_test`): auto-type sequence parsing.
+
+`tests/TestSupport/TestEnvironment.h` isolates settings (INI in a temporary directory) and the
+database file (unique absolute path) on every platform; GUI tests construct it before the
+application.
 
 
 Migration to Qt 6.12 + CMake and the second design-pattern round:

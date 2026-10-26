@@ -201,7 +201,9 @@ bool PassEntryDialogController::exec(qint64 id, const QString &title)
             if (f)
                 pe->setm_desc(f->getValue().toString());
             CFormSimpleIndexChoiceField *groupField = getFieldAs<CFormSimpleIndexChoiceField>("m_id_pass_group");
-            if (groupField)
+            // A deleted or missing group is absent from the choices. Keep its id
+            // until the user selects an available group.
+            if (groupField && groupField->getIdValue() >= 0)
             {
                 pe->setm_id_pass_group(groupField->getIdValue());
             }
