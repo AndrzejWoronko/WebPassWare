@@ -14,8 +14,9 @@ PassEntryDialogController::PassEntryDialogController(PassEntryService *passEntry
         this->setConnections();
         this->restoreDialogState();
         m_validator = new CFormValidator(m_dialog->getFields());
-        m_validator->setValidateCallback(validateForm);
-        m_validator->setValidateEmpty(isEmptyForm);
+        // An empty required field is both "empty" and "invalid".
+        m_validator->setValidateCallback(requiredFieldsError);
+        m_validator->setValidateEmpty(requiredFieldsError);
         CFormSimpleIndexChoiceField *groupField = getFieldAs<CFormSimpleIndexChoiceField>("m_id_pass_group");
         if (groupField)
         {
@@ -35,54 +36,9 @@ PassEntryDialogController::~PassEntryDialogController()
         this->saveDialogState();
 }
 
-QString PassEntryDialogController::isEmptyForm(FormFieldHashList fields)
+QString PassEntryDialogController::requiredFieldsError(FormFieldHashList fields)
 {
-    QString error = QString("");
-
-    CFormAbstractField *f;
-    f = fields.value("m_title");
-
-    if (f && f->getValue().toString().length()==0)
-        error += QString("%1: %2.\n").arg(tr("Puste pole")).arg(f->getLabel());
-
-    f = fields.value("m_user");
-    if (f && f->getValue().toString().length()==0)
-        error += QString("%1: %2.\n").arg(tr("Puste pole")).arg(f->getLabel());
-
-    f = fields.value("m_pass");
-    if (f && f->getValue().toString().length()==0)
-        error += QString("%1: %2.\n").arg(tr("Puste pole")).arg(f->getLabel());
-
-    f = fields.value("m_web_url");
-    if (f && f->getValue().toString().length()==0)
-        error += QString("%1: %2.\n").arg(tr("Puste pole")).arg(f->getLabel());
-
-    return error;
-}
-
-QString PassEntryDialogController::validateForm(FormFieldHashList fields)
-{
-    QString error = QString("");
-
-    CFormAbstractField *f;
-
-    f = fields.value("m_title");
-    if (f && f->getValue().toString().length()==0)
-        error += QString("%1: %2.\n").arg(tr("Puste pole")).arg(f->getLabel());
-
-    f = fields.value("m_user");
-    if (f && f->getValue().toString().length()==0)
-        error += QString("%1: %2.\n").arg(tr("Puste pole")).arg(f->getLabel());
-
-    f = fields.value("m_pass");
-    if (f && f->getValue().toString().length()==0)
-        error += QString("%1: %2.\n").arg(tr("Puste pole")).arg(f->getLabel());
-
-    f = fields.value("m_web_url");
-    if (f && f->getValue().toString().length()==0)
-        error += QString("%1: %2.\n").arg(tr("Puste pole")).arg(f->getLabel());
-
-    return error;
+    return emptyRequiredFields(fields, {"m_title", "m_user", "m_pass", "m_web_url"});
 }
 
 bool PassEntryDialogController::exec(const QString &title)

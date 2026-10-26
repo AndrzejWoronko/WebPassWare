@@ -8,6 +8,7 @@
 #include "FormNumberField.h"
 #include "FormSimpleChoiceField.h"
 #include "FormTextField.h"
+#include "AbstractFormDialogController.h"
 
 // isDirty() compares the start value with the widget value as QVariants.
 // Dialogs restore both from QSettings, which hands strings back, so these
@@ -21,6 +22,7 @@ private Q_SLOTS:
     void test_untouchedFieldsAreClean();
     void test_restoredFromSettingsAreClean();
     void test_editedFieldsAreDirty();
+    void test_emptyRequiredFields();
 
 private:
     QVariant roundTrip(const QString &key, const QVariant &value);
@@ -107,6 +109,22 @@ void Test_Forms::test_editedFieldsAreDirty()
     CFormNumberField number("m_fromLine", "Od linii", 0);
     number.QDoubleSpinBox::setValue(4);
     QVERIFY(number.isDirty());
+}
+
+void Test_Forms::test_emptyRequiredFields()
+{
+    CFormTextField title("m_title", "Tytuł", "Email");
+    CFormTextField user("m_user", "Użytkownik", "");
+    CFormTextField pass("m_pass", "Hasło", "");
+    FormFieldHashList fields;
+    fields.insert("m_title", &title);
+    fields.insert("m_user", &user);
+    fields.insert("m_pass", &pass);
+
+    // In the order of the names; fields that are not in the form are skipped.
+    QCOMPARE(CAbstractFormDialogController::emptyRequiredFields(fields, {"m_title", "m_user", "m_pass", "m_missing"}),
+             QString::fromUtf8("Puste pole: Użytkownik:.\nPuste pole: Hasło:.\n"));
+    QCOMPARE(CAbstractFormDialogController::emptyRequiredFields(fields, {"m_title"}), QString());
 }
 
 QTEST_MAIN(Test_Forms)

@@ -8,6 +8,20 @@ CAbstractFormDialogController::CAbstractFormDialogController(CAbstractFormDialog
     m_validator = nullptr;
 }
 
+QString CAbstractFormDialogController::emptyRequiredFields(const FormFieldHashList &fields, const QStringList &names)
+{
+    QString error;
+    for (const QString &name : names)
+    {
+        CFormAbstractField *f = fields.value(name);
+        if (f && f->getValue().toString().isEmpty())
+        {
+            error += QString("%1: %2.\n").arg(tr("Puste pole")).arg(f->getLabel());
+        }
+    }
+    return error;
+}
+
 CAbstractFormDialogController::~CAbstractFormDialogController()
 {
     safe_delete(m_validator);

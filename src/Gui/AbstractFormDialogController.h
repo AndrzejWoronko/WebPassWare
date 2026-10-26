@@ -18,6 +18,10 @@ public:
     // for placement; without this every opened form stayed in memory).
     ~CAbstractFormDialogController();
 
+    // "Puste pole: <label>." for each field of \a names that is empty in
+    // \a fields, in the order of \a names; names not in the form are skipped.
+    static QString emptyRequiredFields(const FormFieldHashList &fields, const QStringList &names);
+
     virtual void restoreDialogState();
     virtual void saveDialogState();
     virtual void setConnections();
