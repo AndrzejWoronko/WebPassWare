@@ -32,6 +32,7 @@ CWebPassWareMainWindow::CWebPassWareMainWindow(CApplication &app, CDatabase &db,
     , m_app(app)
     , m_db(db)
     , m_autoType(autoType)
+    , m_updater(new CMaintenanceTool(this))
     , m_passEntryService(passEntryService)
     , m_passGroupService(passGroupService)
     , m_pass_group_model(nullptr)
@@ -264,6 +265,7 @@ void CWebPassWareMainWindow::setConnections(void)
 // Views follow every change made through the services (dialogs, import, delete).
     connect(m_passEntryService, &PassEntryService::changed, this, &CWebPassWareMainWindow::onEntriesChanged);
     connect(m_passGroupService, &PassGroupService::changed, this, &CWebPassWareMainWindow::onGroupsChanged);
+    connect(m_updater, &CMaintenanceTool::checkFinished, this, &CWebPassWareMainWindow::onUpdateCheckFinished);
 
 //Podłaczenie delegate dla password
     if (m_pass_entry_model)
@@ -685,18 +687,22 @@ void CWebPassWareMainWindow::on_ACTION_DATA_CHECK_triggered()
 
 void CWebPassWareMainWindow::on_ACTION_CHECK_UPDATES_triggered(void)
 {
-    CMaintenanceTool updater;
+    // The check runs in the background; onUpdateCheckFinished() shows the result.
+    m_actions.value(QString("ACTION_CHECK_UPDATES"))->setEnabled(false);
+    m_updater->checkUpdate();
+}
 
-    updater.checkUpdate();
-
-    if (updater.hasUpdate())
+void CWebPassWareMainWindow::onUpdateCheckFinished(bool hasUpdate)
+{
+    m_actions.value(QString("ACTION_CHECK_UPDATES"))->setEnabled(true);
+    if (hasUpdate)
     {
-        if (CMessageBox::YesNoDialog(tr("Dostępne są aktualizacje !!!\n Czy chcesz uruchomić aktualizację ?")) == QMessageBox::Yes)
-            updater.startUpdate();
+        if (CMessageBox::YesNoDialog(tr("Dostępne są aktualizacje !!!\n Czy chcesz uruchomić aktualizację ?"), this) == QMessageBox::Yes)
+            m_updater->startUpdate();
     }
     else
     {
-       CMessageBox::OkDialogInformation(tr("Brak aktualizacji."));
+       CMessageBox::OkDialogInformation(tr("Brak aktualizacji."), this);
     }
 }
 

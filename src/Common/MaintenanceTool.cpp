@@ -57,13 +57,9 @@ void CMaintenanceTool::startMaintenanceTool(StartMode mode)
 
             args.append("check-updates");
 
-            m_process.start(path, args);
-
-            m_process.waitForStarted();
-
+            // Runs in the background; the result comes with checkFinished().
             setState(CMaintenanceTool::Running);
-
-            m_process.waitForFinished();
+            m_process.start(path, args);
         }
         else
         {
@@ -228,10 +224,16 @@ void CMaintenanceTool::processFinished(int exitCode, QProcess::ExitStatus exitSt
         //"
     }
     setState(CMaintenanceTool::NotRunning);
+    emit checkFinished(m_hasUpdate);
 }
 
 void CMaintenanceTool::processError(QProcess::ProcessError error)
 {
     DEBUG_WITH_LINE << error;
     setState(CMaintenanceTool::NotRunning);
+    // Other errors end with finished() as well.
+    if (error == QProcess::FailedToStart)
+    {
+        emit checkFinished(false);
+    }
 }

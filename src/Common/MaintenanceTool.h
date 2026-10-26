@@ -98,6 +98,8 @@ signals:
     void stateChanged(ProcessState state);
     void hasUpdateChanged(bool hasUpdate);
     void updateDetailsChanged(const QString &updateDetails);
+    // checkUpdate() is done; the details are in updateDetails().
+    void checkFinished(bool hasUpdate);
 
 public slots:
     void checkUpdate();

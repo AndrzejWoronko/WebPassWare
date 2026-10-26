@@ -18,6 +18,7 @@
 
 class CApplication;
 class CAutoType;
+class CMaintenanceTool;
 class CDatabase;
 class PassGroupService;
 
@@ -57,6 +58,7 @@ private:
     CApplication &m_app;
     CDatabase &m_db;
     CAutoType &m_autoType;
+    CMaintenanceTool *m_updater;
     PassEntryService *m_passEntryService;
     PassGroupService *m_passGroupService;
 
@@ -116,6 +118,7 @@ public slots:
     void on_ACTION_DATA_IMPORT_DIALOG_triggered();
     void on_ACTION_DATA_CHECK_triggered();
 
+    void onUpdateCheckFinished(bool hasUpdate);
     void onEntriesChanged();
     void onGroupsChanged();
     void on_ACTION_CHECK_UPDATES_triggered(void);
