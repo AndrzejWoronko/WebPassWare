@@ -68,14 +68,24 @@ m_application_info->setHtml(tr( "<html><head/><body>"
                        );
 //m_application_info->setOpenExternalLinks(true);
 
-m_license_info->setText(
-tr("UWAGA!!!\n") +
-tr("Ten program komputerowy dostarczany jest przez autora w formie \"takiej, jaki jest\". ") +
-tr("Autor nie udziela żadnej gwarancji oraz rękojmi, że program będzie działać ") +
-tr("prawidłowo, jest odpowiedniej jakości oraz że spełni oczekiwania ") +
-tr("użytkownika. Autor nie odpowiada za jakiekolwiek straty wynikające z użytkowania ") +
-tr("programu, w tym utratą spodziewanych korzyści, danych, informacji ") +
-tr("gospodarczych lub koszt urządzeń lub programów zastępczych."));
+m_license_info->setPlainText(tr(
+"MIT License\n\n"
+"Copyright (c) 2021 Andrzej Woronko\n\n"
+"Permission is hereby granted, free of charge, to any person obtaining a copy\n"
+"of this software and associated documentation files (the \"Software\"), to deal\n"
+"in the Software without restriction, including without limitation the rights\n"
+"to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n"
+"copies of the Software, and to permit persons to whom the Software is\n"
+"furnished to do so, subject to the following conditions:\n\n"
+"The above copyright notice and this permission notice shall be included in all\n"
+"copies or substantial portions of the Software.\n\n"
+"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
+"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
+"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
+"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
+"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
+"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
+"SOFTWARE."));
 
 m_author_info->setHtml(tr("<html><head/><body>"
                            "<p align=\"left\"><span style=\" font-size:11pt; font-weight:600;\">Andrzej Woronko</span></p>"
