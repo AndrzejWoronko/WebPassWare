@@ -22,6 +22,7 @@ private Q_SLOTS:
     void test_importReadsBack();
     void test_importQuotedFields();
     void test_roundTripSpecialCharacters();
+    void test_exportVariants();
 
 private:
     QString writeFile(const QString &name, const QByteArray &bytes);
@@ -144,6 +145,50 @@ void Test_Csv::test_roundTripSpecialCharacters()
     QVERIFY(csv.readLine());
     QCOMPARE(csv.getBuff(), row);
     QVERIFY(!csv.readLine());
+}
+
+void Test_Csv::test_exportVariants()
+{
+    const QString path = m_dir.filePath("variants.csv");
+    {
+        CExportCsv csv(path, QChar(','), QString("UTF-8"), QChar('.'), true);
+        QVERIFY(csv.getIsOpen());
+        csv.setToDos(false);
+        csv.writeHeader(QStringList() << "a" << "b");
+        csv.writeHeader(QVector<QVariant>() << QVariant(QString("c")) << QVariant(QString("d")));
+        csv.writeLine(QStringList() << "x,y" << "z");
+        csv.writeLine(QString("raw line"));
+        csv.setTextDelimiter(true);
+        csv.writeLine(QStringList() << "p" << "q\"r");
+        csv.writeLine(QVector<QVariant>() << QVariant(QString("s")) << QVariant(1.5) << QVariant(QString("t")));
+        csv.writeHeader(QStringList() << "h1" << "h2");
+        csv.setDelimeter(QChar(';'));
+        csv.setDigitSign(QChar(','));
+        csv.setCodec(QString("UTF-8"));
+        csv.writeLine(QVector<QVariant>() << QVariant(QString("u")) << QVariant(2.5));
+    }
+    QFile file(path);
+    QVERIFY(file.open(QIODevice::ReadOnly));
+    QCOMPARE(QString::fromUtf8(file.readAll()),
+             QString("a,b\n"
+                     "c,d\n"
+                     "\"x,y\",z\n"
+                     "raw line\n"
+                     "\"p\",\"q\"\"r\"\n"
+                     "\"s\",1.5, \"t\"\n"
+                     "\"h1\",\"h2\"\n"
+                     "\"u\";2,5\n"));
+
+    // Without a title row the header is skipped.
+    const QString noTitle = m_dir.filePath("notitle.csv");
+    {
+        CExportCsv csv(noTitle, QChar(';'), QString("UTF-8"), QChar('.'), false, false, false);
+        csv.writeHeader(QStringList() << "a");
+        csv.writeLine(QStringList() << "b");
+    }
+    QFile second(noTitle);
+    QVERIFY(second.open(QIODevice::ReadOnly));
+    QCOMPARE(second.readAll(), QByteArray("b\n"));
 }
 
 QTEST_MAIN(Test_Csv)

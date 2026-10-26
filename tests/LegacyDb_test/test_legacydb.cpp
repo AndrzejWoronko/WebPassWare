@@ -27,6 +27,7 @@ private Q_SLOTS:
     void test_entries();
     void test_listModelsSkipDeletedRows();
     void test_listModelAlignsNumbersRight();
+    void test_listModelHeadersAndExport();
 
 private:
     QTemporaryDir m_dataDir;
@@ -120,6 +121,34 @@ void Test_LegacyDb::test_listModelAlignsNumbersRight()
     const QVariant titleAlignment = entries->data(entries->index(0, titleColumn), Qt::TextAlignmentRole);
     QCOMPARE(idAlignment.toInt(), int(Qt::AlignRight | Qt::AlignVCenter));
     QCOMPARE(titleAlignment.toInt(), int(Qt::AlignLeft | Qt::AlignVCenter));
+}
+
+void Test_LegacyDb::test_listModelHeadersAndExport()
+{
+    QScopedPointer<CSqlModel> entries(PassEntryService(*m_db).getSqlModel());
+    entries->refresh();
+    const int title = entries->columnIndex("m_title");
+    const int group = entries->columnIndex("pass_group_m_name");
+    QVERIFY(title >= 0 && group >= 0);
+    QCOMPARE(entries->getFieldNameByColumn(title), QString("m_title"));
+    QCOMPARE(entries->headerData(title, Qt::Horizontal).toString(), QString::fromUtf8("Tytuł"));
+    QCOMPARE(entries->headerData(title, Qt::Horizontal, Qt::ToolTipRole).toString(), QString::fromUtf8("Tytuł rekordu"));
+    QCOMPARE(entries->rawData(entries->index(0, title)).toString(), QString::fromUtf8("Konto główne"));
+    // The group name comes from the sub-select in the field description.
+    QCOMPARE(entries->data(entries->index(0, group)).toString(), QString::fromUtf8("Bankowość"));
+    QCOMPARE(entries->data(entries->index(1, group)).toString(), QString::fromUtf8("Wszystkie grupy"));
+
+    const QVector<QVariant> header = entries->toVariantRowHeader();
+    QCOMPARE(header.size(), entries->columnCount());
+    QCOMPARE(header.at(title).toString(), QString::fromUtf8("Tytuł"));
+    const QList<QVector<QVariant>> rows = entries->toVariantRowListData();
+    QCOMPARE(rows.size(), 2);
+    QCOMPARE(rows.at(1).at(title).toString(), QString("Poczta"));
+
+    entries->setSort(title, Qt::DescendingOrder);
+    entries->setWhere(QString("m_id_pass_group = 1"));
+    entries->refresh();
+    QCOMPARE(entries->rowCount(), 1);
 }
 
 QTEST_MAIN(Test_LegacyDb)

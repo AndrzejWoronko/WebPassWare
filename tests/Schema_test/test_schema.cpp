@@ -30,6 +30,7 @@ private Q_SLOTS:
     void test_newerDatabaseIsRefused();
     void test_softDeleteWritesOne();
     void test_backupBeforeMigration();
+    void test_missingColumnIsAdded();
 
 private:
     // Opens a fresh copy of the legacy fixture, or an empty file.
@@ -181,6 +182,22 @@ void Test_Schema::test_backupBeforeMigration()
     QFile fixture(QString(FIXTURES_DIR) + "/legacy_qt5.db");
     QVERIFY(fixture.open(QIODevice::ReadOnly));
     QVERIFY(backup.readAll() == fixture.readAll());
+}
+
+void Test_Schema::test_missingColumnIsAdded()
+{
+    // A file whose table lacks a column of the model (an older layout).
+    open(false);
+    QSqlQuery query(m_db->getDb());
+    QVERIFY(query.exec("CREATE TABLE pass_group( id_pass_group INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                       "deleted BOOL NOT NULL DEFAULT FALSE, timestp TIMESTAMP NOT NULL)"));
+    QVERIFY(query.exec("INSERT INTO pass_group (id_pass_group, deleted, timestp) VALUES (5, 0, '2026-01-01')"));
+
+    QString error;
+    QVERIFY2(wpw::Schema::upgrade(*m_db, &error), qPrintable(error));
+    QVERIFY(m_db->getTableFields("pass_group").contains("m_name"));
+    QCOMPARE(rawValue("SELECT COUNT(*) FROM sqlite_master WHERE name = 'pass_group_m_name_idx'").toInt(), 1);
+    QCOMPARE(rawValue("SELECT COUNT(*) FROM pass_group WHERE id_pass_group = 5").toInt(), 1);
 }
 
 QTEST_GUILESS_MAIN(Test_Schema)

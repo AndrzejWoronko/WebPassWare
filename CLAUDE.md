@@ -13,6 +13,8 @@ and Ninja (`CMakePresets.json`: `debug`, `release`, `coverage`).
 scripts/build.sh                  # debug: configure + build + ctest
 scripts/build.sh release --clean
 cmake --preset debug && cmake --build --preset debug && ctest --preset debug
+cmake --preset coverage && cmake --build --preset coverage && ctest --preset coverage
+scripts/coverage.py               # line coverage of wpw_core from gcov (no lcov needed)
 ```
 
 - Qt from `/opt/Qt/6.12.0/gcc_64`, Ninja from `/opt/Qt/Tools/Ninja/ninja` (both in
@@ -45,6 +47,7 @@ Qt Test, one executable per unit, registered in `tests/CMakeLists.txt` via
 - `tst_transactionguard` (`tests/TransactionGuard_test`): commit, rollback, nesting.
 - `tst_csv` (`tests/Csv_test`): CSV export bytes and import per encoding, RFC 4180 quoting
   (`wpw::Csv` in `src/Common/CsvFormat.h`).
+- `tst_core` (`tests/Core_test`): `Tools`, `CSqlField` types, `CCsvModel` (import preview).
 - `tst_masterpassword` (`tests/MasterPassword_test`): PBKDF2 hash, old MD5 form.
 - `tst_logindialog` (`tests/LoginDialog_test`): first-run setup, login, MD5 upgrade.
 - `tst_mainwindow` (`tests/MainWindow_test`): main window on a temporary database with a real
