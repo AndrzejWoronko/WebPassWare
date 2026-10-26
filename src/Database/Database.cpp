@@ -31,11 +31,17 @@ bool CDatabase::hasDatabasePassword()
 {
     // The application's settings file (organisation and name are set by
     // CApplication before the database is used).
-    return !QSettings().value(DATABASE_SETTING_PASSWORD).toString().isEmpty();
+    const QString stored = QSettings().value(DATABASE_SETTING_PASSWORD).toString();
+    // The legacy empty password must go through setup before it is rehashed.
+    return !stored.isEmpty() && !wpw::MasterPassword::verify(QString(), stored);
 }
 
 bool CDatabase::checkDatabasePassword(const QString &passwd)
 {
+    if (passwd.isEmpty())
+    {
+        return false;
+    }
     const QString stored = QSettings().value(DATABASE_SETTING_PASSWORD).toString();
     if (!wpw::MasterPassword::verify(passwd, stored))
     {

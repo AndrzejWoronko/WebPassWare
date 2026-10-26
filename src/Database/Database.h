@@ -60,7 +60,7 @@ public:
     ~CDatabase();
 
     // The master password (salted hash in the settings file, see
-    // wpw::MasterPassword).
+    // wpw::MasterPassword). A legacy empty password requires setup.
     bool hasDatabasePassword();
     // True if \a passwd is the master password; an old MD5 hash is replaced
     // by the new form after a successful check.

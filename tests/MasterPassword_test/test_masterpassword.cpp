@@ -62,7 +62,7 @@ void Test_MasterPassword::test_legacyMd5()
     QVERIFY(wpw::MasterPassword::verify("sekret", stored));
     QVERIFY(!wpw::MasterPassword::verify("inne", stored));
     QVERIFY(wpw::MasterPassword::needsRehash(stored));
-    // An empty password could be set before; it must still open the program.
+    // Recognise the legacy empty password so the login can require setup.
     QVERIFY(wpw::MasterPassword::verify(QString(), legacyMd5(QString())));
 }
 

@@ -45,6 +45,7 @@ private Q_SLOTS:
     void test_changedSignal();
     void test_groupChoicesUseIds();
     void test_databasePasswordUpgradesLegacyHash();
+    void test_legacyEmptyPasswordNeedsSetup();
 
 private:
     void createTables();
@@ -449,6 +450,20 @@ void Test_Service::test_groupChoicesUseIds()
     QCOMPARE(choices.size(), 1);
     QCOMPARE(choices.first().first, idC);
     QCOMPARE(choices.first().second, QString("C"));
+}
+
+void Test_Service::test_legacyEmptyPasswordNeedsSetup()
+{
+    // The Qt 5 version allowed an empty master password (MD5 of "").
+    QSettings().setValue(DATABASE_SETTING_PASSWORD,
+                         QString::fromLatin1(QCryptographicHash::hash(QByteArray(), QCryptographicHash::Md5).toHex()));
+    QVERIFY(!m_db->hasDatabasePassword());
+    QVERIFY(!m_db->checkDatabasePassword(QString()));
+
+    m_db->setDatabasePassword("nowe");
+    QVERIFY(m_db->hasDatabasePassword());
+    QVERIFY(!m_db->checkDatabasePassword(QString()));
+    QVERIFY(m_db->checkDatabasePassword("nowe"));
 }
 
 QTEST_MAIN(Test_Service)
