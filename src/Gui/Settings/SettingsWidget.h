@@ -10,6 +10,9 @@
 #include "SettingsLookController.h"
 #include "SettingsDatabaseViewController.h"
 
+#include <memory>
+#include <vector>
+
 class CApplication;
 class CDatabase;
 
@@ -17,15 +20,16 @@ class SettingsWidget : public QWidget
 {
     Q_OBJECT
 
-    ADD_PTR_PROPERTY(SettingsLookController, m_look_widget, getLookWidget)
-    ADD_PTR_PROPERTY(SettingsDatabaseViewController, m_database_widget, getDatabaseWidget)
-
     ADD_PTR_PROPERTY(QStackedLayout, m_layout, getLayout)
     ADD_PTR_PROPERTY(CListWidget, m_list, getList)
     ADD_PTR_PROPERTY(CVBoxLayout, m_mainLayout, getMainLayout)
     ADD_PTR_PROPERTY(CSplitter, m_splitter, getSplitter)
 
-    void setGraphicElements(QWidget *parent = nullptr);
+    void setGraphicElements();
+    // Adds a page: its entry in the list and its view in the stack, at the
+    // same position (Registry: the list row is the stack index).
+    void addPage(const QString &title, const QString &description, const QString &iconName,
+                 std::unique_ptr<CAbstractSettingsItemController> controller);
     void setGraphicSettings();
     void setConnections();
 
@@ -44,6 +48,7 @@ public:
 private:
     CApplication &m_app;
     CDatabase &m_db;
+    std::vector<std::unique_ptr<CAbstractSettingsItemController>> m_pages;
 };
 
 #endif // SETTINGSWIDGET_H

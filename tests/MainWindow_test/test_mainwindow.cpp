@@ -21,6 +21,7 @@
 #include "PassEntryService.h"
 #include "PassGroupService.h"
 #include "Schema.h"
+#include "SettingsWidget.h"
 #include "TableView.h"
 #include "TestSupport/TestEnvironment.h"
 #include "WebPassWareMainWindow.h"
@@ -62,6 +63,7 @@ private Q_SLOTS:
     void test_editDialogShowsEntryGroup();
     void test_settingsDialogOpensAndCloses();
     void test_closeDialogsOpenAndClose();
+    void test_settingsPagesFollowList();
 
 private:
     // Closes every modal widget that appears; message boxes get \a answer.
@@ -380,6 +382,17 @@ void Test_MainWindow::test_closeDialogsOpenAndClose()
     action("ACTION_GENERATOR_DIALOG")->trigger();
     QCOMPARE(m_closed.size(), 2);
     QCOMPARE(m_window->findChildren<QDialog *>().size(), 0);
+}
+
+void Test_MainWindow::test_settingsPagesFollowList()
+{
+    SettingsWidget settings(m_app, *m_db);
+    QCOMPARE(settings.getList()->count(), 2);
+    QCOMPARE(settings.getLayout()->count(), settings.getList()->count());
+    settings.getList()->setCurrentRow(1);
+    QCOMPARE(settings.getLayout()->currentIndex(), 1);
+    settings.getList()->setCurrentRow(0);
+    QCOMPARE(settings.getLayout()->currentIndex(), 0);
 }
 
 int main(int argc, char **argv)
