@@ -6,14 +6,14 @@
 #include <QSqlRecord>
 #include <QSqlField>
 
-#define FIELD_NULL   0x1
-#define FIELD_KEY    0x2
-#define FIELD_AUTO   0x4
-#define FIELD_FILTER_WHERE 0x8
-#define FIELD_FILTER_HAVING 0x10
-#define FIELD_SELECT_AS_QUOTE 0x20   //Dodanie cudzusłow do selecta '' np select 'adasdfasd' AS '1'
-
 namespace wpw {
+
+inline constexpr qint64 FIELD_NULL = 0x1;
+inline constexpr qint64 FIELD_KEY = 0x2;
+inline constexpr qint64 FIELD_AUTO = 0x4;
+inline constexpr qint64 FIELD_FILTER_WHERE = 0x8;
+inline constexpr qint64 FIELD_FILTER_HAVING = 0x10;
+inline constexpr qint64 FIELD_SELECT_AS_QUOTE = 0x20;  //Dodanie cudzusłow do selecta '' np select 'adasdfasd' AS '1'
 
 class CSqlField
 {

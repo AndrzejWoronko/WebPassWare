@@ -8,13 +8,12 @@
 #include "SqlQuery.h"
 #include "Exception.h"
 
-#define DB_CONNECTION_NAME "WebPassWareDbConnection"
-#define DB_NAME "WebPassWare.db"
-
-#define DATABASE_SETTING QString::fromUtf8("Database/")
-#define DATABASE_SETTING_PASSWORD DATABASE_SETTING + "Password"
-
 namespace wpw {
+
+inline constexpr char DB_CONNECTION_NAME[] = "WebPassWareDbConnection";
+inline constexpr char DB_NAME[] = "WebPassWare.db";
+
+inline constexpr char DATABASE_SETTING_PASSWORD[] = "Database/Password";
 
 class ICDatabase
 {

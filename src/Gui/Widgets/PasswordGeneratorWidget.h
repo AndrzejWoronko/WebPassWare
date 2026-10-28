@@ -10,16 +10,15 @@
 #include <QGroupBox>
 #include "Layouts.h"
 
-#define GENERATOR_SETTING_ENTRY QString::fromUtf8("Generator/")
-#define GENERATOR_SETTING_ENTRY_LENGTH GENERATOR_SETTING_ENTRY + "Length"
-#define GENERATOR_SETTING_ENTRY_UPPER_CASE GENERATOR_SETTING_ENTRY + "UpperCase"
-#define GENERATOR_SETTING_ENTRY_LOWER_CASE GENERATOR_SETTING_ENTRY + "LowerCase"
-#define GENERATOR_SETTING_ENTRY_NUMBERS GENERATOR_SETTING_ENTRY + "Numbers"
-#define GENERATOR_SETTING_ENTRY_SPECIAL_CHARS GENERATOR_SETTING_ENTRY + "SpecialChars"
-#define GENERATOR_SETTING_ENTRY_EXCLUDE_ALIKE GENERATOR_SETTING_ENTRY + "ExcludeAlike"
-#define GENERATOR_SETTING_ENTRY_ENSURE_EVERY GENERATOR_SETTING_ENTRY + "EnsureEvery"
-
 namespace wpw {
+
+inline constexpr char GENERATOR_SETTING_ENTRY_LENGTH[] = "Generator/Length";
+inline constexpr char GENERATOR_SETTING_ENTRY_UPPER_CASE[] = "Generator/UpperCase";
+inline constexpr char GENERATOR_SETTING_ENTRY_LOWER_CASE[] = "Generator/LowerCase";
+inline constexpr char GENERATOR_SETTING_ENTRY_NUMBERS[] = "Generator/Numbers";
+inline constexpr char GENERATOR_SETTING_ENTRY_SPECIAL_CHARS[] = "Generator/SpecialChars";
+inline constexpr char GENERATOR_SETTING_ENTRY_EXCLUDE_ALIKE[] = "Generator/ExcludeAlike";
+inline constexpr char GENERATOR_SETTING_ENTRY_ENSURE_EVERY[] = "Generator/EnsureEvery";
 
 class CPasswordGeneratorWidget : public QWidget
 {

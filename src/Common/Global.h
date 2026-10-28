@@ -163,15 +163,15 @@
 constexpr int RET_OK = 0;
 constexpr int RET_ERROR = -1;
 
-#define DATE_FORMAT "yyyy-MM-dd"
-#define MONTH_FORMAT "yyyy-MM"
-#define YEAR_FORMAT "yyyy"
-#define DATETIME_FORMAT "yyyy-MM-dd HH:mm:ss"
-#define DATETIME_FORMAT_SHORT "yyyy-MM-dd HH:mm"
-#define TIME_FORMAT "HH:mm:ss"
+inline constexpr char DATE_FORMAT[] = "yyyy-MM-dd";
+inline constexpr char MONTH_FORMAT[] = "yyyy-MM";
+inline constexpr char YEAR_FORMAT[] = "yyyy";
+inline constexpr char DATETIME_FORMAT[] = "yyyy-MM-dd HH:mm:ss";
+inline constexpr char DATETIME_FORMAT_SHORT[] = "yyyy-MM-dd HH:mm";
+inline constexpr char TIME_FORMAT[] = "HH:mm:ss";
 //Maksymalna data
-#define MAX_DATE "2069-12-31"
-#define MAX_DATE_TIME "2069-12-31 23:59:59"
+inline constexpr char MAX_DATE[] = "2069-12-31";
+inline constexpr char MAX_DATE_TIME[] = "2069-12-31 23:59:59";
 
 
 #define QFUNC_INFO_WITH_LINE Q_FUNC_INFO << ":[" << __LINE__ << "]"
@@ -198,11 +198,11 @@ typedef struct
 
 Q_DECLARE_METATYPE(STDecimal)
 
-#define ICONS_PATH ":/icons/50px"
-#define STYLE_PATH ":/style"
+inline constexpr char ICONS_PATH[] = ":/icons/50px";
+inline constexpr char STYLE_PATH[] = ":/style";
 #define ICON(name) QString(name)
-#define BUTTON_ICON_MIN_SIZE_DX 22
-#define BUTTON_ICON_MIN_SIZE_DY 22
+inline constexpr int BUTTON_ICON_MIN_SIZE_DX = 22;
+inline constexpr int BUTTON_ICON_MIN_SIZE_DY = 22;
 
 
 typedef double Price;

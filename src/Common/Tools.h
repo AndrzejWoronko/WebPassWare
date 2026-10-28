@@ -7,9 +7,9 @@
 #include <QtMath>
 #include <QtGlobal>
 
-#define DIGIT_ONLY_REG_EXP "^[0-9]*$"
-
 namespace wpw {
+
+inline constexpr char DIGIT_ONLY_REG_EXP[] = "^[0-9]*$";
 
 class Tools
 {

@@ -12,7 +12,7 @@
 
 namespace wpw {
 
-static_assert(N_MOD_INDICES == Mod5MapIndex + 1, "N_MOD_INDICES must cover the X11 modifier indices");
+static_assert(wpw::N_MOD_INDICES == Mod5MapIndex + 1, "N_MOD_INDICES must cover the X11 modifier indices");
 
 class CAutoTypeExecturorLinux : public CAutoTypeExecutor
 {

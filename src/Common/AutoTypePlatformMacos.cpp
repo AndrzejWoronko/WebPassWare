@@ -4,7 +4,7 @@
 
 #ifdef Q_OS_MACOS //Macos
 
-#define INVALID_KEYCODE 0xFFFF
+inline constexpr int INVALID_KEYCODE = 0xFFFF;
 
 namespace wpw {
 

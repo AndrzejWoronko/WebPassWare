@@ -42,8 +42,8 @@ public:
 
 #define LOG_APP Qt::endl(CAppLogger::getInstance()) << LOG_DATE_LINE
 
-#define LOG_DIR      "logi"
-#define SQL_LOG_FILE "sql"
+inline constexpr char LOG_DIR[] = "logi";
+inline constexpr char SQL_LOG_FILE[] = "sql";
 
 class CSqlLogger: public CLogger, public Singleton<CSqlLogger>
 {

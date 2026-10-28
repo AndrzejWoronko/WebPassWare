@@ -169,6 +169,10 @@ which `main.cpp` sets to the busy mouse cursor.
   `main.cpp` use `using namespace wpw;`). Only `Global.h` stays global: its typedefs
   and `Q_DECLARE_METATYPE` must be. Existing classes keep the `C` prefix; new classes
   have none. Members `m_camelCase`, slots `onXxx`; always braces; `nullptr`.
+- Constants as `inline constexpr` (`inline constexpr char DATE_FORMAT[] = "yyyy-MM-dd";`),
+  not `#define`. Macros only where the preprocessor is needed: expressions with
+  `__LINE__` / `Q_FUNC_INFO` (`DEBUG_WITH_LINE`, `LOG_APP`), include guards, `windows.h`
+  configuration (`NOMINMAX`) and SDK names that may already be macros (`MOD_NOREPEAT`).
 - `metaObject()->className()` includes the namespace (`wpw::PassEntry`); the ORM strips
   it for table names (`COrmObject::tableNameOf`).
 - User-visible strings through `tr()` (source strings in Polish). New and changed

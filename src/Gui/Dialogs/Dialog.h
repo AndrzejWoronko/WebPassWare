@@ -6,9 +6,9 @@
 #include <QDialog>
 #include <QCloseEvent>
 
-#define DEFAULT_SAVE_NAMESECTION "RuntimeSettings"
-
 namespace wpw {
+
+inline constexpr char DEFAULT_SAVE_NAMESECTION[] = "RuntimeSettings";
 
 class CDialog : public QDialog
 {

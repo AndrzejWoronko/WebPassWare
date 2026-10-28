@@ -6,13 +6,13 @@
 #include <QVariant>
 #include <QLabel>
 
-#define FORM_FIELD_FG_EDIT_COLOR "#000000"
-#define FORM_FIELD_BG_EDIT_COLOR "#ffffc8"
-#define FORM_FIELD_BG_NOEDIT_COLOR "#ffffff"
-
-#define FORM_FIELD_EDIT_STYLE "* {color: rgb( 0, 0, 0); background-color: rgb(255, 255, 200)}"
 namespace wpw {
 
+inline constexpr char FORM_FIELD_FG_EDIT_COLOR[] = "#000000";
+inline constexpr char FORM_FIELD_BG_EDIT_COLOR[] = "#ffffc8";
+inline constexpr char FORM_FIELD_BG_NOEDIT_COLOR[] = "#ffffff";
+
+inline constexpr char FORM_FIELD_EDIT_STYLE[] = "* {color: rgb( 0, 0, 0); background-color: rgb(255, 255, 200)}";
 /**
    * @brief The CFormAbstractField class - bazowe pole formatki
 */

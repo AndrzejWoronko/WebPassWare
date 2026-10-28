@@ -23,10 +23,10 @@ typedef unsigned char KeyCode;
 struct _XkbDesc;
 typedef struct _XkbDesc *XkbDescPtr;
 
-// Mod5MapIndex + 1 (checked in the .cpp).
-#define N_MOD_INDICES 8
-
 namespace wpw {
+
+// Mod5MapIndex + 1 (checked in the .cpp).
+inline constexpr int N_MOD_INDICES = 8;
 
 class CAutoTypePlatformLinux : public QObject, public CAutoTypePlatform
 {

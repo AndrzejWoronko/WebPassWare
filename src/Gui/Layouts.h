@@ -8,19 +8,19 @@
 #include <QGridLayout>
 #include <QFormLayout>
 
+namespace wpw {
+
 #ifdef Q_WS_WIN
 
-#define DEFAULT_LAYOUT_SPACING  6
-#define DEFAULT_LAYOUT_MARGIN   11
+inline constexpr int DEFAULT_LAYOUT_SPACING = 6;
+inline constexpr int DEFAULT_LAYOUT_MARGIN = 11;
 
 #else
 
-#define DEFAULT_LAYOUT_SPACING  6
-#define DEFAULT_LAYOUT_MARGIN   9
+inline constexpr int DEFAULT_LAYOUT_SPACING = 6;
+inline constexpr int DEFAULT_LAYOUT_MARGIN = 9;
 
 #endif
-
-namespace wpw {
 
 class CVBoxLayout : public QVBoxLayout
 {
