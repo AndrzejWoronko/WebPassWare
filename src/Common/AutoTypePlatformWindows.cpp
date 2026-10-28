@@ -5,8 +5,8 @@
 
 #include <VersionHelpers.h>
 
-inline constexpr int HOTKEY_ID = 1;
-inline constexpr int MAX_WINDOW_TITLE_LENGTH = 1024;
+constexpr int HOTKEY_ID = 1;
+constexpr int MAX_WINDOW_TITLE_LENGTH = 1024;
 // Missing in older MinGW headers; a macro, like in the Windows SDK.
 #ifndef MOD_NOREPEAT
 #define MOD_NOREPEAT 0x4000

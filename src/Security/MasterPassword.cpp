@@ -10,9 +10,9 @@ namespace wpw::MasterPassword {
 
 namespace {
 
-constexpr int kSaltBytes = 16;
-constexpr int kKeyBytes = 32;
-const QString kScheme = QStringLiteral("pbkdf2-sha256");
+inline constexpr int kSaltBytes = 16;
+inline constexpr int kKeyBytes = 32;
+inline const QString kScheme = QStringLiteral("pbkdf2-sha256");
 
 QByteArray derive(const QString &password, const QByteArray &salt, int iterations)
 {

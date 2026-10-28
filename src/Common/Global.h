@@ -160,8 +160,8 @@
         list.clear(); \
     } while (0)
 
-constexpr int RET_OK = 0;
-constexpr int RET_ERROR = -1;
+inline constexpr int RET_OK = 0;
+inline constexpr int RET_ERROR = -1;
 
 inline constexpr char DATE_FORMAT[] = "yyyy-MM-dd";
 inline constexpr char MONTH_FORMAT[] = "yyyy-MM";
@@ -236,4 +236,3 @@ Q_DECLARE_METATYPE(SqlValue)
 #define BZERO_REF(a) memset(&a, 0, sizeof(a));
 
 #endif // GLOBAL_H
-

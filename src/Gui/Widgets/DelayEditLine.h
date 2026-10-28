@@ -7,7 +7,7 @@
 
 namespace wpw {
 
-constexpr int DELAY_EDIT_LINE_MS = 300;
+inline constexpr int DELAY_EDIT_LINE_MS = 300;
 
 class CDelayEditLine : public QLineEdit
 {

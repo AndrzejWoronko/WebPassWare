@@ -11,7 +11,7 @@ namespace wpw::MasterPassword {
 // Older versions stored an unsalted MD5 hex digest; it is still accepted so
 // that existing users can log in, and is replaced at the next login.
 
-constexpr int kIterations = 100000;
+inline constexpr int kIterations = 100000;
 
 QString hash(const QString &password);
 bool verify(const QString &password, const QString &stored);

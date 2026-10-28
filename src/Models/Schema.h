@@ -12,7 +12,7 @@ namespace wpw::Schema {
 // Version of the database file, kept in PRAGMA user_version. Files of the
 // Qt 5 versions have 0. Bump it and append a step to the migrations in
 // Schema.cpp for every change of the stored data.
-constexpr int kVersion = 1;
+inline constexpr int kVersion = 1;
 
 // Brings the database to kVersion: copies a file with data to
 // <file>.bak-v<old version>, creates missing tables, columns and indexes,
