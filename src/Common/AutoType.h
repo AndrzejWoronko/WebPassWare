@@ -9,6 +9,8 @@
 
 #include <memory>
 
+namespace wpw {
+
 class CAutoTypeAction;
 class CAutoTypeExecutor;
 
@@ -69,5 +71,7 @@ private:
 
     Q_DISABLE_COPY(CAutoType)
 };
+
+} // namespace wpw
 
 #endif // CAUTOTYPE_H

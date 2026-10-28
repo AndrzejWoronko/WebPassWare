@@ -1,6 +1,8 @@
 #include "Layouts.h"
 #include "Application.h"
 
+namespace wpw {
+
 CVBoxLayout::CVBoxLayout(QWidget *parent) : QVBoxLayout(parent)
 {
     int spacing = CApplicationSettings().getValue(SETTINGS_GUI_LAYOUT_SPACING, DEFAULT_LAYOUT_SPACING).toInt();
@@ -36,3 +38,5 @@ CFormLayout::CFormLayout(QWidget *parent) : QFormLayout(parent)
     this->setSpacing(spacing);
     this->setContentsMargins(margin, margin, margin, margin);
 }
+
+} // namespace wpw

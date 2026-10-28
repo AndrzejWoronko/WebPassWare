@@ -6,6 +6,8 @@
 #include "OrmService.h"
 #include "PassGroup.h"
 
+namespace wpw {
+
 // Emits changed() after every successful change, so views can refresh.
 class PassGroupService : public QObject, public COrmService<PassGroup>
 {
@@ -30,5 +32,7 @@ public:
     // (id, name) of the groups that are not deleted, by id.
     QList<QPair<qint64, QString>> getGroupChoices(void);
 };
+
+} // namespace wpw
 
 #endif // PASSGROUPSERVICE_H

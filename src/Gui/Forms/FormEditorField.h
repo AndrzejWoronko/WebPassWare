@@ -8,6 +8,8 @@
 
 #include "FormAbstractField.h"
 
+namespace wpw {
+
 class CFormEditorField : public QTextEdit, public CFormAbstractField
 {
     Q_OBJECT
@@ -38,5 +40,7 @@ signals:
     void keyF11();
     void keyF12();
 };
+
+} // namespace wpw
 
 #endif // FORMEDITORFIELD_H

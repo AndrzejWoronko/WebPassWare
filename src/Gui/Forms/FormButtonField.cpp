@@ -1,5 +1,7 @@
 #include "FormButtonField.h"
 
+namespace wpw {
+
   CFormButtonField::CFormButtonField(const QString &variableName, const QString &label, QVariant value, QWidget *parent):
     QPushButton(parent), CFormAbstractField(QMetaType::QString, variableName, label, value)
   {
@@ -26,3 +28,5 @@
   {
 
   }
+
+} // namespace wpw

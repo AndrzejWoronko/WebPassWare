@@ -1,6 +1,8 @@
 #include "AbstractDialogStateManager.h"
 #include <memory>
 
+namespace wpw {
+
 CAbstractDialogStateManager::CAbstractDialogStateManager()
 {
     //m_dialogState = new CDialogState();
@@ -16,3 +18,5 @@ CAbstractDialogStateManager::~CAbstractDialogStateManager()
     DEBUG_WITH_LINE << "QScopedPointer destructor";
 }
 */
+
+} // namespace wpw

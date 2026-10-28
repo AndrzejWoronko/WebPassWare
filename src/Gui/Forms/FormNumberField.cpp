@@ -7,6 +7,9 @@ UWAGA !!! Dla LongLong stosujemy CFormNumberField ze względu na większy zakres
 UWAGA !!! Dla pola CFormNumberField z uwagi na precyzję nie można uzyskać wartości 0
 
 ***/
+
+namespace wpw {
+
 CFormNumberIntField::CFormNumberIntField(const QString &variableName, const QString &label, QVariant value, int minimum, bool readOnly,
                                    const QString &prefix, const QString &suffix, QWidget *parent) :
         QSpinBox(parent), CFormAbstractField(QMetaType::Int, variableName, label, value)
@@ -256,3 +259,5 @@ CFormIndicatorField::CFormIndicatorField(const QString &variableName, const QStr
 {
 
 }
+
+} // namespace wpw

@@ -5,6 +5,8 @@
 #include "AbstractCloseDialog.h"
 
 
+namespace wpw {
+
 class CAboutDialog : public CAbstractCloseDialog
 {
 
@@ -45,5 +47,7 @@ private:
     void createTabWidget();
     void setValues();
 };
+
+} // namespace wpw
 
 #endif // ABOUTDIALOG_H

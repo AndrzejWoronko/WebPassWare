@@ -4,6 +4,8 @@
 
 #import <AppKit/AppKit.h>
 
+namespace wpw {
+
 //
 // Activate (bring to front) the application owning the given process id
 //
@@ -34,5 +36,7 @@ bool macUtilsRaiseOwnApp()
     [NSApp unhide:nil];
     return [[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateIgnoringOtherApps];
 }
+
+} // namespace wpw
 
 #endif

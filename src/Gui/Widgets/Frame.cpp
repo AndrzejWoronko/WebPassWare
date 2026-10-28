@@ -1,5 +1,7 @@
 #include "Frame.h"
 
+namespace wpw {
+
 CFrame::CFrame(QWidget *parent, Qt::WindowFlags f) : QFrame(parent, f)
 {
     setFrameShape(QFrame::StyledPanel);
@@ -17,3 +19,5 @@ CVLine::CVLine(QWidget *parent, Qt::WindowFlags f) : QFrame(parent, f)
     setFrameShape(QFrame::VLine);
     setFrameShadow(QFrame::Sunken);
 }
+
+} // namespace wpw

@@ -5,6 +5,8 @@
 CButtonPrivate Class
 *************************************************************/
 
+namespace wpw {
+
 CButtonPrivate::CButtonPrivate(const QString &text, const QString &tipText, const QString &icon, QSize shape)
 {
     m_text = text;
@@ -86,3 +88,5 @@ QString CButton::getText(void)
 {
     return m_structure.getText();
 }
+
+} // namespace wpw

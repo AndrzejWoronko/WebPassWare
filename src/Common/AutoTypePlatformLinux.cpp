@@ -10,6 +10,8 @@
 #include <X11/Xutil.h>
 #include <X11/extensions/XTest.h>
 
+namespace wpw {
+
 static_assert(N_MOD_INDICES == Mod5MapIndex + 1, "N_MOD_INDICES must cover the X11 modifier indices");
 
 class CAutoTypeExecturorLinux : public CAutoTypeExecutor
@@ -650,5 +652,7 @@ void CAutoTypeExecturorLinux::execKey(CAutoTypeKey* action)
 {
   m_platform->sendKey(qtToNativeKeyCode(action->m_key));
 }
+
+} // namespace wpw
 
 #endif

@@ -11,6 +11,8 @@
 #define FORM_FIELD_BG_NOEDIT_COLOR "#ffffff"
 
 #define FORM_FIELD_EDIT_STYLE "* {color: rgb( 0, 0, 0); background-color: rgb(255, 255, 200)}"
+namespace wpw {
+
 /**
    * @brief The CFormAbstractField class - bazowe pole formatki
 */
@@ -50,5 +52,7 @@ typedef QString (*validateFunc)(FormFieldList); //Typ funkcji walidującej dane 
 
 typedef QHash<QString, CFormAbstractField*> FormFieldHashList;
 typedef QString (*validateFuncHash)(FormFieldHashList); //Typ funkcji walidującej dane z listy QHash
+
+} // namespace wpw
 
 #endif // FORMABSTRACTFIELD_H

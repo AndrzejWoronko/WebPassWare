@@ -1,5 +1,7 @@
 #include "FormEditorField.h"
 
+namespace wpw {
+
 CFormEditorField::CFormEditorField(const QString &variableName, const QString &label, QString value, bool readOnly, QWidget *parent) :
         QTextEdit(value, parent), CFormAbstractField(QMetaType::QString, variableName, label, value)
 {
@@ -97,3 +99,5 @@ void CFormEditorField::keyPressEvent(QKeyEvent *event)
       }
   }
 }
+
+} // namespace wpw

@@ -8,6 +8,8 @@
 #include "Label.h"
 #include "AbstractDialogStateManager.h"
 
+namespace wpw {
+
 class CDatabase;
 
 class CLoginDialog : public CDialog, public CAbstractDialogStateManager
@@ -49,5 +51,7 @@ private slots:
 
 
 };
+
+} // namespace wpw
 
 #endif // CLOGINDIALOG_H

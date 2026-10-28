@@ -9,6 +9,8 @@
 #include <QHeaderView>
 #include <QContextMenuEvent>
 
+namespace wpw {
+
 class CTableView :public QTableView
 {
     Q_OBJECT
@@ -68,5 +70,7 @@ signals:
     void keyF11();
     void keyF12();
 };
+
+} // namespace wpw
 
 #endif // TABLEVIEW_H

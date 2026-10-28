@@ -20,6 +20,8 @@
 
 #endif
 
+namespace wpw {
+
 CAutoType::CAutoType(std::unique_ptr<CAutoTypePlatform> platform, QObject* parent)
     : QObject(parent)
     , m_inAutoType(false)
@@ -560,3 +562,5 @@ QString CAutoType::autoTypeSequence(const Entry* entry)
     }
     return sequence;
 }
+
+} // namespace wpw

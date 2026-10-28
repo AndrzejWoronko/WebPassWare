@@ -4,6 +4,8 @@
 #include "Global.h"
 #include "OrmObject.h"
 
+namespace wpw {
+
 class PassGroup : public COrmObject<PassGroup>
 {
     Q_OBJECT
@@ -17,5 +19,7 @@ public:
         ADD_SQL_INDEX("m_name", "m_name")
     }
 };
+
+} // namespace wpw
 
 #endif // PASSGROUP_H

@@ -1,5 +1,7 @@
 #include "FormYesNoChoiceField.h"
 
+namespace wpw {
+
 CFormYesNoChoiceField::CFormYesNoChoiceField(const QString &variableName, const QString &label, bool value, QWidget *parent) :
 CFormSimpleIndexChoiceField(variableName, label, value, QStringList(), parent)
 {
@@ -9,3 +11,5 @@ CFormSimpleIndexChoiceField(variableName, label, value, QStringList(), parent)
    this->setValueList(m_valueList);
    this->setMaxVisibleItems(2);
 }
+
+} // namespace wpw

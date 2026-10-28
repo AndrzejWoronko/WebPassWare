@@ -1,5 +1,7 @@
 #include "PassGroupDialog.h"
 
+namespace wpw {
+
 PassGroupDialog::PassGroupDialog(QWidget *parent) :
     CAbstractFormDialog(QString("PASS_GROUP_DIALOG"), parent)
 {
@@ -23,3 +25,5 @@ void PassGroupDialog::addComponents()
     getFormLayout()->setColumnStretch(2, 2);
     setDialogWidget();
 }
+
+} // namespace wpw

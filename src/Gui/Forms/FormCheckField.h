@@ -5,6 +5,8 @@
 #include "FormAbstractField.h"
 #include <QCheckBox>
 
+namespace wpw {
+
 class CFormCheckField : public QCheckBox, public CFormAbstractField
 {
 
@@ -18,5 +20,7 @@ class CFormCheckField : public QCheckBox, public CFormAbstractField
     void setReadOnly();
     void setReadWrite();
 };
+
+} // namespace wpw
 
 #endif // CHECKFIELD_H

@@ -1,6 +1,8 @@
 #include "Action.h"
 #include "Style.h"
 
+namespace wpw {
+
 CAction::CAction(QObject *parent) : QAction(parent)
 {
     m_actionName = QString();
@@ -100,3 +102,5 @@ QString CAction::getActionIcon()
         iconPath = QString("%1/%2.png").arg(ICONS_PATH).arg(m_iconName);
     return iconPath;
 }
+
+} // namespace wpw

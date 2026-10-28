@@ -5,6 +5,8 @@
 #include <QStyledItemDelegate>
 #include <QAbstractItemModel>
 
+namespace wpw {
+
 class PasswordFormatDelegate : public QStyledItemDelegate
 {
 
@@ -13,5 +15,7 @@ public:
     virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 };
+
+} // namespace wpw
 
 #endif // PASSWORDFORMATDELEGATE_H

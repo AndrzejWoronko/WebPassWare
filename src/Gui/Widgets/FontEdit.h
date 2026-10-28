@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QToolButton>
 
+namespace wpw {
+
 class CFontEdit : public QWidget
 {
     Q_OBJECT
@@ -40,5 +42,7 @@ signals:
     void fontChanged(const QFont& font);
     void fontSizeChanged(int size);
 };
+
+} // namespace wpw
 
 #endif // CFONTEDIT_H

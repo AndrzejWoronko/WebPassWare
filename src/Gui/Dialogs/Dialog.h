@@ -8,6 +8,8 @@
 
 #define DEFAULT_SAVE_NAMESECTION "RuntimeSettings"
 
+namespace wpw {
+
 class CDialog : public QDialog
 {
   Q_OBJECT
@@ -23,5 +25,6 @@ public slots:
 
 };
 
+} // namespace wpw
 
 #endif

@@ -61,6 +61,8 @@ Commands:
 
 */
 
+namespace wpw {
+
 class CMaintenanceTool : public QObject
 {
     Q_OBJECT
@@ -122,5 +124,7 @@ private:
 
     void setState(ProcessState state);
 };
+
+} // namespace wpw
 
 #endif // CMAINTENANCETOOL_H

@@ -4,6 +4,8 @@
 #include "Global.h"
 #include <QAbstractTableModel>
 
+namespace wpw {
+
 class CImportCsv;
 
 using IQAbstractTableModel = QAbstractTableModel;
@@ -42,5 +44,7 @@ class CCsvModel : public IQAbstractTableModel
     QStringList m_title;
     void readFile();
 };
+
+} // namespace wpw
 
 #endif // CCSVMODEL_H

@@ -3,6 +3,8 @@
 
 #include "Global.h"
 
+namespace wpw {
+
 class CException : public std::exception
 {
     ADD_FIELD(QString, m_komunikat, getMessage, setMessage)
@@ -12,5 +14,7 @@ public:
     CException();
     CException(const QString &metoda, const QString &kom = QString(""));
 };
+
+} // namespace wpw
 
 #endif // CEXCEPTION_H

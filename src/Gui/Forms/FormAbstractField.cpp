@@ -1,6 +1,8 @@
 #include "FormAbstractField.h"
 
 
+namespace wpw {
+
 CFormAbstractField::CFormAbstractField(QMetaType::Type type, const QString &variableName, const QString &label, QVariant value):
                                        m_type(type),
                                        m_variableName(variableName),
@@ -56,3 +58,5 @@ void CFormAbstractField::select()
 {
 
 }
+
+} // namespace wpw

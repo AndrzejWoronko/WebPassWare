@@ -5,6 +5,8 @@
 #include "AbstractFormWidget.h"
 #include <QScrollArea>
 
+namespace wpw {
+
 class CAbstractSettingsItemView : public QWidget
 {
     Q_OBJECT
@@ -47,5 +49,7 @@ public slots:
     void emitChangesWereMade();
 
 };
+
+} // namespace wpw
 
 #endif // CABSTRACTSETTINGSITEMVIEW_H

@@ -26,6 +26,8 @@
    * @brief The CForm class - uniwersalna formatka do wprowadzania danych
    */
 
+namespace wpw {
+
 class CForm : public QWidget
 {
     Q_OBJECT
@@ -110,5 +112,6 @@ class CForm : public QWidget
     CGridLayout *m_grid;
 };
 
+} // namespace wpw
 
 #endif // FORM_H

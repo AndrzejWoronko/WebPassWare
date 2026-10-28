@@ -8,6 +8,8 @@
 #include "TableView.h"
 #include <QStackedWidget>
 
+namespace wpw {
+
 class CCsvImportDialog : public CDialog
 {
     Q_OBJECT
@@ -59,5 +61,7 @@ private:
 
     CVBoxLayout *m_VLayoutDialog;  //Do dialogu
 };
+
+} // namespace wpw
 
 #endif // CCSVIMPORTDIALOG_H

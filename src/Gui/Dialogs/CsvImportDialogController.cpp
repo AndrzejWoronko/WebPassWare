@@ -6,6 +6,8 @@
 #include "TransactionGuard.h"
 #include "CsvCodec.h"
 
+namespace wpw {
+
 CCsvImportDialogController::CCsvImportDialogController(PassEntryService *passEntryService, QWidget *parent) :
     QObject(parent),
     m_passEntryService(passEntryService)
@@ -302,3 +304,5 @@ void CCsvImportDialogController::onReject()
 {
     m_dialog->reject();
 }
+
+} // namespace wpw

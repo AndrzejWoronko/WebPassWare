@@ -1,5 +1,7 @@
 #include "PasswordGenerateDialog.h"
 
+namespace wpw {
+
 CPasswordGenerateDialog::CPasswordGenerateDialog(QWidget *parent) : CAbstractCloseDialog(QString("PASS_GEN_DIALOG"), parent)
 {
     this->setWindowTitle(tr("Generator haseł"));
@@ -22,3 +24,5 @@ void CPasswordGenerateDialog::addComponents()
     m_pass_gen_widget->getAcceptButton()->setVisible(false);
     setDialogWidget();
 }
+
+} // namespace wpw

@@ -5,6 +5,8 @@
 
 // Mayers singleton template class
 
+namespace wpw {
+
 template<typename T>
 class Singleton
 {
@@ -15,5 +17,7 @@ public:
         return uniqueInstance;
     }
 };
+
+} // namespace wpw
 
 #endif // SINGLETON_H

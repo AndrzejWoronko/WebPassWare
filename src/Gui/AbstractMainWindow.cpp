@@ -5,6 +5,8 @@
 #include <QGuiApplication>
 #include <QScreen>
 
+namespace wpw {
+
 CAbstractMainWindow::CAbstractMainWindow(const QString &name,QWidget *parent) :
         QMainWindow(parent), CAbstractDialogStateManager(), m_main_window_name(name)
 {
@@ -149,3 +151,5 @@ void CAbstractMainWindow::on_ACTION_EXIT_triggered()
     saveDialogState();
     close();
 }
+
+} // namespace wpw

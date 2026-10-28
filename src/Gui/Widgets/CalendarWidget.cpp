@@ -1,5 +1,7 @@
 #include "CalendarWidget.h"
 
+namespace wpw {
+
 CCalendarWidget::CCalendarWidget(QWidget * parent) : QCalendarWidget(parent)
 {
     this->setMinimumDate(QDate(1900, 1, 1));
@@ -8,3 +10,5 @@ CCalendarWidget::CCalendarWidget(QWidget * parent) : QCalendarWidget(parent)
     this->setFirstDayOfWeek(Qt::Monday);
     this->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
 }
+
+} // namespace wpw

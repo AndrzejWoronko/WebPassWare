@@ -9,6 +9,8 @@
 //action slot name :
 // on_ACTION_NAME_triggered()
 
+namespace wpw {
+
 class CAction : public QAction
 {
       Q_OBJECT
@@ -29,5 +31,7 @@ class CAction : public QAction
 
 
 };
+
+} // namespace wpw
 
 #endif

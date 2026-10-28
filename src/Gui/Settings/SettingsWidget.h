@@ -13,6 +13,8 @@
 #include <memory>
 #include <vector>
 
+namespace wpw {
+
 class CApplication;
 class CDatabase;
 
@@ -50,5 +52,7 @@ private:
     CDatabase &m_db;
     std::vector<std::unique_ptr<CAbstractSettingsItemController>> m_pages;
 };
+
+} // namespace wpw
 
 #endif // SETTINGSWIDGET_H

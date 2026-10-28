@@ -6,6 +6,8 @@
 #include "AutoTypePlatformTest.h"
 #ifdef Q_OS_LINUX
 #include "AutoTypePlatformLinux.h"
+
+using namespace wpw;
 #endif
 
 class Test_AutoType : public QObject

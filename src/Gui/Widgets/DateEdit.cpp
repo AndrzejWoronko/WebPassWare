@@ -1,5 +1,7 @@
 #include "DateEdit.h"
 
+namespace wpw {
+
 CDateEdit::CDateEdit(QWidget * parent) : QDateEdit(parent)
 {
     this->setDate(QDate::currentDate());
@@ -53,3 +55,5 @@ void CMonthEdit::setMonth(const QDate &date)
     DEBUG_WITH_LINE << "Month changed: " << d;
     emit monthChanged(d);
 }
+
+} // namespace wpw

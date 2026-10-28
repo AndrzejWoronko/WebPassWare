@@ -10,6 +10,8 @@
 #include "FormTextField.h"
 #include "AbstractFormDialogController.h"
 
+using namespace wpw;
+
 // isDirty() compares the start value with the widget value as QVariants.
 // Dialogs restore both from QSettings, which hands strings back, so these
 // tests pin that an untouched field restored this way is not dirty.

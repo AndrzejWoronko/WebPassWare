@@ -1,5 +1,7 @@
 #include "AbstractSettingsItemView.h"
 
+namespace wpw {
+
 CAbstractSettingsItemView::CAbstractSettingsItemView(const QString &title, QWidget *parent) : QWidget (parent)
 {
     m_fields.clear();
@@ -72,3 +74,5 @@ void CAbstractSettingsItemView::emitChangesWereMade()
 {
     emit changesWereMade();
 }
+
+} // namespace wpw

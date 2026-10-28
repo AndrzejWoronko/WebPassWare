@@ -7,6 +7,8 @@
 #include "FormAbstractField.h"
 
 
+namespace wpw {
+
 class CFormDateField : public CDateEdit, public CFormAbstractField
 {
 
@@ -23,5 +25,6 @@ class CFormDateField : public CDateEdit, public CFormAbstractField
     void setReadWrite();
 };
 
+} // namespace wpw
 
 #endif // FORMDATEFIELD_H

@@ -7,6 +7,8 @@
 #include "AbstractDialogStateManager.h"
 #include "SqlModel.h"
 
+namespace wpw {
+
 class CCsvExportDialogController : public QObject, public CAbstractDialogStateManager
 {
     Q_OBJECT
@@ -37,5 +39,7 @@ public slots:
     void onAccept();
     void onReject();
 };
+
+} // namespace wpw
 
 #endif // CCsvExportDialogCONTROLLER_H

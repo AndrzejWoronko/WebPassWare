@@ -1,6 +1,8 @@
 #include "CsvModel.h"
 #include "ImportCsv.h"
 
+namespace wpw {
+
 CCsvModel::CCsvModel(const QString &fileName, QObject *parent) :
     QAbstractTableModel(parent), m_fileName(fileName), m_columns(0), m_fromLine(0)
 {
@@ -146,3 +148,5 @@ QVariant CCsvModel::getValueForImport(int row, const QString &column)
     else
         return QVariant();
 }
+
+} // namespace wpw

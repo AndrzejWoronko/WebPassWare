@@ -4,6 +4,8 @@
 #include "ExportCsv.h"
 #include "Application.h"
 
+namespace wpw {
+
 CCsvExportDialogController::CCsvExportDialogController(CSqlModel *model, QWidget *parent) :
     QObject(parent), m_model(model)
 {
@@ -134,3 +136,5 @@ void CCsvExportDialogController::onReject()
 {
     m_dialog->reject();
 }
+
+} // namespace wpw

@@ -3,6 +3,8 @@
 #include "PassGroupService.h"
 #include "MessageBox.h"
 
+namespace wpw {
+
 PassEntryDialogController::PassEntryDialogController(PassEntryService *passEntryService, PassGroupService *passGroupService, QWidget *parent) :
     CAbstractFormDialogController(new PassEntryDialog(parent), parent),
     m_passEntryService(passEntryService),
@@ -179,3 +181,5 @@ void PassEntryDialogController::setGenPassword(const QString& password)
     if (f)
         f->setValue(password);
 }
+
+} // namespace wpw

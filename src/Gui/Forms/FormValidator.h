@@ -5,6 +5,8 @@
 #include "FormAbstractField.h"
 #include "Form.h"
 
+namespace wpw {
+
 class CFormValidator
 {
 public:
@@ -21,5 +23,7 @@ private:
     validateFuncHash m_validateCallback;
     validateFuncHash m_validateEmpty;
 };
+
+} // namespace wpw
 
 #endif // FORMVALIDATOR_H

@@ -3,6 +3,8 @@
 
 #include "Global.h"
 
+namespace wpw {
+
 class CExportCsv
 {
     ADD_PTR(QFile, m_file, getFile)
@@ -41,5 +43,7 @@ private:
     bool m_todos;
     QString m_end_of_line;
 };
+
+} // namespace wpw
 
 #endif // CEXPORTCSV_H

@@ -5,6 +5,8 @@
 #include <QTabWidget>
 #include <QTabBar>
 
+namespace wpw {
+
 class CTabWidget : public QTabWidget
 {
 
@@ -37,5 +39,7 @@ public slots:
     void closeTab(int index);
     void showTab(int index);
 };
+
+} // namespace wpw
 
 #endif // CTABWIDGET_H

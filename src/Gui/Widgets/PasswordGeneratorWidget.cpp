@@ -1,6 +1,8 @@
 #include "PasswordGeneratorWidget.h"
 #include "ApplicationSettings.h"
 
+namespace wpw {
+
 CPasswordGeneratorWidget::CPasswordGeneratorWidget(QWidget* parent) : QWidget(parent),
     m_updatingSpinBox(false), m_generator(new CPasswordGenerator())
 {
@@ -260,3 +262,5 @@ void CPasswordGeneratorWidget::updateGenerator()
     m_generator->setFlags(flags);
     regeneratePassword();
 }
+
+} // namespace wpw

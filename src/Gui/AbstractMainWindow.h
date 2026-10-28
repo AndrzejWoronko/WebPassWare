@@ -14,6 +14,8 @@
 #include "Splitter.h"
 
 
+namespace wpw {
+
 class CAbstractMainWindow : public QMainWindow, public CAbstractDialogStateManager
 {
     Q_OBJECT
@@ -66,5 +68,7 @@ public slots:
     void on_ACTION_ABOUT_QT_triggered();
     void on_ACTION_EXIT_triggered();
 };
+
+} // namespace wpw
 
 #endif // CABSTRACTMAINWINDOW_H

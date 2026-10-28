@@ -1,5 +1,7 @@
 #include "FormValidator.h"
 
+namespace wpw {
+
 CFormValidator::CFormValidator(FormFieldHashList fields)
 {     
    m_fields = fields;
@@ -47,3 +49,5 @@ bool CFormValidator::isEmptyForm(void)
     else
          return false;
 }
+
+} // namespace wpw

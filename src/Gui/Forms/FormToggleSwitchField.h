@@ -5,6 +5,8 @@
 #include "FormAbstractField.h"
 #include "ToggleSwitch.h"
 
+namespace wpw {
+
 class CFormToggleSwitchField : public CToggleSwitch, public CFormAbstractField
 {
 
@@ -19,6 +21,6 @@ public:
     void setReadWrite();
 };
 
-
+} // namespace wpw
 
 #endif // CFORMTOGGLESWITCHFIELD_H

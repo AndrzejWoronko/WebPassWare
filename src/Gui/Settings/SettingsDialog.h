@@ -7,6 +7,8 @@
 #include "ButtonBox.h"
 #include "Layouts.h"
 
+namespace wpw {
+
 class SettingsDialog : public CDialog, public CAbstractDialogStateManager
 {
     Q_OBJECT
@@ -35,5 +37,7 @@ signals:
 
 public slots:
 };
+
+} // namespace wpw
 
 #endif // SETTINGSDIALOG_H

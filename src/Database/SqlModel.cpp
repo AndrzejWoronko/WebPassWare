@@ -2,6 +2,8 @@
 #include "BusyIndicator.h"
 #include "Database.h"
 
+namespace wpw {
+
 CSqlModel::CSqlModel(CDatabase &db, const QString &selectQuery, const QString &table_name, const SqlFieldsDesc &list, QVariantHash data, QObject *parent) :
     QSqlQueryModel(parent), m_db(db)
 {
@@ -231,3 +233,5 @@ QVector<QVariant> CSqlModel::toVariantRowHeader()
     }
     return row;
 }
+
+} // namespace wpw

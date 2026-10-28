@@ -14,6 +14,8 @@
 #define DATABASE_SETTING QString::fromUtf8("Database/")
 #define DATABASE_SETTING_PASSWORD DATABASE_SETTING + "Password"
 
+namespace wpw {
+
 class ICDatabase
 {
 
@@ -121,6 +123,6 @@ private:
     QString m_lastQuery;
 };
 
-
+} // namespace wpw
 
 #endif // DATABASE_H

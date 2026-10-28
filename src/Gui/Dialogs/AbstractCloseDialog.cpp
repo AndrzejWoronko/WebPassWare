@@ -1,6 +1,8 @@
 #include "AbstractCloseDialog.h"
 
 
+namespace wpw {
+
 CAbstractCloseDialog::CAbstractCloseDialog(const QString &dialogName, QWidget *parent)
     : CAbstractFieldsDialog(dialogName, parent), CAbstractDialogStateManager(), m_buttonBoxClose(nullptr)
 {
@@ -35,3 +37,5 @@ void CAbstractCloseDialog::saveDialogState()
     if(state != oldState)
         getDialogState()->saveState(getDialogName(), state);
 }
+
+} // namespace wpw

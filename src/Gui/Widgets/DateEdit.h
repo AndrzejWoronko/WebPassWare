@@ -6,6 +6,8 @@
 #include <QDateTimeEdit>
 #include "CalendarWidget.h"
 
+namespace wpw {
+
 class CDateEdit : public QDateEdit
 {
     Q_OBJECT
@@ -37,5 +39,6 @@ public slots:
     void setMonth(const QDate &date);
 };
 
+} // namespace wpw
 
 #endif // CDATEEDIT_H

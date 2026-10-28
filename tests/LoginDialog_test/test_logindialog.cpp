@@ -14,6 +14,8 @@
 #include "LoginDialog.h"
 #include "TestSupport/TestEnvironment.h"
 
+using namespace wpw;
+
 // The login dialog is the only way into the program: it sets the master
 // password on the first run and checks it afterwards.
 class Test_LoginDialog : public QObject

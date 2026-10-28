@@ -3,6 +3,8 @@
 #include "MessageBox.h"
 #include "Database.h"
 
+namespace wpw {
+
 SettingsDatabaseViewController::SettingsDatabaseViewController(CDatabase &db, QWidget *parent) :
     CAbstractSettingsItemController(parent), m_db(db)
 {
@@ -72,3 +74,5 @@ void SettingsDatabaseViewController::checkChanges()
 {
 
 }
+
+} // namespace wpw

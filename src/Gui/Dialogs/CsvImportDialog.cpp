@@ -1,6 +1,8 @@
 #include "CsvImportDialog.h"
 #include "CsvCodec.h"
 
+namespace wpw {
+
 CCsvImportDialog::CCsvImportDialog(QWidget *parent) : CDialog(parent)
 {
     this->setWindowTitle(tr("Import danych z CSV"));
@@ -96,3 +98,4 @@ void CCsvImportDialog::addComponents()
     m_formLayout_second->addWidget(m_tableView, 6, 0, 4, 4);
 }
 
+} // namespace wpw

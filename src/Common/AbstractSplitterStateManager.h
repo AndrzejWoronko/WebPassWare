@@ -3,6 +3,8 @@
 
 #include "SplitterState.h"
 
+namespace wpw {
+
 class ICSplitterStateManager
 {
 public:
@@ -22,5 +24,7 @@ public:
     CAbstractSplitterStateManager();
     ~CAbstractSplitterStateManager() = default;
 };
+
+} // namespace wpw
 
 #endif // CABSTRACTSPLITTERSTATEMANAGER_H

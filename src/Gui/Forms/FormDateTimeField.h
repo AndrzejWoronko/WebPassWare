@@ -6,6 +6,8 @@
 #include "DateEdit.h"
 #include "FormAbstractField.h"
 
+namespace wpw {
+
 class CFormDateTimeField : public CDateTimeEdit, public CFormAbstractField
 {
 
@@ -23,5 +25,7 @@ class CFormDateTimeField : public CDateTimeEdit, public CFormAbstractField
     virtual void select();
 
 };
+
+} // namespace wpw
 
 #endif // FORMDATETIMEFIELD_H

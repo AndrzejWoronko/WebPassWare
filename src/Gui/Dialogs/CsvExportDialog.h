@@ -8,6 +8,8 @@
 #include "AbstractFormDialog.h"
 
 
+namespace wpw {
+
 class CCsvExportDialog : public CDialog
 {
     Q_OBJECT
@@ -44,5 +46,7 @@ private:
 
     CVBoxLayout *m_VLayoutDialog;  //Do dialogu
 };
+
+} // namespace wpw
 
 #endif // CCSVXPORTDIALOG_H

@@ -3,6 +3,8 @@
 #include <Global.h>
 
 
+namespace wpw {
+
 class ICState
 {
 public:
@@ -21,5 +23,6 @@ public:
     virtual void saveState(const QString &, const QByteArray &state) = 0;
 };
 
+} // namespace wpw
 
 #endif // ABSTRACTSTATEMANAGER_H

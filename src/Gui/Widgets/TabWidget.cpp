@@ -1,6 +1,8 @@
 #include "TabWidget.h"
 #include "Style.h"
 
+namespace wpw {
+
 CTabWidget::CTabWidget(QWidget *parent) : QTabWidget(parent)
 {
     m_widget_list.clear();
@@ -141,3 +143,5 @@ void CTabWidget::addAndSetTabWidgetController(QWidget *w, QWidget *w_ctrl, const
     tab_idx = this->addTabWidgetController(w, w_ctrl, label, iconName);
     setTabText(tab_idx, QString(label));
 }
+
+} // namespace wpw

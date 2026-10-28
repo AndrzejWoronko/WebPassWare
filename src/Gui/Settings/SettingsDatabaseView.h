@@ -6,6 +6,8 @@
 #include "AbstractSettingsItemView.h"
 #include <QGroupBox>
 
+namespace wpw {
+
 class CDatabase;
 
 class SettingsDatabaseView : public CAbstractSettingsItemView
@@ -34,5 +36,7 @@ public:
 private:
     CDatabase &m_db;
 };
+
+} // namespace wpw
 
 #endif // SETTINGSDATABASEVIEW_H

@@ -1,5 +1,7 @@
 #include "FormSimpleIndexChoiceField.h"
 
+namespace wpw {
+
 CFormSimpleIndexChoiceField::CFormSimpleIndexChoiceField(const QString &variableName, const QString &label, QVariant value, const QStringList &valueList, QWidget *parent) :
 CFormSimpleChoiceField(variableName, label, value, valueList, parent)
 {
@@ -35,3 +37,5 @@ void CFormSimpleIndexChoiceField::setIdValue(qint64 id)
 {
     this->setCurrentIndex(this->findData(QVariant(id)));
 }
+
+} // namespace wpw

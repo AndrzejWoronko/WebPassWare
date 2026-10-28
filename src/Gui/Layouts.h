@@ -20,6 +20,8 @@
 
 #endif
 
+namespace wpw {
+
 class CVBoxLayout : public QVBoxLayout
 {
 public:
@@ -47,5 +49,7 @@ public:
     CFormLayout(QWidget *parent = nullptr);
     ~CFormLayout() { DEBUG_WITH_LINE << "~dtor "; }
 };
+
+} // namespace wpw
 
 #endif // LAYOUTS_H

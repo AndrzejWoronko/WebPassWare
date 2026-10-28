@@ -1,6 +1,8 @@
 #include "AutoTypeAction.h"
 #include "Tools.h"
 
+namespace wpw {
+
 CAutoTypeChar::CAutoTypeChar(const QChar& character)
     : m_character(character)
 {
@@ -84,3 +86,5 @@ int CAutoTypeExecutor::delay() const
 {
     return m_delay;
 }
+
+} // namespace wpw

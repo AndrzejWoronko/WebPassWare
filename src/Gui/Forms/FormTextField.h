@@ -7,6 +7,8 @@
 #include <QKeyEvent>
 
 
+namespace wpw {
+
 class CFormTextField : public CFixedLineEdit, public CFormAbstractField
 {
     Q_OBJECT
@@ -42,5 +44,7 @@ signals:
     void keyF11();
     void keyF12();
 };
+
+} // namespace wpw
 
 #endif // SQLFORMTEXTFIELD_H

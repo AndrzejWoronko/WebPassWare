@@ -1,5 +1,7 @@
 #include "SettingsLookView.h"
 
+namespace wpw {
+
 SettingsLookView::SettingsLookView(QWidget *parent) : CAbstractSettingsItemView(tr("Ustawienia wyglądu"), parent)
 {
    m_font_edit = new CFontEdit(this);
@@ -61,3 +63,5 @@ void SettingsLookView::addComponents()
     CForm::setComponents(getFormLayout(), m_login_dialog_min_width, m_login_dialog_min_width->getLabel(), 12, 1, 1, 1);
     setWidgetWidget();
 }
+
+} // namespace wpw

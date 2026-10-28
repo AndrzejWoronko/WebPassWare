@@ -22,6 +22,8 @@
 #include "ToolButton.h"
 #include "AutoType.h"
 
+namespace wpw {
+
 CWebPassWareMainWindow::CWebPassWareMainWindow(CApplication &app, CDatabase &db, PassEntryService *passEntryService, PassGroupService *passGroupService,
                                                CAutoType &autoType, QWidget *parent)
     : CAbstractMainWindow(QString("WebPassWareMainWindow"), parent)
@@ -785,3 +787,5 @@ void CWebPassWareMainWindow::copyToClipboard(const QString &text)
     mimeData->setData("text/csv", text.toUtf8());
     QApplication::clipboard()->setMimeData(mimeData);
 }
+
+} // namespace wpw

@@ -7,6 +7,8 @@
 
 #include "TransactionGuard.h"
 
+using namespace wpw;
+
 class Test_TransactionGuard : public QObject
 {
     Q_OBJECT

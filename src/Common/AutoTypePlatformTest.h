@@ -4,6 +4,8 @@
 #include "AutoTypePlatform.h"
 #include "AutoTypeAction.h"
 
+namespace wpw {
+
 class CAutoTypePlatformTest : public QObject, public CAutoTypePlatform
 {
   Q_OBJECT
@@ -62,6 +64,6 @@ private:
     CAutoTypePlatformTest* const m_platform;
 };
 
-
+} // namespace wpw
 
 #endif // CAUTOTYPEPLATFORMTEST_H

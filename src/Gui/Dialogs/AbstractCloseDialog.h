@@ -5,6 +5,8 @@
 #include "AbstractFieldsDialog.h"
 #include "AbstractDialogStateManager.h"
 
+namespace wpw {
+
 // A dialog that only shows information, closed with one button; its geometry
 // is saved and restored under getDialogName().
 class CAbstractCloseDialog : public CAbstractFieldsDialog, public CAbstractDialogStateManager
@@ -24,5 +26,7 @@ public:
 protected:
     void createButtons() override;
 };
+
+} // namespace wpw
 
 #endif // CABSTRACTCLOSEDIALOG_H

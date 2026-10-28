@@ -8,6 +8,8 @@
 #include <QListWidget>
 #include <QDragMoveEvent>
 
+namespace wpw {
+
 class CListWidget : public QListWidget
 {
     Q_OBJECT
@@ -19,4 +21,7 @@ public:
     void addItemWidget(QWidget *w);
 
 };
+
+} // namespace wpw
+
 #endif // CLISTWIDGET_H

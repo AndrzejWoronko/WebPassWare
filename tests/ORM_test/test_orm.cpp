@@ -14,6 +14,8 @@
 
 #include <memory>
 
+using namespace wpw;
+
 // SQLite hands back its own storage type (bool as 0/1, a QChar column as
 // QString). Qt 5 compared QVariants of different types by converting them;
 // Qt 6 does not, and has no QString -> QChar conversion, hence the fallback.

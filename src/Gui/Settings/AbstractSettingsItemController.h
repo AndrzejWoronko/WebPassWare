@@ -5,6 +5,8 @@
 #include <QWidget>
 #include "AbstractSettingsItemView.h"
 
+namespace wpw {
+
 // Drives one settings page (m_view, owned and deleted here; the settings
 // widget shows it).
 class CAbstractSettingsItemController : public QObject
@@ -31,4 +33,7 @@ signals:
 
 
 };
+
+} // namespace wpw
+
 #endif // CABSTRACTSETTINGSITEMCONTROLLER_H

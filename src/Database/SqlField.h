@@ -13,6 +13,8 @@
 #define FIELD_FILTER_HAVING 0x10
 #define FIELD_SELECT_AS_QUOTE 0x20   //Dodanie cudzusłow do selecta '' np select 'adasdfasd' AS '1'
 
+namespace wpw {
+
 class CSqlField
 {
     //Typ danych
@@ -53,5 +55,6 @@ public:
 //            nazwa kolumny
 typedef QHash<QString, CSqlField*> SqlFieldsDesc;
 
+} // namespace wpw
 
 #endif // CSQLFIELD_H

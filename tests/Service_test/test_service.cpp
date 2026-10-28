@@ -17,6 +17,8 @@
 #include "PassEntryService.h"
 #include "PassGroupService.h"
 
+using namespace wpw;
+
 #define CLEAR_PTR_LIST_TEST(list) \
     for (int i = 0; i < list.size(); i++) \
         delete list.takeAt(i);

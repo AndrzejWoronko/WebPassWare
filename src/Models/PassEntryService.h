@@ -6,6 +6,8 @@
 #include "OrmService.h"
 #include "PassEntry.h"
 
+namespace wpw {
+
 // Emits changed() after every successful change, so views can refresh.
 class PassEntryService : public QObject, public COrmService<PassEntry>
 {
@@ -28,5 +30,6 @@ public:
     CSqlModel *getSqlModel(void);
 };
 
+} // namespace wpw
 
 #endif // PASSENTRYSERVICE_H

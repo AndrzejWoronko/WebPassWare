@@ -3,7 +3,9 @@
 
 #include <QString>
 
+namespace wpw {
 class CDatabase;
+}
 
 namespace wpw::Schema {
 

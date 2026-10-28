@@ -4,6 +4,8 @@
 #include "Global.h"
 #include <QWidget>
 
+namespace wpw {
+
 class CToggleSwitch : public QWidget
 {
     Q_OBJECT
@@ -38,5 +40,7 @@ private:
     bool m_mouseDown = false;
     bool m_checkable = true;
 };
+
+} // namespace wpw
 
 #endif // CTOGGLESWITCH_H

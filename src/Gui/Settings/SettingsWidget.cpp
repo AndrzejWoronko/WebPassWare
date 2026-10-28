@@ -1,5 +1,7 @@
 #include "SettingsWidget.h"
 
+namespace wpw {
+
 SettingsWidget::SettingsWidget(CApplication &app, CDatabase &db, QWidget *parent) : QWidget (parent), m_app(app), m_db(db)
 {
     setGraphicElements();
@@ -61,3 +63,5 @@ void SettingsWidget::setConnections()
 {
     connect(m_list, &CListWidget::currentRowChanged, m_layout, &QStackedLayout::setCurrentIndex);
 }
+
+} // namespace wpw

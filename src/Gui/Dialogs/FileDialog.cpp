@@ -1,5 +1,7 @@
 #include "FileDialog.h"
 
+namespace wpw {
+
 CFileInfo::CFileInfo()
 {
 
@@ -96,3 +98,5 @@ QString CFileDialog::getSaveFileName(QWidget *parent, const QString &caption, co
 {
   return getFileName(parent, caption, dir, Operation_Save, filter, options, absolutePath, name);
 }
+
+} // namespace wpw

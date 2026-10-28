@@ -8,6 +8,8 @@
 #include "ImportCsv.h"
 #include "CsvCodec.h"
 
+using namespace wpw;
+
 // Pins the bytes the CSV export writes and what the import reads back for
 // every encoding offered in the dialogs, so the move away from QTextCodec
 // keeps files compatible with the ones users already have.

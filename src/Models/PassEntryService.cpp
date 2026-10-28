@@ -2,6 +2,8 @@
 
 #include <memory>
 
+namespace wpw {
+
 CSqlModel *PassEntryService::getSqlModel(void)
 {    
     SqlFieldsDesc list;
@@ -20,3 +22,5 @@ CSqlModel *PassEntryService::getSqlModel(void)
     std::unique_ptr<CSqlModel> sql_model(new CSqlModel(m_db, query, QString("pass_entry"), list));
     return sql_model.release();
 }
+
+} // namespace wpw

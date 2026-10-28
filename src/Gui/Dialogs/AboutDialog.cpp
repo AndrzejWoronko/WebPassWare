@@ -2,6 +2,8 @@
 #include "ApplicationSettings.h"
 #include <QSysInfo>
 
+namespace wpw {
+
 CAboutDialog::CAboutDialog(QWidget *parent) : CAbstractCloseDialog(QString("ABOUT_DIALOG"), parent)
 {
     this->setWindowTitle(tr("O programie"));
@@ -119,3 +121,5 @@ qDebug()<< "Product Type: " << systemInfo.productType();
 qDebug()<< "Product Version: " << systemInfo.productVersion();
 */
 }
+
+} // namespace wpw

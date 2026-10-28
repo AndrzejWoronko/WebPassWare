@@ -2,6 +2,8 @@
 
 #include <memory>
 
+namespace wpw {
+
 CSqlModel* PassGroupService::getSqlModel(void)
 {    
     SqlFieldsDesc list;
@@ -39,3 +41,5 @@ QList<QPair<qint64, QString>> PassGroupService::getGroupChoices(void)
     }
     return choices;
 }
+
+} // namespace wpw

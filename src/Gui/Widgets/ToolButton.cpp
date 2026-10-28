@@ -1,6 +1,8 @@
 #include "ToolButton.h"
 #include "Style.h"
 
+namespace wpw {
+
 CToolButton::CToolButton(CButtonPrivate structure,  QWidget *parent, QSize iconSize) : QToolButton(parent)
 {
     m_structure = structure;
@@ -66,3 +68,4 @@ QString CToolButton::getText(void)
     return m_structure.getText();
 }
 
+} // namespace wpw

@@ -1,5 +1,7 @@
 #include "FormSimpleChoiceField.h"
 
+namespace wpw {
+
 CFormSimpleChoiceField::CFormSimpleChoiceField(const QString &variableName, const QString &label, QVariant value, const QStringList &valueList, QWidget *parent) :
 QComboBox(parent), CFormAbstractField(QMetaType::QString, variableName, label, value)
 {
@@ -31,3 +33,5 @@ void CFormSimpleChoiceField::setValueList(const QStringList &valueList)
     this->clear();
     this->addItems(valueList);
 }
+
+} // namespace wpw

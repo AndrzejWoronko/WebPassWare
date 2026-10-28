@@ -1,6 +1,8 @@
 #include "AbstractFormDialogController.h"
 #include "MessageBox.h"
 
+namespace wpw {
+
 CAbstractFormDialogController::CAbstractFormDialogController(CAbstractFormDialog *dialog, QWidget *parent) :
     QObject(parent), CAbstractDialogStateManager()
 {
@@ -135,3 +137,5 @@ QJsonObject CAbstractFormDialogController::toJson()
     }
     return jo;
 }
+
+} // namespace wpw

@@ -5,6 +5,8 @@
 #include "FormAbstractField.h"
 #include <QRadioButton>
 
+namespace wpw {
+
 class CFormRadioButtonField : public QRadioButton, public CFormAbstractField
 {
 
@@ -16,5 +18,6 @@ class CFormRadioButtonField : public QRadioButton, public CFormAbstractField
     virtual void setValue(QVariant value);
 };
 
+} // namespace wpw
 
 #endif // CFORMRADIOBUTTONFIELD_H

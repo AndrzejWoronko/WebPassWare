@@ -1,5 +1,7 @@
 #include "AbstractFormDialog.h"
 
+namespace wpw {
+
 CAbstractFormDialog::CAbstractFormDialog(const QString &dialog_name, QWidget *parent)
     : CAbstractFieldsDialog(dialog_name, parent), m_buttonBox(nullptr)
 {
@@ -30,3 +32,5 @@ void CAbstractFormDialog::addField(CFormAbstractField *f)
 {
     m_fields.insert(f->getVariableName(), f);
 }
+
+} // namespace wpw

@@ -1,5 +1,7 @@
 #include "AbstractFieldsDialog.h"
 
+namespace wpw {
+
 CAbstractFieldsDialog::CAbstractFieldsDialog(const QString &dialogName, QWidget *parent)
     : CDialog(parent), m_dialog_name(dialogName)
 {
@@ -41,3 +43,5 @@ CVBoxLayout *CAbstractFieldsDialog::dialogLayout()
 {
     return m_VLayoutDialog;
 }
+
+} // namespace wpw

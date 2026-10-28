@@ -3,6 +3,8 @@
 #include "MasterPassword.h"
 #include "ExceptionSql.h"
 
+namespace wpw {
+
 CDatabase::CDatabase(const QString &database_name): m_base_name(database_name)
 {
     m_db = QSqlDatabase::addDatabase("QSQLITE", QLatin1String(DB_CONNECTION_NAME));
@@ -523,3 +525,4 @@ qint64 CDatabase::countBy(const QString &tableName, const QString &params)
     return -1;
 }
 
+} // namespace wpw

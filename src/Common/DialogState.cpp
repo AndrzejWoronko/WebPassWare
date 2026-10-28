@@ -1,5 +1,7 @@
 #include "DialogState.h"
 
+namespace wpw {
+
 CDialogState::CDialogState()
 {
     m_settings.reset(new QSettings());
@@ -27,3 +29,5 @@ std::unique_ptr<QSettings>& CDialogState::getSettings()
     return m_settings;
 }
 */
+
+} // namespace wpw

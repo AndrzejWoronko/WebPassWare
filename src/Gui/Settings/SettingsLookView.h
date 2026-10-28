@@ -5,6 +5,8 @@
 #include "AbstractSettingsItemView.h"
 #include "FontEdit.h"
 
+namespace wpw {
+
 class SettingsLookView : public CAbstractSettingsItemView
 {
     Q_OBJECT
@@ -34,5 +36,7 @@ public:
     //Funkcja umieszczająca pola na formatce
     virtual void addComponents();
 };
+
+} // namespace wpw
 
 #endif // SETTINGSLOOKVIEW_H

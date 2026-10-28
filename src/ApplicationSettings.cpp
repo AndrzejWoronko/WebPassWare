@@ -8,6 +8,8 @@
 //     //safe_delete(m_settings)
 // }
 
+namespace wpw {
+
 void CApplicationSettings::setValue(const QString &name, const QVariant &value)
 {
     m_settings.setValue(name, value);
@@ -45,3 +47,5 @@ QString CApplicationSettings::fileName() const
 {
     return m_settings.fileName();
 }
+
+} // namespace wpw

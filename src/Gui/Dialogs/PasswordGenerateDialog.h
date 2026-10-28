@@ -5,6 +5,8 @@
 #include "AbstractCloseDialog.h"
 #include "PasswordGeneratorWidget.h"
 
+namespace wpw {
+
 class CPasswordGenerateDialog : public CAbstractCloseDialog
 {
     ADD_PTR_PROPERTY(CPasswordGeneratorWidget, m_pass_gen_widget, getPassGenWidget)
@@ -20,5 +22,7 @@ public:
     //Funkcja umieszczająca pola na formatce
     virtual void addComponents() override final;
 };
+
+} // namespace wpw
 
 #endif // CPASSWORDGENERATEDIALOG_H

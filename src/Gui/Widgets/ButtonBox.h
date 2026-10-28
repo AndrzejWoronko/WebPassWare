@@ -5,6 +5,8 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 
+namespace wpw {
+
 class CButtonBox : public QDialogButtonBox
 {
 Q_OBJECT
@@ -69,5 +71,7 @@ public:
     CButtonBoxClose(QWidget *parent = nullptr);   
 
 };
+
+} // namespace wpw
 
 #endif // BUTTONBOX_H

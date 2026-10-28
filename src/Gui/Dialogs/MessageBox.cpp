@@ -1,5 +1,7 @@
 #include "MessageBox.h"
 
+namespace wpw {
+
 void CMessageBox::OkDialogCritical(const QString & text, QWidget * parent, const QString & title)
 {
   QMessageBox messageBox(QMessageBox::Critical, title, text, CMessageBox::Ok, parent);
@@ -47,3 +49,5 @@ void CMessageBox::AboutQtDialog( QWidget * parent, const QString & title)
 {
     QMessageBox::aboutQt(parent, title);
 }
+
+} // namespace wpw

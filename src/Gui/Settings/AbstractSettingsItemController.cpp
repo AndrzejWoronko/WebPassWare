@@ -1,5 +1,7 @@
 #include "AbstractSettingsItemController.h"
 
+namespace wpw {
+
 CAbstractSettingsItemController::CAbstractSettingsItemController(QWidget *parent) : QObject(parent)
 {
     m_view = nullptr;
@@ -27,3 +29,5 @@ void CAbstractSettingsItemController::disableButtons(void)
         m_view->getButtonBox()->getSaveButton()->setEnabled(false);
     }
 }
+
+} // namespace wpw

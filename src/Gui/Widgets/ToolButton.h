@@ -6,6 +6,8 @@
 #include "Button.h"
 
 
+namespace wpw {
+
 class CToolButton : public QToolButton
 {
     Q_OBJECT
@@ -24,5 +26,7 @@ public:
     void setTopBottomLayout();
     QString getText(void);
 };
+
+} // namespace wpw
 
 #endif // TOOLBUTTON_H

@@ -1,6 +1,8 @@
 #include "Style.h"
 #include <QPainter>
 
+namespace wpw {
+
 CStyle::CStyle()
 {
     initActualStyle();
@@ -300,3 +302,5 @@ QStringList CStyle::availableStyles()
 {
   return QStringList() << QObject::tr("Systemowy") << QObject::tr("Niebieski") << QObject::tr("Szary") << QObject::tr("Google") << QObject::tr("Ciemny") << QObject::tr("Ciemny pomarańczowy");
 }
+
+} // namespace wpw

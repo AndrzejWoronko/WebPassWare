@@ -1,5 +1,7 @@
 #include "AutoTypePlatformTest.h"
 
+namespace wpw {
+
 CAutoTypePlatformTest::CAutoTypePlatformTest(QObject *parent) : QObject(parent)
 {
 
@@ -104,3 +106,5 @@ void CAutoTypeExecturorTest::execKey(CAutoTypeKey* action)
 {
     m_platform->addActionKey(action);
 }
+
+} // namespace wpw

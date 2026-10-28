@@ -1,6 +1,8 @@
 #include "SettingsLookController.h"
 #include "Application.h"
 
+namespace wpw {
+
 SettingsLookController::SettingsLookController(CApplication &app, QWidget *parent) : CAbstractSettingsItemController(parent)
 {
     m_view = new SettingsLookView();
@@ -130,3 +132,5 @@ void SettingsLookController::checkChanges()
 {
 
 }
+
+} // namespace wpw

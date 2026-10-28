@@ -11,6 +11,8 @@
 
 
 
+namespace wpw {
+
 CAutoTypePlatformWindows::CAutoTypePlatformWindows(QObject *parent) : QObject(parent)
 {
 
@@ -390,4 +392,7 @@ void CAutoTypeExecutorWindows::execKey(CAutoTypeKey* action)
     m_platform->setKeyState(action->m_key, true);
     m_platform->setKeyState(action->m_key, false);
 }
+
+} // namespace wpw
+
 #endif

@@ -5,6 +5,8 @@
 #include <QComboBox>
 #include "FormAbstractField.h"
 
+namespace wpw {
+
 class CFormSimpleChoiceField : public QComboBox, public CFormAbstractField
 {
 
@@ -20,5 +22,7 @@ public:
     void setValueList(const QStringList &valueList);
 
 };
+
+} // namespace wpw
 
 #endif // FORMSIMPLECHOICEFIELD_H

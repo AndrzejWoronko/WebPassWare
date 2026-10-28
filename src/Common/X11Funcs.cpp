@@ -4,6 +4,8 @@
 
 #include <X11/keysym.h>
 
+namespace wpw {
+
 KeySym qcharToNativeKeyCode(const QChar& ch)
 {
     // Unicode code points can be converted to keysym using the following scheme,
@@ -101,5 +103,7 @@ KeySym qtToNativeKeyCode(Qt::Key key)
         return NoSymbol;
     }
 }
+
+} // namespace wpw
 
 #endif

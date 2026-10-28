@@ -6,6 +6,8 @@
 #include "OrmRepository.h"
 #include "Service.h"
 
+namespace wpw {
+
 template<class ModelName>
 class COrmService
 {
@@ -257,5 +259,7 @@ public:
         return m_service->getError();
     }
 };
+
+} // namespace wpw
 
 #endif // CORMSERVICE_H

@@ -6,6 +6,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
+namespace wpw {
+
 class CSqlQuery : public QSqlQuery
 {
     ADD_FIELD(bool, m_echo_error, getEchoError, setEchoError)
@@ -31,5 +33,7 @@ private:
 
     QMutex m_queryMutex;
 };
+
+} // namespace wpw
 
 #endif // CSQLQUERY_H

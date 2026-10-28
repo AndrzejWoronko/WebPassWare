@@ -6,6 +6,8 @@
 #include <QFileDialog>
 #include <QFileInfo>
 
+namespace wpw {
+
 class CFileInfo : public QFileInfo
 {
 public:
@@ -42,5 +44,7 @@ private slots:
   void onDirectoryEntered(const QString &dir);
 
 };
+
+} // namespace wpw
 
 #endif // CFILEDIALOG_H

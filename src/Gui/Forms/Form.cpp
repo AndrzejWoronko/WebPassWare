@@ -2,6 +2,8 @@
 #include "ButtonBox.h"
 #include "MessageBox.h"
 
+namespace wpw {
+
 CForm::CForm(QWidget *parent) : QWidget(parent)
 {
     m_initialized = false;
@@ -201,3 +203,5 @@ void CForm::setComponents(QGridLayout *layout, QLabel *label, int row, int col)
         layout->addWidget(label, row, col, 1, 1);
     }
 }
+
+} // namespace wpw

@@ -1,5 +1,7 @@
 #include "Service.h"
 
+namespace wpw {
+
 CService::CService()
 {
 
@@ -27,3 +29,5 @@ QString CService::getError()
 {
     return m_error;
 }
+
+} // namespace wpw

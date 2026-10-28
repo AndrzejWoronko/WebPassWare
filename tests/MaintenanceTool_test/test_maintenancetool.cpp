@@ -8,6 +8,8 @@
 
 #include "MaintenanceTool.h"
 
+using namespace wpw;
+
 // The updater is the maintenancetool of the Qt Installer Framework next to
 // the program (the working directory). Installs without it (the Debian
 // package) must not offer an update check that can only fail.

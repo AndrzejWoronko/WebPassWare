@@ -1,5 +1,7 @@
 #include "PassEntryDialog.h"
 
+namespace wpw {
+
 PassEntryDialog::PassEntryDialog(QWidget *parent) :
     CAbstractFormDialog(QString("PASS_ENTRY_DIALOG"), parent)
 {
@@ -41,3 +43,5 @@ void PassEntryDialog::addComponents()
     getFormLayout()->setColumnStretch(3, 1);
     setDialogWidget();
 }
+
+} // namespace wpw

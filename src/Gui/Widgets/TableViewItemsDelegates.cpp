@@ -1,6 +1,8 @@
 #include "TableViewItemsDelegates.h"
 #include <QPainter>
 
+namespace wpw {
+
 PasswordFormatDelegate::PasswordFormatDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
 
@@ -20,3 +22,5 @@ void PasswordFormatDelegate::paint(QPainter *painter, const QStyleOptionViewItem
     else
         QStyledItemDelegate::paint(painter, option, index);
 }
+
+} // namespace wpw

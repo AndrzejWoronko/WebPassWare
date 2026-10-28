@@ -5,6 +5,8 @@
 #include <QLineEdit>
 #include <QStyle>
 
+namespace wpw {
+
 class CFixedLineEdit : public QLineEdit
 {
 public:
@@ -27,5 +29,7 @@ public:
        int m_minVisible;
        int m_maxVisible;
 };
+
+} // namespace wpw
 
 #endif // FIXEDLINEEDIT_H

@@ -1,6 +1,8 @@
 #include "Dialog.h"
 #include "ApplicationSettings.h"
 
+namespace wpw {
+
 CDialog::CDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
     this->setMinimumSize(CApplicationSettings().getValue(SETTINGS_GUI_DIALOG_MIN_WIDTH).toInt(), CApplicationSettings().getValue(SETTINGS_GUI_DIALOG_MIN_HEIGHT).toInt());
@@ -22,3 +24,5 @@ void CDialog::centerWindow()
     this->move(x,y);
   }
 }
+
+} // namespace wpw

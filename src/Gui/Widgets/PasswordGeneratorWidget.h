@@ -19,6 +19,8 @@
 #define GENERATOR_SETTING_ENTRY_EXCLUDE_ALIKE GENERATOR_SETTING_ENTRY + "ExcludeAlike"
 #define GENERATOR_SETTING_ENTRY_ENSURE_EVERY GENERATOR_SETTING_ENTRY + "EnsureEvery"
 
+namespace wpw {
+
 class CPasswordGeneratorWidget : public QWidget
 {
    Q_OBJECT
@@ -70,5 +72,6 @@ private:
     CPasswordGenerator *m_generator;
 };
 
+} // namespace wpw
 
 #endif // CPASSWORDGENERATORWIDGET_H

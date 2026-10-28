@@ -3,6 +3,8 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+namespace wpw {
+
 static const int s_height = 26;
 static const int s_innerMargin = 4;
 static const int s_handleSize = s_height - s_innerMargin * 2;
@@ -161,3 +163,5 @@ void CToggleSwitch::keyPressEvent(QKeyEvent *event)
         event->ignore(); // let it propagate to the parent (e.g. so that Return closes dialogs)
     }
 }
+
+} // namespace wpw

@@ -1,5 +1,7 @@
 #include "ListWidgetItem.h"
 
+namespace wpw {
+
 CListWidgetItem::CListWidgetItem(QListWidget *parent) : QListWidgetItem(parent)
 {
 
@@ -9,3 +11,5 @@ CListWidgetItem::CListWidgetItem(const QString &text, QListWidget *parent) : QLi
 {
 
 }
+
+} // namespace wpw

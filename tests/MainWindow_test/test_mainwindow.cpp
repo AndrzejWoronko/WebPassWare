@@ -26,6 +26,8 @@
 #include "TestSupport/TestEnvironment.h"
 #include "WebPassWareMainWindow.h"
 
+using namespace wpw;
+
 static QString settingsOrganization()
 {
 #ifdef Q_OS_DARWIN
@@ -249,7 +251,7 @@ void Test_MainWindow::test_insertOpensOneDialog()
     QTest::keyClick(table, Qt::Key_Insert);
     QTRY_VERIFY(QApplication::activeModalWidget() == nullptr);
     QTest::qWait(200);
-    QCOMPARE(m_closed.count(QString("PassEntryDialog")), 1);
+    QCOMPARE(m_closed.count(QString("wpw::PassEntryDialog")), 1);
 }
 
 void Test_MainWindow::test_deletedGroupLeavesList()

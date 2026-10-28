@@ -9,6 +9,8 @@
 
 #define DIGIT_ONLY_REG_EXP "^[0-9]*$"
 
+namespace wpw {
+
 class Tools
 {
 
@@ -41,5 +43,7 @@ public:
 
     static void wait(int ms);
 };
+
+} // namespace wpw
 
 #endif // TOOLS_H

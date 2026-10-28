@@ -6,6 +6,8 @@
 #include <QToolButton>
 #include <QAction>
 
+namespace wpw {
+
 class CButtonPrivate
 {
     ADD_FIELD(QString, m_text, getText, setText)
@@ -40,5 +42,7 @@ public:
     void setIconFromTheme(const QString &iconName);
     QString getText(void);
 };
+
+} // namespace wpw
 
 #endif // BUTTON_H

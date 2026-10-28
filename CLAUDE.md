@@ -165,8 +165,12 @@ which `main.cpp` sets to the busy mouse cursor.
 
 - C++17, Qt 6 APIs only (function-pointer connects, `QRegularExpression`,
   `QStringDecoder`, `QMetaType`, range-for instead of `Q_FOREACH`).
-- Existing classes keep the `C` prefix; new classes go to namespace `wpw` without
-  it. Members `m_camelCase`, slots `onXxx`; always braces; `nullptr`.
+- All code in `src/` is in namespace `wpw` (opened after the includes; tests and
+  `main.cpp` use `using namespace wpw;`). Only `Global.h` stays global: its typedefs
+  and `Q_DECLARE_METATYPE` must be. Existing classes keep the `C` prefix; new classes
+  have none. Members `m_camelCase`, slots `onXxx`; always braces; `nullptr`.
+- `metaObject()->className()` includes the namespace (`wpw::PassEntry`); the ORM strips
+  it for table names (`COrmObject::tableNameOf`).
 - User-visible strings through `tr()` (source strings in Polish). New and changed
   comments in English and explain why; no references to plan phases in code.
 - Shell scripts: `set -euo pipefail`, usage from the header comment, `die()` helper.

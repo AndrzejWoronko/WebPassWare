@@ -13,6 +13,8 @@
 #include "Schema.h"
 #include "TestSupport/TestEnvironment.h"
 
+using namespace wpw;
+
 class Test_PassEntryDialog : public QObject
 {
     Q_OBJECT

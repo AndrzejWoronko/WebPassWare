@@ -1,5 +1,7 @@
 #include "DelayEditLine.h"
 
+namespace wpw {
+
 CDelayEditLine::CDelayEditLine(QWidget *parent) : QLineEdit(parent)
 {
     this->setClearButtonEnabled(true);
@@ -28,3 +30,5 @@ void CDelayEditLine::delayEditingFinish()
     emit delayEditingFinished(this->text());
     DEBUG_WITH_LINE << "Text:" << this->text();
 }
+
+} // namespace wpw

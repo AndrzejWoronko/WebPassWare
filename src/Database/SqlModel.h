@@ -6,6 +6,8 @@
 #include <QSqlRecord>
 #include "SqlField.h"
 
+namespace wpw {
+
 class CDatabase;
 
 class CSqlModel : public QSqlQueryModel
@@ -54,5 +56,7 @@ signals:
 
   void querySuccess();
 };
+
+} // namespace wpw
 
 #endif // CSQLMODEL_H

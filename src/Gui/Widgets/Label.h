@@ -5,6 +5,8 @@
 #include <QLabel>
 #include "Style.h"
 
+namespace wpw {
+
 class CLabel : public QLabel
 {
 
@@ -17,5 +19,7 @@ public:
     void setPixmap(const QString &pixmap);
     void setBold(void);
 };
+
+} // namespace wpw
 
 #endif // CLABEL_H

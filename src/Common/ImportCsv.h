@@ -3,6 +3,8 @@
 
 #include "Global.h"
 
+namespace wpw {
+
 class CImportCsv
 {
     ADD_FIELD(qint64, m_rowCount, getRowCount, setRowCount)
@@ -45,5 +47,7 @@ private:
     QStringList m_title;
     QStringList m_buff;
 };
+
+} // namespace wpw
 
 #endif // CIMPORTCSV_H

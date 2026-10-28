@@ -26,6 +26,8 @@ typedef struct _XkbDesc *XkbDescPtr;
 // Mod5MapIndex + 1 (checked in the .cpp).
 #define N_MOD_INDICES 8
 
+namespace wpw {
+
 class CAutoTypePlatformLinux : public QObject, public CAutoTypePlatform
 {
     Q_OBJECT
@@ -93,6 +95,8 @@ private:
     KeyCode m_remapKeycode;
     bool m_loaded;
 };
+
+} // namespace wpw
 
 #endif
 #endif // CAUTOTYPEPLATFORMLINUX_H

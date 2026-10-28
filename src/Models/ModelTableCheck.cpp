@@ -3,6 +3,8 @@
 #include "PassGroup.h"
 
 
+namespace wpw {
+
 ModelTableCheck::ModelTableCheck()
 {
 
@@ -23,3 +25,5 @@ void ModelTableCheck::checkAllTables(CDatabase &db)
     COrmRepository<PassEntry> entries(db);
     checkOneTable(entries);
 }
+
+} // namespace wpw

@@ -6,6 +6,8 @@
 #include "FormAbstractField.h"
 #include <QKeyEvent>
 
+namespace wpw {
+
 class CFormNumberIntField : public QSpinBox, public CFormAbstractField
 {
     Q_OBJECT
@@ -103,5 +105,7 @@ class CFormIndicatorField: public CFormNumberField
 public:
        CFormIndicatorField(const QString &variableName, const QString &label, QVariant value, bool readOnly = false, QWidget *parent = nullptr);
 };
+
+} // namespace wpw
 
 #endif // FORMNUMBERFIELD_H

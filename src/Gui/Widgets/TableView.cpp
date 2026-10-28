@@ -1,6 +1,8 @@
 #include "TableView.h"
 #include "ApplicationSettings.h"
 
+namespace wpw {
+
 CTableView::CTableView(QWidget * parent) : QTableView(parent)
 {
     m_autoResizeColumn = -1;
@@ -445,3 +447,5 @@ void CTableView::goPrev()
             this->setCurrentIndex(current);
         }
 }
+
+} // namespace wpw

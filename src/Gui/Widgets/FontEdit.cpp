@@ -1,6 +1,8 @@
 #include "FontEdit.h"
 #include <QFontDialog>
 
+namespace wpw {
+
 CFontEdit::CFontEdit(QWidget *parent) : QWidget(parent)
 {
 
@@ -73,3 +75,5 @@ void CFontEdit::setFontSize(int size)
     updateFont();
     emit fontSizeChanged(size);
 }
+
+} // namespace wpw

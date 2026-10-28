@@ -4,6 +4,8 @@
 #include "Global.h"
 #include "Exception.h"
 
+namespace wpw {
+
 class ICService
 {
 public:
@@ -28,5 +30,7 @@ public:
     virtual void setError(const QString &) override final;
     virtual QString getError() override final;
 };
+
+} // namespace wpw
 
 #endif // CSERVICE_H

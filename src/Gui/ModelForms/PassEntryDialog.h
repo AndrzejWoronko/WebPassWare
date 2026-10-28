@@ -5,6 +5,8 @@
 #include "AbstractFormDialog.h"
 #include "PasswordGeneratorWidget.h"
 
+namespace wpw {
+
 class PassEntryDialog : public CAbstractFormDialog
 {
     Q_OBJECT
@@ -24,5 +26,7 @@ public:
     virtual void addFields();
     virtual void addComponents();
 };
+
+} // namespace wpw
 
 #endif // PASSENTRYDIALOG_H

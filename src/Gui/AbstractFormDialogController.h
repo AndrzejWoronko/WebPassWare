@@ -8,6 +8,8 @@
 #include "FormValidator.h"
 #include <QJsonObject>
 
+namespace wpw {
+
 // Not a widget itself: it drives m_dialog, which is also the parent of its
 // message boxes.
 class CAbstractFormDialogController : public QObject, public CAbstractDialogStateManager
@@ -65,5 +67,7 @@ public slots:
     void checkRequiredFields();
 
 };
+
+} // namespace wpw
 
 #endif // CABSTRACTFORMDIALOGCONTROLLER_H

@@ -4,6 +4,8 @@
 #include "Application.h"
 //#include "MessageBox.h"
 
+namespace wpw {
+
 CMaintenanceTool::CMaintenanceTool(QObject *parent) : QObject(parent), m_state(CMaintenanceTool::NotRunning), m_hasUpdate(false)
 {
     connect(&m_process, &QProcess::started, this, &CMaintenanceTool::processStarted);
@@ -237,3 +239,5 @@ void CMaintenanceTool::processError(QProcess::ProcessError error)
         emit checkFinished(false);
     }
 }
+
+} // namespace wpw

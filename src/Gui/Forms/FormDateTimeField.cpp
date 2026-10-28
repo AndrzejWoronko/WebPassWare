@@ -2,6 +2,8 @@
 #include "CalendarWidget.h"
 
 
+namespace wpw {
+
 CFormDateTimeField::CFormDateTimeField(const QString &variableName, const QString &label, const QDateTime &value, bool readOnly, QWidget *parent):
         CDateTimeEdit(value, parent), CFormAbstractField(QMetaType::QDateTime, variableName, label, value)
 {
@@ -55,3 +57,5 @@ void CFormDateTimeField::select()
 {
     this->selectAll();
 }
+
+} // namespace wpw

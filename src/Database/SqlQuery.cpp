@@ -2,6 +2,8 @@
 #include "BusyIndicator.h"
 #include "Logger.h"
 
+namespace wpw {
+
 CSqlQuery::CSqlQuery(QSqlDatabase db) :  QSqlQuery(QString(), db),
     m_echo_error(true), m_log_error(true), m_echo_query(true), m_log_query(true)
 {
@@ -79,3 +81,5 @@ void CSqlQuery::restoreSqlCursor()
     wpw::BusyIndicator::end();
     DEBUG_WITH_LINE << "Query time: (" << m_time.msecsTo(QDateTime::currentDateTime())/1000.0 << "sec)";
 }
+
+} // namespace wpw

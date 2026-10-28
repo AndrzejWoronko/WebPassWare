@@ -3,6 +3,8 @@
 #include "Database.h"
 #include "MessageBox.h"
 
+namespace wpw {
+
 CLoginDialog::CLoginDialog(CDatabase &db, const QString &title, const QString &iconName, QWidget *parent) :
     CDialog(parent), CAbstractDialogStateManager(), m_db(db), m_firstRun(!db.hasDatabasePassword())
 {
@@ -126,3 +128,5 @@ void CLoginDialog::accept()
         CMessageBox::OkDialogInformation(tr("Niepoprawne hasło !!!"), this);
     }
 }
+
+} // namespace wpw

@@ -5,6 +5,8 @@
 #include "AbstractFormDialogController.h"
 #include "PassEntryDialog.h"
 
+namespace wpw {
+
 class PassEntryService;
 class PassGroupService;
 
@@ -29,5 +31,7 @@ private:
     PassEntryService *m_passEntryService;
     PassGroupService *m_passGroupService;
 };
+
+} // namespace wpw
 
 #endif // PASSENTRYDIALOGCONTROLLER_H

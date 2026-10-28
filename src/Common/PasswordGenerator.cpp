@@ -1,6 +1,8 @@
 #include "PasswordGenerator.h"
 #include <QRandomGenerator>
 
+namespace wpw {
+
 CPasswordGenerator::CPasswordGenerator() : m_length(0), m_classes(QFlag(0)), m_flags(QFlag(0))
 {
 }
@@ -196,3 +198,5 @@ quint32 CPasswordGenerator::numCharClasses() const
     }
     return numClasses;
 }
+
+} // namespace wpw

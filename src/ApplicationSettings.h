@@ -51,6 +51,8 @@
 #define SETTINGS_GUI_LAYOUT_MARGIN SETTINGS_GUI_PREFIX + "LayoutMargin"
 
 
+namespace wpw {
+
 // The program's settings in its settings file (QSettings with the
 // organisation and name CApplication sets at start). Create one where it is
 // needed; there is no shared instance.
@@ -71,5 +73,7 @@ private:
 
     QSettings m_settings;
 };
+
+} // namespace wpw
 
 #endif // APPLICATIONSETTINGS_H

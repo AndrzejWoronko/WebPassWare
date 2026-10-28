@@ -4,6 +4,8 @@
 #include "DialogState.h"
 
 
+namespace wpw {
+
 class ICDialogStateManager
 {
 public:
@@ -23,5 +25,7 @@ public:
     CAbstractDialogStateManager();
     ~CAbstractDialogStateManager() = default;
 };
+
+} // namespace wpw
 
 #endif // ABSTRACTDIALOGSTATEMANAGER_H

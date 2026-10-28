@@ -6,6 +6,8 @@
 #include "AbstractSplitterStateManager.h"
 #include "AbstractStateManager.h"
 
+namespace wpw {
+
 class ICSplitterBuilder
 {
 public:
@@ -26,5 +28,7 @@ public:
     void restoreSplitterState();
     void saveSplitterState();
 };
+
+} // namespace wpw
 
 #endif // CSPLITTER_H

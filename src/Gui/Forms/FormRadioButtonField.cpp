@@ -1,5 +1,7 @@
 #include "FormRadioButtonField.h"
 
+namespace wpw {
+
 CFormRadioButtonField::CFormRadioButtonField(const QString &variableName, const QString &label, bool value, QWidget *parent) :
 QRadioButton(parent), CFormAbstractField(QMetaType::Bool, variableName, label, value)
 {
@@ -23,4 +25,4 @@ void CFormRadioButtonField::setValue(QVariant value)
     this->setChecked(value.toBool());
 }
 
-
+} // namespace wpw

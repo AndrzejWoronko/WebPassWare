@@ -5,6 +5,8 @@
 #include "OrmRepository.h"
 #include "ExceptionSql.h"
 
+namespace wpw {
+
 class ModelTableCheck
 {
 
@@ -127,5 +129,7 @@ public:
 
 
 };
+
+} // namespace wpw
 
 #endif // MODELTABLECHECK_H

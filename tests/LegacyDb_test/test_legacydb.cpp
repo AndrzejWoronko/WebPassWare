@@ -13,6 +13,8 @@
 #include "PassGroupService.h"
 #include "SqlModel.h"
 
+using namespace wpw;
+
 // Reads tests/fixtures/legacy_qt5.db, a database written by the Qt 5 build
 // (schema from "webpassware -c", data through the services; see
 // tests/fixtures/README.md). Users' existing files look like this one, so the

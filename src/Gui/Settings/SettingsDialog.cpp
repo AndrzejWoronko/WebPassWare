@@ -1,5 +1,7 @@
 #include "SettingsDialog.h"
 
+namespace wpw {
+
 SettingsDialog::SettingsDialog(QWidget *w, QWidget *parent) : CDialog(parent), CAbstractDialogStateManager()
 {
     this->setWindowTitle(tr("Ustawienia"));
@@ -46,3 +48,5 @@ void SettingsDialog::saveDialogState()
     if(state != oldState)
         getDialogState()->saveState(QString("SETTINGS_DIALOG"), state);
 }
+
+} // namespace wpw

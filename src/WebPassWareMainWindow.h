@@ -16,6 +16,8 @@
 #include "SqlModel.h"
 #include "PassEntryService.h"
 
+namespace wpw {
+
 class CApplication;
 class CAutoType;
 class CMaintenanceTool;
@@ -126,5 +128,7 @@ public slots:
 
     void on_ACTION_CLIPBOARD_triggered(void);
 };
+
+} // namespace wpw
 
 #endif // CWEBPASSWAREMAINWINDOW_H

@@ -1,6 +1,8 @@
 #include "FormCheckField.h"
 
 
+namespace wpw {
+
 CFormCheckField::CFormCheckField(const QString &variableName, const QString &label, bool value, bool readOnly, QWidget *parent) :
 QCheckBox(parent), CFormAbstractField(QMetaType::Bool, variableName, label, value)
 {
@@ -40,3 +42,5 @@ void CFormCheckField::setReadWrite()
     QCheckBox::setCheckable(true);
     QCheckBox::setFocusPolicy(Qt::StrongFocus);
 }
+
+} // namespace wpw

@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include "FormAbstractField.h"
 
+namespace wpw {
+
 class CFormButtonField : public QPushButton, public CFormAbstractField
 {
     Q_OBJECT
@@ -20,5 +22,7 @@ class CFormButtonField : public QPushButton, public CFormAbstractField
 
     virtual void onPushButtonClicked();
 };
+
+} // namespace wpw
 
 #endif // FORMBUTTONFIELD_H

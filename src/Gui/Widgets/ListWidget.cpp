@@ -2,6 +2,8 @@
 #include "Style.h"
 
 
+namespace wpw {
+
 CListWidget::CListWidget(QWidget *parent) : QListWidget(parent)
 {
     this->setMouseTracking(true);
@@ -52,3 +54,5 @@ void CListWidget::addItemWidget(QWidget *w)
     QListWidget::addItem(item);
     QListWidget::setItemWidget(item, w);
 }
+
+} // namespace wpw

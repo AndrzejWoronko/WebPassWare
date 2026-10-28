@@ -1,6 +1,8 @@
 #include "Splitter.h"
 
 
+namespace wpw {
+
 CSplitter::CSplitter(const QString &splitterName,  Qt::Orientation orientation, QWidget *parent) : QSplitter(orientation, parent)
 {
     setSplitterName(splitterName);
@@ -70,3 +72,5 @@ void CSplitter::saveSplitterState()
           }
     }
 }
+
+} // namespace wpw

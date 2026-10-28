@@ -5,6 +5,8 @@
 #include "FormAbstractField.h"
 #include "FormSimpleChoiceField.h"
 
+namespace wpw {
+
 class CFormSimpleIndexChoiceField : public CFormSimpleChoiceField
 {
 
@@ -22,5 +24,7 @@ public:
     qint64 getIdValue(void);
     void setIdValue(qint64 id);
 };
+
+} // namespace wpw
 
 #endif // FORMSIMPLEINDEXCHOICEFIELD_H

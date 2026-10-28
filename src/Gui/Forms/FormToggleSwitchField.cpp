@@ -1,5 +1,7 @@
 #include "FormToggleSwitchField.h"
 
+namespace wpw {
+
 CFormToggleSwitchField::CFormToggleSwitchField(const QString &variableName, const QString &label, bool value, bool readOnly, QWidget *parent) :
     CToggleSwitch(parent), CFormAbstractField(QMetaType::Bool, variableName, label, value)
 {
@@ -35,3 +37,5 @@ void CFormToggleSwitchField::setReadWrite()
     CToggleSwitch::setCheckable(true);
     QWidget::setFocusPolicy(Qt::StrongFocus);
 }
+
+} // namespace wpw

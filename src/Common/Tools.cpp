@@ -27,6 +27,8 @@
 #endif
 
 
+namespace wpw {
+
 Tools::Tools()
 {
 
@@ -287,3 +289,5 @@ void Tools::wait(int ms)
         } while (!timer.hasExpired(ms));
     }
 }
+
+} // namespace wpw

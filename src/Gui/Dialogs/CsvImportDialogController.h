@@ -8,6 +8,8 @@
 #include "CsvModel.h"
 #include "ImportCsv.h"
 
+namespace wpw {
+
 class PassEntryService;
 
 class CCsvImportDialogController : public QObject, public CAbstractDialogStateManager
@@ -52,5 +54,7 @@ public slots:
   void onReject();
 
 };
+
+} // namespace wpw
 
 #endif // CCSVIMPORTDIALOGCONTROLLER_H

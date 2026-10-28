@@ -1,5 +1,7 @@
 #include "ExceptionSql.h"
 
+namespace wpw {
+
 CExceptionSql::CExceptionSql(const QString &metoda, CSqlQuery query) : CException(metoda, query.lastError().databaseText())
 {
     LOG_SQL << " ERROR EXCEPTION: " << "Method: " + metoda + " Error: " + query.lastError().databaseText() + " Query: " + query.lastQuery();
@@ -21,3 +23,5 @@ CExceptionSql::CExceptionSql(const QString &metoda, const QString &query, const 
 CExceptionSql::~CExceptionSql()
 {
 }
+
+} // namespace wpw

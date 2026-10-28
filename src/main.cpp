@@ -18,6 +18,8 @@
 #include "PassGroupService.h"
 #include "BusyIndicator.h"
 
+using namespace wpw;
+
 // Projekty wzorcowe
 //https://github.com/orgs/keepassxreboot/repositories
 //https://github.com/orgs/keepassx

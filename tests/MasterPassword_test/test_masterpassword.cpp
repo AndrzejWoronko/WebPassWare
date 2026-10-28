@@ -5,6 +5,8 @@
 
 #include "MasterPassword.h"
 
+using namespace wpw;
+
 class Test_MasterPassword : public QObject
 {
     Q_OBJECT

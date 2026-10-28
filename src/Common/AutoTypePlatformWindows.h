@@ -13,6 +13,8 @@
 
 #include <windows.h>
 
+namespace wpw {
+
 class CAutoTypePlatformWindows : public QObject, public CAutoTypePlatform
 {
     Q_OBJECT
@@ -49,6 +51,8 @@ public:
 private:
     CAutoTypePlatformWindows* const m_platform;
 };
+
+} // namespace wpw
 
 #endif
 #endif // CAUTOTYPEPLATFORMWINDOWS_H

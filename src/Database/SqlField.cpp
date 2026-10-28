@@ -1,5 +1,7 @@
 #include "SqlField.h"
 
+namespace wpw {
+
 CSqlField::CSqlField()
 {
 
@@ -120,3 +122,5 @@ QString CSqlField::recognizeType2String(QMetaType::Type type)
   }
   return QString();
 }
+
+} // namespace wpw

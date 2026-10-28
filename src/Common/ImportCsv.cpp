@@ -5,6 +5,8 @@
 #include "CsvCodec.h"
 #include "CsvFormat.h"
 
+namespace wpw {
+
 // QTextStream in Qt 6 only knows the Unicode encodings and Latin-1, so the
 // file is decoded as a whole (ICU covers ISO-8859-2, Windows-1250 and CP852).
 // An unknown name falls back to UTF-8, as the Qt 5 stream kept its default codec.
@@ -165,3 +167,5 @@ QStringList CImportCsv::getTitle()
 {
     return m_title;
 }
+
+} // namespace wpw

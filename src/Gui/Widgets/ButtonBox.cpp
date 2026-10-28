@@ -1,6 +1,8 @@
 #include "ButtonBox.h"
 #include "Style.h"
 
+namespace wpw {
+
 CButtonBox::CButtonBox(QWidget *parent) : QDialogButtonBox(parent)
 {
     m_cancel_button = this->addButton(tr("&Anuluj"), QDialogButtonBox::RejectRole);
@@ -101,3 +103,5 @@ CButtonBoxClose::CButtonBoxClose(QWidget *parent) : QDialogButtonBox(parent)
     else
         m_close_button->setIcon(QIcon::fromTheme("close"));
 }
+
+} // namespace wpw

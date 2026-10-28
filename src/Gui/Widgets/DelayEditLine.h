@@ -5,6 +5,8 @@
 #include <QLineEdit>
 #include <QStyle>
 
+namespace wpw {
+
 constexpr int DELAY_EDIT_LINE_MS = 300;
 
 class CDelayEditLine : public QLineEdit
@@ -26,5 +28,7 @@ private slots:
     void onTextEdited(const QString & newText);
     void delayEditingFinish();
 };
+
+} // namespace wpw
 
 #endif // DELAYEDITLINE_H

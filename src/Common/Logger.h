@@ -10,6 +10,8 @@
 
 //klasa log`a dziennego lub miesiecznego
 
+namespace wpw {
+
 class CLogger : public QTextStream
 {
 private:
@@ -52,5 +54,7 @@ public:
 };
 
 #define LOG_SQL Qt::endl(CSqlLogger::getInstance()) << LOG_DATE_LINE
+
+} // namespace wpw
 
 #endif // LOGGER_H

@@ -1,5 +1,7 @@
 #include "FixedLineEdit.h"
 
+namespace wpw {
+
 CFixedLineEdit::CFixedLineEdit(const QString &text, QWidget *parent) : QLineEdit(text, parent)
 {
 
@@ -33,3 +35,5 @@ void CFixedLineEdit::setMaxVisibleChars(int count)
     setMaximumWidth(this->fontMetrics().horizontalAdvance('W') * m_maxVisible +
         ((this->style()->pixelMetric(QStyle::PM_DefaultFrameWidth) + 2) * 2));
 }
+
+} // namespace wpw

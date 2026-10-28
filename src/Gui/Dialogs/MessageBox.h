@@ -6,6 +6,8 @@
 #include <QAbstractButton>
 
 
+namespace wpw {
+
 class CMessageBox
 {
 public:
@@ -41,5 +43,7 @@ public:
 
   private:
 };
+
+} // namespace wpw
 
 #endif // CMESSAGEBOX_H

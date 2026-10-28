@@ -6,6 +6,8 @@
 #include "DateEdit.h"
 #include "FormAbstractField.h"
 
+namespace wpw {
+
 class CFormMonthField : public CMonthEdit, public CFormAbstractField
 {
 
@@ -21,5 +23,6 @@ class CFormMonthField : public CMonthEdit, public CFormAbstractField
     virtual void select();
 };
 
+} // namespace wpw
 
 #endif // FORMMONTHFIELD_H

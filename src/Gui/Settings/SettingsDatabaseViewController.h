@@ -6,6 +6,8 @@
 #include "AbstractSettingsItemController.h"
 #include "SettingsDatabaseView.h"
 
+namespace wpw {
+
 class SettingsDatabaseViewController : public CAbstractSettingsItemController
 {
     Q_OBJECT
@@ -23,5 +25,7 @@ public slots:
 private:
     CDatabase &m_db;
 };
+
+} // namespace wpw
 
 #endif // SETTINGSDATABASEVIEWCONTROLLER_H

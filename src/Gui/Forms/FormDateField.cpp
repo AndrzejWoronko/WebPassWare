@@ -1,5 +1,7 @@
 #include "FormDateField.h"
 
+namespace wpw {
+
 CFormDateField::CFormDateField(const QString &variableName, const QString &label, const QDate &value, bool readOnly, QWidget *parent):
         CDateEdit(value, parent), CFormAbstractField(QMetaType::QDate, variableName, label, value)
 {
@@ -47,3 +49,5 @@ void CFormDateField::select()
 {
     this->selectAll();
 }
+
+} // namespace wpw

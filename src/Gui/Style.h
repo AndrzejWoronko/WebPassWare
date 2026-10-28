@@ -8,6 +8,8 @@
 #include "ApplicationSettings.h"
 
 
+namespace wpw {
+
 class CStyle
 {
 
@@ -77,5 +79,7 @@ private:
     static QPixmap mergePixmapAttribute(const QPixmap &pixmap, const QString &attr);
 
 };
+
+} // namespace wpw
 
 #endif // STYLE_H

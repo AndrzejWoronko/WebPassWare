@@ -1,6 +1,8 @@
 #include "SettingsDatabaseView.h"
 #include "Database.h"
 
+namespace wpw {
+
 SettingsDatabaseView::SettingsDatabaseView(CDatabase &db, QWidget *parent) :
     CAbstractSettingsItemView(tr("Ustawienia bazy danych"), parent), m_db(db)
 {
@@ -46,3 +48,5 @@ void SettingsDatabaseView::addComponents()
     CForm::setComponents(getFormLayout(), m_connection_group_box, QString(""), 0, 1, 6, 3);
     setWidgetWidget();
 }
+
+} // namespace wpw

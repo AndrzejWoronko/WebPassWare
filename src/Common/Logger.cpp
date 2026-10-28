@@ -1,5 +1,7 @@
 #include "Logger.h"
 
+namespace wpw {
+
 const QString CLogger::PATH = QDir::homePath() + QDir::separator() + QString(LOG_DIR);
 //const QString CLogger::PATH = QString(PROGRAM_DIR) + QDir::separator() + QString(LOG_DIR);
 
@@ -102,3 +104,5 @@ CSqlLogger::CSqlLogger() : CLogger(SQL_LOG_FILE, true, true)
 //    static CSqlLogger instance;
 //    return instance;
 //}
+
+} // namespace wpw

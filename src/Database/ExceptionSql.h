@@ -6,6 +6,8 @@
 #include "Exception.h"
 #include "Logger.h"
 
+namespace wpw {
+
 class CExceptionSql : public CException
 {
 private:
@@ -18,5 +20,6 @@ public:
     ~CExceptionSql();
 };
 
+} // namespace wpw
 
 #endif // CEXCEPTIONSQL_H

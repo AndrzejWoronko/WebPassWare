@@ -1,5 +1,7 @@
 #include "SplitterState.h"
 
+namespace wpw {
+
 CSplitterState::CSplitterState()
 {
     m_settings.reset(new QSettings());
@@ -21,3 +23,5 @@ QByteArray CSplitterState::getState(const QString &splitterName)
 {
     return m_settings->value(splitterName).toByteArray();
 }
+
+} // namespace wpw

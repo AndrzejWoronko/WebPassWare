@@ -4,6 +4,8 @@
 #include "Global.h"
 #include "Form.h"
 
+namespace wpw {
+
 // Base of the dialogs built from fields (Template Method): addFieldsAndComponents()
 // calls addFields(), addComponents() and createButtons(); subclasses choose
 // the buttons. The fields go into getWidget() / getFormLayout(), which
@@ -38,5 +40,7 @@ protected:
 private:
     CVBoxLayout *m_VLayoutDialog;  //Do dialogu
 };
+
+} // namespace wpw
 
 #endif // CABSTRACTFIELDSDIALOG_H

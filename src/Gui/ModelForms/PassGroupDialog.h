@@ -4,6 +4,8 @@
 #include "Global.h"
 #include "AbstractFormDialog.h"
 
+namespace wpw {
+
 class PassGroupDialog : public CAbstractFormDialog
 {
     Q_OBJECT
@@ -17,5 +19,7 @@ public:
     virtual void addFields();
     virtual void addComponents();
 };
+
+} // namespace wpw
 
 #endif // PASSGROUPDIALOG_H

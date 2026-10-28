@@ -11,6 +11,8 @@
 #include "AutoTypeAction.h"
 #include "AutoTypePlatform.h"
 
+namespace wpw {
+
 class CAutoTypePlatformMacos : public QObject, public CAutoTypePlatform
 {
     Q_OBJECT
@@ -52,5 +54,8 @@ public:
 private:
     CAutoTypePlatformMacos* const m_platform;
 };
+
+} // namespace wpw
+
 #endif
 #endif // CAUTOTYPEPLATFORMMACOS_H

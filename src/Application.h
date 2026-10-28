@@ -16,6 +16,8 @@
 
 
 
+namespace wpw {
+
 class CDatabase;
 
 class CApplication : public QApplication
@@ -76,5 +78,7 @@ public slots:
     void updatePalette(int);
     void updateStyleSheet(int style);
 };
+
+} // namespace wpw
 
 #endif // APPLICATION_H

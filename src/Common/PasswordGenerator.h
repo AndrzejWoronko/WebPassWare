@@ -3,6 +3,8 @@
 
 #include "Global.h"
 
+namespace wpw {
+
 typedef QVector<QChar> PasswordGroup;
 
 class CPasswordGenerator
@@ -45,5 +47,7 @@ private:
     CharClasses m_classes;
     GeneratorFlags m_flags;
 };
+
+} // namespace wpw
 
 #endif // CPASSWORDGENERATOR_H

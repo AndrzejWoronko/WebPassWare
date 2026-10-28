@@ -6,6 +6,8 @@
 
 #define INVALID_KEYCODE 0xFFFF
 
+namespace wpw {
+
 CAutoTypePlatformMacos::CAutoTypePlatformMacos(QObject *parent) : QObject(parent)
 {
 
@@ -461,4 +463,7 @@ void CAutoTypeExecutorMacos::execKey(CAutoTypeKey* action)
     m_platform->sendKey(action->m_key, true);
     m_platform->sendKey(action->m_key, false);
 }
+
+} // namespace wpw
+
 #endif

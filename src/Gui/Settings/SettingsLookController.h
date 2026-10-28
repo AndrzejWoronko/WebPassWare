@@ -5,6 +5,8 @@
 #include "AbstractSettingsItemController.h"
 #include "SettingsLookView.h"
 
+namespace wpw {
+
 class CApplication;
 
 class SettingsLookController : public CAbstractSettingsItemController
@@ -23,5 +25,7 @@ public slots:
     void setValuesToSettings(void);
 
 };
+
+} // namespace wpw
 
 #endif // SETTINGSLOOKCONTROLLER_H

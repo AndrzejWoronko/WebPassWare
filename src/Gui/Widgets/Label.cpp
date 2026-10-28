@@ -1,5 +1,7 @@
 #include "Label.h"
 
+namespace wpw {
+
 CLabel::CLabel(const QString &text, const QString &pixmap, QWidget *parent, Qt::WindowFlags f) : QLabel(parent, f)
 {
     m_text = text;
@@ -23,3 +25,5 @@ void CLabel::setBold(void)
     if (!m_text.isEmpty())
         setText(QString("<b>%1</b>").arg(m_text));
 }
+
+} // namespace wpw

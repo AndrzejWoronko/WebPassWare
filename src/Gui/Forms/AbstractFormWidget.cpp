@@ -1,5 +1,7 @@
 #include "AbstractFormWidget.h"
 
+namespace wpw {
+
 CAbstractFormWidget::CAbstractFormWidget()
 {
 
@@ -39,3 +41,5 @@ CAbstractFormWidget *CAbstractFormWidget::getWidget()
 {
     return this;
 }
+
+} // namespace wpw

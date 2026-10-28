@@ -1,6 +1,8 @@
 #include "CsvExportDialog.h"
 #include "CsvCodec.h"
 
+namespace wpw {
+
 CCsvExportDialog::CCsvExportDialog(QWidget *parent) : CDialog(parent)
 {
     this->setWindowTitle(tr("Eksport danych"));
@@ -53,3 +55,4 @@ void CCsvExportDialog::addButtons()
     m_buttonChioceFileCsv = new CButton(CButtonPrivate(tr("Wybierz plik ..."), tr("Wybierz plik do exportu"), ICON("File")));
 }
 
+} // namespace wpw

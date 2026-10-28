@@ -35,6 +35,8 @@ Q_PROPERTY(type name READ get##name WRITE set##name) \
 
 
 
+namespace wpw {
+
 template<class ModelName>
 class COrmObject : public QObject
 {
@@ -71,10 +73,22 @@ public:
         clearUpdateList();
     }
 
+    // Table of a model class: "wpw::PassEntry" -> "pass_entry" (the namespace
+    // is not part of the table name, which must stay as in existing files).
+    static QString tableNameOf(const QMetaObject *meta)
+    {
+        QString className = QString::fromLatin1(meta->className());
+        className = className.mid(className.lastIndexOf(QLatin1String("::")) + 1);
+        if (className.startsWith(QLatin1Char(':')))
+        {
+            className.remove(0, 1);
+        }
+        return Tools::tableize(className);
+    }
+
     void setTableName()
     {
-        m_tableName = metaObject()->className();
-        m_tableName = Tools::tableize(m_tableName);
+        m_tableName = tableNameOf(metaObject());
     }
 
     void setTableName(const QString & tableName)
@@ -341,8 +355,7 @@ public:
     {
         T *result = new T;
         QString currentFieldName;        
-        QString tableName = result->metaObject()->className();
-        tableName = Tools::tableize(tableName);
+        QString tableName = tableNameOf(result->metaObject());
 
         for(int i = 1; i < result->metaObject()->propertyCount(); i++)
         {
@@ -360,5 +373,7 @@ public:
         return result;
     }
 };
+
+} // namespace wpw
 
 #endif // CORMOBJECT_H

@@ -7,9 +7,13 @@
 
 #include <sys/types.h>
 
+namespace wpw {
+
 bool macUtilsRaiseProcess(pid_t pid);
 bool macUtilsHideOwnApp();
 bool macUtilsRaiseOwnApp();
+
+} // namespace wpw
 
 #endif
 #endif // MACUTILS_H

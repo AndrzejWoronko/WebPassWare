@@ -1,5 +1,7 @@
 #include "FormMonthField.h"
 
+namespace wpw {
+
 CFormMonthField::CFormMonthField(const QString &variableName, const QString &label, const QDate &value, bool readOnly, QWidget *parent):
         CMonthEdit(value, parent), CFormAbstractField(QMetaType::QDate, variableName, label, value)
 {
@@ -51,3 +53,5 @@ void CFormMonthField::select()
 {
     this->selectAll();
 }
+
+} // namespace wpw

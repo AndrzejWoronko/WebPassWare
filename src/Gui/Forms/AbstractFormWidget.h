@@ -9,6 +9,8 @@
  * @brief The CAbstractFormWidget class - klasa abstrakcyjna wyświetlania formatki jako QWidget
  */
 
+namespace wpw {
+
 class CAbstractFormWidget : public QWidget
 {
     Q_OBJECT
@@ -40,5 +42,7 @@ public:
     virtual void addFields() = 0;
 
 };
+
+} // namespace wpw
 
 #endif // CABSTRACTFORMWIDGET_H

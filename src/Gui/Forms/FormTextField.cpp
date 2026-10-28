@@ -1,6 +1,8 @@
 #include "FormTextField.h"
 
 
+namespace wpw {
+
 CFormTextField::CFormTextField(const QString &variableName, const QString &label, QString value, int length, bool readOnly, QWidget *parent) :
         CFixedLineEdit(value, length, 1, parent), CFormAbstractField(QMetaType::QString, variableName, label, value)
 {
@@ -105,3 +107,5 @@ void CFormTextField::keyPressEvent(QKeyEvent *event)
       }
   }
 }
+
+} // namespace wpw

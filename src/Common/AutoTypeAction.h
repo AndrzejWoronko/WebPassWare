@@ -4,6 +4,8 @@
 #include <QChar>
 #include <Qt>
 
+namespace wpw {
+
 class CAutoTypeExecutor;
 
 class CAutoTypeAction
@@ -70,5 +72,6 @@ protected:
     int m_delay;
 };
 
+} // namespace wpw
 
 #endif // CAUTOTYPEACTION_H

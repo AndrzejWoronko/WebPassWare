@@ -5,6 +5,8 @@
 #include "CsvCodec.h"
 #include "CsvFormat.h"
 
+namespace wpw {
+
 // QTextStream in Qt 6 only knows the Unicode encodings and Latin-1, so the
 // text is collected in a string and encoded when the file is finished. An
 // unknown name falls back to UTF-8, as the Qt 5 stream kept its default codec.
@@ -166,3 +168,5 @@ void CExportCsv::writeLine(QStringList data)
     else
         *m_out << wpw::Csv::quoteField(data.last(), m_delimiter) << m_end_of_line;
 }
+
+} // namespace wpw

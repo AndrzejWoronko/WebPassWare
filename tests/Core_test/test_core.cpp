@@ -9,6 +9,8 @@
 #include "SqlField.h"
 #include "Tools.h"
 
+using namespace wpw;
+
 // Helpers of wpw_core without a database: number formatting and names
 // (Tools), column types of the list views (CSqlField), the CSV preview
 // model of the import dialog (CCsvModel).

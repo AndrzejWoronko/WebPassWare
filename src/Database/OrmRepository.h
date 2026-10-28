@@ -8,6 +8,8 @@
 
 #include <memory>
 
+namespace wpw {
+
 // What the services need from a table of ModelName.
 template<class ModelName>
 class IRepository
@@ -421,5 +423,7 @@ public:
         return object && setDeleted(object.get());
     }
 };
+
+} // namespace wpw
 
 #endif // CORMREPOSITORY_H

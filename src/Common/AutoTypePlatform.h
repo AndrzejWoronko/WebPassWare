@@ -5,6 +5,8 @@
 
 #include "AutoTypeAction.h"
 
+namespace wpw {
+
 class CAutoTypePlatform
 {
 public:
@@ -32,5 +34,7 @@ public:
 
     // implementations should also provide a globalShortcutTriggered() signal
 };
+
+} // namespace wpw
 
 #endif // CAUTOTYPEPLATFORM_H

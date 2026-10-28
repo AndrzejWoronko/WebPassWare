@@ -14,6 +14,8 @@
 #include "PassGroupService.h"
 #include "Schema.h"
 
+using namespace wpw;
+
 // Every start brings the database file to wpw::Schema::kVersion: an empty
 // file gets the tables, a file of the Qt 5 version (user_version 0) is
 // migrated, a file of a newer version is left alone.

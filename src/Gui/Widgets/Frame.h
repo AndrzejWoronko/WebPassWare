@@ -4,6 +4,8 @@
 #include "Global.h"
 #include <QFrame>
 
+namespace wpw {
+
 class CFrame : public QFrame
 {
 public:
@@ -26,5 +28,6 @@ public:
     ~CVLine() { DEBUG_WITH_LINE << "~dtor "; }
 };
 
+} // namespace wpw
 
 #endif // FRAME_H

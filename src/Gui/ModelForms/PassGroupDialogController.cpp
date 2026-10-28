@@ -2,6 +2,8 @@
 #include "PassGroupService.h"
 #include "MessageBox.h"
 
+namespace wpw {
+
 PassGroupDialogController::PassGroupDialogController(PassGroupService *passGroupService, QWidget *parent) :
     CAbstractFormDialogController(new PassGroupDialog(parent), parent),
     m_passGroupService(passGroupService)
@@ -100,3 +102,5 @@ bool PassGroupDialogController::exec(qint64 id, const QString &title)
     }
     return ret;
 }
+
+} // namespace wpw

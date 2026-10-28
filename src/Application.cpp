@@ -9,6 +9,8 @@
 #include "MessageBox.h"
 
 
+namespace wpw {
+
 CApplication::CApplication(int & argc, char **argv) :
     QApplication(argc, argv), m_no_ask_exit(false)
 {
@@ -321,3 +323,5 @@ void CApplication::updateStyleSheet(int style)
     m_style->setApplicationStyle(this);
     updateAllWidgets();
 }
+
+} // namespace wpw
